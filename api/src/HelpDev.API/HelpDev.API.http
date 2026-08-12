@@ -1,0 +1,75 @@
+@HelpDev.API_HostAddress = http://localhost:5221
+
+### Auth — send OTP
+POST {{HelpDev.API_HostAddress}}/api/auth/send-otp
+Content-Type: application/json
+
+{
+  "mobile": "09123456789"
+}
+
+###
+
+### Auth — verify OTP
+POST {{HelpDev.API_HostAddress}}/api/auth/verify-otp
+Content-Type: application/json
+
+{
+  "mobile": "09123456789",
+  "code": "123456"
+}
+
+###
+
+GET {{HelpDev.API_HostAddress}}/api/health
+Accept: application/json
+
+###
+
+### Test — content (JWT required, any role)
+GET {{HelpDev.API_HostAddress}}/api/test/content
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+### Test — users (JWT + Admin only)
+GET {{HelpDev.API_HostAddress}}/api/test/users
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+### Secure — requires JWT (401 without token)
+GET {{HelpDev.API_HostAddress}}/api/secure
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+###
+
+### Content — list published
+GET {{HelpDev.API_HostAddress}}/api/content
+Accept: application/json
+
+###
+
+### Content — get by slug
+GET {{HelpDev.API_HostAddress}}/api/content/my-article
+Accept: application/json
+
+###
+
+### Content — create (Writer/Admin only)
+POST {{HelpDev.API_HostAddress}}/api/content
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "title": "اولین مقاله",
+  "slug": "first-article",
+  "body": "متن مقاله...",
+  "type": "Article",
+  "status": "Published"
+}
+
+###

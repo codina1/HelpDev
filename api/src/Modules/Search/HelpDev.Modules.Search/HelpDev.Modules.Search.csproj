@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\HelpDev.SharedKernel\HelpDev.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\HelpDev.SharedApplication\HelpDev.SharedApplication.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\HelpDev.SharedContracts\HelpDev.SharedContracts.csproj" />
+    <ProjectReference Include="..\..\Content\HelpDev.Modules.Content\HelpDev.Modules.Content.csproj" />
+    <ProjectReference Include="..\..\Learning\HelpDev.Modules.Learning\HelpDev.Modules.Learning.csproj" />
+    <ProjectReference Include="..\..\Toolbox\HelpDev.Modules.Toolbox\HelpDev.Modules.Toolbox.csproj" />
+    <ProjectReference Include="..\..\PromptLab\HelpDev.Modules.PromptLab\HelpDev.Modules.PromptLab.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.11" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
+    <PackageReference Include="Pgvector" Version="0.3.0" />
+    <PackageReference Include="Pgvector.EntityFrameworkCore" Version="0.2.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

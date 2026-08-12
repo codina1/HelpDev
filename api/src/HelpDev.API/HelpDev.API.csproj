@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+    <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.20" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.20" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HelpDev.Application\HelpDev.Application.csproj" />
+    <ProjectReference Include="..\HelpDev.Infrastructure\HelpDev.Infrastructure.csproj" />
+    <ProjectReference Include="..\BuildingBlocks\HelpDev.SharedInfrastructure\HelpDev.SharedInfrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Identity\HelpDev.Modules.Identity\HelpDev.Modules.Identity.csproj" />
+    <ProjectReference Include="..\Modules\Content\HelpDev.Modules.Content\HelpDev.Modules.Content.csproj" />
+    <ProjectReference Include="..\Modules\Learning\HelpDev.Modules.Learning\HelpDev.Modules.Learning.csproj" />
+    <ProjectReference Include="..\Modules\Search\HelpDev.Modules.Search\HelpDev.Modules.Search.csproj" />
+    <ProjectReference Include="..\Modules\Administration\HelpDev.Modules.Administration\HelpDev.Modules.Administration.csproj" />
+    <ProjectReference Include="..\Modules\Toolbox\HelpDev.Modules.Toolbox\HelpDev.Modules.Toolbox.csproj" />
+    <ProjectReference Include="..\Modules\PromptLab\HelpDev.Modules.PromptLab\HelpDev.Modules.PromptLab.csproj" />
+    <ProjectReference Include="..\Modules\Analytics\HelpDev.Modules.Analytics\HelpDev.Modules.Analytics.csproj" />
+    <ProjectReference Include="..\Modules\Auditing\HelpDev.Modules.Auditing\HelpDev.Modules.Auditing.csproj" />
+    <ProjectReference Include="..\Modules\Media\HelpDev.Modules.Media\HelpDev.Modules.Media.csproj" />
+  </ItemGroup>
+
+</Project>

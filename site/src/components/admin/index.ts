@@ -1,0 +1,11 @@
+export { AdminShell } from "@/components/admin/layout/admin-shell";
+export { AdminPageHeader } from "@/components/admin/page/admin-page-header";
+export { AdminPageSection } from "@/components/admin/page/admin-page-section";
+export { AdminSurface } from "@/components/admin/page/admin-surface";
+export { AdminStatCard } from "@/components/admin/page/admin-stat-card";
+export { AdminActionBar } from "@/components/admin/page/admin-action-bar";
+export { AdminModulePlaceholder } from "@/components/admin/page/admin-module-placeholder";
+export { AdminLoadingState } from "@/components/admin/feedback/admin-loading-state";
+export { AdminErrorState } from "@/components/admin/feedback/admin-error-state";
+export { AdminEmptyState } from "@/components/admin/feedback/admin-empty-state";
+export { AdminAccessDenied } from "@/components/admin/feedback/admin-access-denied";
