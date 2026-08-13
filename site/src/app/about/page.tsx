@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AboutHero, ABOUT_HERO_SUBTITLE } from "./about-hero";
 import { AboutMission } from "./about-mission";
+import { AboutStory } from "./about-story";
 
 export const metadata: Metadata = {
   title: "درباره ما",
@@ -12,6 +13,7 @@ export default function AboutPage() {
     <>
       <AboutHero />
       <AboutMission />
+      <AboutStory />
     </>
   );
 }
