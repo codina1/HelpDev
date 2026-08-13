@@ -14,6 +14,8 @@ namespace HelpDev.Modules.Media.Infrastructure.Inspection;
 /// <summary>
 /// Signature + decode inspection via SixLabors.ImageSharp 3.x (Apache-2.0 / Six Labors License).
 /// Cross-platform; rejects SVG/HTML/PDF/executables and magic/format mismatches.
+/// XML/SVG/HTML text hints are ignored once JPEG/PNG/WebP magic is present
+/// (real images often embed XMP <c>&lt;?xml</c> in the first 512 bytes).
 /// </summary>
 public sealed class ImageFileInspector : IImageFileInspector
 {
@@ -118,27 +120,32 @@ public sealed class ImageFileInspector : IImageFileInspector
     {
         Span<byte> buffer = stackalloc byte[16];
         var read = content.Read(buffer);
-        if (read < 3)
+        return DetectByMagic(buffer[..read]);
+    }
+
+    private static string? DetectByMagic(ReadOnlySpan<byte> header)
+    {
+        if (header.Length < 3)
         {
             return null;
         }
 
-        if (StartsWith(buffer[..read], JpegMagic))
+        if (StartsWith(header, JpegMagic))
         {
             return MediaContentType.Jpeg;
         }
 
-        if (read >= 8 && StartsWith(buffer[..read], PngMagic))
+        if (header.Length >= 8 && StartsWith(header, PngMagic))
         {
             return MediaContentType.Png;
         }
 
-        if (read >= 12
-            && StartsWith(buffer[..read], RiffMagic)
-            && buffer[8] == (byte)'W'
-            && buffer[9] == (byte)'E'
-            && buffer[10] == (byte)'B'
-            && buffer[11] == (byte)'P')
+        if (header.Length >= 12
+            && StartsWith(header, RiffMagic)
+            && header[8] == (byte)'W'
+            && header[9] == (byte)'E'
+            && header[10] == (byte)'B'
+            && header[11] == (byte)'P')
         {
             return MediaContentType.Webp;
         }
@@ -156,6 +163,14 @@ public sealed class ImageFileInspector : IImageFileInspector
         }
 
         var slice = buffer[..read];
+
+        // JPEG/PNG/WebP often embed XMP (`<?xml`) or similar text in early
+        // metadata chunks. That is not a disguised SVG/HTML/XML document.
+        if (DetectByMagic(slice) is not null)
+        {
+            return;
+        }
+
         if (ContainsIgnoreCaseAscii(slice, SvgHint)
             || ContainsIgnoreCaseAscii(slice, HtmlHint)
             || ContainsIgnoreCaseAscii(slice, XmlHint)

@@ -62,6 +62,16 @@ describe("validateMediaFile", () => {
     expect(validateMediaFile(makeFile("a.png", "image/png", 1024)).valid).toBe(true);
     expect(validateMediaFile(makeFile("a.webp", "image/webp", 1024)).valid).toBe(true);
   });
+
+  it("accepts PNG/JPEG/WebP when the browser leaves MIME empty or generic", () => {
+    expect(validateMediaFile(makeFile("cover.png", "", 1024)).valid).toBe(true);
+    expect(validateMediaFile(makeFile("cover.jpg", "application/octet-stream", 1024)).valid).toBe(true);
+    expect(validateMediaFile(makeFile("cover.webp", "", 1024)).valid).toBe(true);
+  });
+
+  it("still rejects a generic MIME when the extension is not an image", () => {
+    expect(validateMediaFile(makeFile("notes.bin", "application/octet-stream", 1024)).valid).toBe(false);
+  });
 });
 
 describe("validateAltText / validateCaption", () => {

@@ -8,7 +8,8 @@ import {
 /**
  * Client-side upload UX guards only — the server remains authoritative.
  * Rejects: no file, empty file, oversized file, SVG (script-injection risk),
- * and any MIME type outside the JPEG/PNG/WebP allow-list.
+ * and anything outside JPEG/PNG/WebP. When the browser leaves MIME empty or
+ * as application/octet-stream, the file extension is used as a fallback.
  */
 
 const SVG_CONTENT_TYPE = "image/svg+xml";
@@ -31,13 +32,21 @@ export function validateMediaFile(file: File | null | undefined): MediaFileValid
   }
 
   const type = (file.type || "").toLowerCase();
-  const looksLikeSvg = type === SVG_CONTENT_TYPE || file.name.toLowerCase().endsWith(".svg");
+  const name = file.name.toLowerCase();
+  const looksLikeSvg = type === SVG_CONTENT_TYPE || name.endsWith(".svg");
   if (looksLikeSvg) {
     return { valid: false, error: "فایل‌های SVG پذیرفته نمی‌شوند." };
   }
 
-  const isAccepted = (ACCEPTED_MEDIA_CONTENT_TYPES as readonly string[]).includes(type);
-  if (!isAccepted) {
+  const isAcceptedMime = (ACCEPTED_MEDIA_CONTENT_TYPES as readonly string[]).includes(type);
+  const isAcceptedByExtension =
+    name.endsWith(".png") ||
+    name.endsWith(".jpg") ||
+    name.endsWith(".jpeg") ||
+    name.endsWith(".webp");
+  const mimeIsMissingOrGeneric = type === "" || type === "application/octet-stream";
+
+  if (!isAcceptedMime && !(mimeIsMissingOrGeneric && isAcceptedByExtension)) {
     return { valid: false, error: "فقط تصاویر JPEG، PNG و WebP پذیرفته می‌شوند." };
   }
 

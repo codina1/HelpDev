@@ -159,6 +159,19 @@ public sealed class ImageFileInspectorTests
         await using var stream = new MemoryStream(ImageTestFixtures.SvgBytes());
         await Assert.ThrowsAsync<MediaException>(() => _inspector.InspectAsync(stream, "image/svg+xml"));
     }
+
+    [Fact]
+    public async Task Png_with_xmp_xml_in_header_passes()
+    {
+        var bytes = ImageTestFixtures.CreatePngBytesWithXmlMetadata();
+        var header = System.Text.Encoding.ASCII.GetString(bytes, 0, Math.Min(512, bytes.Length));
+        Assert.Contains("<?xml", header, StringComparison.OrdinalIgnoreCase);
+
+        await using var stream = new MemoryStream(bytes);
+        var result = await _inspector.InspectAsync(stream, "image/png");
+        Assert.Equal(MediaContentType.Png, result.DetectedContentType);
+        Assert.Equal(".png", result.SafeExtension);
+    }
 }
 
 public sealed class MediaAssetServiceTests
