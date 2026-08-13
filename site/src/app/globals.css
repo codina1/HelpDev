@@ -1924,3 +1924,209 @@ body {
   }
 }
 
+/* Homepage engineering learning paths */
+.home-paths-scroller {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0.25rem 0 0.65rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--home-purple) 40%, transparent) transparent;
+}
+
+.home-path-item {
+  flex: 0 0 min(17.75rem, 78vw);
+  scroll-snap-align: start;
+}
+
+@media (min-width: 1200px) {
+  .home-paths-scroller {
+    overflow: visible;
+    scroll-snap-type: none;
+    padding-bottom: 0.25rem;
+  }
+
+  .home-path-item {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+.home-path-card {
+  --home-path-accent: var(--home-purple);
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--home-border);
+  border-radius: var(--home-radius-xl);
+  background: var(--home-surface);
+  backdrop-filter: blur(20px);
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--home-shadow-sm);
+  transition:
+    transform 0.28s ease,
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.home-path-card-architect {
+  --home-path-accent: var(--home-purple);
+}
+.home-path-card-frontend {
+  --home-path-accent: var(--home-cyan);
+}
+.home-path-card-devops {
+  --home-path-accent: var(--home-blue);
+}
+.home-path-card-ai {
+  --home-path-accent: var(--home-purple);
+}
+.home-path-card-backend {
+  --home-path-accent: var(--home-blue);
+}
+
+.home-path-visual {
+  position: relative;
+  height: 7.25rem;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      90% 80% at 80% 20%,
+      color-mix(in srgb, var(--home-path-accent) 32%, transparent),
+      transparent 62%
+    ),
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--home-path-accent) 16%, #0b1020),
+      #080a12 70%
+    );
+}
+
+.home-path-visual-orb {
+  position: absolute;
+  inset-inline-end: 12%;
+  top: 18%;
+  height: 4.25rem;
+  width: 4.25rem;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle at 35% 30%,
+    color-mix(in srgb, var(--home-text) 18%, transparent),
+    color-mix(in srgb, var(--home-path-accent) 45%, transparent) 55%,
+    transparent 72%
+  );
+  box-shadow: 0 0 28px color-mix(in srgb, var(--home-path-accent) 35%, transparent);
+}
+
+.home-path-visual-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--home-text) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--home-text) 6%, transparent) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent 85%);
+}
+
+.home-path-glyph {
+  position: absolute;
+  inset-inline-start: 1.1rem;
+  bottom: 1rem;
+  color: var(--home-text);
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--home-path-accent) 45%, transparent));
+}
+
+.home-path-card-ai .home-path-visual {
+  background:
+    radial-gradient(
+      80% 70% at 75% 25%,
+      color-mix(in srgb, var(--home-cyan) 22%, transparent),
+      transparent 58%
+    ),
+    radial-gradient(
+      90% 80% at 20% 80%,
+      color-mix(in srgb, var(--home-purple) 28%, transparent),
+      transparent 60%
+    ),
+    linear-gradient(160deg, #12081f, #080a12 72%);
+}
+
+.home-path-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1rem 1.05rem 1.1rem;
+  text-align: start;
+}
+
+.home-path-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.4;
+  color: var(--home-text);
+}
+
+.home-path-copy {
+  margin: 0.45rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.7;
+  color: var(--home-text-muted);
+}
+
+.home-path-learners {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: auto 0 0;
+  padding-top: 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--home-text-secondary);
+}
+
+.home-path-card:hover {
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--home-path-accent) 48%, transparent);
+  box-shadow:
+    0 0 28px color-mix(in srgb, var(--home-path-accent) 28%, transparent),
+    var(--home-shadow-sm);
+}
+
+.home-path-card:hover .home-path-visual {
+  filter: saturate(1.15);
+}
+
+.home-path-card:hover .home-path-visual-orb {
+  transform: scale(1.08);
+}
+
+.home-path-visual-orb,
+.home-path-visual {
+  transition:
+    transform 0.28s ease,
+    filter 0.28s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-path-card,
+  .home-path-visual,
+  .home-path-visual-orb {
+    transition: none;
+  }
+
+  .home-path-card:hover {
+    transform: none;
+  }
+
+  .home-path-card:hover .home-path-visual-orb {
+    transform: none;
+  }
+}
+
