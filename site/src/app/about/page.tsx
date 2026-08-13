@@ -6,6 +6,7 @@ import { AboutHero, ABOUT_HERO_SUBTITLE } from "./about-hero";
 import { AboutMission } from "./about-mission";
 import { AboutStats } from "./about-stats";
 import { AboutStory } from "./about-story";
+import { AboutTeam } from "./about-team";
 
 export const metadata: Metadata = {
   title: "درباره ما",
@@ -36,6 +37,7 @@ export default async function AboutPage() {
       <AboutMission />
       <AboutStory />
       <AboutStats counts={counts} />
+      <AboutTeam />
     </>
   );
 }
