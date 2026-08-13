@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { SITE } from "@/lib/constants";
-import { PublicFooterSubscribe } from "@/components/public/public-footer-subscribe";
 
 const PRODUCT_LINKS = [
   { href: "/", label: "خانه" },
@@ -82,16 +81,6 @@ export function PublicFooter() {
           <FooterColumn title="یادگیری" links={LEARNING_LINKS} />
           <FooterColumn title="ابزارها" links={TOOL_LINKS} />
           <FooterColumn title="شرکت" links={COMPANY_LINKS} />
-        </div>
-
-        <div className="pub-footer-cta">
-          <div className="pub-footer-cta-copy">
-            <p className="pub-footer-cta-title">خبرنامه HelpDev</p>
-            <p className="pub-footer-cta-lead">
-              خلاصه مقالات و مسیرهای منتشرشده — وقتی سرویس خبرنامه آماده شود.
-            </p>
-          </div>
-          <PublicFooterSubscribe />
         </div>
 
         <div className="pub-footer-bar">

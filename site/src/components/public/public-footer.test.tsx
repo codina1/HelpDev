@@ -12,8 +12,8 @@ describe("public footer", () => {
     expect(html).toContain("ابزارها");
     expect(html).toContain("شرکت");
     expect(html).toContain("ورود به پلتفرم");
-    expect(html).toContain("خبرنامه HelpDev");
-    expect(html).toContain("عضویت");
+    expect(html).not.toContain("خبرنامه HelpDev");
+    expect(html).not.toContain("عضویت");
     expect(html).toContain("https://github.com/codina1/HelpDev");
     expect(html).toContain("/about");
     expect(html).toContain("/contact");

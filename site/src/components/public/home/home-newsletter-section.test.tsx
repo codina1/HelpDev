@@ -7,7 +7,7 @@ describe("homepage newsletter", () => {
   it("renders Persian copy, email field, and subscribe CTA", () => {
     const html = renderToStaticMarkup(<HomeNewsletterSection />);
     expect(html).toContain("از تازه‌های HelpDev باخبر شوید");
-    expect(html).toContain("/home/newsletter.svg");
+    expect(html).toContain("home-newsletter-icon");
     expect(html).toContain("خلاصه مقالات و مسیرهای منتشرشده HelpDev");
     expect(html).toContain("home-newsletter-panel");
     expect(html).toContain('type="email"');

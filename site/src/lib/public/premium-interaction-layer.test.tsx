@@ -68,6 +68,6 @@ describe("Sprint 50G — Premium Interaction Layer", () => {
     expect(footer).toContain("یادگیری");
     expect(footer).toContain("ابزارها");
     expect(footer).toContain("شرکت");
-    expect(footer).toContain("خبرنامه HelpDev");
+    expect(footer).not.toContain("خبرنامه HelpDev");
   });
 });
