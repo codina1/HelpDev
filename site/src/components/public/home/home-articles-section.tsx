@@ -128,7 +128,7 @@ export function HomeArticlesSection({ articles = [] }: HomeArticlesSectionProps)
 
   return (
     <PublicSection
-      className="home-articles"
+      className="home-articles home-reveal"
       containerSize="wide"
       aria-labelledby="home-articles-heading"
     >

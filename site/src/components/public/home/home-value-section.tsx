@@ -42,7 +42,7 @@ export const HOME_VALUE_ITEMS: readonly HomeValueItem[] = [
 export function HomeValueSection() {
   return (
     <PublicSection
-      className="home-value"
+      className="home-value home-reveal"
       containerSize="wide"
       aria-labelledby="home-value-heading"
     >

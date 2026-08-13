@@ -7,7 +7,7 @@ import { HomeNewsletterForm } from "@/components/public/home/home-newsletter-for
 export function HomeNewsletterSection() {
   return (
     <PublicSection
-      className="home-newsletter"
+      className="home-newsletter home-reveal"
       containerSize="wide"
       aria-labelledby="home-newsletter-heading"
     >

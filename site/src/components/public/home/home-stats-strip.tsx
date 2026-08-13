@@ -10,7 +10,7 @@ type HomeStatsStripProps = {
  */
 export function HomeStatsStrip({ items }: HomeStatsStripProps) {
   return (
-    <section aria-label="آمار پلتفرم" className="relative pb-8 sm:pb-10">
+    <section aria-label="آمار پلتفرم" className="home-reveal relative pb-8 sm:pb-10">
       <PublicContainer size="wide">
         <div
           className="home-stats-row flex flex-wrap overflow-hidden rounded-[var(--home-radius-xl)] border backdrop-blur-xl"

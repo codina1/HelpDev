@@ -82,7 +82,7 @@ export function HomePathsSection({ roadmaps = [] }: HomePathsSectionProps) {
 
   return (
     <PublicSection
-      className="home-paths"
+      className="home-paths home-reveal"
       containerSize="wide"
       aria-labelledby="home-paths-heading"
     >

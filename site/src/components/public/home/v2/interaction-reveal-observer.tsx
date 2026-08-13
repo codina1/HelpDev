@@ -3,11 +3,11 @@
 import { useEffect } from "react";
 
 /**
- * Observes `.ix-reveal` nodes and toggles `.ix-reveal-visible` on scroll into view.
+ * Observes `.ix-reveal` / `.home-reveal` nodes and toggles `.ix-reveal-visible`.
  */
 export function InteractionRevealObserver() {
   useEffect(() => {
-    const nodes = Array.from(document.querySelectorAll<HTMLElement>(".ix-reveal"));
+    const nodes = Array.from(document.querySelectorAll<HTMLElement>(".ix-reveal, .home-reveal"));
     if (nodes.length === 0) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

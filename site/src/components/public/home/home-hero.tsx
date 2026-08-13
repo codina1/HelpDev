@@ -19,7 +19,7 @@ const HERO_NODES = [
 export function HomeHero() {
   return (
     <PublicSection
-      className="overflow-hidden pb-10 pt-8 sm:pb-12 sm:pt-12 lg:pb-16 lg:pt-16"
+      className="home-hero overflow-hidden pb-10 pt-8 sm:pb-12 sm:pt-12 lg:pb-16 lg:pt-16"
       bare
       aria-labelledby="home-hero-title"
     >
@@ -105,7 +105,7 @@ function HeroOrb() {
       aria-label="هسته هوش مهندسی با گره‌های Articles، Tools، Learning و Roadmaps"
     >
       <div
-        className="absolute inset-[18%] rounded-full blur-2xl"
+        className="home-hero-glow absolute inset-[18%] rounded-full blur-2xl"
         style={{
           background:
             "radial-gradient(circle, var(--home-purple-soft), var(--home-cyan-soft) 55%, transparent 70%)",

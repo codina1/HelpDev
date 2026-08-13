@@ -60,7 +60,7 @@ export function HomeWorkflowSection() {
 
   return (
     <PublicSection
-      className="home-workflow"
+      className="home-workflow home-reveal"
       containerSize="wide"
       aria-labelledby="home-workflow-heading"
     >
