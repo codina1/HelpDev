@@ -43,6 +43,7 @@ export const ADMIN_ROUTES = {
   audit: "/admin/audit",
   operations: "/admin/operations",
   settings: "/admin/settings",
+  about: "/admin/about",
 } as const;
 
 export type AdminRouteKey = keyof typeof ADMIN_ROUTES;

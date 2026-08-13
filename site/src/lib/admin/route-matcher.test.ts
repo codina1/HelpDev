@@ -49,4 +49,11 @@ describe("findActiveNavItemId", () => {
   it("returns null for unknown routes", () => {
     expect(findActiveNavItemId(ADMIN_NAVIGATION, "/admin/unknown")).toBeNull();
   });
+
+  it("activates about management for /admin/about and never settings", () => {
+    expect(findActiveNavItemId(ADMIN_NAVIGATION, "/admin/about")).toBe("system-about");
+    expect(findActiveNavItemId(ADMIN_NAVIGATION, "/admin/settings")).toBe("system-settings");
+    expect(isRouteActive("/admin/about", "/admin/settings")).toBe(false);
+    expect(findActiveNavItemId(ADMIN_NAVIGATION, "/about")).toBeNull();
+  });
 });

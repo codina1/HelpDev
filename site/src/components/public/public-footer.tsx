@@ -30,7 +30,7 @@ const FOOTER_COLUMNS = [
   {
     title: "Company",
     links: [
-      { href: "/", label: "About" },
+      { href: "/about", label: "About" },
       { href: "/settings", label: "Contact" },
     ],
   },

@@ -20,6 +20,7 @@ describe("Sprint 46 — frontend release certification", () => {
     expect(pageExists("articles")).toBe(true);
     expect(pageExists("search")).toBe(true);
     expect(pageExists("courses")).toBe(true);
+    expect(pageExists("about")).toBe(true);
   });
 
   it("exposes user dashboard, learning, assistant, and settings", () => {
@@ -75,6 +76,7 @@ describe("Sprint 46 — frontend release certification", () => {
       [ADMIN_ROUTES.audit]: ["admin", "audit"],
       [ADMIN_ROUTES.operations]: ["admin", "operations"],
       [ADMIN_ROUTES.settings]: ["admin", "settings"],
+      [ADMIN_ROUTES.about]: ["admin", "about"],
     };
 
     for (const [route, segments] of Object.entries(routeToSegments)) {

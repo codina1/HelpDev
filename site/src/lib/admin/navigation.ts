@@ -474,6 +474,15 @@ export const ADMIN_NAVIGATION: readonly AdminNavGroup[] = [
         keywords: ["feature flags", "flags", "فلگ"],
       },
       {
+        id: "system-about",
+        title: "درباره ما",
+        href: ADMIN_ROUTES.about,
+        icon: "announcement",
+        permission: "system.view",
+        status: "ready",
+        keywords: ["about", "درباره", "درباره ما"],
+      },
+      {
         id: "system-settings",
         title: "تنظیمات",
         href: ADMIN_ROUTES.settings,

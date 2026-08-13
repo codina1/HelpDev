@@ -15,6 +15,14 @@ describe("isAdminPath", () => {
   it("rejects non-admin paths", () => {
     expect(isAdminPath("/profile")).toBe(false);
     expect(isAdminPath("/administrator")).toBe(false);
+    expect(isAdminPath("/about")).toBe(false);
+  });
+
+  it("treats /admin/about as admin and /about as public", () => {
+    expect(isAdminPath("/admin/about")).toBe(true);
+    expect(ADMIN_ROUTES.about).toBe("/admin/about");
+    expect(isSafeAdminReturnUrl("/about")).toBe(false);
+    expect(isSafeAdminReturnUrl("/admin/about")).toBe(true);
   });
 });
 
