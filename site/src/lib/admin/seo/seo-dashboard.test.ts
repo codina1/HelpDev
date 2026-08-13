@@ -13,4 +13,9 @@ describe("Admin SEO dashboard routing", () => {
     const source = readFileSync(pagePath, "utf8");
     expect(source).toContain("SeoDashboardWorkspace");
   });
+
+  it("gives admin tables RTL-safe cell padding so text is not flush to the card", () => {
+    const css = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf8");
+    expect(css).toMatch(/\.adm-table[\s\S]*?padding-inline:\s*1\.1rem/);
+  });
 });

@@ -592,6 +592,35 @@ body {
   border: 1px solid var(--adm-border);
 }
 
+.adm-table {
+  border-collapse: collapse;
+  text-align: start;
+}
+
+.adm-table th,
+.adm-table td {
+  padding-block: 0.85rem;
+  padding-inline: 1.1rem;
+  text-align: start;
+  vertical-align: middle;
+}
+
+.adm-table thead th {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--adm-text-subtle);
+  background: var(--adm-surface-2);
+  border-bottom: 1px solid var(--adm-border);
+}
+
+.adm-table tbody tr + tr {
+  border-top: 1px solid var(--adm-border);
+}
+
+.adm-table tbody tr:hover {
+  background: var(--adm-surface-2);
+}
+
 .adm-surface-2 {
   background: var(--adm-surface-2);
 }
