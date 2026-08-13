@@ -10,6 +10,8 @@ describe("homepage workflow section", () => {
   it("renders the title, AI input mockup, and five numbered steps", () => {
     const html = renderToStaticMarkup(<HomeWorkflowSection />);
     expect(html).toContain("از سؤال تا راهکار با هوش HelpDev");
+    expect(html).toContain("text-start");
+    expect(html).not.toContain("text-center");
     expect(html).toContain(HOME_WORKFLOW_QUESTION);
     expect(html).toContain("/learning/assistant");
     expect(html).toContain("home-workflow-line");

@@ -6,6 +6,8 @@ describe("homepage value proposition", () => {
   it("renders four cards with icons, copy, and product links", () => {
     const html = renderToStaticMarkup(<HomeValueSection />);
     expect(html).toContain("چرا HelpDev؟");
+    expect(html).toContain("text-start");
+    expect(html).not.toContain("text-center");
     expect(html).toContain("home-value-grid");
     for (const item of HOME_VALUE_ITEMS) {
       expect(html).toContain(item.title);

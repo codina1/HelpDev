@@ -46,12 +46,12 @@ export function HomeValueSection() {
       containerSize="wide"
       aria-labelledby="home-value-heading"
     >
-      <div className="mx-auto max-w-3xl text-center">
+      <div className="max-w-xl text-start">
         <h2 id="home-value-heading" className="home-section-title">
           چرا HelpDev؟
         </h2>
         <p
-          className="mx-auto mt-3 max-w-xl text-[color:var(--home-text-muted)]"
+          className="mt-3 text-[color:var(--home-text-muted)]"
           style={{
             fontSize: "var(--home-body-size)",
             lineHeight: "var(--home-body-leading)",
