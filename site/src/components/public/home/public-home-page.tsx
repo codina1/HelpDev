@@ -6,6 +6,7 @@ import { HomeValueSection } from "@/components/public/home/home-value-section";
 import { HomePathsSection } from "@/components/public/home/home-paths-section";
 import { HomeArticlesSection } from "@/components/public/home/home-articles-section";
 import { HomeTrustSection } from "@/components/public/home/home-trust-section";
+import { HomeNewsletterSection } from "@/components/public/home/home-newsletter-section";
 import { PersonalizedHero } from "@/components/experience/personalized-hero";
 import { AiDecisionDemo } from "@/components/public/home/v2/ai-decision-demo";
 import { AiWorkflowDemo } from "@/components/public/home/v2/ai-workflow-demo";
@@ -109,6 +110,7 @@ export async function PublicHomePage() {
       <AiDecisionDemo />
       <DeveloperIdentitySection />
       <KnowledgeSearchSection />
+      <HomeNewsletterSection />
     </div>
   );
 }
