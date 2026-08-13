@@ -24,7 +24,7 @@ export function TrustMetricsSection({ metrics }: TrustMetricsSectionProps) {
     <PublicSection className="ds-fade" aria-labelledby="trust-metrics-title">
       <PremiumSectionHeader
         eyebrow="Platform"
-        title="اعتماد مهندسی"
+        title="آمار منتشرشده"
         description="شاخص‌های واقعی از محتوای منتشرشده و ابزارهای در دسترس HelpDev"
         titleId="trust-metrics-title"
         icon={<span aria-hidden>◈</span>}

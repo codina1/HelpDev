@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/ds/button";
 import { PublicContainer } from "@/components/ui/public/v2/public-container";
 import { PublicSection } from "@/components/ui/public/v2/public-section";
+import { HOME_COVERS } from "@/lib/public/home-covers";
 
 const HERO_NODES = [
   { id: "articles", label: "Articles", href: "/articles", x: 26, y: 22 },
@@ -63,12 +64,12 @@ export function HomeHero() {
         <div className="home-hero-copy space-y-6 text-center lg:text-start">
           <p className="home-hero-eyebrow">AI Engineering Platform</p>
           <h1 id="home-hero-title" className="home-hero-title">
-            <span className="home-hero-title-accent">دانش مهندسی،</span>
-            <span className="home-hero-title-plain">با قدرت هوش مصنوعی</span>
+            <span className="home-hero-title-accent">از پرسش تا ساخت</span>
+            <span className="home-hero-title-plain">با هوش HelpDev</span>
           </h1>
           <p className="home-hero-lead">
-            مقالات، ابزارها، مسیر یادگیری و نقشه راه را در یک پلتفرم دانش مهندسی
-            کنار هم ببینید — برای تصمیم‌گیری سریع‌تر و ساخت دقیق‌تر.
+            مقالات، ابزارها، مسیر یادگیری و نقشه راه را یک‌جا ببینید تا سریع‌تر
+            تصمیم بگیرید و دقیق‌تر بسازید.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 lg:justify-start">
             <Button href="/learning" size="lg" className="max-[374px]:!px-4 max-[374px]:!text-[13px]">
@@ -101,6 +102,7 @@ function HeroOrb() {
       role="img"
       aria-label="هسته HelpDev AI با گره‌های Articles، Tools، Learning و Roadmaps"
     >
+      <img src={HOME_COVERS.hero} alt="" className="home-hero-scene" />
       <div className="home-hero-field" aria-hidden />
       <div className="home-hero-glow" aria-hidden />
       <span className="home-hero-ring home-hero-ring-a" aria-hidden />

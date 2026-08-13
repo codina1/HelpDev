@@ -21,7 +21,7 @@ export function EngineeringCaseStudies({ publishedExamples = [] }: Props) {
     <PublicSection className="ix-reveal" aria-labelledby="case-studies-title">
       <PremiumSectionHeader
         eyebrow="Engineering Stories"
-        title="داستان‌های مهندسی"
+        title="نمونه‌های مستند"
         description="مستندوار — چالش، معماری و یادگیری؛ نه کارت مقالهٔ معمولی"
         titleId="case-studies-title"
         href="/articles"

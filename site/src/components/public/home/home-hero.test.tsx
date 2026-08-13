@@ -5,8 +5,9 @@ import { HomeHero } from "@/components/public/home/home-hero";
 describe("homepage hero", () => {
   it("renders Persian copy, CTAs, and knowledge nodes without stats", () => {
     const html = renderToStaticMarkup(<HomeHero />);
-    expect(html).toContain("دانش مهندسی،");
-    expect(html).toContain("با قدرت هوش مصنوعی");
+    expect(html).toContain("از پرسش تا ساخت");
+    expect(html).toContain("با هوش HelpDev");
+    expect(html).toContain("/home/hero-scene.svg");
     expect(html).toContain("شروع یادگیری");
     expect(html).toContain("از AI بپرس");
     expect(html).toContain("/learning");

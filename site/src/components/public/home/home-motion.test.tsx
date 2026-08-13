@@ -25,7 +25,7 @@ describe("homepage premium motion", () => {
     const hero = renderToStaticMarkup(<HomeHero />);
     expect(hero).toContain("home-hero-orb");
     expect(hero).toContain("home-hero-glow");
-    expect(hero).toContain("دانش مهندسی،");
+    expect(hero).toContain("از پرسش تا ساخت");
     expect(renderToStaticMarkup(<HomeWorkflowSection />)).toContain("home-reveal");
     expect(renderToStaticMarkup(<HomeValueSection />)).toContain("home-reveal");
   });

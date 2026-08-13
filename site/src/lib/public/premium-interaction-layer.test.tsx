@@ -34,7 +34,7 @@ describe("Sprint 50G — Premium Interaction Layer", () => {
 
   it("renders AI decision demo prompt and analyze CTA", () => {
     const html = renderToStaticMarkup(<AiDecisionDemo />);
-    expect(html).toContain("با هوش مهندسی HelpDev، از سوال تا مسیر اجرا");
+    expect(html).toContain("با هوش HelpDev، از سؤال تا مسیر اجرا");
     expect(html).toContain("تحلیل توسط HelpDev AI");
     expect(html).toContain("ASP.NET Core");
   });
@@ -50,7 +50,7 @@ describe("Sprint 50G — Premium Interaction Layer", () => {
 
   it("renders developer identity selector", () => {
     const html = renderToStaticMarkup(<DeveloperIdentitySection />);
-    expect(html).toContain("مسیر مهندسی خود را پیدا کنید");
+    expect(html).toContain("نقش خود را پیدا کنید");
     expect(html).toContain("Analyze My Path");
     expect(html).toContain("Beginner Developer");
     expect(html).toContain("Engineering Architect");
@@ -68,6 +68,6 @@ describe("Sprint 50G — Premium Interaction Layer", () => {
     expect(footer).toContain("یادگیری");
     expect(footer).toContain("ابزارها");
     expect(footer).toContain("شرکت");
-    expect(footer).toContain("خبرنامه مهندسی");
+    expect(footer).toContain("خبرنامه HelpDev");
   });
 });

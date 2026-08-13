@@ -36,7 +36,7 @@ export function CommandSearchBox({
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           <PremiumBadge variant="ai">{title}</PremiumBadge>
-          <span className="text-[13px] font-bold text-[color:var(--pub-fg)]">پرسش مهندسی با AI</span>
+          <span className="text-[13px] font-bold text-[color:var(--pub-fg)]">پرسش فنی با AI</span>
         </div>
         <button
           type="button"
@@ -81,7 +81,7 @@ export function CommandSearchBox({
         </div>
       </form>
 
-      <ul className="mt-3 flex flex-col gap-1.5 sm:flex-row sm:flex-wrap" aria-label="نمونه پرسش‌های مهندسی">
+      <ul className="mt-3 flex flex-col gap-1.5 sm:flex-row sm:flex-wrap" aria-label="نمونه پرسش‌های فنی">
         {SUGGESTIONS.map((s) => (
           <li key={s}>
             <button

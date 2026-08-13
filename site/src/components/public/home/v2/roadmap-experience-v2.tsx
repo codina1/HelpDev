@@ -14,7 +14,7 @@ export function RoadmapExperienceV2({ items }: Props) {
     <PublicSection className="ds-slide" aria-labelledby="roadmap-exp-title">
       <PremiumSectionHeader
         eyebrow="Roadmaps"
-        title="مسیرهای یادگیری مهندسی"
+        title="مسیرهای یادگیری"
         description="سطوح، گام‌های باز/قفل، نشانگر تکمیل و پیش‌نمای پیشرفت ساخت‌یافته"
         href="/roadmap"
         ctaLabel="مشاهده همه مسیرها"
@@ -34,7 +34,7 @@ export function RoadmapExperienceV2({ items }: Props) {
         <div className="grid gap-4">
           {items.length === 0 ? (
             <SmartEmptyState
-              title="مسیر مهندسی منتشرشده‌ای نیست"
+              title="مسیر منتشرشده‌ای نیست"
               description="نقشه‌های راه Content API اینجا نمایش داده می‌شوند. می‌توانید از دستیار AI مسیر شخصی بسازید."
               ctaLabel="ساخت مسیر با AI"
               ctaHref="/learning/assistant"

@@ -86,7 +86,7 @@ export function PublicFooter() {
 
         <div className="pub-footer-cta">
           <div className="pub-footer-cta-copy">
-            <p className="pub-footer-cta-title">خبرنامه مهندسی</p>
+            <p className="pub-footer-cta-title">خبرنامه HelpDev</p>
             <p className="pub-footer-cta-lead">
               خلاصه مقالات و مسیرهای منتشرشده — وقتی سرویس خبرنامه آماده شود.
             </p>

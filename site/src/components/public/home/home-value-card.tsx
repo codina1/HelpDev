@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { coverForHomeValue } from "@/lib/public/home-covers";
 
 export const HOME_VALUE_ICONS = ["paths", "tools", "ai", "knowledge"] as const;
 
@@ -27,6 +28,9 @@ export function HomeValueCard({ item }: HomeValueCardProps) {
         href={item.href}
         className={`home-value-card home-value-card-${item.accent} focus-ring`}
       >
+        <div className="home-value-visual">
+          <img src={coverForHomeValue(item.id)} alt="" className="home-value-image" />
+        </div>
         <span className="home-value-icon" aria-hidden>
           <ValueIcon name={item.icon} />
         </span>

@@ -179,7 +179,7 @@ export function PersonalizedHero() {
               ) : (
                 <SmartEmptyState
                   className="!border-0 !bg-transparent !p-0 !shadow-none"
-                  title="مسیر مهندسی شما هنوز ساخته نشده"
+                  title="مسیر یادگیری شما هنوز ساخته نشده"
                   description="با دستیار AI یک نقشه راه شخصی بسازید."
                   ctaLabel="ساخت مسیر با AI"
                   ctaHref="/learning/assistant"

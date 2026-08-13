@@ -12,7 +12,7 @@ export function DeveloperJourneyTimeline() {
     <PublicSection className="ds-slide" aria-labelledby="dev-journey-title">
       <PremiumSectionHeader
         eyebrow="Journey"
-        title="مسیر رشد مهندس"
+        title="مسیر رشد حرفه‌ای"
         description="از مبتدی تا معمار — مراحل ساختاری رشد در اکوسیستم HelpDev"
         titleId="dev-journey-title"
         href="/learning"

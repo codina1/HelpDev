@@ -22,7 +22,8 @@ const published: ContentSummaryDto = {
 describe("homepage latest articles", () => {
   it("renders heading, view-all, and HelpDev topic cards when catalog is empty", () => {
     const html = renderToStaticMarkup(<HomeArticlesSection articles={[]} />);
-    expect(html).toContain("آخرین مقالات مهندسی");
+    expect(html).toContain("تازه‌ترین مقالات");
+    expect(html).toContain("/home/cover-");
     expect(html).toContain("همه مقالات");
     expect(html).toContain("/articles");
     expect(html).toContain("home-articles-grid");

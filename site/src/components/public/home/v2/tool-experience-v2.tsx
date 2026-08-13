@@ -36,7 +36,7 @@ export function ToolExperienceV2({ tools, contentTools = [] }: Props) {
     >
       <PremiumSectionHeader
         eyebrow="Tools"
-        title="ابزارهای مهندسی"
+        title="ابزارهای کار"
         description="ابزارهایی که توسعه نرم‌افزار را سریع‌تر می‌کنند — از Toolbox API"
         href="/toolbox"
         ctaLabel="مشاهده همه ابزارها"

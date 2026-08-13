@@ -21,8 +21,8 @@ export function DeveloperIdentitySection() {
     <PublicSection className="ix-reveal" aria-labelledby="dev-identity-title">
       <PremiumSectionHeader
         eyebrow="Identity"
-        title="مسیر مهندسی خود را پیدا کنید"
-        description="نقش خود را انتخاب کنید و یک پیش‌نمای پروفایل مهندسی دریافت کنید"
+        title="نقش خود را پیدا کنید"
+        description="نقش خود را انتخاب کنید و یک پیش‌نمای پروفایل دریافت کنید"
         titleId="dev-identity-title"
         href="/learning"
         ctaLabel="هاب یادگیری"
@@ -30,7 +30,7 @@ export function DeveloperIdentitySection() {
       />
 
       <GlassCard strong gradientBorder className="p-4 sm:p-6">
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" role="listbox" aria-label="انتخاب هویت مهندسی">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" role="listbox" aria-label="انتخاب نقش">
           {DEVELOPER_IDENTITY_OPTIONS.map((option) => {
             const active = selectedId === option.id;
             return (

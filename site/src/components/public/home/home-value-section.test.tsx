@@ -15,6 +15,8 @@ describe("homepage value proposition", () => {
       expect(html).toContain(item.href);
     }
     expect(html).toContain("home-value-icon");
+    expect(html).toContain("home-value-visual");
+    expect(html).toContain("/home/cover-");
     expect(html).toContain("home-value-card-purple");
     expect(html).toContain("home-value-card-cyan");
     expect(html).toContain("home-value-card-ai");

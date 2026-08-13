@@ -5,7 +5,7 @@ export const HOME_VALUE_ITEMS: readonly HomeValueItem[] = [
   {
     id: "paths",
     title: "مسیرهای یادگیری هدفمند",
-    description: "مسیر ساخت‌یافته برای رشد مهارت مهندسی — از مبانی تا معماری و اجرا.",
+    description: "مسیر ساخت‌یافته برای رشد مهارت — از مبانی تا معماری و اجرا.",
     href: "/learning",
     icon: "paths",
     accent: "purple",
@@ -13,7 +13,7 @@ export const HOME_VALUE_ITEMS: readonly HomeValueItem[] = [
   {
     id: "tools",
     title: "ابزارهای قدرتمند",
-    description: "ابزارهای مهندسی را در یک کتابخانه پیدا کنید و در کار واقعی به کار ببرید.",
+    description: "ابزارهای کار را در یک کتابخانه پیدا کنید و در پروژه واقعی به کار ببرید.",
     href: "/toolbox",
     icon: "tools",
     accent: "cyan",
@@ -28,7 +28,7 @@ export const HOME_VALUE_ITEMS: readonly HomeValueItem[] = [
   },
   {
     id: "knowledge",
-    title: "دانش مهندسی عمیق",
+    title: "مقالات و تجربه واقعی",
     description: "مقالات فنی و تجربه‌های معماری برای تصمیم‌گیری دقیق‌تر در پروژه‌های واقعی.",
     href: "/articles",
     icon: "knowledge",
@@ -57,7 +57,7 @@ export function HomeValueSection() {
             lineHeight: "var(--home-body-leading)",
           }}
         >
-          چهار ستون پلتفرم برای یادگیری هدفمند، ابزار واقعی، هوش و دانش مهندسی.
+          چهار ستون پلتفرم برای یادگیری هدفمند، ابزار واقعی، هوش و دانش فنی.
         </p>
       </div>
 

@@ -49,7 +49,7 @@ export function softUseCases(category?: string | null): string[] {
   const c = (category ?? "").toLowerCase();
   if (c.includes("ai") || c.includes("prompt")) return ["بهره‌وری AI", "گردش‌کار توسعه"];
   if (c.includes("dev") || c.includes("tool")) return ["اتوماسیون", "دیباگ"];
-  return ["مهندسی نرم‌افزار"];
+  return ["توسعه نرم‌افزار"];
 }
 
 export function roadmapLevelLabel(index: number): string {
@@ -65,7 +65,7 @@ export function softAiSummary(title: string, slug = ""): string {
   const tags = inferTechTags(title, slug);
   if (tags.length > 0) {
     const focus = tags.slice(0, 2).join(" و ");
-    return `بینش AI: تمرکز روی ${focus} — برای تصمیم‌گیری سریع مهندسی قبل از مطالعه کامل.`;
+    return `بینش AI: تمرکز روی ${focus} — برای تصمیم‌گیری سریع‌تر قبل از مطالعه کامل.`;
   }
   return "بینش AI: مفاهیم کلیدی این محتوا برای مسیر یادگیری و انتخاب ابزار برجسته می‌شود.";
 }

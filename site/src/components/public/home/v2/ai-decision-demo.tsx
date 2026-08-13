@@ -44,8 +44,8 @@ export function AiDecisionDemo() {
     <PublicSection className="ix-reveal" aria-labelledby="ai-decision-title">
       <PremiumSectionHeader
         eyebrow="AI Decision"
-        title="دمو تصمیم‌گیری مهندسی"
-        description="از سؤال تا مسیر اجرا — شبیه‌سازی گردش‌کار هوش مهندسی HelpDev"
+        title="دمو تصمیم‌گیری"
+        description="از سؤال تا مسیر اجرا — شبیه‌سازی گردش‌کار هوش HelpDev"
         titleId="ai-decision-title"
         icon={<span aria-hidden>✦</span>}
       />
@@ -64,11 +64,11 @@ export function AiDecisionDemo() {
           Interactive Demo
         </Badge>
         <h3 className="max-w-2xl text-xl font-extrabold leading-9 text-[color:var(--pub-fg)] sm:text-2xl sm:leading-10">
-          با هوش مهندسی HelpDev، از سوال تا مسیر اجرا
+          با هوش HelpDev، از سؤال تا مسیر اجرا
         </h3>
 
         <label className="mt-5 block text-[12px] font-bold text-[color:var(--pub-muted)]" htmlFor="ai-decision-input">
-          نمونه پرسش مهندسی
+          نمونه پرسش فنی
         </label>
         <input
           id="ai-decision-input"

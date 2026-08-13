@@ -1,5 +1,6 @@
 import { PublicSection } from "@/components/ui/public/v2/public-section";
 import { HomeNewsletterForm } from "@/components/public/home/home-newsletter-form";
+import { HOME_COVERS } from "@/lib/public/home-covers";
 
 /**
  * Homepage newsletter — glass panel immediately above the site footer.
@@ -13,8 +14,9 @@ export function HomeNewsletterSection() {
     >
       <div className="home-newsletter-panel">
         <div className="home-newsletter-copy">
+          <img src={HOME_COVERS.newsletter} alt="" className="home-newsletter-image" />
           <h2 id="home-newsletter-heading" className="home-newsletter-heading">
-            از تازه‌های مهندسی باخبر شوید
+            از تازه‌های HelpDev باخبر شوید
           </h2>
           <p className="home-newsletter-lead">
             خلاصه مقالات و مسیرهای منتشرشده HelpDev را با ایمیل دریافت کنید.

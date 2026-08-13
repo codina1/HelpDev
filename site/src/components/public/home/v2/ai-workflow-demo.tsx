@@ -32,7 +32,7 @@ export function AiWorkflowDemo() {
       <PremiumSectionHeader
         eyebrow="Workflow V2"
         title="AI Workflow Demo"
-        description="خط زمانی تصمیم‌گیری مهندسی — از درک مسئله تا راه‌حل"
+        description="خط زمانی تصمیم‌گیری — از درک مسئله تا راه‌حل"
         titleId="ai-workflow-title"
         icon={<span aria-hidden>→</span>}
       />

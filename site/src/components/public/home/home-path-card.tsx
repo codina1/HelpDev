@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { coverForHomePath } from "@/lib/public/home-covers";
 
 export const HOME_PATH_VISUALS = [
   "architect",
@@ -35,9 +36,9 @@ export function HomePathCard({ item }: HomePathCardProps) {
   return (
     <li className="home-path-item">
       <Link href={item.href} className={`home-path-card home-path-card-${item.visual} focus-ring`}>
-        <div className="home-path-visual" aria-hidden>
-          <span className="home-path-visual-orb" />
-          <span className="home-path-visual-grid" />
+        <div className="home-path-visual">
+          <img src={coverForHomePath(item.visual)} alt="" className="home-path-image" />
+          <span className="home-path-visual-shade" aria-hidden />
           <PathGlyph name={item.visual} />
         </div>
         <div className="home-path-body">

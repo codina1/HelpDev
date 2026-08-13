@@ -34,7 +34,7 @@ export const HOME_WORKFLOW_STEPS: readonly HomeWorkflowStepItem[] = [
   {
     id: "solve",
     number: 5,
-    title: "راه‌حل مهندسی",
+    title: "راه‌حل اجرایی",
     caption: "به دانش، ابزار و مسیر اجرا برسید",
   },
 ];
@@ -75,7 +75,7 @@ export function HomeWorkflowSection() {
             lineHeight: "var(--home-body-leading)",
           }}
         >
-          سؤال مهندسی را بپرسید؛ هوش HelpDev آن را به مسیر تحلیل، تصمیم و اجرا تبدیل می‌کند.
+          سؤال فنی را بپرسید؛ هوش HelpDev آن را به مسیر تحلیل، تصمیم و اجرا تبدیل می‌کند.
         </p>
       </div>
 
@@ -86,7 +86,7 @@ export function HomeWorkflowSection() {
           <div className="home-workflow-line" aria-hidden>
             <span className="home-workflow-line-fill" />
           </div>
-          <ol className="home-workflow-steps" aria-label="گردش‌کار پنج‌مرحله‌ای مهندسی">
+          <ol className="home-workflow-steps" aria-label="گردش‌کار پنج‌مرحله‌ای">
             {HOME_WORKFLOW_STEPS.map((item, index) => (
               <HomeWorkflowStep key={item.id} item={item} state={stepState(index)} />
             ))}

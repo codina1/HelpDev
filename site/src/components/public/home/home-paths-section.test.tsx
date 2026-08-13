@@ -5,7 +5,8 @@ import { HOME_PATH_ITEMS, HomePathsSection } from "@/components/public/home/home
 describe("homepage learning paths", () => {
   it("renders five horizontal path cards with honest learner counts", () => {
     const html = renderToStaticMarkup(<HomePathsSection />);
-    expect(html).toContain("مسیرهای یادگیری مهندسی");
+    expect(html).toContain("مسیرهای یادگیری نقش‌محور");
+    expect(html).toContain("/home/cover-");
     expect(html).toContain("home-paths-scroller");
     for (const item of HOME_PATH_ITEMS) {
       expect(html).toContain(item.title);

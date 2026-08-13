@@ -10,6 +10,7 @@ import { formatDateFa, labelForContentType } from "@/lib/admin/content/content-m
 import type { ContentSummaryDto } from "@/lib/api/content";
 import { publicHrefForContent } from "@/lib/public/content-helpers";
 import { estimateReadingLabel, inferTechTags } from "@/lib/public/display-meta";
+import { HOME_COVERS, coverForHomeCategory } from "@/lib/public/home-covers";
 
 /** HelpDev technical topics shown only when the published catalog is empty. */
 export const HOME_ARTICLE_TOPICS: readonly HomeArticleItem[] = [
@@ -23,6 +24,7 @@ export const HOME_ARTICLE_TOPICS: readonly HomeArticleItem[] = [
     readingTime: estimateReadingLabel("رشد Modular Monolith در ASP.NET Core بدون شکستن مرز ماژول‌ها"),
     date: "",
     tone: "purple",
+    image: HOME_COVERS.architecture,
   },
   {
     id: "rag-knowledge",
@@ -33,6 +35,7 @@ export const HOME_ARTICLE_TOPICS: readonly HomeArticleItem[] = [
     readingTime: estimateReadingLabel("RAG روی دانش منتشرشده HelpDev؛ پاسخ زمینه‌دار بدون عدد ساختگی"),
     date: "",
     tone: "cyan",
+    image: HOME_COVERS.ai,
   },
   {
     id: "outbox",
@@ -43,6 +46,7 @@ export const HOME_ARTICLE_TOPICS: readonly HomeArticleItem[] = [
     readingTime: estimateReadingLabel("Transactional Outbox برای رویدادهای Content و Learning"),
     date: "",
     tone: "blue",
+    image: HOME_COVERS.backend,
   },
   {
     id: "proxy-health",
@@ -53,26 +57,29 @@ export const HOME_ARTICLE_TOPICS: readonly HomeArticleItem[] = [
     readingTime: estimateReadingLabel("قرارداد Reverse Proxy، Health Probe و انتشار API"),
     date: "",
     tone: "purple",
+    image: HOME_COVERS.devops,
   },
   {
     id: "rtl-home-tokens",
-    title: "رابط RTL شیشه‌ای برای پلتفرم دانش مهندسی",
+    title: "رابط RTL شیشه‌ای برای پلتفرم دانش HelpDev",
     excerpt: "هدر فشرده، هیرو و کارت‌های شیشه‌ای با سلسله‌مراتب بنفش، آبی و فیروزه‌ای.",
     href: "/search?q=RTL%20glass%20UI",
     category: "فرانت‌اند",
-    readingTime: estimateReadingLabel("رابط RTL شیشه‌ای برای پلتفرم دانش مهندسی"),
+    readingTime: estimateReadingLabel("رابط RTL شیشه‌ای برای پلتفرم دانش HelpDev"),
     date: "",
     tone: "cyan",
+    image: HOME_COVERS.frontend,
   },
   {
     id: "question-to-path",
-    title: "از سؤال مهندسی تا مسیر اجرا با گردش‌کار پنج‌مرحله‌ای",
+    title: "از سؤال فنی تا مسیر اجرا با گردش‌کار پنج‌مرحله‌ای",
     excerpt: "درک مسئله، تحلیل معماری، تصمیم فناوری، نقشه اجرا و راه‌حل — روی دانش HelpDev.",
     href: "/search?q=%D8%A7%D8%B2%20%D8%B3%D8%A4%D8%A7%D9%84%20%D8%AA%D8%A7%20%D8%B1%D8%A7%D9%87%DA%A9%D8%A7%D8%B1",
     category: "معماری",
-    readingTime: estimateReadingLabel("از سؤال مهندسی تا مسیر اجرا با گردش‌کار پنج‌مرحله‌ای"),
+    readingTime: estimateReadingLabel("از سؤال فنی تا مسیر اجرا با گردش‌کار پنج‌مرحله‌ای"),
     date: "",
     tone: "blue",
+    image: HOME_COVERS.architecture,
   },
 ];
 
@@ -93,9 +100,9 @@ export function categoryForHomeArticle(title: string, slug = "", type = "Article
 export function excerptForHomeArticle(title: string, slug = ""): string {
   const tags = inferTechTags(title, slug);
   if (tags.length > 0) {
-    return `نگاهی مهندسی به ${tags.slice(0, 2).join(" و ")} در پایگاه دانش HelpDev.`;
+    return `نگاهی فنی به ${tags.slice(0, 2).join(" و ")} در پایگاه دانش HelpDev.`;
   }
-  return "مقاله فنی از دانش مهندسی HelpDev برای تصمیم‌گیری سریع‌تر پیش از مطالعه کامل.";
+  return "مقاله فنی از دانش HelpDev برای تصمیم‌گیری سریع‌تر پیش از مطالعه کامل.";
 }
 
 export function mapPublishedHomeArticle(
@@ -103,15 +110,17 @@ export function mapPublishedHomeArticle(
   index: number,
 ): HomeArticleItem {
   const tone = HOME_ARTICLE_TONES[index % HOME_ARTICLE_TONES.length] as HomeArticleTone;
+  const category = categoryForHomeArticle(item.title, item.slug, item.type);
   return {
     id: item.id,
     title: item.title,
     excerpt: excerptForHomeArticle(item.title, item.slug),
     href: publicHrefForContent(item),
-    category: categoryForHomeArticle(item.title, item.slug, item.type),
+    category,
     readingTime: estimateReadingLabel(item.title),
     date: formatDateFa(item.createdAt),
     tone,
+    image: coverForHomeCategory(category),
   };
 }
 
@@ -135,7 +144,7 @@ export function HomeArticlesSection({ articles = [] }: HomeArticlesSectionProps)
       <div className="mb-8 flex flex-wrap items-end justify-between gap-3 sm:mb-10">
         <div className="max-w-xl text-start">
           <h2 id="home-articles-heading" className="home-section-title">
-            آخرین مقالات مهندسی
+            تازه‌ترین مقالات
           </h2>
           <p
             className="mt-3 text-[color:var(--home-text-muted)]"

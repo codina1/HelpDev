@@ -19,7 +19,7 @@ export function EngineeringIntelligenceSection() {
       <PremiumSectionHeader
         eyebrow="Intelligence OS"
         title="Engineering Intelligence"
-        description="سه ستون سیستم عامل مهندسی HelpDev — دانش، هوش و حافظه تصمیم"
+        description="سه ستون HelpDev — دانش، هوش و حافظه تصمیم"
         titleId="eng-intel-title"
         icon={<span aria-hidden>◈</span>}
       />

@@ -30,7 +30,7 @@ export const HOME_PATH_ITEMS: readonly HomePathItem[] = [
   {
     id: "ai",
     title: "AI Engineer",
-    description: "سیستم‌های هوشمند، دانش بازیابی‌شده و مهندسی AI.",
+    description: "سیستم‌های هوشمند، دانش بازیابی‌شده و ساخت محصول AI.",
     href: "/roadmap?track=ai-engineer",
     learners: 0,
     visual: "ai",
@@ -89,7 +89,7 @@ export function HomePathsSection({ roadmaps = [] }: HomePathsSectionProps) {
       <div className="mb-8 flex flex-wrap items-end justify-between gap-3 sm:mb-10">
         <div className="max-w-xl text-start">
           <h2 id="home-paths-heading" className="home-section-title">
-            مسیرهای یادگیری مهندسی
+            مسیرهای یادگیری نقش‌محور
           </h2>
           <p
             className="mt-3 text-[color:var(--home-text-muted)]"

@@ -19,7 +19,7 @@ export function KnowledgeSearchSection() {
       <PremiumSectionHeader
         eyebrow="Ask HelpDev AI"
         title="Ask HelpDev AI"
-        description="پرسش مهندسی را بنویسید — مسیر، ابزار و دانش مرتبط از پایگاه HelpDev پیشنهاد می‌شود"
+        description="پرسش فنی را بنویسید — مسیر، ابزار و دانش مرتبط از پایگاه HelpDev پیشنهاد می‌شود"
         titleId="knowledge-search-title"
         icon={<span aria-hidden>✦</span>}
       />

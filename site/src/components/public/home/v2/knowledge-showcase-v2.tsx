@@ -22,7 +22,7 @@ export function KnowledgeShowcaseV2({ items }: Props) {
     <PublicSection className="ds-slide" aria-labelledby="knowledge-showcase-title">
       <PremiumSectionHeader
         eyebrow="Intelligence"
-        title="مقالات مهندسی هوشمند"
+        title="مقالات منتخب"
         description="کارت‌های Intelligence با دسته‌بندی، سطح سختی، برچسب فناوری، زمان مطالعه و بینش AI"
         href="/articles"
         ctaLabel="مشاهده همه مقالات"

@@ -13,6 +13,7 @@ export type HomeArticleItem = {
   readingTime: string;
   date: string;
   tone: HomeArticleTone;
+  image: string;
 };
 
 type HomeArticleCardProps = {
@@ -24,9 +25,9 @@ export function HomeArticleCard({ item }: HomeArticleCardProps) {
   return (
     <li>
       <Link href={item.href} className={`home-article-card home-article-card-${item.tone} focus-ring`}>
-        <div className="home-article-visual" aria-hidden>
-          <span className="home-article-visual-orb" />
-          <span className="home-article-visual-grid" />
+        <div className="home-article-visual">
+          <img src={item.image} alt="" className="home-article-image" />
+          <span className="home-article-visual-shade" aria-hidden />
           <span className="home-article-category">{item.category}</span>
         </div>
         <div className="home-article-body">

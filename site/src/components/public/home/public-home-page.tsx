@@ -121,10 +121,10 @@ function buildHomeStats(counts: {
   tools: number;
 }): HomeStatItem[] {
   return [
-    { id: "engineers", label: "مهندسان فعال", value: 0, icon: "engineers" },
+    { id: "engineers", label: "اعضای فعال", value: 0, icon: "engineers" },
     { id: "articles", label: "مقالات فنی", value: counts.articles, icon: "articles" },
     { id: "paths", label: "مسیرهای یادگیری", value: counts.paths, icon: "paths" },
-    { id: "tools", label: "ابزارهای مهندسی", value: counts.tools, icon: "tools" },
+    { id: "tools", label: "ابزارهای کار", value: counts.tools, icon: "tools" },
     { id: "questions", label: "پرسش‌های پاسخ‌داده‌شده", value: 0, icon: "questions" },
   ];
 }

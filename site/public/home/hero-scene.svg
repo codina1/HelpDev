@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" fill="none">
+  <rect width="800" height="800" rx="400" fill="#0B1020"/>
+  <circle cx="400" cy="400" r="300" fill="url(#h)"/>
+  <defs>
+    <radialGradient id="h" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(400 400) scale(300)">
+      <stop stop-color="#8B5CF6" stop-opacity=".45"/>
+      <stop offset=".55" stop-color="#6366F1" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#06B6D4" stop-opacity=".06"/>
+    </radialGradient>
+  </defs>
+  <circle cx="400" cy="400" r="210" stroke="#A78BFA" stroke-width="2" opacity=".35"/>
+  <circle cx="400" cy="400" r="150" stroke="#22D3EE" stroke-width="2" opacity=".28"/>
+  <rect x="250" y="290" width="300" height="200" rx="24" fill="#111827" stroke="#818CF8" stroke-width="4"/>
+  <rect x="274" y="318" width="160" height="12" rx="6" fill="#C4B5FD"/>
+  <rect x="274" y="348" width="220" height="10" rx="5" fill="#64748B"/>
+  <rect x="274" y="372" width="188" height="10" rx="5" fill="#475569"/>
+  <rect x="274" y="410" width="110" height="36" rx="10" fill="#8B5CF6"/>
+  <rect x="400" y="410" width="110" height="36" rx="10" fill="#164E63"/>
+  <circle cx="186" cy="214" r="18" fill="#06B6D4"/>
+  <circle cx="620" cy="196" r="16" fill="#8B5CF6"/>
+  <circle cx="168" cy="580" r="14" fill="#6366F1"/>
+  <circle cx="638" cy="602" r="18" fill="#22D3EE"/>
+</svg>
