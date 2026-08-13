@@ -19,11 +19,9 @@ import { KnowledgeSearchSection } from "@/components/public/home/v2/knowledge-se
 import { KnowledgeShowcaseV2 } from "@/components/public/home/v2/knowledge-showcase-v2";
 import { RoadmapExperienceV2 } from "@/components/public/home/v2/roadmap-experience-v2";
 import { ToolExperienceV2 } from "@/components/public/home/v2/tool-experience-v2";
-import { TrustMetricsSection } from "@/components/public/home/v2/trust-metrics-section";
 import { listPublishedContent } from "@/lib/api/content";
 import { listTools } from "@/lib/api/toolbox";
 import { isArticleType, isRoadmapType, isToolContentType } from "@/lib/public/content-helpers";
-import { countAiGuideSignals } from "@/lib/public/display-meta";
 
 async function safeListContent() {
   try {
@@ -57,7 +55,6 @@ export async function PublicHomePage() {
   const roadmaps = content.filter((item) => isRoadmapType(item.type));
   const contentTools = content.filter((item) => isToolContentType(item.type));
   const toolsCount = tools.length > 0 ? tools.length : contentTools.length;
-  const aiGuides = countAiGuideSignals(content);
 
   return (
     <div className="min-w-0 overflow-x-clip pb-10">
@@ -76,30 +73,6 @@ export async function PublicHomePage() {
       <HomeArticlesSection articles={articles} />
       <HomeTrustSection />
       <PersonalizedHero />
-      <TrustMetricsSection
-        metrics={[
-          {
-            label: "Engineering Articles",
-            value: articles.length > 0 ? articles.length : latest.length,
-            hint: "مقالات منتشرشده",
-          },
-          {
-            label: "Learning Paths",
-            value: roadmaps.length,
-            hint: "نقشه‌های راه",
-          },
-          {
-            label: "Developer Tools",
-            value: toolsCount,
-            hint: "ابزارهای در دسترس",
-          },
-          {
-            label: "AI Guides",
-            value: aiGuides,
-            hint: "محتوای مرتبط با AI",
-          },
-        ]}
-      />
       <EngineeringIntelligenceSection />
       <AiWorkflowDemo />
       <KnowledgeShowcaseV2 items={latest.slice(0, 7)} />
