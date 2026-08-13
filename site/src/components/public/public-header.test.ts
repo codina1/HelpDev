@@ -1,0 +1,26 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { describe, expect, it } from "vitest";
+
+describe("public homepage header", () => {
+  const source = readFileSync(join(process.cwd(), "src/components/public/public-header.tsx"), "utf8");
+
+  it("keeps RTL glass chrome with logo, nav, AI entry, actions, and login", () => {
+    expect(source).toContain('href="/"');
+    expect(source).toContain("SITE.name");
+    expect(source).toContain("PUBLIC_PRODUCTS_NAV");
+    expect(source).toContain("از AI بپرس");
+    expect(source).toContain("ورود");
+    expect(source).toContain("ThemeToggle");
+    expect(source).toContain("GlobalSearchPalette");
+    expect(source).toContain("AuthModal");
+    expect(source).toContain("--home-header-height");
+    expect(source).toContain("lg:hidden");
+  });
+
+  it("preserves existing product routes", () => {
+    expect(source).toContain('href: "/"');
+    expect(source).toContain("/dashboard");
+    expect(source).toContain("/profile");
+  });
+});
