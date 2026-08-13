@@ -18,6 +18,10 @@ describe("homepage hero", () => {
     expect(html).toContain("/articles");
     expect(html).toContain("/toolbox");
     expect(html).toContain("/roadmap");
+    expect(html).toContain("HelpDev AI");
+    expect(html).toContain("دانش منتشرشده");
+    expect(html).toContain("مسیر یادگیری");
+    expect(html).toContain("دستیار AI");
     expect(html).not.toContain("Engineering Articles");
     expect(html).not.toContain("Trust");
   });

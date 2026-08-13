@@ -6,14 +6,29 @@ import { PublicContainer } from "@/components/ui/public/v2/public-container";
 import { PublicSection } from "@/components/ui/public/v2/public-section";
 
 const HERO_NODES = [
-  { id: "articles", label: "Articles", href: "/articles", x: 12, y: 18 },
-  { id: "tools", label: "Tools", href: "/toolbox", x: 88, y: 22 },
-  { id: "learning", label: "Learning", href: "/learning", x: 14, y: 78 },
-  { id: "roadmaps", label: "Roadmaps", href: "/roadmap", x: 86, y: 74 },
+  { id: "articles", label: "Articles", href: "/articles", x: 26, y: 22 },
+  { id: "tools", label: "Tools", href: "/toolbox", x: 78, y: 24 },
+  { id: "learning", label: "Learning", href: "/learning", x: 22, y: 76 },
+  { id: "roadmaps", label: "Roadmaps", href: "/roadmap", x: 80, y: 74 },
 ] as const;
 
+const HERO_PARTICLES = [
+  { x: 12, y: 38, d: "0s" },
+  { x: 88, y: 42, d: "0.6s" },
+  { x: 36, y: 8, d: "1.1s" },
+  { x: 64, y: 10, d: "1.7s" },
+  { x: 8, y: 62, d: "2.2s" },
+  { x: 92, y: 66, d: "0.3s" },
+  { x: 48, y: 90, d: "1.4s" },
+  { x: 70, y: 86, d: "2.8s" },
+  { x: 18, y: 48, d: "0.9s" },
+  { x: 84, y: 54, d: "2s" },
+] as const;
+
+const HERO_TRUST = ["دانش منتشرشده", "مسیر یادگیری", "دستیار AI"] as const;
+
 /**
- * Homepage hero only — RTL copy + AI orb with product nodes.
+ * Homepage hero only — RTL copy + advanced AI orbital visualization.
  * Does not include stats or sections below.
  */
 export function HomeHero() {
@@ -45,39 +60,13 @@ export function HomeHero() {
         size="wide"
         className="relative grid min-w-0 items-center gap-8 sm:gap-10 lg:grid-cols-2 lg:gap-14"
       >
-        <div className="space-y-6 text-center lg:text-start">
-          <p
-            className="text-[12px] font-semibold tracking-wide"
-            style={{ color: "var(--home-cyan)" }}
-          >
-            AI Engineering Platform
-          </p>
-          <h1
-            id="home-hero-title"
-            className="font-extrabold tracking-tight text-[color:var(--home-text)]"
-            style={{
-              fontSize: "clamp(1.65rem, 7vw, var(--home-display-size))",
-              lineHeight: "var(--home-display-leading)",
-            }}
-          >
-            <span
-              className="block bg-clip-text text-transparent"
-              style={{
-                backgroundImage:
-                  "linear-gradient(135deg, var(--home-text) 10%, var(--home-purple) 55%, var(--home-cyan))",
-              }}
-            >
-              دانش مهندسی،
-            </span>
-            <span className="mt-1 block">با قدرت هوش مصنوعی</span>
+        <div className="home-hero-copy space-y-6 text-center lg:text-start">
+          <p className="home-hero-eyebrow">AI Engineering Platform</p>
+          <h1 id="home-hero-title" className="home-hero-title">
+            <span className="home-hero-title-accent">دانش مهندسی،</span>
+            <span className="home-hero-title-plain">با قدرت هوش مصنوعی</span>
           </h1>
-          <p
-            className="mx-auto max-w-xl text-[color:var(--home-text-muted)] lg:mx-0"
-            style={{
-              fontSize: "var(--home-body-size)",
-              lineHeight: "var(--home-body-leading)",
-            }}
-          >
+          <p className="home-hero-lead">
             مقالات، ابزارها، مسیر یادگیری و نقشه راه را در یک پلتفرم دانش مهندسی
             کنار هم ببینید — برای تصمیم‌گیری سریع‌تر و ساخت دقیق‌تر.
           </p>
@@ -89,6 +78,14 @@ export function HomeHero() {
               از AI بپرس
             </Button>
           </div>
+          <ul className="home-hero-trust" aria-label="نشانه‌های پلتفرم">
+            {HERO_TRUST.map((item) => (
+              <li key={item} className="home-hero-trust-item">
+                <TrustCheck />
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <HeroOrb />
@@ -102,56 +99,60 @@ function HeroOrb() {
     <div
       className="home-hero-orb relative mx-auto aspect-square w-full max-w-[min(100%,18.5rem)] sm:max-w-[420px] lg:max-w-[480px]"
       role="img"
-      aria-label="هسته هوش مهندسی با گره‌های Articles، Tools، Learning و Roadmaps"
+      aria-label="هسته HelpDev AI با گره‌های Articles، Tools، Learning و Roadmaps"
     >
-      <div
-        className="home-hero-glow absolute inset-[18%] rounded-full blur-2xl"
-        style={{
-          background:
-            "radial-gradient(circle, var(--home-purple-soft), var(--home-cyan-soft) 55%, transparent 70%)",
-          boxShadow: "var(--home-glow-purple)",
-        }}
-        aria-hidden
-      />
-      <div
-        className="absolute inset-[28%] rounded-full border"
-        style={{
-          borderColor: "var(--home-border-accent)",
-          background:
-            "radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--home-purple) 45%, transparent), color-mix(in srgb, var(--home-blue) 28%, #080a12) 45%, #060816 78%)",
-          boxShadow: "var(--home-glow-blue), inset 0 0 40px color-mix(in srgb, var(--home-cyan) 18%, transparent)",
-        }}
-        aria-hidden
-      />
-      <div
-        className="absolute inset-[38%] rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle at 40% 35%, color-mix(in srgb, var(--home-text) 18%, transparent), transparent 55%)",
-        }}
-        aria-hidden
-      />
+      <div className="home-hero-field" aria-hidden />
+      <div className="home-hero-glow" aria-hidden />
+      <span className="home-hero-ring home-hero-ring-a" aria-hidden />
+      <span className="home-hero-ring home-hero-ring-b" aria-hidden />
+      <span className="home-hero-ring home-hero-ring-c" aria-hidden />
+      <span className="home-hero-scanner" aria-hidden />
+
+      {HERO_PARTICLES.map((particle) => (
+        <span
+          key={`${particle.x}-${particle.y}`}
+          className="home-hero-particle"
+          style={{ left: `${particle.x}%`, top: `${particle.y}%`, animationDelay: particle.d }}
+          aria-hidden
+        />
+      ))}
 
       <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" aria-hidden>
         <defs>
           <linearGradient id="home-hero-edge" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="var(--home-purple)" />
+            <stop offset="55%" stopColor="var(--home-blue)" />
             <stop offset="100%" stopColor="var(--home-cyan)" />
           </linearGradient>
+          <filter id="home-hero-edge-glow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="1.1" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
         </defs>
         {HERO_NODES.map((node) => (
           <line
             key={node.id}
+            className="home-hero-edge"
             x1="50"
             y1="50"
             x2={node.x}
             y2={node.y}
             stroke="url(#home-hero-edge)"
-            strokeWidth="0.45"
-            opacity="0.7"
+            strokeWidth="0.55"
+            strokeLinecap="round"
+            filter="url(#home-hero-edge-glow)"
           />
         ))}
       </svg>
+
+      <div className="home-hero-core">
+        <span className="home-hero-core-pulse" aria-hidden />
+        <span className="home-hero-core-orb">AI</span>
+        <span className="home-hero-core-label">HelpDev AI</span>
+      </div>
 
       {HERO_NODES.map((node) => (
         <Link
@@ -160,28 +161,63 @@ function HeroOrb() {
           className="home-hero-node focus-ring absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-0.5 sm:gap-1"
           style={{ left: `${node.x}%`, top: `${node.y}%` }}
         >
-          <span
-            className="home-hero-node-chip flex h-9 w-9 items-center justify-center rounded-2xl border text-[9px] font-extrabold backdrop-blur-md sm:h-12 sm:w-12 sm:text-[11px]"
-            style={{
-              borderColor: "var(--home-border-strong)",
-              background: "var(--home-surface-elevated)",
-              color: "var(--home-text)",
-              boxShadow: "var(--home-shadow-sm)",
-            }}
-          >
-            {node.label.slice(0, 2)}
+          <span className="home-hero-node-chip">
+            <NodeGlyph name={node.id} />
           </span>
-          <span
-            className="rounded-md px-1.5 py-0.5 text-[10px] font-semibold backdrop-blur"
-            style={{
-              background: "color-mix(in srgb, var(--home-bg) 70%, transparent)",
-              color: "var(--home-text-muted)",
-            }}
-          >
-            {node.label}
-          </span>
+          <span className="home-hero-node-label">{node.label}</span>
         </Link>
       ))}
     </div>
+  );
+}
+
+function TrustCheck() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
+}
+
+function NodeGlyph({ name }: { name: (typeof HERO_NODES)[number]["id"] }) {
+  const common = {
+    width: 16,
+    height: 16,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.7,
+  } as const;
+
+  if (name === "articles") {
+    return (
+      <svg {...common} aria-hidden>
+        <path d="M7 3h8l5 5v13H7z" />
+        <path d="M15 3v5h5M10 13h7M10 17h5" />
+      </svg>
+    );
+  }
+  if (name === "tools") {
+    return (
+      <svg {...common} aria-hidden>
+        <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-3 3-2-2 3-3Z" />
+      </svg>
+    );
+  }
+  if (name === "learning") {
+    return (
+      <svg {...common} aria-hidden>
+        <path d="M3 9 12 5l9 4-9 4-9-4Z" />
+        <path d="M7 11.5v5.2c0 .6 2.2 2.3 5 2.3s5-1.7 5-2.3v-5.2" />
+      </svg>
+    );
+  }
+  return (
+    <svg {...common} aria-hidden>
+      <circle cx="6" cy="6" r="2.1" />
+      <circle cx="18" cy="12" r="2.1" />
+      <circle cx="8" cy="18" r="2.1" />
+      <path d="M8 7.4 16.2 11M16.4 14 9.6 17" />
+    </svg>
   );
 }

@@ -3117,6 +3117,298 @@ body {
   }
 }
 
+/* Homepage hero — premium AI orbital (hero only). */
+.home-hero-eyebrow {
+  margin: 0;
+  font-size: var(--home-caption-size);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--home-cyan);
+}
+
+.home-hero-title {
+  margin: 0;
+  font-size: clamp(1.75rem, 7vw, var(--home-display-size));
+  font-weight: var(--home-display-weight);
+  line-height: var(--home-display-leading);
+  letter-spacing: -0.03em;
+  color: var(--home-text);
+}
+
+.home-hero-title-accent,
+.home-hero-title-plain {
+  display: block;
+}
+
+.home-hero-title-accent {
+  background-image: linear-gradient(
+    135deg,
+    var(--home-text) 8%,
+    var(--home-purple) 52%,
+    var(--home-cyan)
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+.home-hero-title-plain {
+  margin-top: 0.2rem;
+}
+
+.home-hero-lead {
+  margin: 0 auto;
+  max-width: 36rem;
+  font-size: var(--home-body-size);
+  line-height: var(--home-body-leading);
+  color: var(--home-text-muted);
+}
+
+@media (min-width: 1024px) {
+  .home-hero-lead {
+    margin-inline: 0;
+  }
+}
+
+.home-hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 1024px) {
+  .home-hero-trust {
+    justify-content: flex-start;
+  }
+}
+
+.home-hero-trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--home-caption-size);
+  font-weight: 600;
+  color: var(--home-text-secondary);
+}
+
+.home-hero-trust-item svg {
+  color: var(--home-cyan);
+}
+
+.home-hero-field {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--home-text) 16%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+  mask-image: radial-gradient(circle at 50% 50%, #000 18%, transparent 68%);
+  opacity: 0.32;
+}
+
+.home-hero-glow {
+  pointer-events: none;
+  position: absolute;
+  inset: 16%;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--home-purple) 42%, transparent),
+    color-mix(in srgb, var(--home-blue) 22%, transparent) 42%,
+    color-mix(in srgb, var(--home-cyan) 16%, transparent) 62%,
+    transparent 74%
+  );
+  filter: blur(22px);
+}
+
+.home-hero-ring {
+  pointer-events: none;
+  position: absolute;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--home-purple) 26%, transparent);
+}
+
+.home-hero-ring-a {
+  inset: 7%;
+  border-style: dashed;
+  opacity: 0.55;
+  animation: home-hero-spin 48s linear infinite;
+}
+
+.home-hero-ring-b {
+  inset: 15%;
+  border-color: color-mix(in srgb, var(--home-cyan) 24%, transparent);
+  animation: home-hero-spin 34s linear infinite reverse;
+}
+
+.home-hero-ring-c {
+  inset: 24%;
+  border-color: color-mix(in srgb, var(--home-blue) 30%, transparent);
+  animation: home-hero-spin 22s linear infinite;
+}
+
+.home-hero-scanner {
+  pointer-events: none;
+  position: absolute;
+  inset: 7%;
+  border-radius: 999px;
+  background: conic-gradient(
+    from 180deg,
+    transparent 0 76%,
+    color-mix(in srgb, var(--home-cyan) 50%, transparent) 88%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+  animation: home-hero-spin 14s linear infinite;
+}
+
+.home-hero-particle {
+  pointer-events: none;
+  position: absolute;
+  width: 0.22rem;
+  height: 0.22rem;
+  border-radius: 999px;
+  background: var(--home-cyan);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--home-cyan) 70%, transparent);
+  transform: translate(-50%, -50%);
+  animation: home-hero-particle 4.4s ease-in-out infinite;
+}
+
+.home-hero-edge {
+  opacity: 0.82;
+  stroke-dasharray: 2.8 3.6;
+  animation: home-hero-dash 3.4s linear infinite;
+}
+
+.home-hero-core {
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  display: flex;
+  width: 7.25rem;
+  transform: translate(-50%, -50%);
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.home-hero-core-pulse {
+  position: absolute;
+  top: 0.15rem;
+  height: 4.6rem;
+  width: 4.6rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--home-purple) 22%, transparent);
+  filter: blur(16px);
+}
+
+.home-hero-core-orb {
+  position: relative;
+  display: flex;
+  height: 4.6rem;
+  width: 4.6rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--home-purple) 45%, transparent);
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 34% 30%, color-mix(in srgb, var(--home-text) 22%, transparent), transparent 42%),
+    linear-gradient(160deg, var(--home-purple), var(--home-blue) 55%, var(--home-cyan));
+  box-shadow:
+    var(--home-glow-purple),
+    var(--home-glow-cyan),
+    inset 0 0 18px color-mix(in srgb, var(--home-bg) 35%, transparent);
+  color: var(--home-text-on-accent);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.home-hero-core-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--home-text-secondary);
+}
+
+.home-hero-node {
+  z-index: 3;
+}
+
+.home-hero-node-chip {
+  display: flex;
+  height: 2.55rem;
+  width: 2.55rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--home-border-strong);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--home-surface-elevated) 88%, transparent);
+  color: var(--home-text);
+  box-shadow: var(--home-shadow-sm);
+  backdrop-filter: blur(12px);
+}
+
+.home-hero-node-label {
+  border-radius: 0.4rem;
+  background: color-mix(in srgb, var(--home-bg) 72%, transparent);
+  padding: 0.15rem 0.4rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--home-text-muted);
+  backdrop-filter: blur(8px);
+}
+
+@media (min-width: 640px) {
+  .home-hero-core {
+    width: 8.5rem;
+  }
+
+  .home-hero-core-orb,
+  .home-hero-core-pulse {
+    height: 5.4rem;
+    width: 5.4rem;
+  }
+
+  .home-hero-node-chip {
+    height: 3rem;
+    width: 3rem;
+  }
+}
+
+@keyframes home-hero-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes home-hero-particle {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: translate(-50%, -50%) scale(0.75);
+  }
+  50% {
+    opacity: 0.95;
+    transform: translate(-50%, calc(-50% - 6px)) scale(1);
+  }
+}
+
+@keyframes home-hero-dash {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+
 /* Homepage premium motion — CSS only, subtle and fast. */
 @keyframes home-orb-float {
   0%,
@@ -3225,6 +3517,10 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .home-hero-orb,
   .home-hero-glow,
+  .home-hero-ring,
+  .home-hero-scanner,
+  .home-hero-particle,
+  .home-hero-edge,
   .home-workflow-node-active,
   .home-workflow-node-active::after {
     animation: none;
