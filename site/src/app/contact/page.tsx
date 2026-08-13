@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/constants";
+import { ContactInfo } from "./contact-info";
 import { ContactSection } from "./contact-section";
 
 export const metadata: Metadata = {
@@ -8,5 +9,10 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
-  return <ContactSection />;
+  return (
+    <>
+      <ContactInfo />
+      <ContactSection />
+    </>
+  );
 }
