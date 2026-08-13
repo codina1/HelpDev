@@ -11,24 +11,24 @@ export function RoadmapCard({ roadmap }: RoadmapCardProps) {
   return (
     <article
       dir="rtl"
-      className="rounded-2xl border border-white/10 bg-gradient-to-br from-violet-500/10 to-transparent p-4"
+      className="rounded-2xl border border-[color:var(--ds-border-strong)] bg-gradient-to-br from-[color:color-mix(in_srgb,var(--ds-primary)_14%,transparent)] to-[color:var(--ds-surface)] p-4"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-[11px] font-semibold text-violet-300">نقشه راه</p>
-          <h3 className="mt-1 text-[15px] font-bold text-white">{roadmap.goal}</h3>
+          <p className="text-[11px] font-semibold text-[color:var(--ds-primary-strong)]">نقشه راه</p>
+          <h3 className="mt-1 text-[15px] font-bold text-[color:var(--ds-fg)]">{roadmap.goal}</h3>
         </div>
         <span
-          className="rounded-md bg-white/10 px-2 py-0.5 text-[11px] font-semibold text-slate-200"
+          className="rounded-md bg-[color:var(--ds-surface-elevated)] px-2 py-0.5 text-[11px] font-semibold text-[color:var(--ds-fg)]"
           aria-label={`وضعیت: ${roadmap.status}`}
         >
           {roadmap.status}
         </span>
       </div>
-      <p className="mt-2 text-[12px] text-slate-400">{stepCount} گام پیشنهادی</p>
+      <p className="mt-2 text-[12px] text-[color:var(--ds-muted)]">{stepCount} گام پیشنهادی</p>
       <Link
         href="/learning/assistant"
-        className="focus-ring mt-3 inline-flex text-[12px] font-semibold text-violet-300 hover:text-violet-200"
+        className="focus-ring mt-3 inline-flex text-[12px] font-semibold text-[color:var(--ds-primary-strong)] hover:text-[color:var(--ds-primary)]"
       >
         مشاهده نقشه راه
       </Link>

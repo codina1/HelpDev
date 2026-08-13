@@ -20,6 +20,13 @@ import {
 } from "@/lib/api/learning-personalization";
 import { getUserDisplayName } from "@/types/auth";
 
+const headingClass = "text-lg font-bold text-[color:var(--ds-fg)]";
+const linkClass = "text-sm font-semibold text-[color:var(--ds-primary-strong)]";
+const chipClass =
+  "focus-ring rounded-xl border border-[color:var(--ds-border)] bg-[color:var(--ds-surface-elevated)] px-3 py-2 text-xs font-semibold text-[color:var(--ds-fg)]";
+const chipPrimaryClass =
+  "focus-ring rounded-xl bg-[color:color-mix(in_srgb,var(--ds-primary)_16%,transparent)] px-3 py-2 text-xs font-semibold text-[color:var(--ds-primary-strong)]";
+
 type DashboardData = {
   enrollments: EnrollmentListItemDto[];
   coursesById: Map<string, CourseSummaryDto>;
@@ -78,7 +85,7 @@ export function UserDashboard() {
           title="برای مشاهده داشبورد وارد شوید"
           description="پس از ورود، پیشرفت یادگیری و پیشنهادهای شما اینجا نمایش داده می‌شود."
           action={
-            <Link href="/" className="text-sm font-semibold text-violet-300">
+            <Link href="/" className={linkClass}>
               بازگشت به خانه و ورود
             </Link>
           }
@@ -104,37 +111,37 @@ export function UserDashboard() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 px-4 py-10" dir="rtl">
-      <section className="rounded-2xl border border-white/10 bg-gradient-to-l from-violet-500/10 to-transparent p-6">
-        <h1 className="text-2xl font-extrabold text-white">
+      <section className="rounded-2xl border border-[color:var(--ds-border-strong)] bg-gradient-to-l from-[color:color-mix(in_srgb,var(--ds-primary)_14%,transparent)] to-[color:var(--ds-surface)] p-6">
+        <h1 className="text-2xl font-extrabold text-[color:var(--ds-fg)]">
           سلام، {getUserDisplayName(user)}
         </h1>
-        <p className="mt-2 text-sm text-slate-400">
+        <p className="mt-2 text-sm text-[color:var(--ds-muted)]">
           خلاصه یادگیری شما بر اساس ثبت‌نام‌ها و پیشنهادهای موجود.
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Link href="/learning" className="focus-ring rounded-xl bg-violet-500/20 px-3 py-2 text-xs font-semibold text-violet-200">
+          <Link href="/learning" className={chipPrimaryClass}>
             خانه یادگیری
           </Link>
-          <Link href="/learning/assistant" className="focus-ring rounded-xl bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200">
+          <Link href="/learning/assistant" className={chipClass}>
             دستیار AI
           </Link>
-          <Link href="/settings" className="focus-ring rounded-xl bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200">
+          <Link href="/settings" className={chipClass}>
             تنظیمات
           </Link>
-          <Link href="/profile" className="focus-ring rounded-xl bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200">
+          <Link href="/profile" className={chipClass}>
             پروفایل
           </Link>
         </div>
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-bold text-white">پیشرفت یادگیری</h2>
+        <h2 className={headingClass}>پیشرفت یادگیری</h2>
         {enrollments.length === 0 ? (
           <PageEmptyState
             title="هنوز در دوره‌ای ثبت‌نام نکرده‌اید"
             description="از فهرست دوره‌ها یک دوره منتشرشده انتخاب کنید."
             action={
-              <Link href="/courses" className="text-sm font-semibold text-violet-300">
+              <Link href="/courses" className={linkClass}>
                 مشاهده دوره‌ها
               </Link>
             }
@@ -157,7 +164,7 @@ export function UserDashboard() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-bold text-white">ادامه یادگیری</h2>
+        <h2 className={headingClass}>ادامه یادگیری</h2>
         {continueItems.length === 0 ? (
           <PageEmptyState title="موردی برای ادامه نیست" description="پس از ثبت‌نام، دوره‌های فعال اینجا ظاهر می‌شوند." />
         ) : (
@@ -186,8 +193,8 @@ export function UserDashboard() {
 
       <section className="space-y-3">
         <div className="flex items-center justify-between gap-3">
-          <h2 className="text-lg font-bold text-white">پیشنهادهای AI</h2>
-          <Link href="/learning/assistant" className="text-xs font-semibold text-violet-300">
+          <h2 className={headingClass}>پیشنهادهای AI</h2>
+          <Link href="/learning/assistant" className="text-xs font-semibold text-[color:var(--ds-primary-strong)]">
             همه پیشنهادها
           </Link>
         </div>
@@ -196,7 +203,7 @@ export function UserDashboard() {
             title="پیشنهادی آماده نیست"
             description="پروفایل یادگیری را تکمیل کنید تا پیشنهادها دقیق‌تر شوند."
             action={
-              <Link href="/learning/profile" className="text-sm font-semibold text-violet-300">
+              <Link href="/learning/profile" className={linkClass}>
                 پروفایل یادگیری
               </Link>
             }
@@ -211,7 +218,7 @@ export function UserDashboard() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-bold text-white">نقشه راه</h2>
+        <h2 className={headingClass}>نقشه راه</h2>
         {data?.roadmap ? (
           <RoadmapCard roadmap={data.roadmap} />
         ) : (
@@ -219,7 +226,7 @@ export function UserDashboard() {
             title="نقشه راهی ندارید"
             description="از دستیار یادگیری یک نقشه راه پیشنهادی بسازید."
             action={
-              <Link href="/learning/assistant" className="text-sm font-semibold text-violet-300">
+              <Link href="/learning/assistant" className={linkClass}>
                 ساخت نقشه راه
               </Link>
             }
@@ -228,11 +235,11 @@ export function UserDashboard() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-bold text-white">فعالیت اخیر</h2>
+        <h2 className={headingClass}>فعالیت اخیر</h2>
         {enrollments.length === 0 ? (
           <PageEmptyState title="فعالیتی ثبت نشده" description="ثبت‌نام و پیشرفت دوره به‌عنوان فعالیت نمایش داده می‌شود." />
         ) : (
-          <ul className="space-y-2 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+          <ul className="space-y-2 rounded-2xl border border-[color:var(--ds-border)] bg-[color:var(--ds-surface)] p-4">
             {enrollments
               .slice()
               .sort((a, b) => Date.parse(b.enrolledAt) - Date.parse(a.enrolledAt))
@@ -241,10 +248,10 @@ export function UserDashboard() {
                 const course = data?.coursesById.get(enrollment.courseId);
                 return (
                   <li key={enrollment.id} className="flex items-center justify-between gap-3 text-sm">
-                    <span className="text-slate-200">
+                    <span className="text-[color:var(--ds-fg)]">
                       {course?.title ?? `دوره ${enrollment.courseId.slice(0, 8)}`}
                     </span>
-                    <span className="text-[11px] text-slate-500" dir="ltr">
+                    <span className="text-[11px] text-[color:var(--ds-muted)]" dir="ltr">
                       {new Date(enrollment.enrolledAt).toLocaleDateString("fa-IR")}
                     </span>
                   </li>

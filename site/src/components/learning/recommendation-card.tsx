@@ -14,20 +14,20 @@ export function RecommendationCard({ item }: RecommendationCardProps) {
   return (
     <article
       dir="rtl"
-      className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
+      className="rounded-2xl border border-[color:var(--ds-border)] bg-[color:var(--ds-surface)] p-4"
     >
       <div className="flex items-center justify-between gap-2">
-        <h3 className="text-[14px] font-bold text-white">{item.title}</h3>
-        <span className="rounded-md bg-emerald-500/15 px-2 py-0.5 text-[11px] font-semibold text-emerald-300">
+        <h3 className="text-[14px] font-bold text-[color:var(--ds-fg)]">{item.title}</h3>
+        <span className="rounded-md bg-[color:color-mix(in_srgb,var(--ds-success)_16%,transparent)] px-2 py-0.5 text-[11px] font-semibold text-[color:var(--ds-success)]">
           {item.kind}
         </span>
       </div>
       {item.rationale ? (
-        <p className="mt-2 text-[12px] leading-6 text-slate-400">{item.rationale}</p>
+        <p className="mt-2 text-[12px] leading-6 text-[color:var(--ds-muted)]">{item.rationale}</p>
       ) : null}
       <Link
         href={href}
-        className="focus-ring mt-3 inline-flex text-[12px] font-semibold text-violet-300 hover:text-violet-200"
+        className="focus-ring mt-3 inline-flex text-[12px] font-semibold text-[color:var(--ds-primary-strong)] hover:text-[color:var(--ds-primary)]"
       >
         مشاهده پیشنهاد
       </Link>
