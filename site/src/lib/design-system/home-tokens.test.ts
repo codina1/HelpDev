@@ -21,6 +21,7 @@ describe("homepage design tokens", () => {
     expect(css).toContain("--home-display-size:");
     expect(css).toContain("--ds-bg: #060816");
     expect(css).toContain("--pub-bg: var(--ds-bg)");
+    expect(css).toContain("html:not(.dark)");
   });
 
   it("mirrors the dark navy + purple/blue/cyan homepage palette", () => {

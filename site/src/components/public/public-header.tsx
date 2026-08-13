@@ -190,12 +190,14 @@ function ThemeToggle() {
     const isDark = stored !== "light";
     setDark(isDark);
     document.documentElement.classList.toggle("dark", isDark);
+    document.documentElement.style.colorScheme = isDark ? "dark" : "light";
   }, []);
 
   function toggle() {
     const next = !dark;
     setDark(next);
     document.documentElement.classList.toggle("dark", next);
+    document.documentElement.style.colorScheme = next ? "dark" : "light";
     window.localStorage.setItem(THEME_STORAGE_KEY, next ? "dark" : "light");
   }
 

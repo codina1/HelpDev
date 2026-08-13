@@ -25,6 +25,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl" className="dark" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(localStorage.getItem('helpdev-public-theme')==='light'){document.documentElement.classList.remove('dark');document.documentElement.style.colorScheme='light'}}catch(e){}",
+          }}
+        />
+      </head>
       <body className={`${vazirmatn.variable} antialiased`}>
         <AppShell>{children}</AppShell>
       </body>

@@ -12,6 +12,8 @@ describe("public homepage header", () => {
     expect(source).toContain("از AI بپرس");
     expect(source).toContain("ورود");
     expect(source).toContain("ThemeToggle");
+    expect(source).toContain("helpdev-public-theme");
+    expect(source).toContain('classList.toggle("dark"');
     expect(source).toContain("GlobalSearchPalette");
     expect(source).toContain("AuthModal");
     expect(source).toContain("--home-header-height");
