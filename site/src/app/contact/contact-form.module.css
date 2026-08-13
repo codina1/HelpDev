@@ -1,0 +1,115 @@
+.form {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.row {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.field {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+  text-align: start;
+}
+
+.label {
+  font-size: var(--home-caption-size);
+  font-weight: 600;
+  color: var(--home-text-secondary);
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--home-border-strong);
+  border-radius: var(--home-radius-lg);
+  background: var(--home-surface-elevated);
+  color: var(--home-text);
+  padding: 0.7rem 0.85rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.input,
+.select {
+  height: 2.85rem;
+}
+
+.textarea {
+  min-height: 9rem;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.select {
+  cursor: pointer;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--home-text-subtle);
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--home-border-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--home-purple) 18%, transparent);
+}
+
+.input[aria-invalid="true"],
+.select[aria-invalid="true"],
+.textarea[aria-invalid="true"] {
+  border-color: color-mix(in srgb, #f87171 55%, transparent);
+}
+
+.error {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #fca5a5;
+}
+
+.submit {
+  justify-self: start;
+  height: 2.85rem;
+  border: 0;
+  border-radius: var(--home-radius-lg);
+  background: linear-gradient(135deg, var(--home-purple), var(--home-blue) 70%, var(--home-cyan));
+  color: var(--home-text-on-accent);
+  padding-inline: 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  box-shadow: var(--home-glow-purple);
+  cursor: pointer;
+}
+
+.submit:hover {
+  filter: brightness(1.08);
+}
+
+.status {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--home-text-secondary);
+}
+
+@media (max-width: 374px) {
+  .submit {
+    width: 100%;
+    justify-self: stretch;
+  }
+}
