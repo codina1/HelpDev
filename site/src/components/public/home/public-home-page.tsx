@@ -4,6 +4,7 @@ import type { HomeStatItem } from "@/components/public/home/home-stat";
 import { HomeWorkflowSection } from "@/components/public/home/home-workflow-section";
 import { HomeValueSection } from "@/components/public/home/home-value-section";
 import { HomePathsSection } from "@/components/public/home/home-paths-section";
+import { HomeArticlesSection } from "@/components/public/home/home-articles-section";
 import { PersonalizedHero } from "@/components/experience/personalized-hero";
 import { AiDecisionDemo } from "@/components/public/home/v2/ai-decision-demo";
 import { AiWorkflowDemo } from "@/components/public/home/v2/ai-workflow-demo";
@@ -70,6 +71,7 @@ export async function PublicHomePage() {
       <HomeWorkflowSection />
       <HomeValueSection />
       <HomePathsSection roadmaps={roadmaps} />
+      <HomeArticlesSection articles={articles} />
       <PersonalizedHero />
       <TrustMetricsSection
         metrics={[
