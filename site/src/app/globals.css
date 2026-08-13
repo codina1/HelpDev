@@ -60,6 +60,80 @@
   --pub-shadow: var(--ds-shadow-md);
   --pub-shadow-hover: var(--ds-shadow-hover);
   --pub-radius: var(--ds-radius-xl);
+
+  /* Homepage tokens — Linear/Vercel glass (dark navy + purple/blue/cyan).
+     Scoped as --home-*; do not replace --ds-* or --pub-* (those style other surfaces). */
+  --home-bg: var(--ds-bg);
+  --home-bg-elevated: #080a12;
+  --home-bg-atmosphere-purple: rgba(139, 92, 246, 0.14);
+  --home-bg-atmosphere-blue: rgba(99, 102, 241, 0.12);
+  --home-bg-atmosphere-cyan: rgba(6, 182, 212, 0.08);
+
+  --home-surface: rgba(17, 24, 39, 0.62);
+  --home-surface-solid: var(--ds-surface);
+  --home-surface-elevated: rgba(21, 28, 44, 0.78);
+  --home-surface-hover: rgba(255, 255, 255, 0.04);
+
+  --home-border: var(--ds-border);
+  --home-border-strong: var(--ds-border-strong);
+  --home-border-accent: rgba(139, 92, 246, 0.35);
+
+  --home-purple: var(--ds-primary);
+  --home-purple-strong: var(--ds-primary-strong);
+  --home-purple-soft: rgba(139, 92, 246, 0.16);
+  --home-blue: #6366f1;
+  --home-blue-soft: rgba(99, 102, 241, 0.16);
+  --home-cyan: var(--ds-secondary);
+  --home-cyan-soft: rgba(6, 182, 212, 0.14);
+
+  --home-text: #f8fafc;
+  --home-text-secondary: #cbd5e1;
+  --home-text-muted: var(--ds-muted);
+  --home-text-subtle: #64748b;
+  --home-text-on-accent: #ffffff;
+
+  --home-radius-sm: var(--ds-radius-sm);
+  --home-radius-md: var(--ds-radius-md);
+  --home-radius-lg: var(--ds-radius-lg);
+  --home-radius-xl: var(--ds-radius-xl);
+  --home-radius-2xl: 1.5rem;
+
+  --home-shadow-sm: var(--ds-shadow-sm);
+  --home-shadow: var(--ds-shadow-md);
+  --home-glow-purple: var(--ds-shadow-glow);
+  --home-glow-blue: 0 0 24px rgba(99, 102, 241, 0.28);
+  --home-glow-cyan: var(--ds-shadow-glow-cyan);
+
+  --home-space-1: 0.25rem;
+  --home-space-2: 0.5rem;
+  --home-space-3: 0.75rem;
+  --home-space-4: 1rem;
+  --home-space-5: 1.25rem;
+  --home-space-6: 1.5rem;
+  --home-space-8: 2rem;
+  --home-space-10: 2.5rem;
+  --home-space-12: 3rem;
+  --home-space-16: 4rem;
+  --home-section-gap: 4.5rem;
+  --home-gutter: 1.25rem;
+
+  --home-container: 75rem;
+  --home-container-wide: 87.5rem;
+  --home-container-narrow: 48rem;
+  --home-header-height: 72px;
+
+  --home-font-family: var(--font-vazirmatn), Tahoma, system-ui, sans-serif;
+  --home-display-size: 2.75rem;
+  --home-display-size-sm: 2rem;
+  --home-title-size: 1.5rem;
+  --home-subtitle-size: 1.125rem;
+  --home-body-size: 0.9375rem;
+  --home-caption-size: 0.75rem;
+  --home-display-leading: 1.25;
+  --home-body-leading: 1.75;
+  --home-display-weight: 800;
+  --home-title-weight: 700;
+  --home-body-weight: 400;
 }
 
 @theme inline {
@@ -75,6 +149,14 @@
   --color-accent-2: var(--accent-2);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent-soft: var(--accent-soft);
+  --color-home-bg: var(--home-bg);
+  --color-home-surface: var(--home-surface);
+  --color-home-border: var(--home-border);
+  --color-home-purple: var(--home-purple);
+  --color-home-blue: var(--home-blue);
+  --color-home-cyan: var(--home-cyan);
+  --color-home-text: var(--home-text);
+  --color-home-text-muted: var(--home-text-muted);
   --font-sans: var(--font-vazirmatn);
 }
 
