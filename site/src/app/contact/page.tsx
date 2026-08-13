@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/constants";
+import { ContactFaq } from "./contact-faq";
 import { ContactInfo } from "./contact-info";
 import { ContactSection } from "./contact-section";
 
@@ -13,6 +14,7 @@ export default function ContactPage() {
     <>
       <ContactInfo />
       <ContactSection />
+      <ContactFaq />
     </>
   );
 }
