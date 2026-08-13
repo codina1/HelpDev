@@ -1,6 +1,7 @@
 import { HomeHero } from "@/components/public/home/home-hero";
 import { HomeStatsStrip } from "@/components/public/home/home-stats-strip";
 import type { HomeStatItem } from "@/components/public/home/home-stat";
+import { HomeWorkflowSection } from "@/components/public/home/home-workflow-section";
 import { PersonalizedHero } from "@/components/experience/personalized-hero";
 import { AiDecisionDemo } from "@/components/public/home/v2/ai-decision-demo";
 import { AiWorkflowDemo } from "@/components/public/home/v2/ai-workflow-demo";
@@ -64,6 +65,7 @@ export async function PublicHomePage() {
           tools: toolsCount,
         })}
       />
+      <HomeWorkflowSection />
       <PersonalizedHero />
       <TrustMetricsSection
         metrics={[
