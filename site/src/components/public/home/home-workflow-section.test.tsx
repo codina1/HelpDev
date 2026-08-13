@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
@@ -23,5 +25,11 @@ describe("homepage workflow section", () => {
     }
     expect(html).toContain("۱");
     expect(html).toContain("۵");
+  });
+
+  it("keeps the connector between numbered nodes instead of over them", () => {
+    const css = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf8");
+    expect(css).toContain("inset-inline: calc(10% + 1.5rem)");
+    expect(css).toContain("background: var(--home-bg-elevated)");
   });
 });
