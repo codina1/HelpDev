@@ -13,11 +13,11 @@ export function HomeStatsStrip({ items }: HomeStatsStripProps) {
     <section aria-label="آمار پلتفرم" className="home-reveal relative pb-8 sm:pb-10">
       <PublicContainer size="wide">
         <div
-          className="home-stats-row flex flex-wrap overflow-hidden rounded-[var(--home-radius-xl)] border backdrop-blur-xl"
+          className="home-stats-row flex flex-wrap overflow-hidden rounded-[var(--home-radius-2xl)] border backdrop-blur-xl"
           style={{
             background: "var(--home-surface)",
             borderColor: "var(--home-border)",
-            boxShadow: "var(--home-shadow-sm), 0 0 24px color-mix(in srgb, var(--home-purple) 10%, transparent)",
+            boxShadow: "var(--home-shadow-sm), 0 0 28px color-mix(in srgb, var(--home-purple) 10%, transparent)",
           }}
         >
           {items.map((item, index) => (

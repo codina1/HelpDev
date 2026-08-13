@@ -54,7 +54,7 @@ export function HomeStat({ item, separated = false }: HomeStatProps) {
         >
           {formatStatValue(item.value)}
         </p>
-        <p className="mt-1.5 truncate text-[12px] font-medium text-[color:var(--home-text-muted)]">
+        <p className="mt-1.5 truncate text-[12px] font-semibold text-[color:var(--home-text-muted)]">
           {item.label}
         </p>
       </div>

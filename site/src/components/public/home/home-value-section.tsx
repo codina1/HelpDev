@@ -47,14 +47,7 @@ export function HomeValueSection() {
       aria-labelledby="home-value-heading"
     >
       <div className="mx-auto max-w-3xl text-center">
-        <h2
-          id="home-value-heading"
-          className="font-extrabold tracking-tight text-[color:var(--home-text)]"
-          style={{
-            fontSize: "clamp(1.35rem, 2.4vw, var(--home-title-size))",
-            lineHeight: 1.45,
-          }}
-        >
+        <h2 id="home-value-heading" className="home-section-title">
           چرا HelpDev؟
         </h2>
         <p

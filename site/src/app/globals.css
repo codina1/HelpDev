@@ -1527,6 +1527,23 @@ body {
   }
 }
 
+/* Homepage section titles — token 1.5rem / 700 / 1.35 */
+.home-section-title {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.4vw, var(--home-title-size));
+  font-weight: var(--home-title-weight);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: var(--home-text);
+}
+
+.home-section-more {
+  font-size: var(--home-caption-size);
+  font-weight: 600;
+  color: var(--home-cyan);
+  text-decoration: none;
+}
+
 /* Homepage workflow visualization — CSS only, no animation library. */
 .home-workflow-panel {
   overflow-x: hidden;
@@ -1628,7 +1645,7 @@ body {
 .home-workflow-title {
   margin: 0;
   font-size: 0.8125rem;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--home-text);
 }
 
@@ -1838,7 +1855,7 @@ body {
   height: 8rem;
   width: 8rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--home-value-accent) 18%, transparent);
+  background: color-mix(in srgb, var(--home-value-accent) 12%, transparent);
   filter: blur(28px);
 }
 
@@ -1876,7 +1893,7 @@ body {
 }
 
 .home-value-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
   border-color: color-mix(in srgb, var(--home-value-accent) 45%, transparent);
   box-shadow: var(--home-value-glow), var(--home-shadow-sm);
 }
@@ -1907,8 +1924,8 @@ body {
   z-index: 1;
   margin: 1rem 0 0;
   font-size: 1rem;
-  font-weight: 800;
-  line-height: 1.45;
+  font-weight: 700;
+  line-height: 1.4;
   color: var(--home-text);
 }
 
@@ -2081,16 +2098,16 @@ body {
 
 .home-path-title {
   margin: 0;
-  font-size: 0.95rem;
-  font-weight: 800;
+  font-size: 1rem;
+  font-weight: 700;
   line-height: 1.4;
   color: var(--home-text);
 }
 
 .home-path-copy {
   margin: 0.45rem 0 0;
-  font-size: 0.75rem;
-  line-height: 1.7;
+  font-size: 0.8125rem;
+  line-height: 1.75;
   color: var(--home-text-muted);
 }
 
@@ -2106,7 +2123,7 @@ body {
 }
 
 .home-path-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
   border-color: color-mix(in srgb, var(--home-path-accent) 48%, transparent);
   box-shadow:
     0 0 28px color-mix(in srgb, var(--home-path-accent) 28%, transparent),
@@ -2197,7 +2214,7 @@ body {
 
 .home-article-visual {
   position: relative;
-  height: 8.25rem;
+  height: 7.25rem;
   overflow: hidden;
   background:
     radial-gradient(
@@ -2263,9 +2280,9 @@ body {
 
 .home-article-title {
   margin: 0;
-  font-size: 0.95rem;
-  font-weight: 800;
-  line-height: 1.55;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
   color: var(--home-text);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -2275,7 +2292,7 @@ body {
 
 .home-article-excerpt {
   margin: 0.5rem 0 0;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   line-height: 1.75;
   color: var(--home-text-muted);
   display: -webkit-box;
@@ -2303,10 +2320,10 @@ body {
 }
 
 .home-article-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-4px);
   border-color: color-mix(in srgb, var(--home-article-accent) 48%, transparent);
   box-shadow:
-    0 0 28px color-mix(in srgb, var(--home-article-accent) 26%, transparent),
+    0 0 28px color-mix(in srgb, var(--home-article-accent) 28%, transparent),
     var(--home-shadow-sm);
 }
 
@@ -2342,13 +2359,9 @@ body {
 }
 
 /* Homepage professional trust strip — low emphasis, monochrome. */
-.home-trust {
-  padding-block: 2.25rem;
-}
-
 .home-trust-panel {
   border: 1px solid var(--home-border);
-  border-radius: var(--home-radius-xl);
+  border-radius: var(--home-radius-2xl);
   background: var(--home-surface);
   backdrop-filter: blur(18px);
   box-shadow: var(--home-shadow-sm);
@@ -2364,10 +2377,10 @@ body {
 .home-trust-heading {
   margin: 0;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: var(--home-caption-size);
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: var(--home-text-subtle);
+  color: var(--home-text-muted);
 }
 
 .home-trust-row {
@@ -2401,7 +2414,7 @@ body {
   align-items: center;
   gap: 0.45rem;
   color: var(--home-text-muted);
-  opacity: 0.55;
+  opacity: 0.72;
 }
 
 .home-trust-logo {
@@ -2434,8 +2447,7 @@ body {
   backdrop-filter: blur(20px);
   box-shadow:
     var(--home-shadow-sm),
-    0 0 36px color-mix(in srgb, var(--home-purple) 14%, transparent),
-    0 0 28px color-mix(in srgb, var(--home-cyan) 8%, transparent);
+    0 0 28px color-mix(in srgb, var(--home-purple) 10%, transparent);
   padding: 1.5rem 1.2rem 1.6rem;
   text-align: start;
 }
@@ -2449,8 +2461,8 @@ body {
   height: 12rem;
   width: 12rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--home-purple) 22%, transparent);
-  filter: blur(42px);
+  background: color-mix(in srgb, var(--home-purple) 12%, transparent);
+  filter: blur(36px);
 }
 
 .home-newsletter-panel::after {
@@ -2462,8 +2474,8 @@ body {
   height: 11rem;
   width: 11rem;
   border-radius: 999px;
-  background: color-mix(in srgb, var(--home-cyan) 18%, transparent);
-  filter: blur(40px);
+  background: color-mix(in srgb, var(--home-cyan) 10%, transparent);
+  filter: blur(36px);
 }
 
 @media (min-width: 768px) {
@@ -2483,9 +2495,10 @@ body {
 
 .home-newsletter-heading {
   margin: 0;
-  font-size: clamp(1.2rem, 2.2vw, var(--home-title-size));
-  font-weight: 800;
-  line-height: 1.45;
+  font-size: clamp(1.35rem, 2.4vw, var(--home-title-size));
+  font-weight: var(--home-title-weight);
+  line-height: 1.35;
+  letter-spacing: -0.02em;
   color: var(--home-text);
 }
 
@@ -2706,8 +2719,8 @@ body {
 
 .pub-footer-col-title {
   margin: 0 0 0.75rem;
-  font-size: 0.7rem;
-  font-weight: 800;
+  font-size: var(--home-caption-size);
+  font-weight: 700;
   letter-spacing: 0.06em;
   color: var(--home-cyan);
 }
@@ -2824,8 +2837,8 @@ body {
 
 .pub-footer-copy {
   margin: 0;
-  font-size: 0.7rem;
-  color: var(--home-text-subtle);
+  font-size: var(--home-caption-size);
+  color: var(--home-text-muted);
 }
 
 .pub-footer-legal {
@@ -2835,7 +2848,7 @@ body {
 }
 
 .pub-footer-legal-link {
-  font-size: 0.7rem;
+  font-size: var(--home-caption-size);
   color: var(--home-text-muted);
   text-decoration: none;
 }

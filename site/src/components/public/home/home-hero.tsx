@@ -25,7 +25,7 @@ export function HomeHero() {
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div
-          className="absolute -top-24 start-1/2 h-[420px] w-[720px] -translate-x-1/2 rounded-full blur-3xl"
+          className="absolute -top-24 left-1/2 h-[420px] w-[720px] -translate-x-1/2 rounded-full blur-3xl"
           style={{
             background:
               "radial-gradient(circle, var(--home-bg-atmosphere-purple), transparent 70%)",

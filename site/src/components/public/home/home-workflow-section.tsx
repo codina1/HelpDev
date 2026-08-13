@@ -65,14 +65,7 @@ export function HomeWorkflowSection() {
       aria-labelledby="home-workflow-heading"
     >
       <div className="mx-auto max-w-3xl text-center">
-        <h2
-          id="home-workflow-heading"
-          className="font-extrabold tracking-tight text-[color:var(--home-text)]"
-          style={{
-            fontSize: "clamp(1.35rem, 2.4vw, var(--home-title-size))",
-            lineHeight: 1.45,
-          }}
-        >
+        <h2 id="home-workflow-heading" className="home-section-title">
           از سؤال تا راهکار با هوش HelpDev
         </h2>
         <p

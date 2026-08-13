@@ -134,14 +134,7 @@ export function HomeArticlesSection({ articles = [] }: HomeArticlesSectionProps)
     >
       <div className="mb-8 flex flex-wrap items-end justify-between gap-3 sm:mb-10">
         <div className="max-w-xl text-start">
-          <h2
-            id="home-articles-heading"
-            className="font-extrabold tracking-tight text-[color:var(--home-text)]"
-            style={{
-              fontSize: "clamp(1.35rem, 2.4vw, var(--home-title-size))",
-              lineHeight: 1.45,
-            }}
-          >
+          <h2 id="home-articles-heading" className="home-section-title">
             آخرین مقالات مهندسی
           </h2>
           <p
@@ -156,7 +149,7 @@ export function HomeArticlesSection({ articles = [] }: HomeArticlesSectionProps)
         </div>
         <Link
           href="/articles"
-          className="focus-ring text-[13px] font-semibold text-[color:var(--home-cyan)]"
+          className="home-section-more focus-ring"
         >
           همه مقالات
         </Link>
