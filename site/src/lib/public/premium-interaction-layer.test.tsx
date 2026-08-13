@@ -63,10 +63,11 @@ describe("Sprint 50G — Premium Interaction Layer", () => {
     }
 
     const footer = renderToStaticMarkup(<PublicFooter />);
-    expect(footer).toContain("AI Engineering Knowledge Platform");
-    expect(footer).toContain("Platform");
-    expect(footer).toContain("Learning");
-    expect(footer).toContain("Community");
-    expect(footer).toContain("Company");
+    expect(footer).toContain("HelpDev");
+    expect(footer).toContain("محصول");
+    expect(footer).toContain("یادگیری");
+    expect(footer).toContain("ابزارها");
+    expect(footer).toContain("شرکت");
+    expect(footer).toContain("خبرنامه مهندسی");
   });
 });

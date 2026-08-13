@@ -21,7 +21,7 @@ describe("About navigation", () => {
   it("points public About / درباره ما links at /about, not settings", () => {
     const footer = renderToStaticMarkup(<PublicFooter />);
     expect(footer).toContain('href="/about"');
-    expect(footer).toContain("About");
+    expect(footer).toContain("درباره ما");
 
     const homeFooter = readFileSync(
       join(process.cwd(), "src/components/home/home-footer.tsx"),
@@ -35,7 +35,7 @@ describe("About navigation", () => {
   it("does not change Contact routing", () => {
     const footer = renderToStaticMarkup(<PublicFooter />);
     expect(footer).toContain('href="/settings"');
-    expect(footer).toContain("Contact");
+    expect(footer).toContain("تماس");
   });
 
   it("keeps public /about out of admin auth paths", () => {
