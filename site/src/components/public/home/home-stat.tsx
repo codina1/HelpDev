@@ -27,36 +27,21 @@ type HomeStatProps = {
   separated?: boolean;
 };
 
-/** Single homepage statistic — icon, Persian value, label. */
+/** Compact homepage statistic — small icon, Persian value, caption. */
 export function HomeStat({ item, separated = false }: HomeStatProps) {
   return (
     <div
       className={[
-        "home-stat flex min-w-0 flex-1 basis-[calc(50%-1px)] items-center gap-2.5 px-3 py-3.5 sm:min-w-[10.5rem] sm:basis-auto sm:gap-3 sm:px-5 sm:py-4",
-        separated
-          ? "border-t border-[color:var(--home-border)] sm:border-t-0 sm:border-s"
-          : "",
+        "home-stat flex min-w-0 flex-1 basis-[calc(50%-1px)] items-center",
+        separated ? "home-stat-split" : "",
       ].join(" ")}
     >
-      <span
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[var(--home-radius-md)]"
-        style={{
-          background: "var(--home-purple-soft)",
-          color: "var(--home-purple)",
-        }}
-        aria-hidden
-      >
+      <span className="home-stat-icon" aria-hidden>
         <StatIcon name={item.icon} />
       </span>
-      <div className="min-w-0 text-start">
-        <p
-          className="text-[1.35rem] font-extrabold tabular-nums leading-none tracking-tight text-[color:var(--home-text)] sm:text-[1.5rem]"
-        >
-          {formatStatValue(item.value)}
-        </p>
-        <p className="mt-1.5 truncate text-[12px] font-semibold text-[color:var(--home-text-muted)]">
-          {item.label}
-        </p>
+      <div className="home-stat-copy">
+        <p className="home-stat-value">{formatStatValue(item.value)}</p>
+        <p className="home-stat-label">{item.label}</p>
       </div>
     </div>
   );
@@ -64,8 +49,8 @@ export function HomeStat({ item, separated = false }: HomeStatProps) {
 
 function StatIcon({ name }: { name: HomeStatIcon }) {
   const common = {
-    width: 16,
-    height: 16,
+    width: 14,
+    height: 14,
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",

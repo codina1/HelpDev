@@ -21,5 +21,8 @@ describe("homepage stats strip", () => {
     expect(html).toContain("پرسش‌های پاسخ‌داده‌شده");
     expect(html).toContain("backdrop-blur");
     expect(html).toContain("flex-wrap");
+    expect(html).toContain("home-stats-row");
+    expect(html).toContain("home-stat-icon");
+    expect(html).toContain("home-stat-value");
   });
 });

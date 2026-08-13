@@ -6,20 +6,13 @@ type HomeStatsStripProps = {
 };
 
 /**
- * Glass statistics strip directly under the homepage hero.
+ * Compact glass statistics bar directly under the homepage hero.
  */
 export function HomeStatsStrip({ items }: HomeStatsStripProps) {
   return (
-    <section aria-label="آمار پلتفرم" className="home-reveal relative pb-8 sm:pb-10">
+    <section aria-label="آمار پلتفرم" className="home-stats home-reveal">
       <PublicContainer size="wide">
-        <div
-          className="home-stats-row flex flex-wrap overflow-hidden rounded-[var(--home-radius-2xl)] border backdrop-blur-xl"
-          style={{
-            background: "var(--home-surface)",
-            borderColor: "var(--home-border)",
-            boxShadow: "var(--home-shadow-sm), 0 0 28px color-mix(in srgb, var(--home-purple) 10%, transparent)",
-          }}
-        >
+        <div className="home-stats-row flex flex-wrap backdrop-blur-xl">
           {items.map((item, index) => (
             <HomeStat key={item.id} item={item} separated={index > 0} />
           ))}
