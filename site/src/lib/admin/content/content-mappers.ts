@@ -75,6 +75,16 @@ export function labelForContentStatus(status: string): string {
   return CONTENT_STATUS_LABELS[status as ContentStatusValue] ?? status;
 }
 
+const NEWS_PRIORITY_LABELS: Record<NewsPriorityValue, string> = {
+  Normal: "عادی",
+  Featured: "ویژه",
+  Breaking: "فوری",
+};
+
+export function labelForNewsPriority(priority: string): string {
+  return NEWS_PRIORITY_LABELS[priority as NewsPriorityValue] ?? priority;
+}
+
 export function isKnownContentType(type: string): type is ContentTypeValue {
   return (CONTENT_TYPES as readonly string[]).includes(type);
 }

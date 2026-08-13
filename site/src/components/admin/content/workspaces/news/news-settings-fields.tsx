@@ -2,10 +2,12 @@
 
 import { AdminIcon } from "@/components/admin/shared/admin-icons";
 import { AdminErrorState } from "@/components/admin/feedback/admin-error-state";
+import { JalaliDateTimePicker } from "@/components/admin/shared/jalali-date-picker";
 import {
   SaveStatusIndicator,
   type SaveState,
 } from "@/components/admin/content/editor/save-status";
+import { labelForNewsPriority } from "@/lib/admin/content/content-mappers";
 import {
   NEWS_PRIORITIES,
   type NewsFormErrors,
@@ -93,25 +95,27 @@ export function NewsSettingsFields({
           >
             {NEWS_PRIORITIES.map((priority) => (
               <option key={priority} value={priority}>
-                {priority}
+                {labelForNewsPriority(priority)}
               </option>
             ))}
           </select>
         </label>
 
-        <label className="block space-y-1.5">
-          <span className="adm-text text-[12px] font-semibold">تاریخ خبر</span>
-          <input
-            className="adm-input"
-            type="datetime-local"
-            disabled={disabled}
+        <div className="space-y-1.5">
+          <label htmlFor="news-date" className="adm-text text-[12px] font-semibold">
+            تاریخ خبر
+          </label>
+          <JalaliDateTimePicker
+            id="news-date"
             value={values.newsDateUtc}
-            onChange={(e) => onChange({ newsDateUtc: e.target.value })}
+            disabled={disabled}
+            invalid={Boolean(errors.newsDateUtc)}
+            onChange={(newsDateUtc) => onChange({ newsDateUtc })}
           />
           {errors.newsDateUtc ? (
             <p className="text-[11px] text-[var(--adm-danger)]">{errors.newsDateUtc}</p>
           ) : null}
-        </label>
+        </div>
 
         <label className="block space-y-1.5">
           <span className="adm-text text-[12px] font-semibold">ارجاع خارجی (اختیاری)</span>

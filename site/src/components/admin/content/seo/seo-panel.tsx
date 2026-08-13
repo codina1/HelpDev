@@ -97,11 +97,12 @@ export function SeoPanel({
         />
         <SeoField
           id="seo-canonical"
-          label="آدرس کاننیکال"
+          label="آدرس کانونیکال"
           value={values.canonicalUrl}
           onChange={(value) => onChange({ canonicalUrl: value })}
           maxLength={SEO_LIMITS.canonicalUrl}
           placeholder="https://example.com/article"
+          hint="نشانی نسخهٔ اصلی این صفحه است. اگر همین مطلب در چند آدرس دیده می‌شود، اینجا آدرس ترجیحی را بگذارید تا موتور جستجو نسخه‌های تکراری را جدا نکند."
           error={errors.canonicalUrl}
           ltr
         />
@@ -112,6 +113,7 @@ export function SeoPanel({
           onChange={(value) => onChange({ ogImage: value })}
           maxLength={SEO_LIMITS.ogImage}
           placeholder="https://cdn.example.com/og.png"
+          hint="تصویر Open Graph همان تصویری است که هنگام اشتراک این مطلب در شبکه‌های اجتماعی مثل تلگرام، لینکدین یا ایکس نمایش داده می‌شود."
           error={errors.ogImage}
           ltr
           action={

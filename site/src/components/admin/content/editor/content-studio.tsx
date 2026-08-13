@@ -409,26 +409,28 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
                     label="اسلاگ"
                     error={errors.slug}
                     required
-                    action={
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <input
+                        id="studio-slug"
+                        type="text"
+                        dir="ltr"
+                        className="adm-input min-w-0 flex-1 text-start"
+                        value={values.slug}
+                        maxLength={300}
+                        onChange={(event) => onChange({ slug: event.target.value })}
+                        aria-invalid={Boolean(errors.slug)}
+                      />
                       <button
                         type="button"
+                        title="تولید اسلاگ از عنوان"
+                        aria-label="تولید اسلاگ از عنوان"
                         onClick={() => onChange({ slug: slugify(values.title) })}
-                        className="adm-btn adm-btn-ghost adm-focus px-2 py-1 text-[11px]"
+                        className="adm-btn adm-btn-ghost adm-focus h-[38px] shrink-0 px-2 text-[11px] leading-none"
                       >
-                        تولید از عنوان
+                        تولید
                       </button>
-                    }
-                  >
-                    <input
-                      id="studio-slug"
-                      type="text"
-                      dir="ltr"
-                      className="adm-input text-start"
-                      value={values.slug}
-                      maxLength={300}
-                      onChange={(event) => onChange({ slug: event.target.value })}
-                      aria-invalid={Boolean(errors.slug)}
-                    />
+                    </div>
                   </StudioField>
 
                   <StudioField id="studio-type" label="نوع محتوا" error={errors.type} required>

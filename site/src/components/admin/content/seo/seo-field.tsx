@@ -78,7 +78,7 @@ export function SeoField({
         />
       )}
 
-      {hint && !error ? <p className="adm-subtle text-[11px]">{hint}</p> : null}
+      {hint && !error ? <p className="adm-subtle text-[11px] leading-5">{hint}</p> : null}
       {error ? (
         <p className="text-[11px] font-semibold text-[var(--adm-danger)]">{error}</p>
       ) : null}

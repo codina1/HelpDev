@@ -31,6 +31,9 @@ Thumbs.db
 TestResults/
 *.nupkg
 
+# Local portable toolchains (not part of the repo)
+.tools/
+
 # Logs / misc
 *.log
 npm-debug.log*

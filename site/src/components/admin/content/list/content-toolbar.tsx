@@ -47,7 +47,7 @@ export function ContentToolbar({
   return (
     <AdminActionBar
       filters={
-        <>
+        <div className="flex w-full max-w-xs flex-col gap-2">
           <label className="sr-only" htmlFor="content-search">
             جستجوی محتوا
           </label>
@@ -58,7 +58,7 @@ export function ContentToolbar({
             disabled={disabled}
             onChange={(event) => setDraftSearch(event.target.value)}
             placeholder="جستجوی عنوان یا اسلاگ..."
-            className="adm-input max-w-xs"
+            className="adm-input"
             autoComplete="off"
           />
           <ContentFilters
@@ -69,7 +69,7 @@ export function ContentToolbar({
             onStatusChange={onStatusChange}
             onTypeChange={onTypeChange}
           />
-        </>
+        </div>
       }
     />
   );

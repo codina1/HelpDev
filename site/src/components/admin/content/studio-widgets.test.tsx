@@ -98,7 +98,9 @@ describe("SeoPanel", () => {
     );
     expect(html).toContain("عنوان سئو");
     expect(html).toContain("توضیحات سئو");
-    expect(html).toContain("آدرس کاننیکال");
+    expect(html).toContain("آدرس کانونیکال");
+    expect(html).toContain("نسخهٔ اصلی این صفحه");
+    expect(html).toContain("تصویر Open Graph");
     expect(html).toContain("کلمه کلیدی");
     expect(html).toContain("ذخیره سئو");
     // No fabricated SEO score/recommendation.

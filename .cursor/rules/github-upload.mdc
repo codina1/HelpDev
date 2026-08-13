@@ -1,0 +1,14 @@
+---
+description: After each completed task, commit and push changes to GitHub immediately
+alwaysApply: true
+---
+
+# Upload to GitHub after every task
+
+When a user-requested task is finished and it produced file changes:
+
+1. Commit those changes (do not wait to be asked again).
+2. Push the branch to `origin` right away (`git push -u origin HEAD` if needed).
+3. Do not commit secrets, `.env`, `.tools/`, `node_modules`, or database data.
+4. Use a short commit message that explains why, in the repo's language (Persian is fine).
+5. If Git or GitHub auth is missing, say so immediately and do not pretend the upload succeeded.

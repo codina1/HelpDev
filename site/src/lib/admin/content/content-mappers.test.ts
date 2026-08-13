@@ -9,6 +9,7 @@ import {
   isValidSlug,
   labelForContentStatus,
   labelForContentType,
+  labelForNewsPriority,
   labelForSeoFindingCategory,
   labelForSeoFindingSeverity,
   mapAdminContentDetail,
@@ -323,6 +324,9 @@ describe("labels", () => {
     expect(labelForContentStatus("ReviewPending")).toBe("در انتظار بررسی");
     expect(labelForContentStatus("Approved")).toBe("تأییدشده");
     expect(labelForContentStatus("Archived")).toBe("بایگانی‌شده");
+    expect(labelForNewsPriority("Normal")).toBe("عادی");
+    expect(labelForNewsPriority("Featured")).toBe("ویژه");
+    expect(labelForNewsPriority("Breaking")).toBe("فوری");
   });
 
   it("normalizes status values case-insensitively", () => {

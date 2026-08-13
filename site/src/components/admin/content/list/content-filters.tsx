@@ -35,7 +35,7 @@ export function ContentFilters({
           </label>
           <select
             id="content-filter-type"
-            className="adm-input w-auto"
+            className="adm-input"
             value={type}
             disabled={disabled}
             onChange={(event) =>
@@ -57,7 +57,7 @@ export function ContentFilters({
       </label>
       <select
         id="content-filter-status"
-        className="adm-input w-auto"
+        className="adm-input"
         value={status}
         disabled={disabled}
         onChange={(event) =>
