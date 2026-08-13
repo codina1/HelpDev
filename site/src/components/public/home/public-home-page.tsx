@@ -1,4 +1,4 @@
-import { HeroExperience } from "@/components/experience/hero-experience";
+import { HomeHero } from "@/components/public/home/home-hero";
 import { PersonalizedHero } from "@/components/experience/personalized-hero";
 import { AiDecisionDemo } from "@/components/public/home/v2/ai-decision-demo";
 import { AiWorkflowDemo } from "@/components/public/home/v2/ai-workflow-demo";
@@ -54,7 +54,7 @@ export async function PublicHomePage() {
   return (
     <div className="pb-10">
       <InteractionRevealObserver />
-      <HeroExperience />
+      <HomeHero />
       <PersonalizedHero />
       <TrustMetricsSection
         metrics={[

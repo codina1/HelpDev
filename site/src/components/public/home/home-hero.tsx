@@ -1,109 +1,187 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Badge } from "@/components/ui/public/badge";
-import { Container } from "@/components/ui/public/container";
-import { GradientHeading } from "@/components/ui/public/gradient-heading";
-import { SearchBox } from "@/components/ui/public/search-box";
-import { Section } from "@/components/ui/public/section";
+import { Button } from "@/components/ui/ds/button";
+import { PublicContainer } from "@/components/ui/public/v2/public-container";
+import { PublicSection } from "@/components/ui/public/v2/public-section";
 
-const QUICK_LINKS = [
-  { href: "/articles", label: "مقالات" },
-  { href: "/toolbox", label: "ابزارها" },
-  { href: "/roadmap", label: "نقشه راه" },
-  { href: "/learning/assistant", label: "دستیار AI" },
+const HERO_NODES = [
+  { id: "articles", label: "Articles", href: "/articles", x: 12, y: 18 },
+  { id: "tools", label: "Tools", href: "/toolbox", x: 88, y: 22 },
+  { id: "learning", label: "Learning", href: "/learning", x: 14, y: 78 },
+  { id: "roadmaps", label: "Roadmaps", href: "/roadmap", x: 86, y: 74 },
 ] as const;
 
+/**
+ * Homepage hero only — RTL copy + AI orb with product nodes.
+ * Does not include stats or sections below.
+ */
 export function HomeHero() {
-  const router = useRouter();
-  const [query, setQuery] = useState("");
-
   return (
-    <Section
-      className="relative overflow-hidden pb-6 pt-12 sm:pb-8 sm:pt-16 lg:pt-20"
+    <PublicSection
+      className="overflow-hidden pb-10 pt-8 sm:pb-12 sm:pt-12 lg:pb-16 lg:pt-16"
+      bare
       aria-labelledby="home-hero-title"
     >
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_70%_50%_at_50%_-10%,color-mix(in_srgb,var(--accent)_22%,transparent),transparent_60%)]"
-        aria-hidden
-      />
-      <div className="mx-auto max-w-3xl text-center">
-        <Badge variant="ai" className="mb-4">
-          AI Engineering Knowledge Platform
-        </Badge>
-        <GradientHeading
-          as="h1"
-          id="home-hero-title"
-          tone="hero"
-          subtitle="مرجع مهندسی نرم‌افزار و هوش مصنوعی — مقالات عمیق، ابزارهای کاربردی، نقشه راه یادگیری و دستیار هوشمند."
-        >
-          دانش مهندسی، با سرعت AI
-        </GradientHeading>
-
-        <div className="mx-auto mt-8 max-w-xl">
-          <SearchBox
-            size="lg"
-            value={query}
-            onChange={setQuery}
-            onSubmit={(q) => {
-              if (q) router.push(`/search?q=${encodeURIComponent(q)}`);
-              else router.push("/search");
-            }}
-            placeholder="چه می‌خواهید یاد بگیرید؟"
-            shortcutHint="Ctrl K"
-            aria-label="جستجوی هوشمند در خانه"
-          />
-        </div>
-
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-          {QUICK_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="focus-ring rounded-full border border-[color:var(--border-strong)] bg-[color:var(--surface)] px-3.5 py-1.5 text-[12px] font-semibold text-[color:var(--muted)] transition hover:border-[color:color-mix(in_srgb,var(--accent)_40%,transparent)] hover:text-[color:var(--foreground)]"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
+        <div
+          className="absolute -top-24 start-1/2 h-[420px] w-[720px] -translate-x-1/2 rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle, var(--home-bg-atmosphere-purple), transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute -end-16 top-24 h-64 w-64 rounded-full blur-3xl"
+          style={{ background: "var(--home-bg-atmosphere-cyan)" }}
+        />
+        <div
+          className="absolute bottom-0 start-0 h-48 w-48 rounded-full blur-3xl"
+          style={{ background: "var(--home-bg-atmosphere-blue)" }}
+        />
       </div>
-    </Section>
+
+      <PublicContainer
+        size="wide"
+        className="relative grid items-center gap-10 lg:grid-cols-2 lg:gap-14"
+      >
+        <div className="space-y-6 text-center lg:text-start">
+          <p
+            className="text-[12px] font-semibold tracking-wide"
+            style={{ color: "var(--home-cyan)" }}
+          >
+            AI Engineering Platform
+          </p>
+          <h1
+            id="home-hero-title"
+            className="font-extrabold tracking-tight text-[color:var(--home-text)]"
+            style={{
+              fontSize: "clamp(2rem, 4vw, var(--home-display-size))",
+              lineHeight: "var(--home-display-leading)",
+            }}
+          >
+            <span
+              className="block bg-clip-text text-transparent"
+              style={{
+                backgroundImage:
+                  "linear-gradient(135deg, var(--home-text) 10%, var(--home-purple) 55%, var(--home-cyan))",
+              }}
+            >
+              دانش مهندسی،
+            </span>
+            <span className="mt-1 block">با قدرت هوش مصنوعی</span>
+          </h1>
+          <p
+            className="mx-auto max-w-xl text-[color:var(--home-text-muted)] lg:mx-0"
+            style={{
+              fontSize: "var(--home-body-size)",
+              lineHeight: "var(--home-body-leading)",
+            }}
+          >
+            مقالات، ابزارها، مسیر یادگیری و نقشه راه را در یک پلتفرم دانش مهندسی
+            کنار هم ببینید — برای تصمیم‌گیری سریع‌تر و ساخت دقیق‌تر.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+            <Button href="/learning" size="lg">
+              شروع یادگیری
+            </Button>
+            <Button href="/learning/assistant" variant="secondary" size="lg">
+              از AI بپرس
+            </Button>
+          </div>
+        </div>
+
+        <HeroOrb />
+      </PublicContainer>
+    </PublicSection>
   );
 }
 
-/** Compact AI search strip under hero — opens /search or command palette via Ctrl+K hint. */
-export function HomeAiSearch() {
-  const router = useRouter();
-  const [query, setQuery] = useState("");
-
+function HeroOrb() {
   return (
-    <Section className="py-4 sm:py-6" aria-labelledby="home-ai-search-title" bare>
-      <Container>
-        <div className="rounded-2xl border border-[color:var(--border)] bg-[color:var(--surface)]/90 p-4 sm:p-5">
-          <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
-            <div>
-              <h2 id="home-ai-search-title" className="text-base font-bold text-[color:var(--foreground)]">
-                جستجوی هوشمند
-              </h2>
-              <p className="mt-1 text-[13px] text-[color:var(--muted)]">
-                مقالات، ابزارها، نقشه راه و دوره‌ها — با Search API
-              </p>
-            </div>
-            <Badge variant="accent">Semantic ready</Badge>
-          </div>
-          <SearchBox
-            value={query}
-            onChange={setQuery}
-            onSubmit={(q) => {
-              router.push(q ? `/search?q=${encodeURIComponent(q)}` : "/search");
-            }}
-            placeholder="مثلاً: RAG، ASP.NET، roadmap فرانت‌اند..."
-            aria-label="جستجوی هوشمند"
+    <div
+      className="relative mx-auto aspect-square w-full max-w-[420px] lg:max-w-[480px]"
+      role="img"
+      aria-label="هسته هوش مهندسی با گره‌های Articles، Tools، Learning و Roadmaps"
+    >
+      <div
+        className="absolute inset-[18%] rounded-full blur-2xl"
+        style={{
+          background:
+            "radial-gradient(circle, var(--home-purple-soft), var(--home-cyan-soft) 55%, transparent 70%)",
+          boxShadow: "var(--home-glow-purple)",
+        }}
+        aria-hidden
+      />
+      <div
+        className="absolute inset-[28%] rounded-full border"
+        style={{
+          borderColor: "var(--home-border-accent)",
+          background:
+            "radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--home-purple) 45%, transparent), color-mix(in srgb, var(--home-blue) 28%, #080a12) 45%, #060816 78%)",
+          boxShadow: "var(--home-glow-blue), inset 0 0 40px color-mix(in srgb, var(--home-cyan) 18%, transparent)",
+        }}
+        aria-hidden
+      />
+      <div
+        className="absolute inset-[38%] rounded-full"
+        style={{
+          background:
+            "radial-gradient(circle at 40% 35%, color-mix(in srgb, var(--home-text) 18%, transparent), transparent 55%)",
+        }}
+        aria-hidden
+      />
+
+      <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" aria-hidden>
+        <defs>
+          <linearGradient id="home-hero-edge" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="var(--home-purple)" />
+            <stop offset="100%" stopColor="var(--home-cyan)" />
+          </linearGradient>
+        </defs>
+        {HERO_NODES.map((node) => (
+          <line
+            key={node.id}
+            x1="50"
+            y1="50"
+            x2={node.x}
+            y2={node.y}
+            stroke="url(#home-hero-edge)"
+            strokeWidth="0.45"
+            opacity="0.7"
           />
-        </div>
-      </Container>
-    </Section>
+        ))}
+      </svg>
+
+      {HERO_NODES.map((node) => (
+        <Link
+          key={node.id}
+          href={node.href}
+          className="focus-ring absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1"
+          style={{ left: `${node.x}%`, top: `${node.y}%` }}
+        >
+          <span
+            className="flex h-11 w-11 items-center justify-center rounded-2xl border text-[10px] font-extrabold backdrop-blur-md sm:h-12 sm:w-12 sm:text-[11px]"
+            style={{
+              borderColor: "var(--home-border-strong)",
+              background: "var(--home-surface-elevated)",
+              color: "var(--home-text)",
+              boxShadow: "var(--home-shadow-sm)",
+            }}
+          >
+            {node.label.slice(0, 2)}
+          </span>
+          <span
+            className="rounded-md px-1.5 py-0.5 text-[10px] font-semibold backdrop-blur"
+            style={{
+              background: "color-mix(in srgb, var(--home-bg) 70%, transparent)",
+              color: "var(--home-text-muted)",
+            }}
+          >
+            {node.label}
+          </span>
+        </Link>
+      ))}
+    </div>
   );
 }

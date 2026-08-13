@@ -1,0 +1,24 @@
+import { describe, expect, it } from "vitest";
+import { renderToStaticMarkup } from "react-dom/server";
+import { HomeHero } from "@/components/public/home/home-hero";
+
+describe("homepage hero", () => {
+  it("renders Persian copy, CTAs, and knowledge nodes without stats", () => {
+    const html = renderToStaticMarkup(<HomeHero />);
+    expect(html).toContain("دانش مهندسی،");
+    expect(html).toContain("با قدرت هوش مصنوعی");
+    expect(html).toContain("شروع یادگیری");
+    expect(html).toContain("از AI بپرس");
+    expect(html).toContain("/learning");
+    expect(html).toContain("/learning/assistant");
+    expect(html).toContain("Articles");
+    expect(html).toContain("Tools");
+    expect(html).toContain("Learning");
+    expect(html).toContain("Roadmaps");
+    expect(html).toContain("/articles");
+    expect(html).toContain("/toolbox");
+    expect(html).toContain("/roadmap");
+    expect(html).not.toContain("Engineering Articles");
+    expect(html).not.toContain("Trust");
+  });
+});
