@@ -13,7 +13,7 @@ export function HomeStatsStrip({ items }: HomeStatsStripProps) {
     <section aria-label="آمار پلتفرم" className="relative pb-8 sm:pb-10">
       <PublicContainer size="wide">
         <div
-          className="flex flex-wrap overflow-hidden rounded-[var(--home-radius-xl)] border backdrop-blur-xl"
+          className="home-stats-row flex flex-wrap overflow-hidden rounded-[var(--home-radius-xl)] border backdrop-blur-xl"
           style={{
             background: "var(--home-surface)",
             borderColor: "var(--home-border)",

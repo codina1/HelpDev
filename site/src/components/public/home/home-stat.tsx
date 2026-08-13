@@ -32,7 +32,7 @@ export function HomeStat({ item, separated = false }: HomeStatProps) {
   return (
     <div
       className={[
-        "flex min-w-[9.5rem] flex-1 items-center gap-3 px-4 py-4 sm:min-w-[10.5rem] sm:px-5",
+        "home-stat flex min-w-0 flex-1 basis-[calc(50%-1px)] items-center gap-2.5 px-3 py-3.5 sm:min-w-[10.5rem] sm:basis-auto sm:gap-3 sm:px-5 sm:py-4",
         separated
           ? "border-t border-[color:var(--home-border)] sm:border-t-0 sm:border-s"
           : "",

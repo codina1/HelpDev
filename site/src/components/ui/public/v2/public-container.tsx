@@ -19,7 +19,7 @@ export function PublicContainer({
   size = "default",
 }: PublicContainerProps) {
   return (
-    <Tag className={["mx-auto w-full px-4 sm:px-5 lg:px-6", SIZE[size], className].join(" ")}>
+    <Tag className={["mx-auto w-full min-w-0 px-4 sm:px-5 lg:px-6", SIZE[size], className].join(" ")}>
       {children}
     </Tag>
   );

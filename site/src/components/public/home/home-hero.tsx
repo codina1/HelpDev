@@ -43,7 +43,7 @@ export function HomeHero() {
 
       <PublicContainer
         size="wide"
-        className="relative grid items-center gap-10 lg:grid-cols-2 lg:gap-14"
+        className="relative grid min-w-0 items-center gap-8 sm:gap-10 lg:grid-cols-2 lg:gap-14"
       >
         <div className="space-y-6 text-center lg:text-start">
           <p
@@ -56,7 +56,7 @@ export function HomeHero() {
             id="home-hero-title"
             className="font-extrabold tracking-tight text-[color:var(--home-text)]"
             style={{
-              fontSize: "clamp(2rem, 4vw, var(--home-display-size))",
+              fontSize: "clamp(1.65rem, 7vw, var(--home-display-size))",
               lineHeight: "var(--home-display-leading)",
             }}
           >
@@ -81,11 +81,11 @@ export function HomeHero() {
             مقالات، ابزارها، مسیر یادگیری و نقشه راه را در یک پلتفرم دانش مهندسی
             کنار هم ببینید — برای تصمیم‌گیری سریع‌تر و ساخت دقیق‌تر.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
-            <Button href="/learning" size="lg">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 lg:justify-start">
+            <Button href="/learning" size="lg" className="max-[374px]:!px-4 max-[374px]:!text-[13px]">
               شروع یادگیری
             </Button>
-            <Button href="/learning/assistant" variant="secondary" size="lg">
+            <Button href="/learning/assistant" variant="secondary" size="lg" className="max-[374px]:!px-4 max-[374px]:!text-[13px]">
               از AI بپرس
             </Button>
           </div>
@@ -100,7 +100,7 @@ export function HomeHero() {
 function HeroOrb() {
   return (
     <div
-      className="relative mx-auto aspect-square w-full max-w-[420px] lg:max-w-[480px]"
+      className="home-hero-orb relative mx-auto aspect-square w-full max-w-[min(100%,18.5rem)] sm:max-w-[420px] lg:max-w-[480px]"
       role="img"
       aria-label="هسته هوش مهندسی با گره‌های Articles، Tools، Learning و Roadmaps"
     >
@@ -157,11 +157,11 @@ function HeroOrb() {
         <Link
           key={node.id}
           href={node.href}
-          className="focus-ring absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1"
+          className="home-hero-node focus-ring absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-0.5 sm:gap-1"
           style={{ left: `${node.x}%`, top: `${node.y}%` }}
         >
           <span
-            className="flex h-11 w-11 items-center justify-center rounded-2xl border text-[10px] font-extrabold backdrop-blur-md sm:h-12 sm:w-12 sm:text-[11px]"
+            className="home-hero-node-chip flex h-9 w-9 items-center justify-center rounded-2xl border text-[9px] font-extrabold backdrop-blur-md sm:h-12 sm:w-12 sm:text-[11px]"
             style={{
               borderColor: "var(--home-border-strong)",
               background: "var(--home-surface-elevated)",

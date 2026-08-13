@@ -60,7 +60,7 @@ export async function PublicHomePage() {
   const aiGuides = countAiGuideSignals(content);
 
   return (
-    <div className="pb-10">
+    <div className="min-w-0 overflow-x-clip pb-10">
       <InteractionRevealObserver />
       <HomeHero />
       <HomeStatsStrip

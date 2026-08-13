@@ -54,10 +54,10 @@ export function PublicHeader() {
           boxShadow: "0 1px 0 color-mix(in srgb, var(--home-purple) 18%, transparent), 0 12px 40px rgba(2, 6, 23, 0.35)",
         }}
       >
-        <PublicContainer size="wide" className="relative flex min-h-[var(--home-header-height)] items-center gap-3">
+        <PublicContainer size="wide" className="relative flex min-h-[var(--home-header-height)] min-w-0 items-center gap-2 sm:gap-3">
           <Link
             href="/"
-            className="focus-ring relative z-10 flex shrink-0 items-center gap-2 rounded-[var(--home-radius-sm)]"
+            className="focus-ring relative z-10 flex min-w-0 shrink-0 items-center gap-2 rounded-[var(--home-radius-sm)]"
           >
             <span
               className="flex h-7 w-7 items-center justify-center rounded-[var(--home-radius-sm)] text-[11px] font-extrabold text-[color:var(--home-text-on-accent)]"
@@ -69,7 +69,7 @@ export function PublicHeader() {
             >
               H
             </span>
-            <span className="text-[14px] font-semibold tracking-tight text-[color:var(--home-text)]">
+            <span className="pub-navbar-wordmark text-[14px] font-semibold tracking-tight text-[color:var(--home-text)]">
               {SITE.name}
             </span>
           </Link>
@@ -92,7 +92,7 @@ export function PublicHeader() {
             ))}
           </nav>
 
-          <div className="relative z-10 ms-auto flex shrink-0 items-center gap-1 sm:gap-1.5">
+          <div className="relative z-10 ms-auto flex min-w-0 shrink-0 items-center gap-0.5 sm:gap-1.5">
             <button
               type="button"
               onClick={() => setPaletteOpen(true)}
@@ -108,7 +108,11 @@ export function PublicHeader() {
               <span className="hidden sm:inline">از AI بپرس</span>
             </button>
 
-            <IconButton label="جستجوی AI — Ctrl+K" onClick={() => setPaletteOpen(true)}>
+            <IconButton
+              className="pub-navbar-search"
+              label="جستجوی AI — Ctrl+K"
+              onClick={() => setPaletteOpen(true)}
+            >
               <SearchIcon />
             </IconButton>
 

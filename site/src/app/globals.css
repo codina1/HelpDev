@@ -1117,6 +1117,8 @@ body {
 .pub-page {
   background: var(--pub-bg);
   color: var(--pub-fg);
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .pub-bottom-nav-spacer {
@@ -1527,6 +1529,7 @@ body {
 
 /* Homepage workflow visualization — CSS only, no animation library. */
 .home-workflow-panel {
+  overflow-x: hidden;
   border: 1px solid var(--home-border);
   border-radius: var(--home-radius-2xl);
   background: var(--home-surface);
@@ -1703,6 +1706,7 @@ body {
   .home-workflow-steps {
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 0.75rem;
+    min-width: 0;
   }
 
   .home-workflow-step {
@@ -1928,6 +1932,8 @@ body {
 .home-paths-scroller {
   display: flex;
   gap: 1rem;
+  width: 100%;
+  min-width: 0;
   margin: 0;
   padding: 0.25rem 0 0.65rem;
   list-style: none;
@@ -2828,5 +2834,106 @@ body {
 
 .pub-footer-legal-link:hover {
   color: var(--home-text-secondary);
+}
+
+/* Homepage mobile — overflow + stacking only. Tested 320 / 375 / 390 / 430. */
+@media (max-width: 430px) {
+  .pub-navbar-wordmark {
+    display: none;
+  }
+
+  .pub-navbar-search {
+    display: none;
+  }
+
+  .home-hero-orb {
+    max-width: min(17.25rem, 100%);
+  }
+
+  .home-hero-node-chip {
+    height: 2.15rem;
+    width: 2.15rem;
+    font-size: 0.5625rem;
+  }
+
+  .home-stats-row {
+    min-width: 0;
+  }
+
+  .home-stat {
+    min-width: 0;
+    flex: 1 1 calc(50% - 1px);
+    padding-inline: 0.7rem;
+  }
+
+  .home-workflow-panel {
+    padding: 1rem 0.85rem 1.15rem;
+  }
+
+  .home-workflow-input {
+    gap: 0.5rem;
+    min-height: 2.85rem;
+    padding-inline: 0.55rem;
+  }
+
+  .home-workflow-input-text {
+    font-size: 0.75rem;
+  }
+
+  .home-workflow-visual {
+    overflow-x: hidden;
+  }
+
+  .home-value-card,
+  .home-article-card,
+  .home-path-card {
+    min-width: 0;
+  }
+
+  .home-path-item {
+    flex-basis: min(16.25rem, 84vw);
+  }
+
+  .home-articles-grid,
+  .home-value-grid {
+    min-width: 0;
+  }
+
+  .home-newsletter-form,
+  .pub-footer-form {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .pub-footer-inner {
+    padding-inline: 1rem;
+  }
+
+  .pub-footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 374px) {
+  .home-newsletter-form,
+  .pub-footer-form {
+    grid-template-columns: 1fr;
+  }
+
+  .home-newsletter-cta,
+  .pub-footer-submit {
+    width: 100%;
+  }
+
+  .home-trust-row {
+    gap: 0.75rem 1.1rem;
+  }
+}
+
+@media (max-width: 359px) {
+  .home-stat {
+    gap: 0.45rem;
+    padding-inline: 0.55rem;
+    padding-block: 0.75rem;
+  }
 }
 
