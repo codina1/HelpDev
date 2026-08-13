@@ -16,7 +16,7 @@ export const HOME_TRUST_MARKS: readonly HomeTrustMarkItem[] = [
 export function HomeTrustSection() {
   return (
     <PublicSection
-      className="home-trust home-reveal !py-8 sm:!py-10"
+      className="home-trust home-reveal !py-6 sm:!py-7"
       containerSize="wide"
       aria-labelledby="home-trust-heading"
     >

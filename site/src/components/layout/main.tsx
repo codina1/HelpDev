@@ -5,7 +5,7 @@ type MainProps = {
 export function Main({ children }: MainProps) {
   return (
     <main className="min-w-0 flex-1 overflow-y-auto">
-      <div className="mx-auto max-w-[1400px] px-4 py-6 pb-10 lg:px-6 lg:py-8 lg:pb-12">
+      <div className="mx-auto w-full max-w-none px-4 py-5 pb-8 sm:px-6 lg:px-8 lg:py-6 lg:pb-10">
         {children}
       </div>
     </main>

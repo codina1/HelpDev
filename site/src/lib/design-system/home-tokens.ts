@@ -57,13 +57,13 @@ export const homeSpacing = {
   10: "2.5rem",
   12: "3rem",
   16: "4rem",
-  sectionGap: "4.5rem",
+  sectionGap: "2.5rem",
   gutter: "1.25rem",
 } as const;
 
 export const homeContainer = {
-  default: "75rem",
-  wide: "87.5rem",
+  default: "100%",
+  wide: "100%",
   narrow: "48rem",
   headerHeight: "72px",
 } as const;

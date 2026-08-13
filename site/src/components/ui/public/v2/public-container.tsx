@@ -6,9 +6,9 @@ type PublicContainerProps = {
 };
 
 const SIZE = {
-  default: "max-w-[1200px]",
+  default: "max-w-none",
   narrow: "max-w-3xl",
-  wide: "max-w-[1400px]",
+  wide: "max-w-none",
   full: "max-w-none",
 } as const;
 
@@ -19,7 +19,7 @@ export function PublicContainer({
   size = "default",
 }: PublicContainerProps) {
   return (
-    <Tag className={["mx-auto w-full min-w-0 px-4 sm:px-5 lg:px-6", SIZE[size], className].join(" ")}>
+    <Tag className={["mx-auto w-full min-w-0 px-4 sm:px-6 lg:px-8", SIZE[size], className].join(" ")}>
       {children}
     </Tag>
   );

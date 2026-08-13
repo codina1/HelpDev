@@ -13,8 +13,8 @@ describe("Sprint 50B — responsive component contracts", () => {
       </PublicContainer>,
     );
     expect(html).toContain("px-4");
-    expect(html).toContain("sm:px-5");
-    expect(html).toContain("max-w-[1400px]");
+    expect(html).toContain("sm:px-6");
+    expect(html).toContain("max-w-none");
   });
 
   it("section + cards expose responsive grid-friendly markup", () => {

@@ -26,7 +26,7 @@ export function PublicSection({
       id={id}
       aria-labelledby={ariaLabelledBy}
       aria-label={ariaLabel}
-      className={["relative py-12 sm:py-14 lg:py-20", className].join(" ")}
+      className={["relative py-8 sm:py-9 lg:py-10", className].join(" ")}
     >
       {bare ? (
         children

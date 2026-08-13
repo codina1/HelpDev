@@ -114,11 +114,11 @@
   --home-space-10: 2.5rem;
   --home-space-12: 3rem;
   --home-space-16: 4rem;
-  --home-section-gap: 4.5rem;
+  --home-section-gap: 2.5rem;
   --home-gutter: 1.25rem;
 
-  --home-container: 75rem;
-  --home-container-wide: 87.5rem;
+  --home-container: 100%;
+  --home-container-wide: 100%;
   --home-container-narrow: 48rem;
   --home-header-height: 72px;
 
@@ -2619,12 +2619,18 @@ body {
   width: 100%;
   max-width: var(--home-container-wide);
   margin-inline: auto;
-  padding: 2.5rem 1.25rem 1.25rem;
+  padding: 2.5rem 1rem 1.25rem;
 }
 
 @media (min-width: 640px) {
   .pub-footer-inner {
     padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pub-footer-inner {
+    padding-inline: 2rem;
   }
 }
 
@@ -3019,12 +3025,12 @@ body {
 /* Homepage stats — compact horizontal glass bar. */
 .home-stats {
   position: relative;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1rem;
 }
 
 @media (min-width: 640px) {
   .home-stats {
-    padding-bottom: 2rem;
+    padding-bottom: 1.25rem;
   }
 }
 

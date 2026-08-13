@@ -28,7 +28,7 @@ describe("homepage design tokens", () => {
     expect(homeColors.purple.toLowerCase()).toBe("#8b5cf6");
     expect(homeColors.blue.toLowerCase()).toBe("#6366f1");
     expect(homeColors.cyan.toLowerCase()).toBe("#06b6d4");
-    expect(homeContainer.default).toBe("75rem");
+    expect(homeContainer.default).toBe("100%");
     expect(homeContainer.headerHeight).toBe("72px");
     expect(homeTokens.typography.fontFamily).toContain("--font-vazirmatn");
   });

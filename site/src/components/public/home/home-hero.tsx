@@ -34,7 +34,7 @@ const HERO_TRUST = ["دانش منتشرشده", "مسیر یادگیری", "د�
 export function HomeHero() {
   return (
     <PublicSection
-      className="home-hero overflow-hidden pb-10 pt-8 sm:pb-12 sm:pt-12 lg:pb-16 lg:pt-16"
+      className="home-hero overflow-hidden pb-6 pt-6 sm:pb-8 sm:pt-8 lg:pb-10 lg:pt-10"
       bare
       aria-labelledby="home-hero-title"
     >
