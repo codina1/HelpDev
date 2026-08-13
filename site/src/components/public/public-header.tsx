@@ -4,24 +4,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AuthModal, useAuth } from "@/components/auth";
-import { NotificationCenter } from "@/components/notifications/notification-center";
 import { GlobalSearchPalette } from "@/components/search/global-search-palette";
-import { GlowButton } from "@/components/ui/public/v2/glow-button";
-import { PremiumBadge } from "@/components/ui/public/v2/premium-badge";
 import { PublicContainer } from "@/components/ui/public/v2/public-container";
 import { PUBLIC_PRODUCTS_NAV } from "@/lib/public/nav-v2";
 import { SITE } from "@/lib/constants";
 import { getUserDisplayName, getUserInitials } from "@/types/auth";
 
 /**
- * Sprint 50B premium public header — glass, sticky, compact products nav.
+ * Minimal glass public header — Linear/Vercel density, RTL.
+ * Logo at inline-start (right), nav centered, compact actions at inline-end.
  */
 export function PublicHeader() {
   const pathname = usePathname();
   const { user, logout, isReady } = useAuth();
   const [authOpen, setAuthOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
-  const [productsOpen, setProductsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -35,7 +33,7 @@ export function PublicHeader() {
   }, []);
 
   useEffect(() => {
-    setProductsOpen(false);
+    setMenuOpen(false);
   }, [pathname]);
 
   function isActive(href: string) {
@@ -44,129 +42,114 @@ export function PublicHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-[color:var(--pub-glass-border)] bg-[color:color-mix(in_srgb,var(--pub-bg)_72%,transparent)] backdrop-blur-xl backdrop-saturate-150">
-        <PublicContainer size="wide" className="flex h-14 items-center gap-3 lg:h-[58px] lg:gap-4">
-          <Link href="/" className="focus-ring group flex shrink-0 items-center gap-2 rounded-xl">
+      <header className="pub-navbar sticky top-0 z-50 border-b border-white/[0.08] bg-[rgba(8,10,18,0.68)] backdrop-blur-xl backdrop-saturate-150">
+        <PublicContainer size="wide" className="relative flex h-[72px] items-center">
+          <Link href="/" className="focus-ring relative z-10 flex shrink-0 items-center gap-2 rounded-md">
             <span
-              className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[color:var(--pub-primary)] to-[color:var(--pub-secondary)] text-sm text-white shadow-[0_0_20px_var(--pub-glow)]"
+              className="flex h-6 w-6 items-center justify-center rounded-md bg-white/[0.08] text-[10px] font-bold text-white"
               aria-hidden
             >
-              ⚡
+              H
             </span>
-            <span className="hidden text-[14px] font-extrabold tracking-tight text-[color:var(--pub-fg)] sm:block">
-              {SITE.name}
-            </span>
+            <span className="text-[14px] font-semibold tracking-tight text-white">{SITE.name}</span>
           </Link>
 
-          <div className="relative hidden md:block">
-            <button
-              type="button"
-              className="focus-ring inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[13px] font-semibold text-[color:var(--pub-muted)] hover:bg-white/[0.04] hover:text-[color:var(--pub-fg)]"
-              aria-expanded={productsOpen}
-              aria-haspopup="menu"
-              onClick={() => setProductsOpen((v) => !v)}
-            >
-              محصولات
-              <ChevronIcon open={productsOpen} />
-            </button>
-            {productsOpen ? (
-              <div
-                role="menu"
-                className="pub-glass-strong absolute start-0 top-full z-50 mt-2 min-w-[200px] rounded-xl p-1.5"
-              >
-                {PUBLIC_PRODUCTS_NAV.map((item) => (
-                  <Link
-                    key={item.href}
-                    role="menuitem"
-                    href={item.href}
-                    className={[
-                      "focus-ring flex rounded-lg px-3 py-2 text-[13px] font-semibold",
-                      isActive(item.href)
-                        ? "bg-[color:color-mix(in_srgb,var(--pub-primary)_16%,transparent)] text-[color:var(--pub-ai-from)]"
-                        : "text-[color:var(--pub-muted)] hover:bg-white/[0.04] hover:text-[color:var(--pub-fg)]",
-                    ].join(" ")}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            ) : null}
-          </div>
-
-          <nav className="scrollbar-thin hidden min-w-0 flex-1 items-center gap-0.5 overflow-x-auto lg:flex" aria-label="محصولات">
-            {PUBLIC_PRODUCTS_NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={[
-                  "focus-ring whitespace-nowrap rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition xl:text-[13px]",
-                  isActive(item.href)
-                    ? "bg-[color:color-mix(in_srgb,var(--pub-primary)_16%,transparent)] text-[color:var(--pub-ai-from)]"
-                    : "text-[color:var(--pub-muted)] hover:bg-white/[0.04] hover:text-[color:var(--pub-fg)]",
-                ].join(" ")}
-                aria-current={isActive(item.href) ? "page" : undefined}
-              >
-                {item.label}
-              </Link>
-            ))}
+          <nav
+            className="pointer-events-none absolute inset-x-0 hidden items-center justify-center md:flex"
+            aria-label="ناوبری اصلی"
+          >
+            <div className="pointer-events-auto flex items-center gap-0.5">
+              {PUBLIC_PRODUCTS_NAV.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={[
+                    "focus-ring rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors",
+                    isActive(item.href)
+                      ? "text-white"
+                      : "text-white/55 hover:text-white",
+                  ].join(" ")}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           </nav>
 
-          <button
-            type="button"
-            onClick={() => setPaletteOpen(true)}
-            className="focus-ring ms-auto hidden h-9 min-w-[200px] items-center gap-2 rounded-xl border border-[color:var(--pub-glass-border)] bg-white/[0.03] px-3 text-start text-[12px] text-[color:var(--pub-muted)] hover:border-[color:color-mix(in_srgb,var(--pub-primary)_40%,transparent)] md:inline-flex lg:min-w-[240px]"
-            aria-label="جستجوی AI — Ctrl+K"
-          >
-            <SearchIcon />
-            <span className="flex-1">جستجوی دانش...</span>
-            <kbd className="rounded border border-white/10 px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
-          </button>
-
-          <div className="flex shrink-0 items-center gap-1.5 md:ms-0 ms-auto">
+          <div className="relative z-10 ms-auto flex shrink-0 items-center gap-1">
             <button
               type="button"
-              className="focus-ring inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[color:var(--pub-glass-border)] text-[color:var(--pub-muted)] md:hidden"
-              aria-label="جستجو"
               onClick={() => setPaletteOpen(true)}
+              className="focus-ring inline-flex h-8 w-8 items-center justify-center rounded-md text-white/55 transition-colors hover:bg-white/[0.06] hover:text-white"
+              aria-label="جستجوی AI — Ctrl+K"
             >
               <SearchIcon />
             </button>
 
             {isReady && user ? (
               <>
-                <NotificationCenter />
-                <GlowButton href="/dashboard" variant="ghost" className="hidden !px-3 !py-1.5 sm:inline-flex">
+                <Link
+                  href="/dashboard"
+                  className="focus-ring hidden h-8 items-center rounded-md px-2.5 text-[12px] font-medium text-white/70 transition-colors hover:bg-white/[0.06] hover:text-white sm:inline-flex"
+                >
                   داشبورد
-                </GlowButton>
+                </Link>
                 <Link
                   href="/profile"
-                  className="focus-ring flex items-center gap-2 rounded-xl border border-[color:var(--pub-glass-border)] bg-white/[0.03] px-2 py-1.5 hover:border-[color:color-mix(in_srgb,var(--pub-primary)_40%,transparent)]"
+                  className="focus-ring flex h-8 w-8 items-center justify-center overflow-hidden rounded-full"
+                  aria-label={getUserDisplayName(user)}
                 >
                   <UserAvatar user={user} />
-                  <span className="hidden max-w-[120px] truncate text-[12px] font-semibold lg:inline">
-                    {getUserDisplayName(user)}
-                  </span>
-                  {user.role === "Admin" || user.role === "Writer" ? (
-                    <PremiumBadge variant="primary" className="hidden md:inline-flex">
-                      {user.role}
-                    </PremiumBadge>
-                  ) : null}
                 </Link>
                 <button
                   type="button"
                   onClick={logout}
-                  className="focus-ring hidden rounded-xl px-2.5 py-1.5 text-[12px] font-semibold text-[color:var(--pub-muted)] hover:text-red-300 lg:inline-flex"
+                  className="focus-ring hidden h-8 items-center rounded-md px-2 text-[12px] font-medium text-white/45 transition-colors hover:text-white/80 lg:inline-flex"
                 >
                   خروج
                 </button>
               </>
             ) : (
-              <GlowButton onClick={() => setAuthOpen(true)} className="!px-3.5 !py-2 text-[12px]">
+              <button
+                type="button"
+                onClick={() => setAuthOpen(true)}
+                className="focus-ring inline-flex h-8 items-center rounded-md border border-white/[0.12] px-3 text-[12px] font-medium text-white/90 transition-colors hover:border-white/20 hover:bg-white/[0.06]"
+              >
                 ورود
-              </GlowButton>
+              </button>
             )}
+
+            <button
+              type="button"
+              className="focus-ring inline-flex h-8 w-8 items-center justify-center rounded-md text-white/55 hover:bg-white/[0.06] hover:text-white md:hidden"
+              aria-label={menuOpen ? "بستن منو" : "باز کردن منو"}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              <MenuIcon open={menuOpen} />
+            </button>
           </div>
         </PublicContainer>
+
+        {menuOpen ? (
+          <div className="border-t border-white/[0.08] bg-[rgba(8,10,18,0.92)] backdrop-blur-xl md:hidden">
+            <nav className="mx-auto flex max-w-[1400px] flex-col px-4 py-2" aria-label="ناوبری موبایل">
+              {PUBLIC_PRODUCTS_NAV.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={[
+                    "focus-ring rounded-md px-2 py-2.5 text-[13px] font-medium",
+                    isActive(item.href) ? "text-white" : "text-white/60",
+                  ].join(" ")}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        ) : null}
       </header>
 
       <GlobalSearchPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
@@ -181,13 +164,13 @@ function UserAvatar({ user }: { user: NonNullable<ReturnType<typeof useAuth>["us
       // eslint-disable-next-line @next/next/no-img-element
       <img
         src={user.profileImageUrl}
-        alt={getUserDisplayName(user)}
-        className="h-7 w-7 rounded-full border border-[color:var(--pub-glass-border)] object-cover"
+        alt=""
+        className="h-7 w-7 rounded-full object-cover"
       />
     );
   }
   return (
-    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[color:color-mix(in_srgb,var(--pub-primary)_20%,transparent)] text-[10px] font-bold text-[color:var(--pub-ai-from)]">
+    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/[0.08] text-[10px] font-semibold text-white/80">
       {getUserInitials(user)}
     </span>
   );
@@ -195,26 +178,21 @@ function UserAvatar({ user }: { user: NonNullable<ReturnType<typeof useAuth>["us
 
 function SearchIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
       <circle cx="11" cy="11" r="7" />
       <path d="m20 20-3-3" />
     </svg>
   );
 }
 
-function ChevronIcon({ open }: { open: boolean }) {
+function MenuIcon({ open }: { open: boolean }) {
   return (
-    <svg
-      width="12"
-      height="12"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      className={open ? "rotate-180 transition" : "transition"}
-      aria-hidden
-    >
-      <path d="m6 9 6 6 6-6" />
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
+      {open ? (
+        <path d="M6 6l12 12M18 6L6 18" />
+      ) : (
+        <path d="M4 8h16M4 16h16" />
+      )}
     </svg>
   );
 }
