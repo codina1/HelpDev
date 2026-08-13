@@ -7,18 +7,7 @@ import { HomePathsSection } from "@/components/public/home/home-paths-section";
 import { HomeArticlesSection } from "@/components/public/home/home-articles-section";
 import { HomeTrustSection } from "@/components/public/home/home-trust-section";
 import { HomeNewsletterSection } from "@/components/public/home/home-newsletter-section";
-import { PersonalizedHero } from "@/components/experience/personalized-hero";
-import { AiDecisionDemo } from "@/components/public/home/v2/ai-decision-demo";
-import { AiWorkflowDemo } from "@/components/public/home/v2/ai-workflow-demo";
-import { DeveloperIdentitySection } from "@/components/public/home/v2/developer-identity-section";
-import { DeveloperJourneyTimeline } from "@/components/public/home/v2/developer-journey-timeline";
-import { EngineeringCaseStudies } from "@/components/public/home/v2/engineering-case-studies";
-import { EngineeringIntelligenceSection } from "@/components/public/home/v2/engineering-intelligence-section";
 import { InteractionRevealObserver } from "@/components/public/home/v2/interaction-reveal-observer";
-import { KnowledgeSearchSection } from "@/components/public/home/v2/knowledge-search-section";
-import { KnowledgeShowcaseV2 } from "@/components/public/home/v2/knowledge-showcase-v2";
-import { RoadmapExperienceV2 } from "@/components/public/home/v2/roadmap-experience-v2";
-import { ToolExperienceV2 } from "@/components/public/home/v2/tool-experience-v2";
 import { listPublishedContent } from "@/lib/api/content";
 import { listTools } from "@/lib/api/toolbox";
 import { isArticleType, isRoadmapType, isToolContentType } from "@/lib/public/content-helpers";
@@ -39,18 +28,13 @@ async function safeListTools() {
   }
 }
 
-/** Sprint 50G — Premium Interaction Layer homepage. */
+/** Public homepage — core sections only, no duplicate v2 stack. */
 export async function PublicHomePage() {
   const [content, tools] = await Promise.all([safeListContent(), safeListTools()]);
 
   const articles = content
     .filter((item) => isArticleType(item.type))
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
-  const latest =
-    articles.length > 0
-      ? articles
-      : [...content].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   const roadmaps = content.filter((item) => isRoadmapType(item.type));
   const contentTools = content.filter((item) => isToolContentType(item.type));
@@ -72,17 +56,6 @@ export async function PublicHomePage() {
       <HomePathsSection roadmaps={roadmaps} />
       <HomeArticlesSection articles={articles} />
       <HomeTrustSection />
-      <PersonalizedHero />
-      <EngineeringIntelligenceSection />
-      <AiWorkflowDemo />
-      <KnowledgeShowcaseV2 items={latest.slice(0, 6)} />
-      <ToolExperienceV2 tools={tools} contentTools={contentTools} />
-      <RoadmapExperienceV2 items={roadmaps} />
-      <DeveloperJourneyTimeline />
-      <EngineeringCaseStudies publishedExamples={articles.slice(0, 2)} />
-      <AiDecisionDemo />
-      <DeveloperIdentitySection />
-      <KnowledgeSearchSection />
       <HomeNewsletterSection />
     </div>
   );
