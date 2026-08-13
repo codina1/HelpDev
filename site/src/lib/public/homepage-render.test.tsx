@@ -26,6 +26,41 @@ describe("Sprint 50B — homepage render", () => {
     );
     expect(html).toContain("معماری Microservice");
     expect(html).toContain("/articles/microservices");
+    expect(html).not.toContain("sm:min-h-[300px]");
+  });
+
+  it("stacks two equal-width selected articles instead of one featured card", () => {
+    const html = renderToStaticMarkup(
+      <KnowledgeShowcaseV2
+        items={[
+          {
+            id: "1",
+            title: "مقاله اول",
+            slug: "one",
+            type: "Article",
+            status: "Published",
+            views: 0,
+            saves: 0,
+            createdAt: "2026-07-01T00:00:00Z",
+          },
+          {
+            id: "2",
+            title: "مقاله دوم",
+            slug: "two",
+            type: "Article",
+            status: "Published",
+            views: 0,
+            saves: 0,
+            createdAt: "2026-07-02T00:00:00Z",
+          },
+        ]}
+      />,
+    );
+    expect(html).toContain("مقاله اول");
+    expect(html).toContain("مقاله دوم");
+    expect(html).toContain("/articles/one");
+    expect(html).toContain("/articles/two");
+    expect(html).not.toContain("sm:min-h-[300px]");
   });
 
   it("renders tool / roadmap / AI sections without fake catalog claims", () => {

@@ -15,8 +15,8 @@ import { publicHrefForContent } from "@/lib/public/content-helpers";
 type Props = { items: ContentSummaryDto[] };
 
 export function KnowledgeShowcaseV2({ items }: Props) {
-  const featured = items[0];
-  const rest = items.slice(1, 7);
+  const primary = items.slice(0, 2);
+  const rest = items.slice(2, 6);
 
   return (
     <PublicSection className="ds-slide" aria-labelledby="knowledge-showcase-title">
@@ -40,36 +40,49 @@ export function KnowledgeShowcaseV2({ items }: Props) {
         />
       ) : (
         <div className="grid gap-4 lg:grid-cols-2">
-          {featured ? (
-            <ArticleCardPro
-              featured
-              title={featured.title}
-              href={publicHrefForContent(featured)}
-              category={labelForContentType(featured.type)}
-              readingTime={estimateReadingLabel(featured.title)}
-              difficulty={softDifficulty(featured.type)}
-              tags={inferTechTags(featured.title, featured.slug)}
-              aiSummary={softAiSummary(featured.title, featured.slug)}
-              coverTone="indigo"
-            />
-          ) : null}
-          <div className="grid gap-4 sm:grid-cols-2">
-            {rest.slice(0, 4).map((item, index) => (
-              <ArticleCardPro
+          <div className="grid gap-4">
+            {primary.map((item, index) => (
+              <ShowcaseArticleCard
                 key={item.id}
-                title={item.title}
-                href={publicHrefForContent(item)}
-                category={labelForContentType(item.type)}
-                readingTime={estimateReadingLabel(item.title)}
-                difficulty={softDifficulty(item.type)}
-                tags={inferTechTags(item.title, item.slug)}
-                aiSummary={softAiSummary(item.title, item.slug)}
-                coverTone={index % 2 === 0 ? "violet" : "cyan"}
+                item={item}
+                coverTone={index === 0 ? "indigo" : "violet"}
               />
             ))}
           </div>
+          {rest.length > 0 ? (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {rest.map((item, index) => (
+                <ShowcaseArticleCard
+                  key={item.id}
+                  item={item}
+                  coverTone={index % 2 === 0 ? "violet" : "cyan"}
+                />
+              ))}
+            </div>
+          ) : null}
         </div>
       )}
     </PublicSection>
+  );
+}
+
+function ShowcaseArticleCard({
+  item,
+  coverTone,
+}: {
+  item: ContentSummaryDto;
+  coverTone: "violet" | "cyan" | "indigo";
+}) {
+  return (
+    <ArticleCardPro
+      title={item.title}
+      href={publicHrefForContent(item)}
+      category={labelForContentType(item.type)}
+      readingTime={estimateReadingLabel(item.title)}
+      difficulty={softDifficulty(item.type)}
+      tags={inferTechTags(item.title, item.slug)}
+      aiSummary={softAiSummary(item.title, item.slug)}
+      coverTone={coverTone}
+    />
   );
 }

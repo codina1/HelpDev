@@ -75,7 +75,7 @@ export async function PublicHomePage() {
       <PersonalizedHero />
       <EngineeringIntelligenceSection />
       <AiWorkflowDemo />
-      <KnowledgeShowcaseV2 items={latest.slice(0, 7)} />
+      <KnowledgeShowcaseV2 items={latest.slice(0, 6)} />
       <ToolExperienceV2 tools={tools} contentTools={contentTools} />
       <RoadmapExperienceV2 items={roadmaps} />
       <DeveloperJourneyTimeline />
