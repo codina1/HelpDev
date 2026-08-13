@@ -25,7 +25,7 @@ const TOOL_LINKS = [
 
 const COMPANY_LINKS = [
   { href: "/about", label: "درباره ما" },
-  { href: "/settings", label: "تماس" },
+  { href: "/contact", label: "تماس" },
   { href: "/news", label: "اخبار" },
   { href: "/write", label: "نویسنده شو" },
 ] as const;
@@ -69,7 +69,7 @@ export function PublicFooter() {
                 <GitHubIcon />
               </a>
               <Link
-                href="/settings"
+                href="/contact"
                 className="pub-footer-social-link focus-ring"
                 aria-label="تماس"
               >

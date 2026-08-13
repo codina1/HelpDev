@@ -32,10 +32,11 @@ describe("About navigation", () => {
     expect(homeFooter).not.toContain('href: "/admin/settings"');
   });
 
-  it("does not change Contact routing", () => {
+  it("points public Contact / تماس links at /contact, not settings", () => {
     const footer = renderToStaticMarkup(<PublicFooter />);
-    expect(footer).toContain('href="/settings"');
+    expect(footer).toContain('href="/contact"');
     expect(footer).toContain("تماس");
+    expect(footer).not.toContain('href="/settings"');
   });
 
   it("keeps public /about out of admin auth paths", () => {

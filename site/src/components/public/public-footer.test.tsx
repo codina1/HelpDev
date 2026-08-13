@@ -16,7 +16,7 @@ describe("public footer", () => {
     expect(html).toContain("عضویت");
     expect(html).toContain("https://github.com/codina1/HelpDev");
     expect(html).toContain("/about");
-    expect(html).toContain("/settings");
+    expect(html).toContain("/contact");
     expect(html).toContain("/privacy");
     expect(html).toContain("/terms");
     expect(html).toContain("تمامی حقوق محفوظ است");
