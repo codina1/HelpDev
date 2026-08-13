@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout";
 import { SITE } from "@/lib/constants";
 
-export const metadata: Metadata = { title: "درباره ما" };
+export const metadata: Metadata = {
+  title: "درباره ما",
+  description: SITE.description,
+};
 
 export default function AboutPage() {
   return (
     <>
-      <PageHeader
-        title="درباره ما"
-        description={SITE.description}
-      />
+      <PageHeader title="درباره ما" description={SITE.description} />
       <div className="ui-panel space-y-4 p-6">
         <p className="ui-body">
           هلپ‌دو یک پلتفرم دانش مهندسی هوش مصنوعی است؛ جایی برای مقالات، ابزارها،
