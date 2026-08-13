@@ -1,4 +1,6 @@
 import { HomeHero } from "@/components/public/home/home-hero";
+import { HomeStatsStrip } from "@/components/public/home/home-stats-strip";
+import type { HomeStatItem } from "@/components/public/home/home-stat";
 import { PersonalizedHero } from "@/components/experience/personalized-hero";
 import { AiDecisionDemo } from "@/components/public/home/v2/ai-decision-demo";
 import { AiWorkflowDemo } from "@/components/public/home/v2/ai-workflow-demo";
@@ -55,6 +57,13 @@ export async function PublicHomePage() {
     <div className="pb-10">
       <InteractionRevealObserver />
       <HomeHero />
+      <HomeStatsStrip
+        items={buildHomeStats({
+          articles: articles.length,
+          paths: roadmaps.length,
+          tools: toolsCount,
+        })}
+      />
       <PersonalizedHero />
       <TrustMetricsSection
         metrics={[
@@ -92,4 +101,18 @@ export async function PublicHomePage() {
       <KnowledgeSearchSection />
     </div>
   );
+}
+
+function buildHomeStats(counts: {
+  articles: number;
+  paths: number;
+  tools: number;
+}): HomeStatItem[] {
+  return [
+    { id: "engineers", label: "مهندسان فعال", value: 0, icon: "engineers" },
+    { id: "articles", label: "مقالات فنی", value: counts.articles, icon: "articles" },
+    { id: "paths", label: "مسیرهای یادگیری", value: counts.paths, icon: "paths" },
+    { id: "tools", label: "ابزارهای مهندسی", value: counts.tools, icon: "tools" },
+    { id: "questions", label: "پرسش‌های پاسخ‌داده‌شده", value: 0, icon: "questions" },
+  ];
 }
