@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { HomeHero } from "@/components/public/home/home-hero";
@@ -25,5 +27,13 @@ describe("homepage hero", () => {
     expect(html).toContain("دستیار AI");
     expect(html).not.toContain("Engineering Articles");
     expect(html).not.toContain("Trust");
+  });
+
+  it("keeps the orbital scene off the light theme so the dark disc does not show", () => {
+    const css = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf8");
+    const svg = readFileSync(join(process.cwd(), "public/home/hero-scene.svg"), "utf8");
+    expect(css).toContain("html:not(.dark) .home-hero-scene");
+    expect(css).toContain("html:not(.dark) .home-hero-orb::before");
+    expect(svg).not.toContain('fill="#0B1020"');
   });
 });
