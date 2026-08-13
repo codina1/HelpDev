@@ -2027,7 +2027,8 @@ body {
 }
 
 /* Homepage engineering learning paths */
-.home-paths-scroller {
+.home-paths-scroller,
+.home-articles-scroller {
   display: flex;
   gap: 1rem;
   width: 100%;
@@ -2042,19 +2043,22 @@ body {
   scrollbar-color: color-mix(in srgb, var(--home-purple) 40%, transparent) transparent;
 }
 
-.home-path-item {
+.home-path-item,
+.home-article-item {
   flex: 0 0 min(17.75rem, 78vw);
   scroll-snap-align: start;
 }
 
 @media (min-width: 1200px) {
-  .home-paths-scroller {
+  .home-paths-scroller,
+  .home-articles-scroller {
     overflow: visible;
     scroll-snap-type: none;
     padding-bottom: 0.25rem;
   }
 
-  .home-path-item {
+  .home-path-item,
+  .home-article-item {
     flex: 1 1 0;
     min-width: 0;
   }
@@ -2201,28 +2205,7 @@ body {
   }
 }
 
-/* Homepage latest engineering articles */
-.home-articles-grid {
-  display: grid;
-  gap: 1rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-@media (min-width: 640px) {
-  .home-articles-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.1rem;
-  }
-}
-
-@media (min-width: 1100px) {
-  .home-articles-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
+/* Homepage latest articles — same compact card row as learning paths. */
 .home-article-card {
   --home-article-accent: var(--home-purple);
   display: flex;
@@ -2321,7 +2304,7 @@ body {
 }
 
 .home-article-excerpt {
-  margin: 0.5rem 0 0;
+  margin: 0.45rem 0 0;
   font-size: 0.8125rem;
   line-height: 1.75;
   color: var(--home-text-muted);
@@ -2335,10 +2318,10 @@ body {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.4rem 0.75rem;
   margin: auto 0 0;
-  padding-top: 0.9rem;
-  font-size: 0.6875rem;
+  padding-top: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--home-text-secondary);
 }
@@ -3281,11 +3264,12 @@ body {
     min-width: 0;
   }
 
-  .home-path-item {
+  .home-path-item,
+  .home-article-item {
     flex-basis: min(16.25rem, 84vw);
   }
 
-  .home-articles-grid,
+  .home-articles-scroller,
   .home-value-grid {
     min-width: 0;
   }

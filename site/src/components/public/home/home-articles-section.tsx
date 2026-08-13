@@ -125,8 +125,8 @@ export function mapPublishedHomeArticle(
 }
 
 export function buildHomeArticles(articles: ContentSummaryDto[]): HomeArticleItem[] {
-  if (articles.length === 0) return [...HOME_ARTICLE_TOPICS];
-  return articles.slice(0, 6).map(mapPublishedHomeArticle);
+  if (articles.length === 0) return HOME_ARTICLE_TOPICS.slice(0, 5);
+  return articles.slice(0, 5).map(mapPublishedHomeArticle);
 }
 
 /**
@@ -164,7 +164,7 @@ export function HomeArticlesSection({ articles = [] }: HomeArticlesSectionProps)
         </Link>
       </div>
 
-      <ul className="home-articles-grid">
+      <ul className="home-articles-scroller">
         {items.map((item) => (
           <HomeArticleCard key={item.id} item={item} />
         ))}

@@ -17,7 +17,7 @@ describe("homepage mobile responsive rules", () => {
     expect(css).toContain(".home-stat");
     expect(css).toContain(".home-workflow-panel");
     expect(css).toContain(".home-path-item");
-    expect(css).toContain(".home-articles-grid");
+    expect(css).toContain(".home-articles-scroller");
     expect(css).toContain(".pub-footer-grid");
   });
 
