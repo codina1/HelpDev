@@ -3,6 +3,7 @@ import type { NavItem } from "@/lib/constants";
 /** Compact product nav for Sprint 50B public header. */
 export const PUBLIC_PRODUCTS_NAV: NavItem[] = [
   { href: "/articles", label: "مقالات" },
+  { href: "/news", label: "اخبار" },
   { href: "/toolbox", label: "ابزارها" },
   { href: "/roadmap", label: "نقشه راه" },
   { href: "/learning", label: "یادگیری" },

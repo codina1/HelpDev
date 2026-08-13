@@ -25,4 +25,10 @@ describe("public homepage header", () => {
     expect(source).toContain("/dashboard");
     expect(source).toContain("/profile");
   });
+
+  it("includes news in the shared public product nav", () => {
+    const nav = readFileSync(join(process.cwd(), "src/lib/public/nav-v2.ts"), "utf8");
+    expect(nav).toContain('href: "/news"');
+    expect(nav).toContain('label: "اخبار"');
+  });
 });
