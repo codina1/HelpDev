@@ -1,0 +1,15 @@
+.git/
+.vs/
+.idea/
+docs/
+tests/
+**/bin/
+**/obj/
+**/artifacts/
+TestResults/
+*.user
+*.suo
+*.nupkg
+**/.env
+**/.env.*
+**/appsettings.*.local.json

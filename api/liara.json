@@ -1,0 +1,11 @@
+{
+  "app": "helpdevapi",
+  "port": 80,
+  "platform": "dotnet",
+  "dotnet": {
+    "version": "8.0",
+    "timezone": "Asia/Tehran",
+    "finalDllName": "HelpDev.API",
+    "csprojectFile": "src/HelpDev.API/HelpDev.API.csproj"
+  }
+}
