@@ -8,9 +8,16 @@ import {
 } from "@/components/admin/content/editor/save-status";
 import {
   DIFFICULTY_LEVELS,
+  type DifficultyLevelValue,
   type ArticleFormErrors,
   type ArticleFormValues,
 } from "@/lib/admin/content/content-types";
+
+const DIFFICULTY_LABELS: Record<DifficultyLevelValue, string> = {
+  Beginner: "مبتدی",
+  Intermediate: "متوسط",
+  Advanced: "پیشرفته",
+};
 
 type ArticleSettingsPanelProps = {
   values: ArticleFormValues;
@@ -84,7 +91,7 @@ export function ArticleSettingsPanel({
             >
               {DIFFICULTY_LEVELS.map((level) => (
                 <option key={level} value={level}>
-                  {level}
+                  {DIFFICULTY_LABELS[level]}
                 </option>
               ))}
             </select>

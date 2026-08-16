@@ -30,4 +30,19 @@ describe("content creation workspaces", () => {
       ),
     ).toBe(false);
   });
+
+  it("shows Persian labels for article difficulty levels", () => {
+    const source = readFileSync(
+      join(
+        process.cwd(),
+        "src/components/admin/content/workspaces/article/article-settings-panel.tsx",
+      ),
+      "utf8",
+    );
+
+    expect(source).toContain('Beginner: "مبتدی"');
+    expect(source).toContain('Intermediate: "متوسط"');
+    expect(source).toContain('Advanced: "پیشرفته"');
+    expect(source).toContain("{DIFFICULTY_LABELS[level]}");
+  });
 });
