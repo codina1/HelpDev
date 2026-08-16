@@ -14,8 +14,16 @@ public static class ApplicationDbContextSeed
     public static readonly Guid Writer1Id = Guid.Parse("11111111-1111-1111-1111-111111111102");
     public static readonly Guid Writer2Id = Guid.Parse("11111111-1111-1111-1111-111111111103");
     public static readonly Guid PrimaryAdminId = Guid.Parse("11111111-1111-1111-1111-111111111104");
+    public static readonly Guid SecondaryAdminId = Guid.Parse("11111111-1111-1111-1111-111111111105");
 
     public const string PrimaryAdminMobile = "09904442841";
+    public const string SecondaryAdminMobile = "09175275094";
+
+    private static readonly (Guid Id, string Mobile, string FullName)[] BootstrapAdmins =
+    [
+        (PrimaryAdminId, PrimaryAdminMobile, "مدیر سیستم"),
+        (SecondaryAdminId, SecondaryAdminMobile, "مدیر سیستم دوم"),
+    ];
 
     public static async Task SeedAsync(
         ApplicationDbContext context,
@@ -185,33 +193,38 @@ public static class ApplicationDbContextSeed
             contents.Count);
     }
 
-    public static async Task EnsurePrimaryAdminAsync(
+    public static async Task EnsureBootstrapAdminsAsync(
         ApplicationDbContext context,
         ILogger logger,
         CancellationToken cancellationToken = default)
     {
-        var user = await context.Users
-            .FirstOrDefaultAsync(u => u.Mobile == PrimaryAdminMobile, cancellationToken);
-
-        if (user is null)
+        foreach (var bootstrapAdmin in BootstrapAdmins)
         {
-            context.Users.Add(new User
+            var user = await context.Users
+                .FirstOrDefaultAsync(
+                    candidate => candidate.Mobile == bootstrapAdmin.Mobile,
+                    cancellationToken);
+
+            if (user is null)
             {
-                Id = PrimaryAdminId,
-                Mobile = PrimaryAdminMobile,
-                FullName = "مدیر سیستم",
-                Role = UserRole.Admin,
-                Stack = "Platform",
-                CreatedAt = DateTime.UtcNow,
-            });
+                context.Users.Add(new User
+                {
+                    Id = bootstrapAdmin.Id,
+                    Mobile = bootstrapAdmin.Mobile,
+                    FullName = bootstrapAdmin.FullName,
+                    Role = UserRole.Admin,
+                    Stack = "Platform",
+                    CreatedAt = DateTime.UtcNow,
+                });
 
-            logger.LogInformation("Created primary admin user for {Mobile}.", PrimaryAdminMobile);
-        }
-        else if (user.Role != UserRole.Admin)
-        {
-            user.Role = UserRole.Admin;
-            context.Users.Update(user);
-            logger.LogInformation("Upgraded {Mobile} to Admin role.", PrimaryAdminMobile);
+                logger.LogInformation("Created bootstrap admin user for {Mobile}.", bootstrapAdmin.Mobile);
+            }
+            else if (user.Role != UserRole.Admin)
+            {
+                user.Role = UserRole.Admin;
+                context.Users.Update(user);
+                logger.LogInformation("Upgraded {Mobile} to Admin role.", bootstrapAdmin.Mobile);
+            }
         }
 
         await context.SaveChangesAsync(cancellationToken);

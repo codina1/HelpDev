@@ -25,7 +25,7 @@ public static class DatabaseInitializer
         {
             await context.Database.MigrateAsync();
             await ApplicationDbContextSeed.SeedAsync(context, logger);
-            await ApplicationDbContextSeed.EnsurePrimaryAdminAsync(context, logger);
+            await ApplicationDbContextSeed.EnsureBootstrapAdminsAsync(context, logger);
         }
         catch (Exception ex)
         {

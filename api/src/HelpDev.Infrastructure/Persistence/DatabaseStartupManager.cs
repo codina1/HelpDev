@@ -271,12 +271,11 @@ public static class DatabaseStartupManager
         {
             case DatabaseSeedMode.DevelopmentDemo:
                 await ApplicationDbContextSeed.SeedAsync(context, logger, cancellationToken).ConfigureAwait(false);
-                await ApplicationDbContextSeed.EnsurePrimaryAdminAsync(context, logger, cancellationToken).ConfigureAwait(false);
+                await ApplicationDbContextSeed.EnsureBootstrapAdminsAsync(context, logger, cancellationToken).ConfigureAwait(false);
                 break;
 
             case DatabaseSeedMode.RequiredSystemData:
-                // No non-secret required system data is currently needed at startup.
-                // Bootstrap Admin assignment is handled explicitly via configuration, not demo seed.
+                await ApplicationDbContextSeed.EnsureBootstrapAdminsAsync(context, logger, cancellationToken).ConfigureAwait(false);
                 break;
         }
 
