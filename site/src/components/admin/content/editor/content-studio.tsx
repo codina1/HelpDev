@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ADMIN_ROUTES } from "@/lib/admin/routes";
+import { ADMIN_ROUTES, adminContentArticleRoute } from "@/lib/admin/routes";
 import {
   useArticleMetadata,
   useContentSeoAnalysis,
+  useCreateContent,
   useNewsMetadata,
   useUpdateArticleMetadata,
   useUpdateContent,
@@ -30,11 +32,13 @@ import {
 import {
   CONTENT_LIMITS,
   CONTENT_TYPES,
+  EMPTY_SEO_FORM,
   type AdminContentDetail,
   type ArticleFormErrors,
   type ContentFormErrors,
   type ContentFormValues,
   type ContentStatusValue,
+  type ContentTypeValue,
   type NewsFormErrors,
   type SeoFormErrors,
   type SeoFormValues,
@@ -60,7 +64,22 @@ import type { MediaPickerSelection } from "@/lib/admin/media/media-types";
 import { WorkflowPanel } from "@/components/admin/content/workflow/workflow-panel";
 import { AdminSurface } from "@/components/admin/page/admin-surface";
 
-function initialContentValues(initial: AdminContentDetail): ContentFormValues {
+function initialContentValues(
+  initial: AdminContentDetail | undefined,
+  createType: ContentTypeValue,
+): ContentFormValues {
+  if (!initial) {
+    return {
+      title: "",
+      slug: "",
+      type: createType,
+      body: "",
+      status: "Draft",
+      excerpt: "",
+      coverImage: "",
+    };
+  }
+
   return {
     title: initial.title,
     slug: initial.slug,
@@ -81,25 +100,38 @@ function initialContentValues(initial: AdminContentDetail): ContentFormValues {
  * body, excerpt, cover image and SEO are pre-filled for drafts and published
  * items alike (a local draft, when present, overrides the recovered text).
  */
-export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
+export function ContentStudio({
+  initial,
+  createType = "Article",
+}: {
+  initial?: AdminContentDetail;
+  createType?: ContentTypeValue;
+}) {
+  const router = useRouter();
+  const create = useCreateContent();
   const update = useUpdateContent();
   const seoMutation = useUpdateSeoMetadata();
   const articleMutation = useUpdateArticleMetadata();
   const newsMutation = useUpdateNewsMetadata();
-  const seoAnalysis = useContentSeoAnalysis(initial.id);
-  const articleMeta = useArticleMetadata(initial.type === "Article" ? initial.id : null);
-  const newsMeta = useNewsMetadata(initial.type === "News" ? initial.id : null);
+  const contentId = initial?.id ?? null;
+  const contentType = initial?.type ?? createType;
+  const draftKey = contentId ?? `new-${createType.toLowerCase()}`;
+  const seoAnalysis = useContentSeoAnalysis(contentId);
+  const articleMeta = useArticleMetadata(contentType === "Article" ? contentId : null);
+  const newsMeta = useNewsMetadata(contentType === "News" ? contentId : null);
   // Set right after a successful save; consumed (and cleared) by the effect
   // below to auto-rerun the analysis exactly once — never in a loop.
   const autoRerunAfterSaveRef = useRef(false);
 
-  const [values, setValues] = useState<ContentFormValues>(() => initialContentValues(initial));
+  const [values, setValues] = useState<ContentFormValues>(() =>
+    initialContentValues(initial, createType),
+  );
   const [errors, setErrors] = useState<ContentFormErrors>({});
-  const [seo, setSeo] = useState<SeoFormValues>(() => initial.seo);
+  const [seo, setSeo] = useState<SeoFormValues>(() => initial?.seo ?? { ...EMPTY_SEO_FORM });
   const [seoErrors, setSeoErrors] = useState<SeoFormErrors>({});
   const [articleErrors, setArticleErrors] = useState<ArticleFormErrors>({});
   const [newsErrors, setNewsErrors] = useState<NewsFormErrors>({});
-  const [status, setStatus] = useState<ContentStatusValue>(initial.status);
+  const [status, setStatus] = useState<ContentStatusValue>(initial?.status ?? "Draft");
 
   const [contentSave, setContentSave] = useState<SaveState>("idle");
   const [seoSave, setSeoSave] = useState<SaveState>("idle");
@@ -113,11 +145,13 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
   // paths (marks the form dirty and the SEO analysis stale).
   const [pickerTarget, setPickerTarget] = useState<"cover" | "og" | null>(null);
 
-  const savedSnapshot = useRef<string>(JSON.stringify(initialContentValues(initial)));
+  const savedSnapshot = useRef<string>(
+    JSON.stringify(initialContentValues(initial, createType)),
+  );
 
   // Recover a local draft for this item on mount.
   useEffect(() => {
-    const draft = loadDraft(initial.id);
+    const draft = loadDraft(draftKey);
     if (draft) {
       setValues((prev) => ({
         ...prev,
@@ -128,17 +162,17 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
       setDraftRecovered(true);
       setContentSave("unsaved");
     }
-  }, [initial.id]);
+  }, [draftKey]);
 
   // Persist a minimal local draft as the author types (no server autosave).
   useEffect(() => {
     saveDraft({
-      contentId: initial.id,
+      contentId: draftKey,
       title: values.title,
       body: values.body,
       excerpt: values.excerpt,
     });
-  }, [initial.id, values.title, values.body, values.excerpt]);
+  }, [draftKey, values.title, values.body, values.excerpt]);
 
   const onChange = useCallback(
     (patch: Partial<ContentFormValues>) => {
@@ -181,12 +215,12 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
 
   const discardDraft = useCallback(() => {
     clearDraft();
-    const restored = initialContentValues(initial);
+    const restored = initialContentValues(initial, createType);
     setValues(restored);
     savedSnapshot.current = JSON.stringify(restored);
     setDraftRecovered(false);
     setContentSave("idle");
-  }, [initial]);
+  }, [initial, createType]);
 
   const saveContent = useCallback(async () => {
     const validation = validateContentForm(values);
@@ -197,7 +231,39 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
     }
     setContentSave("saving");
     try {
-      const detail = await update.run(initial.id, {
+      if (!contentId) {
+        const created = await create.create({
+          title: values.title.trim(),
+          slug: values.slug.trim(),
+          type: createType,
+          body: values.body,
+          status: "Draft",
+        });
+
+        await update.run(created.id, {
+          title: values.title.trim(),
+          slug: values.slug.trim(),
+          type: createType,
+          body: values.body,
+          excerpt: values.excerpt.trim() ? values.excerpt.trim() : null,
+          coverImage: values.coverImage.trim() ? values.coverImage.trim() : null,
+        });
+
+        if (Object.values(seo).some((value) => value.trim())) {
+          await seoMutation.run(created.id, buildSeoPayload(seo));
+        }
+        if (createType === "Article") {
+          await articleMutation.run(created.id, buildArticlePayload(articleMeta.values));
+        }
+
+        clearDraft();
+        setContentSave("saved");
+        router.replace(adminContentArticleRoute(created.id));
+        router.refresh();
+        return;
+      }
+
+      const detail = await update.run(contentId, {
         title: values.title.trim(),
         slug: values.slug.trim(),
         type: values.type,
@@ -216,9 +282,22 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
     } catch {
       setContentSave("error");
     }
-  }, [values, update, initial.id, seoAnalysis]);
+  }, [
+    values,
+    contentId,
+    create,
+    createType,
+    update,
+    seo,
+    seoMutation,
+    articleMutation,
+    articleMeta.values,
+    router,
+    seoAnalysis,
+  ]);
 
   const saveSeo = useCallback(async () => {
+    if (!contentId) return;
     const validation = validateSeoForm(seo);
     setSeoErrors(validation);
     if (hasFormErrors(validation)) {
@@ -227,7 +306,7 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
     }
     setSeoSave("saving");
     try {
-      const detail = await seoMutation.run(initial.id, buildSeoPayload(seo));
+      const detail = await seoMutation.run(contentId, buildSeoPayload(seo));
       setSeo(mapSeoForm(detail));
       setStatus(normalizeContentStatus(detail.contentStatus));
       setSeoSave("saved");
@@ -236,9 +315,10 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
     } catch {
       setSeoSave("error");
     }
-  }, [seo, seoMutation, initial.id, seoAnalysis]);
+  }, [contentId, seo, seoMutation, seoAnalysis]);
 
   const saveArticle = useCallback(async () => {
+    if (!contentId) return;
     const validation = validateArticleForm(articleMeta.values);
     setArticleErrors(validation);
     if (hasFormErrors(validation)) {
@@ -247,7 +327,7 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
     }
     setArticleSave("saving");
     try {
-      const saved = await articleMutation.run(initial.id, buildArticlePayload(articleMeta.values));
+      const saved = await articleMutation.run(contentId, buildArticlePayload(articleMeta.values));
       articleMeta.replaceValues({
         categoryId: saved.categoryId ?? "",
         difficultyLevel:
@@ -263,9 +343,10 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
     } catch {
       setArticleSave("error");
     }
-  }, [articleMeta, articleMutation, initial.id]);
+  }, [contentId, articleMeta, articleMutation]);
 
   const saveNews = useCallback(async () => {
+    if (!contentId) return;
     const validation = validateNewsForm(newsMeta.values);
     setNewsErrors(validation);
     if (hasFormErrors(validation)) {
@@ -274,7 +355,7 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
     }
     setNewsSave("saving");
     try {
-      const saved = await newsMutation.run(initial.id, buildNewsPayload(newsMeta.values));
+      const saved = await newsMutation.run(contentId, buildNewsPayload(newsMeta.values));
       newsMeta.replaceValues({
         sourceName: saved.sourceName,
         sourceUrl: saved.sourceUrl ?? "",
@@ -289,7 +370,7 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
     } catch {
       setNewsSave("error");
     }
-  }, [newsMeta, newsMutation, initial.id]);
+  }, [contentId, newsMeta, newsMutation]);
 
   // Auto-rerun exactly once after a save, only if the author had already
   // analyzed at least once before. Guarded by the ref so this never loops:
@@ -304,12 +385,16 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
   return (
     <div className="space-y-6">
       <AdminPageHeader
-        title="استودیوی محتوا"
+        title={contentId ? "استودیوی محتوا" : "مقاله جدید"}
         description="ویرایش پیشرفته، پیش‌نمایش زنده و مدیریت سئو"
         badge={<ContentStatusBadge status={status} />}
         secondaryActions={
           <Link
-            href={`${ADMIN_ROUTES.content}/${encodeURIComponent(initial.id)}`}
+            href={
+              contentId
+                ? `${ADMIN_ROUTES.content}/${encodeURIComponent(contentId)}`
+                : ADMIN_ROUTES.contentArticles
+            }
             className="adm-btn adm-btn-outline adm-focus inline-flex items-center gap-1.5"
           >
             <AdminIcon name="chevron" size={16} />
@@ -318,13 +403,19 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
         }
       />
 
-      <WorkflowPanel
-        contentId={initial.id}
-        authorId={initial.authorId}
-        status={status}
-        onStatusChange={setStatus}
-        compact
-      />
+      {contentId && initial ? (
+        <WorkflowPanel
+          contentId={contentId}
+          authorId={initial.authorId}
+          status={status}
+          onStatusChange={setStatus}
+          compact
+        />
+      ) : (
+        <div className="rounded-xl border border-[var(--adm-warning-soft)] bg-[var(--adm-warning-soft)] px-3 py-2.5 text-[12px] font-semibold text-[var(--adm-warning)]">
+          برای فعال‌شدن گردش کار، تحلیل سئو و ذخیره تنظیمات تکمیلی، ابتدا مقاله را ایجاد کنید.
+        </div>
+      )}
 
       {draftRecovered ? (
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-[var(--adm-warning-soft)] bg-[var(--adm-warning-soft)] px-3 py-2">
@@ -380,11 +471,11 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
                 <button
                   type="button"
                   onClick={() => void saveContent()}
-                  disabled={update.submitting || !isDirty}
+                  disabled={create.submitting || update.submitting || !isDirty}
                   className="adm-btn adm-btn-primary adm-focus inline-flex items-center gap-1.5"
                 >
                   <AdminIcon name="check" size={16} />
-                  ذخیره محتوا
+                  {contentId ? "ذخیره محتوا" : "ایجاد مقاله"}
                 </button>
               </div>
             </div>
@@ -438,6 +529,7 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
                       id="studio-type"
                       className="adm-input"
                       value={values.type}
+                      disabled={!contentId}
                       onChange={(event) =>
                         onChange({ type: event.target.value as ContentFormValues["type"] })
                       }
@@ -514,7 +606,7 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
 
         {/* RIGHT — SEO + type-specific settings */}
         <aside className="order-2 space-y-4 xl:order-3">
-          {initial.type === "Article" ? (
+          {contentType === "Article" ? (
             <AdminSurface className="p-4">
               <ArticleSettingsPanel
                 values={articleMeta.values}
@@ -523,12 +615,12 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
                 onSave={() => void saveArticle()}
                 saveState={articleSave}
                 error={articleMutation.error ?? articleMeta.error}
-                disabled={articleMutation.submitting}
+                disabled={!contentId || articleMutation.submitting}
                 loading={articleMeta.loading}
               />
             </AdminSurface>
           ) : null}
-          {initial.type === "News" ? (
+          {contentType === "News" ? (
             <AdminSurface className="p-4">
               <NewsSettingsFields
                 values={newsMeta.values}
@@ -537,7 +629,7 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
                 onSave={() => void saveNews()}
                 saveState={newsSave}
                 error={newsMutation.error ?? newsMeta.error}
-                disabled={newsMutation.submitting || newsMeta.loading}
+                disabled={!contentId || newsMutation.submitting || newsMeta.loading}
               />
             </AdminSurface>
           ) : null}
@@ -549,7 +641,7 @@ export function ContentStudio({ initial }: { initial: AdminContentDetail }) {
               onSave={() => void saveSeo()}
               saveState={seoSave}
               error={seoMutation.error}
-              disabled={seoMutation.submitting}
+              disabled={!contentId || seoMutation.submitting}
               contentTitle={values.title}
               excerpt={values.excerpt}
               coverImage={values.coverImage}
