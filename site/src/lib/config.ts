@@ -22,7 +22,7 @@ type ApiEnvironment = Partial<
   Record<"NEXT_PUBLIC_HELPDEV_API_BASE_URL" | "NEXT_PUBLIC_API_URL" | "NODE_ENV", string>
 >;
 
-export function resolveApiBaseUrl(environment: ApiEnvironment = process.env): string {
+export function resolveApiBaseUrl(environment: ApiEnvironment): string {
   const explicit = environment.NEXT_PUBLIC_HELPDEV_API_BASE_URL?.trim();
   if (explicit) {
     return stripTrailingSlashes(explicit);
@@ -36,7 +36,12 @@ export function resolveApiBaseUrl(environment: ApiEnvironment = process.env): st
   return `${stripTrailingSlashes(legacyOrigin)}${CANONICAL_SUFFIX}`;
 }
 
-export const API_BASE_URL = resolveApiBaseUrl();
+export const API_BASE_URL = resolveApiBaseUrl({
+  NEXT_PUBLIC_HELPDEV_API_BASE_URL:
+    process.env.NEXT_PUBLIC_HELPDEV_API_BASE_URL,
+  NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+  NODE_ENV: process.env.NODE_ENV,
+});
 
 /**
  * Validates the configured API base URL. Throws a descriptive error when the
