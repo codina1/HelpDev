@@ -1,5 +1,19 @@
 import { describe, expect, it } from "vitest";
-import { assertValidApiBaseUrl } from "./config";
+import { assertValidApiBaseUrl, resolveApiBaseUrl } from "./config";
+
+describe("resolveApiBaseUrl", () => {
+  it("uses the deployed Liara API when a Production build has no injected public env", () => {
+    expect(resolveApiBaseUrl({ NODE_ENV: "production" })).toBe(
+      "https://helpdevapi.liara.run/api/v1",
+    );
+  });
+
+  it("keeps the localhost fallback for local development", () => {
+    expect(resolveApiBaseUrl({ NODE_ENV: "development" })).toBe(
+      "http://localhost:5221/api/v1",
+    );
+  });
+});
 
 describe("assertValidApiBaseUrl", () => {
   it("accepts a canonical HTTPS base URL in Production", () => {

@@ -12,18 +12,27 @@
 
 const CANONICAL_SUFFIX = "/api/v1";
 const DEV_FALLBACK_ORIGIN = "http://localhost:5221";
+const PRODUCTION_FALLBACK_ORIGIN = "https://helpdevapi.liara.run";
 
 function stripTrailingSlashes(value: string): string {
   return value.replace(/\/+$/, "");
 }
 
-function resolveApiBaseUrl(): string {
-  const explicit = process.env.NEXT_PUBLIC_HELPDEV_API_BASE_URL?.trim();
+type ApiEnvironment = Partial<
+  Record<"NEXT_PUBLIC_HELPDEV_API_BASE_URL" | "NEXT_PUBLIC_API_URL" | "NODE_ENV", string>
+>;
+
+export function resolveApiBaseUrl(environment: ApiEnvironment = process.env): string {
+  const explicit = environment.NEXT_PUBLIC_HELPDEV_API_BASE_URL?.trim();
   if (explicit) {
     return stripTrailingSlashes(explicit);
   }
 
-  const legacyOrigin = process.env.NEXT_PUBLIC_API_URL?.trim() || DEV_FALLBACK_ORIGIN;
+  const legacyOrigin =
+    environment.NEXT_PUBLIC_API_URL?.trim()
+    || (environment.NODE_ENV === "production"
+      ? PRODUCTION_FALLBACK_ORIGIN
+      : DEV_FALLBACK_ORIGIN);
   return `${stripTrailingSlashes(legacyOrigin)}${CANONICAL_SUFFIX}`;
 }
 
