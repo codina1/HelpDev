@@ -20,6 +20,7 @@ type ArticleSettingsPanelProps = {
   saveState: SaveState;
   error?: unknown;
   disabled?: boolean;
+  saveDisabled?: boolean;
   loading?: boolean;
 };
 
@@ -32,6 +33,7 @@ export function ArticleSettingsPanel({
   saveState,
   error,
   disabled = false,
+  saveDisabled = false,
   loading = false,
 }: ArticleSettingsPanelProps) {
   const hasErrors = Object.keys(errors).length > 0;
@@ -129,7 +131,7 @@ export function ArticleSettingsPanel({
       <button
         type="button"
         className="adm-btn adm-btn-primary adm-focus w-full"
-        disabled={disabled || loading || hasErrors || saveState === "saving"}
+        disabled={disabled || saveDisabled || loading || hasErrors || saveState === "saving"}
         onClick={onSave}
       >
         ذخیره تنظیمات مقاله

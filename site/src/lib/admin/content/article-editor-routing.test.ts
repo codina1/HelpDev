@@ -1,22 +1,33 @@
 /**
  * @vitest-environment node
  */
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-describe("article creation workspace", () => {
-  it("uses the full Content Studio instead of the simplified create editor", () => {
+describe("content creation workspaces", () => {
+  it.each([
+    ["article/article-editor.tsx", "Article"],
+    ["news/news-editor.tsx", "News"],
+  ])("uses the full Content Studio for %s", (file, type) => {
     const source = readFileSync(
-      join(
-        process.cwd(),
-        "src/components/admin/content/workspaces/article/article-editor.tsx",
-      ),
+      join(process.cwd(), "src/components/admin/content/workspaces", file),
       "utf8",
     );
 
     expect(source).toContain("ContentStudio");
-    expect(source).toContain('createType="Article"');
+    expect(source).toContain(`createType="${type}"`);
     expect(source).not.toContain("WorkspaceCreateEditor");
+  });
+
+  it("removes the obsolete simplified create editor", () => {
+    expect(
+      existsSync(
+        join(
+          process.cwd(),
+          "src/components/admin/content/workspaces/workspace-create-editor.tsx",
+        ),
+      ),
+    ).toBe(false);
   });
 });

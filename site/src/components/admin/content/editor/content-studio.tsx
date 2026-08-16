@@ -3,7 +3,12 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ADMIN_ROUTES, adminContentArticleRoute } from "@/lib/admin/routes";
+import {
+  ADMIN_ROUTES,
+  adminContentArticleRoute,
+  adminContentItemRoute,
+  adminContentNewsRoute,
+} from "@/lib/admin/routes";
 import {
   useArticleMetadata,
   useContentSeoAnalysis,
@@ -229,6 +234,22 @@ export function ContentStudio({
       setContentSave("error");
       return;
     }
+    if (!contentId && createType === "Article") {
+      const articleValidation = validateArticleForm(articleMeta.values);
+      setArticleErrors(articleValidation);
+      if (hasFormErrors(articleValidation)) {
+        setContentSave("error");
+        return;
+      }
+    }
+    if (!contentId && createType === "News") {
+      const newsValidation = validateNewsForm(newsMeta.values);
+      setNewsErrors(newsValidation);
+      if (hasFormErrors(newsValidation)) {
+        setContentSave("error");
+        return;
+      }
+    }
     setContentSave("saving");
     try {
       if (!contentId) {
@@ -255,10 +276,19 @@ export function ContentStudio({
         if (createType === "Article") {
           await articleMutation.run(created.id, buildArticlePayload(articleMeta.values));
         }
+        if (createType === "News") {
+          await newsMutation.run(created.id, buildNewsPayload(newsMeta.values));
+        }
 
         clearDraft();
         setContentSave("saved");
-        router.replace(adminContentArticleRoute(created.id));
+        const createdRoute =
+          createType === "Article"
+            ? adminContentArticleRoute(created.id)
+            : createType === "News"
+              ? adminContentNewsRoute(created.id)
+              : adminContentItemRoute(created.id);
+        router.replace(createdRoute);
         router.refresh();
         return;
       }
@@ -292,6 +322,8 @@ export function ContentStudio({
     seoMutation,
     articleMutation,
     articleMeta.values,
+    newsMutation,
+    newsMeta.values,
     router,
     seoAnalysis,
   ]);
@@ -385,7 +417,7 @@ export function ContentStudio({
   return (
     <div className="space-y-6">
       <AdminPageHeader
-        title={contentId ? "استودیوی محتوا" : "مقاله جدید"}
+        title={contentId ? "استودیوی محتوا" : `${labelForContentType(createType)} جدید`}
         description="ویرایش پیشرفته، پیش‌نمایش زنده و مدیریت سئو"
         badge={<ContentStatusBadge status={status} />}
         secondaryActions={
@@ -413,7 +445,8 @@ export function ContentStudio({
         />
       ) : (
         <div className="rounded-xl border border-[var(--adm-warning-soft)] bg-[var(--adm-warning-soft)] px-3 py-2.5 text-[12px] font-semibold text-[var(--adm-warning)]">
-          برای فعال‌شدن گردش کار، تحلیل سئو و ذخیره تنظیمات تکمیلی، ابتدا مقاله را ایجاد کنید.
+          برای فعال‌شدن گردش کار و تحلیل سئو، ابتدا {labelForContentType(createType)} را ایجاد
+          کنید. تنظیمات همین صفحه همراه اولین ذخیره ثبت می‌شوند.
         </div>
       )}
 
@@ -475,7 +508,7 @@ export function ContentStudio({
                   className="adm-btn adm-btn-primary adm-focus inline-flex items-center gap-1.5"
                 >
                   <AdminIcon name="check" size={16} />
-                  {contentId ? "ذخیره محتوا" : "ایجاد مقاله"}
+                  {contentId ? "ذخیره محتوا" : `ایجاد ${labelForContentType(createType)}`}
                 </button>
               </div>
             </div>
@@ -615,7 +648,8 @@ export function ContentStudio({
                 onSave={() => void saveArticle()}
                 saveState={articleSave}
                 error={articleMutation.error ?? articleMeta.error}
-                disabled={!contentId || articleMutation.submitting}
+                disabled={articleMutation.submitting}
+                saveDisabled={!contentId}
                 loading={articleMeta.loading}
               />
             </AdminSurface>
@@ -629,7 +663,8 @@ export function ContentStudio({
                 onSave={() => void saveNews()}
                 saveState={newsSave}
                 error={newsMutation.error ?? newsMeta.error}
-                disabled={!contentId || newsMutation.submitting || newsMeta.loading}
+                disabled={newsMutation.submitting || newsMeta.loading}
+                hideSave={!contentId}
               />
             </AdminSurface>
           ) : null}
