@@ -104,6 +104,20 @@ public sealed class ProductionSafetyValidatorTests
     }
 
     [Fact]
+    public void Explicit_temporary_otp_override_is_allowed_with_a_production_warning()
+    {
+        var builder = new ProductionSafetyValidatorBuilder();
+        builder.Auth.ExposeOtpInResponse = true;
+        builder.Auth.AllowOtpExposureInProduction = true;
+
+        var result = builder.Build().Validate();
+
+        Assert.True(result.IsValid, string.Join("; ", result.Errors));
+        Assert.Contains(result.Warnings, warning =>
+            warning.Contains("OTP codes are exposed", StringComparison.Ordinal));
+    }
+
+    [Fact]
     public void Wildcard_cors_origin_is_rejected()
     {
         var builder = new ProductionSafetyValidatorBuilder();

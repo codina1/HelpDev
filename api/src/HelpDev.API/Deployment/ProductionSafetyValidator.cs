@@ -233,7 +233,13 @@ public sealed class ProductionSafetyValidator : IProductionSafetyValidator
     {
         if (_environment.IsProduction() && _auth.ExposeOtpInResponse)
         {
-            result.AddError("Production OTP provider cannot expose OTP codes in responses (deterministic test mode).");
+            if (!_auth.AllowOtpExposureInProduction)
+            {
+                result.AddError("Production OTP provider cannot expose OTP codes unless the temporary production override is explicitly enabled.");
+                return;
+            }
+
+            result.AddWarning("OTP codes are exposed in Production through an explicit temporary override; disable it after SMS delivery is configured.");
         }
     }
 
