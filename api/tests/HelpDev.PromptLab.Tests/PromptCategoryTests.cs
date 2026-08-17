@@ -66,4 +66,32 @@ public sealed class PromptCategoryTests
         Assert.False(category.Deactivate(Now.AddMinutes(3)));
         Assert.Equal(Now.AddMinutes(2), category.UpdatedAtUtc);
     }
+
+    [Fact]
+    public void EnsureActive_rejects_inactive_category()
+    {
+        var category = PromptCategory.Create(Guid.NewGuid(), "Coding", "coding", null, null, 0, Now);
+        category.EnsureActive();
+
+        category.Deactivate(Now.AddMinutes(1));
+        var ex = Assert.Throws<DomainException>(category.EnsureActive);
+        Assert.Equal(PromptLabErrorCodes.CategoryInactive, ex.Code);
+    }
+
+    [Fact]
+    public void Catalog_creates_the_default_prompt_categories()
+    {
+        var categories = PromptCategoryCatalog.CreateDefaults(Now);
+
+        Assert.Equal(
+            new[] { "Image", "Video", "Coding", "Writing", "Marketing", "Design", "Education" },
+            categories.Select(category => category.Name));
+        Assert.Equal(
+            new[] { "image", "video", "coding", "writing", "marketing", "design", "education" },
+            categories.Select(category => category.Slug.Value));
+        Assert.All(categories, category => Assert.True(category.IsActive));
+        Assert.All(categories, category => Assert.Equal(Now, category.CreatedAtUtc));
+        Assert.Equal(PromptCategoryCatalog.Defaults.Count, categories.Count);
+        Assert.Equal(categories.Count, categories.Select(category => category.Id).Distinct().Count());
+    }
 }

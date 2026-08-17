@@ -1,3 +1,4 @@
+using HelpDev.Modules.PromptLab.Domain.Categories;
 using HelpDev.SharedKernel.Common;
 using HelpDev.SharedKernel.Exceptions;
 
@@ -17,6 +18,8 @@ public sealed class Prompt : AggregateRoot<Guid>
         : base(id)
     {
     }
+
+    public Guid CategoryId { get; private set; }
 
     public string Title { get; private set; } = string.Empty;
 
@@ -60,6 +63,7 @@ public sealed class Prompt : AggregateRoot<Guid>
         string? coverImage,
         PromptMediaType mediaType,
         string aiModel,
+        Guid categoryId,
         Guid authorId,
         DateTime utcNow)
     {
@@ -77,6 +81,7 @@ public sealed class Prompt : AggregateRoot<Guid>
 
         var prompt = new Prompt(id)
         {
+            CategoryId = EnsureCategoryId(categoryId),
             AuthorId = authorId,
             Status = PromptStatus.Draft,
             Views = 0,
@@ -93,6 +98,35 @@ public sealed class Prompt : AggregateRoot<Guid>
 
         prompt.ApplyDetails(title, description, content, coverImage, mediaType, aiModel, force: true);
         return prompt;
+    }
+
+    public static Prompt Create(
+        Guid id,
+        string title,
+        string slug,
+        string? description,
+        string content,
+        string? coverImage,
+        PromptMediaType mediaType,
+        string aiModel,
+        PromptCategory category,
+        Guid authorId,
+        DateTime utcNow)
+    {
+        ArgumentNullException.ThrowIfNull(category);
+        category.EnsureActive();
+        return Create(
+            id,
+            title,
+            slug,
+            description,
+            content,
+            coverImage,
+            mediaType,
+            aiModel,
+            category.Id,
+            authorId,
+            utcNow);
     }
 
     public bool Update(
@@ -130,6 +164,29 @@ public sealed class Prompt : AggregateRoot<Guid>
 
         UpdatedAt = utcNow;
         return true;
+    }
+
+    public bool ChangeCategory(Guid actorUserId, Guid categoryId, DateTime utcNow)
+    {
+        EnsureOwner(actorUserId);
+        EnsureDraft();
+
+        var nextCategoryId = EnsureCategoryId(categoryId);
+        if (CategoryId == nextCategoryId)
+        {
+            return false;
+        }
+
+        CategoryId = nextCategoryId;
+        UpdatedAt = utcNow;
+        return true;
+    }
+
+    public bool ChangeCategory(Guid actorUserId, PromptCategory category, DateTime utcNow)
+    {
+        ArgumentNullException.ThrowIfNull(category);
+        category.EnsureActive();
+        return ChangeCategory(actorUserId, category.Id, utcNow);
     }
 
     public void Submit(Guid actorUserId, DateTime utcNow)
@@ -269,6 +326,16 @@ public sealed class Prompt : AggregateRoot<Guid>
         {
             throw new DomainException("Media type is invalid.", PromptLabErrorCodes.PromptMediaTypeInvalid);
         }
+    }
+
+    private static Guid EnsureCategoryId(Guid categoryId)
+    {
+        if (categoryId == Guid.Empty)
+        {
+            throw new DomainException("Category id is required.", PromptLabErrorCodes.PromptCategoryInvalid);
+        }
+
+        return categoryId;
     }
 
     private static string NormalizeRequired(string value, int maxLength, string requiredCode, string invalidCode)

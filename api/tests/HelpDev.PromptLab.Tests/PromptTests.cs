@@ -1,4 +1,5 @@
 using HelpDev.Modules.PromptLab.Domain;
+using HelpDev.Modules.PromptLab.Domain.Categories;
 using HelpDev.Modules.PromptLab.Domain.Prompts;
 using HelpDev.Modules.PromptLab.Domain.Specifications;
 using HelpDev.SharedKernel.Exceptions;
@@ -9,6 +10,7 @@ public sealed class PromptTests
 {
     private static readonly DateTime Now = new(2026, 8, 17, 8, 0, 0, DateTimeKind.Utc);
     private static readonly Guid AuthorId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+    private static readonly Guid CategoryId = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb");
 
     [Fact]
     public void Create_starts_as_draft_owned_by_author()
@@ -20,6 +22,7 @@ public sealed class PromptTests
         Assert.Equal("Review {{code}}", prompt.Content);
         Assert.Equal(PromptStatus.Draft, prompt.Status);
         Assert.Equal(AuthorId, prompt.AuthorId);
+        Assert.Equal(CategoryId, prompt.CategoryId);
         Assert.Equal(0, prompt.Views);
         Assert.Equal(0, prompt.CopyCount);
         Assert.Equal(Now, prompt.CreatedAt);
@@ -50,6 +53,9 @@ public sealed class PromptTests
 
         var mediaEx = Assert.Throws<DomainException>(() => CreatePrompt(mediaType: (PromptMediaType)99));
         Assert.Equal(PromptLabErrorCodes.PromptMediaTypeInvalid, mediaEx.Code);
+
+        var categoryEx = Assert.Throws<DomainException>(() => CreatePrompt(categoryId: Guid.Empty));
+        Assert.Equal(PromptLabErrorCodes.PromptCategoryInvalid, categoryEx.Code);
     }
 
     [Fact]
@@ -190,6 +196,41 @@ public sealed class PromptTests
         Assert.False(PromptWorkflowRules.IsAllowed(PromptStatus.Approved, PromptStatus.Draft));
     }
 
+    [Fact]
+    public void Prompt_belongs_to_one_active_category()
+    {
+        var coding = PromptCategory.Create(Guid.NewGuid(), "Coding", "coding", null, "code", 0, Now);
+        var writing = PromptCategory.Create(Guid.NewGuid(), "Writing", "writing", null, "pen", 1, Now);
+        var prompt = Prompt.Create(
+            Guid.NewGuid(),
+            "Review helper",
+            "review-helper",
+            "Helps review code",
+            "Review {{code}}",
+            null,
+            PromptMediaType.Text,
+            "gpt-4o-mini",
+            coding,
+            AuthorId,
+            Now);
+
+        Assert.Equal(coding.Id, prompt.CategoryId);
+        Assert.True(new PromptsInCategorySpecification(coding.Id).IsSatisfiedBy(prompt));
+        Assert.False(new PromptsInCategorySpecification(writing.Id).IsSatisfiedBy(prompt));
+
+        Assert.True(prompt.ChangeCategory(AuthorId, writing, Now.AddMinutes(1)));
+        Assert.Equal(writing.Id, prompt.CategoryId);
+
+        var notOwner = Assert.Throws<DomainException>(
+            () => prompt.ChangeCategory(Guid.NewGuid(), coding, Now.AddMinutes(1)));
+        Assert.Equal(PromptLabErrorCodes.PromptEditForbidden, notOwner.Code);
+
+        writing.Deactivate(Now.AddMinutes(2));
+        var inactive = Assert.Throws<DomainException>(() => prompt.ChangeCategory(AuthorId, writing, Now.AddMinutes(3)));
+        Assert.Equal(PromptLabErrorCodes.CategoryInactive, inactive.Code);
+        Assert.Equal(writing.Id, prompt.CategoryId);
+    }
+
     private static Prompt CreatePrompt(
         string title = "Review helper",
         string slug = "review-helper",
@@ -198,6 +239,7 @@ public sealed class PromptTests
         string? coverImage = null,
         PromptMediaType mediaType = PromptMediaType.Text,
         string aiModel = "gpt-4o-mini",
+        Guid? categoryId = null,
         Guid? authorId = null) =>
         Prompt.Create(
             Guid.NewGuid(),
@@ -208,6 +250,7 @@ public sealed class PromptTests
             coverImage,
             mediaType,
             aiModel,
+            categoryId ?? CategoryId,
             authorId ?? AuthorId,
             Now);
 }

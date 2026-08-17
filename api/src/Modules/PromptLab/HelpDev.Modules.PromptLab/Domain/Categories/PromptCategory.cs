@@ -102,6 +102,14 @@ public sealed class PromptCategory : AggregateRoot<Guid>
         return true;
     }
 
+    public void EnsureActive()
+    {
+        if (!IsActive)
+        {
+            throw new DomainException("Category is inactive.", PromptLabErrorCodes.CategoryInactive);
+        }
+    }
+
     public bool ChangeDisplayOrder(int displayOrder, DateTime utcNow)
     {
         if (displayOrder < 0)
