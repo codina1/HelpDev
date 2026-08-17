@@ -33,6 +33,11 @@ public sealed class PromptLabPersistenceModelTests
             entity.GetForeignKeys(),
             key => key.Properties.Any(property => property.Name == "AiModelId")
                 && key.PrincipalEntityType.ClrType == typeof(AiModel));
+
+        var rejection = entity.FindProperty(nameof(Prompt.RejectionReason));
+        Assert.NotNull(rejection);
+        Assert.Equal("rejection_reason", rejection!.GetColumnName());
+        Assert.Equal(2000, rejection.GetMaxLength());
     }
 
     [Fact]

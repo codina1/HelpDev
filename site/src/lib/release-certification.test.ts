@@ -68,6 +68,7 @@ describe("Sprint 46 — frontend release certification", () => {
       [ADMIN_ROUTES.learning]: ["admin", "learning"],
       [ADMIN_ROUTES.toolbox]: ["admin", "toolbox"],
       [ADMIN_ROUTES.promptLab]: ["admin", "prompt-lab"],
+      [ADMIN_ROUTES.prompts]: ["admin", "prompts"],
       [ADMIN_ROUTES.users]: ["admin", "users"],
       [ADMIN_ROUTES.analytics]: ["admin", "analytics"],
       [ADMIN_ROUTES.analyticsContent]: ["admin", "analytics", "content"],

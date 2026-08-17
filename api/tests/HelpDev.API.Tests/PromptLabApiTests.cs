@@ -24,6 +24,7 @@ public sealed class PromptLabApiTests
     [Theory]
     [InlineData(typeof(PromptLabAdminCategoriesController))]
     [InlineData(typeof(PromptLabAdminPromptsController))]
+    [InlineData(typeof(PromptLabAdminReviewController))]
     public void Admin_controllers_require_AdminOnly(Type controllerType)
     {
         var attribute = Assert.Single(
@@ -98,6 +99,32 @@ public sealed class PromptLabApiTests
         Assert.Equal(userId, writer.LastAuthorId);
         Assert.Equal(userId, queries.LastAuthorId);
         Assert.False(writer.PublishedAutomatically);
+    }
+
+    [Fact]
+    public async Task Review_endpoints_use_authenticated_admin_id()
+    {
+        var queries = new FakeReviewQueries();
+        var review = new FakeReviewService();
+        var controller = new PromptLabAdminReviewController(queries, review);
+        var userId = Guid.NewGuid();
+        ControllerTestHelper.SetUser(controller, userId, AppRoles.Admin);
+
+        Assert.IsType<OkObjectResult>((await controller.List("Submitted", 1, 20, CancellationToken.None)).Result);
+        Assert.Equal("Submitted", queries.LastStatus);
+
+        var missing = await Assert.ThrowsAsync<PromptLabException>(
+            () => controller.GetById(Guid.NewGuid(), CancellationToken.None));
+        Assert.Equal(PromptLabApplicationErrorCodes.PromptNotFound, missing.Code);
+
+        await controller.Approve(review.LastId, CancellationToken.None);
+        await controller.Reject(
+            review.LastId,
+            new RejectAdminPromptRequest("عنوان مبهم است."),
+            CancellationToken.None);
+
+        Assert.Equal(userId, review.LastActorId);
+        Assert.Equal("عنوان مبهم است.", review.LastReason);
     }
 
     [Fact]
@@ -216,6 +243,7 @@ public sealed class PromptLabApiTests
     [InlineData(PromptLabApplicationErrorCodes.PromptSlugDuplicate, StatusCodes.Status409Conflict)]
     [InlineData(PromptLabApplicationErrorCodes.PromptEditForbidden, StatusCodes.Status403Forbidden)]
     [InlineData(PromptLabApplicationErrorCodes.PromptNotDraft, StatusCodes.Status409Conflict)]
+    [InlineData(PromptLabApplicationErrorCodes.PromptRejectionReasonRequired, StatusCodes.Status400BadRequest)]
     [InlineData(PromptLabApplicationErrorCodes.RenderPatternTimeout, StatusCodes.Status400BadRequest)]
     public void Exception_filter_maps_codes(string code, int status)
     {
@@ -231,6 +259,74 @@ public sealed class PromptLabApiTests
         var result = Assert.IsType<ObjectResult>(context.Result);
         Assert.Equal(status, result.StatusCode);
         Assert.True(context.ExceptionHandled);
+    }
+
+    private sealed class FakeReviewQueries : IPromptAdminReviewQueries
+    {
+        public string? LastStatus { get; private set; }
+
+        public Task<AdminPromptReviewPageDto> GetPromptsAsync(
+            AdminPromptReviewFilter filter,
+            CancellationToken cancellationToken = default)
+        {
+            LastStatus = filter.Status;
+            return Task.FromResult(new AdminPromptReviewPageDto(filter.Page, filter.PageSize, 0, []));
+        }
+
+        public Task<AdminPromptReviewDetailsDto?> GetByIdAsync(
+            Guid id,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<AdminPromptReviewDetailsDto?>(null);
+    }
+
+    private sealed class FakeReviewService : IPromptAdminReviewService
+    {
+        public Guid LastActorId { get; private set; }
+
+        public Guid LastId { get; } = Guid.NewGuid();
+
+        public string? LastReason { get; private set; }
+
+        public Task<AdminPromptReviewDetailsDto> ApproveAsync(
+            Guid actorUserId,
+            Guid id,
+            CancellationToken cancellationToken = default)
+        {
+            LastActorId = actorUserId;
+            return Task.FromResult(Details("Approved"));
+        }
+
+        public Task<AdminPromptReviewDetailsDto> RejectAsync(
+            Guid actorUserId,
+            Guid id,
+            RejectAdminPromptRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            LastActorId = actorUserId;
+            LastReason = request.Reason;
+            return Task.FromResult(Details("Rejected"));
+        }
+
+        private AdminPromptReviewDetailsDto Details(string status) =>
+            new(
+                LastId,
+                "Title",
+                "title",
+                null,
+                "body",
+                null,
+                "Text",
+                Guid.NewGuid(),
+                Guid.NewGuid(),
+                "Coding",
+                Guid.NewGuid(),
+                status,
+                LastReason,
+                0,
+                0,
+                DateTime.UtcNow,
+                DateTime.UtcNow,
+                PublishedAt: status == "Approved" ? DateTime.UtcNow : null);
     }
 
     private sealed class FakeWriterService : IPromptWriterService

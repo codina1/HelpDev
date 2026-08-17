@@ -25,7 +25,8 @@ The complete target CMS navigation. Status legend:
 | ابزارها          | همه ابزارها      | `/admin/toolbox`      | 🟡 Placeholder |
 | ابزارها          | دسته‌بندی‌ها     | —                     | ⏳ Future      |
 | ابزارها          | اجرای ابزارها    | —                     | ⏳ Future      |
-| Prompt Lab       | همه پرامپت‌ها    | `/admin/prompt-lab`   | 🟡 Placeholder |
+| Prompt Lab       | همه پرامپت‌ها    | `/admin/prompt-lab`   | ✅ Implemented |
+| Prompt Lab       | بازبینی پرامپت‌ها | `/admin/prompts`     | ✅ Implemented |
 | Prompt Lab       | نسخه‌ها          | —                     | ⏳ Future      |
 | Prompt Lab       | دسته‌بندی‌ها     | —                     | ⏳ Future      |
 | کاربران و دسترسی | کاربران          | `/admin/users`        | ✅ Implemented |

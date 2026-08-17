@@ -76,6 +76,33 @@ Base: `/api/v1/admin/prompt-lab` · Requires **Admin** role
 
 Admin routes use **AdminMutation** rate limits.
 
+## Writer — library prompts
+
+Base: `/api/v1/writer/prompts` · Requires **Writer** or **Admin**
+
+Writers create drafts and submit them for review. They cannot publish.
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `...` | List my prompts (`status`, `page`, `pageSize`) |
+| POST | `...` | Create draft |
+| GET | `.../{id}` | Get my prompt |
+| PUT | `.../{id}` | Update draft |
+| POST | `.../{id}/submit` | Submit for review (`Draft` → `Submitted`) |
+
+## Admin — writer prompt review
+
+Base: `/api/v1/admin/prompts` · Requires **Admin**
+
+Review queue for writer library prompts. Drafts are not listed. Approving a prompt publishes it (`Submitted` → `Approved`).
+
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | `...` | List by `status` (`Submitted`, `Approved`, `Rejected`) |
+| GET | `.../{id}` | Review details |
+| POST | `.../{id}/approve` | Approve and publish |
+| POST | `.../{id}/reject` | Reject with required `{ "reason": "..." }` |
+
 ## Search integration
 
 Published prompts appear in `GET /api/v1/search` when indexed.

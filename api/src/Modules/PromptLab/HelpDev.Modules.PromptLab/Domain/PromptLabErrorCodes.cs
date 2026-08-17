@@ -50,6 +50,8 @@ public static class PromptLabErrorCodes
     public const string PromptAiModelInvalid = "promptlab_prompt_ai_model_invalid";
     public const string PromptCoverImageInvalid = "promptlab_prompt_cover_image_invalid";
     public const string PromptStatusInvalid = "promptlab_prompt_status_invalid";
+    public const string PromptRejectionReasonRequired = "promptlab_prompt_rejection_reason_required";
+    public const string PromptRejectionReasonInvalid = "promptlab_prompt_rejection_reason_invalid";
 
     public const string TemplateRequired = "promptlab_template_required";
     public const string TemplateTooLong = "promptlab_template_too_long";

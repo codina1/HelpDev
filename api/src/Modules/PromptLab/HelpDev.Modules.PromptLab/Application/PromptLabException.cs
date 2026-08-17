@@ -92,4 +92,6 @@ public static class PromptLabApplicationErrorCodes
     public const string PromptNotDraft = Domain.PromptLabErrorCodes.PromptNotDraft;
     public const string PromptEditForbidden = Domain.PromptLabErrorCodes.PromptEditForbidden;
     public const string PromptStatusInvalid = Domain.PromptLabErrorCodes.PromptStatusInvalid;
+    public const string PromptRejectionReasonRequired = Domain.PromptLabErrorCodes.PromptRejectionReasonRequired;
+    public const string PromptRejectionReasonInvalid = Domain.PromptLabErrorCodes.PromptRejectionReasonInvalid;
 }

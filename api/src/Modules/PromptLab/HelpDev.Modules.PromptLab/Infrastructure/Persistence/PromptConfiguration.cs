@@ -110,6 +110,10 @@ public sealed class PromptConfiguration : IEntityTypeConfiguration<Prompt>
             .HasColumnType("timestamp with time zone")
             .HasColumnName("published_at");
 
+        builder.Property(prompt => prompt.RejectionReason)
+            .HasMaxLength(PromptLabLimits.MaxPromptRejectionReasonLength)
+            .HasColumnName("rejection_reason");
+
         builder.HasIndex(prompt => prompt.Status)
             .HasDatabaseName("ix_promptlab_library_prompts_status");
 

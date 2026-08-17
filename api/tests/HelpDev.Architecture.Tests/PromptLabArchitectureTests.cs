@@ -197,6 +197,18 @@ public sealed class PromptLabArchitectureTests
     }
 
     [Fact]
+    public void Review_depends_on_review_service_and_queries_not_DbContext()
+    {
+        var ctor = typeof(PromptLabAdminReviewController).GetConstructors().Single();
+        Assert.Contains(ctor.GetParameters(), p => p.ParameterType == typeof(IPromptAdminReviewQueries));
+        Assert.Contains(ctor.GetParameters(), p => p.ParameterType == typeof(IPromptAdminReviewService));
+        Assert.DoesNotContain(
+            ctor.GetParameters(),
+            p => typeof(DbContext).IsAssignableFrom(p.ParameterType)
+                || p.ParameterType.Name.Contains("Repository", StringComparison.Ordinal));
+    }
+
+    [Fact]
     public void Renderer_and_parser_do_not_depend_on_DbContext_HttpClient_or_Process()
     {
         var result = Types.InAssembly(typeof(PromptLabModuleMarker).Assembly)

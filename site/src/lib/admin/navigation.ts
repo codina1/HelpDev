@@ -332,6 +332,15 @@ export const ADMIN_NAVIGATION: readonly AdminNavGroup[] = [
         keywords: ["prompt", "prompts", "پرامپت"],
       },
       {
+        id: "prompt-review",
+        title: "بازبینی پرامپت‌ها",
+        href: ADMIN_ROUTES.prompts,
+        icon: "flag",
+        permission: "promptLab.view",
+        status: "ready",
+        keywords: ["review", "approve", "reject", "بازبینی", "تأیید", "رد"],
+      },
+      {
         id: "prompt-versions",
         title: "نسخه‌ها",
         icon: "versions",

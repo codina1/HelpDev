@@ -2224,6 +2224,11 @@ namespace HelpDev.Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("published_at");
 
+                    b.Property<string>("RejectionReason")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)")
+                        .HasColumnName("rejection_reason");
+
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasMaxLength(120)

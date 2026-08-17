@@ -38,6 +38,9 @@ public sealed class PromptLabExceptionFilter : IExceptionFilter
                 or PromptLabApplicationErrorCodes.PromptNotDraft
                 or PromptLabApplicationErrorCodes.PromptStatusInvalid => StatusCodes.Status409Conflict,
 
+            PromptLabApplicationErrorCodes.PromptRejectionReasonRequired
+                or PromptLabApplicationErrorCodes.PromptRejectionReasonInvalid => StatusCodes.Status400BadRequest,
+
             _ => StatusCodes.Status400BadRequest,
         };
 

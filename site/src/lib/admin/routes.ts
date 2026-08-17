@@ -35,6 +35,7 @@ export const ADMIN_ROUTES = {
   learning: "/admin/learning",
   toolbox: "/admin/toolbox",
   promptLab: "/admin/prompt-lab",
+  prompts: "/admin/prompts",
   users: "/admin/users",
   analytics: "/admin/analytics",
   analyticsContent: "/admin/analytics/content",

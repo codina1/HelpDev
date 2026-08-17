@@ -50,6 +50,8 @@ public sealed class Prompt : AggregateRoot<Guid>
 
     public DateTime? PublishedAt { get; private set; }
 
+    public string? RejectionReason { get; private set; }
+
     public bool IsPublic => Status == PromptStatus.Approved;
 
     public bool CanBeEditedBy(Guid actorUserId) =>
@@ -91,6 +93,7 @@ public sealed class Prompt : AggregateRoot<Guid>
             CreatedAt = utcNow,
             UpdatedAt = utcNow,
             PublishedAt = null,
+            RejectionReason = null,
             Slug = PromptSlug.Create(
                 slug,
                 SlugMaxLength,
@@ -220,6 +223,7 @@ public sealed class Prompt : AggregateRoot<Guid>
         EnsureOwner(actorUserId);
         PromptWorkflowRules.EnsureAllowed(Status, PromptStatus.Submitted);
         Status = PromptStatus.Submitted;
+        RejectionReason = null;
         UpdatedAt = utcNow;
     }
 
@@ -228,14 +232,19 @@ public sealed class Prompt : AggregateRoot<Guid>
         PromptWorkflowRules.EnsureAllowed(Status, PromptStatus.Approved);
         Status = PromptStatus.Approved;
         PublishedAt = utcNow;
+        RejectionReason = null;
         UpdatedAt = utcNow;
         AddDomainEvent(new PromptApprovedDomainEvent(Id, Slug.Value));
     }
 
-    public void Reject(DateTime utcNow)
+    public void Reject(DateTime utcNow, string? reason = null)
     {
         PromptWorkflowRules.EnsureAllowed(Status, PromptStatus.Rejected);
         Status = PromptStatus.Rejected;
+        RejectionReason = NormalizeOptional(
+            reason,
+            PromptLabLimits.MaxPromptRejectionReasonLength,
+            PromptLabErrorCodes.PromptRejectionReasonInvalid);
         UpdatedAt = utcNow;
     }
 
@@ -244,6 +253,7 @@ public sealed class Prompt : AggregateRoot<Guid>
         EnsureOwner(actorUserId);
         PromptWorkflowRules.EnsureAllowed(Status, PromptStatus.Draft);
         Status = PromptStatus.Draft;
+        RejectionReason = null;
         UpdatedAt = utcNow;
     }
 

@@ -151,9 +151,10 @@ public sealed class PromptTests
     {
         var prompt = CreatePrompt();
         prompt.Submit(AuthorId, Now.AddMinutes(1));
-        prompt.Reject(Now.AddMinutes(2));
+        prompt.Reject(Now.AddMinutes(2), "Needs a clearer title.");
 
         Assert.Equal(PromptStatus.Rejected, prompt.Status);
+        Assert.Equal("Needs a clearer title.", prompt.RejectionReason);
         Assert.False(prompt.IsPublic);
         Assert.Throws<DomainException>(prompt.GetPublicContent);
 

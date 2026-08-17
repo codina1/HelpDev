@@ -16,7 +16,8 @@ site/src/app/admin/
 ├── content/ (+ new/)   # content module (placeholder)
 ├── learning/           # learning module (placeholder)
 ├── toolbox/            # toolbox module (placeholder)
-├── prompt-lab/         # prompt lab module (placeholder)
+├── prompt-lab/         # writer prompt studio
+├── prompts/            # admin prompt review
 ├── users/              # users management (functional)
 ├── analytics/          # analytics (placeholder)
 ├── audit/              # audit (placeholder)
