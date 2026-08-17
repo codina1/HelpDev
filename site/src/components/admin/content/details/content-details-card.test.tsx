@@ -27,11 +27,12 @@ describe("ContentDetailsCard", () => {
     expect(html).toContain(`تصویر کاور ${content.title}`);
   });
 
-  it("does not render a broken image placeholder when there is no cover", () => {
+  it("shows a missing-cover message when there is no image", () => {
     const html = renderToStaticMarkup(
       <ContentDetailsCard content={{ ...content, coverImage: "" }} />,
     );
 
     expect(html).not.toContain("<img");
+    expect(html).toContain("تصویر کاور برای این محتوا تنظیم نشده است.");
   });
 });

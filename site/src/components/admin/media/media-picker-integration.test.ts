@@ -14,12 +14,14 @@ describe("Content Studio — Cover image picker integration", () => {
   it("renders the Media Library picker and wires it to the cover image field", () => {
     expect(source).toContain("MediaPickerDialog");
     expect(source).toContain('setPickerTarget("cover")');
-    expect(source).toContain("onChange({ coverImage: selection.absoluteUrl })");
+    expect(source).toContain("onChange({ coverImage: url })");
+    expect(source).toContain("onSeoChange({ ogImage: url })");
   });
 
   it("wires the picker to the OG image field via the SEO panel callback", () => {
     expect(source).toContain('setPickerTarget("og")');
-    expect(source).toContain("onSeoChange({ ogImage: selection.absoluteUrl })");
+    expect(source).toContain("onSeoChange({ ogImage: url })");
+    expect(source).toContain("onChange({ coverImage: url })");
     expect(source).toContain("onPickOgImage={() => setPickerTarget(\"og\")}");
   });
 
@@ -28,7 +30,7 @@ describe("Content Studio — Cover image picker integration", () => {
     // functions that already call seoAnalysis.markStale() — never mutate
     // `values`/`seo` state directly.
     const handlerMatch = source.match(
-      /const handleMediaSelect = useCallback\(([\s\S]*?)\n\s*\},\s*\n\s*\[pickerTarget, onChange, onSeoChange\],\s*\n\s*\);/,
+      /const handleMediaSelect = useCallback\(([\s\S]*?)\n\s*\},\s*\n\s*\[pickerTarget, onChange, onSeoChange, seo.ogImage, values.coverImage\],\s*\n\s*\);/,
     );
     expect(handlerMatch).not.toBeNull();
     const handlerBody = handlerMatch?.[1] ?? "";
@@ -40,7 +42,7 @@ describe("Content Studio — Cover image picker integration", () => {
 
   it("never auto-saves on selection (no update.run/seoMutation.run call inside the picker handler)", () => {
     const handlerMatch = source.match(
-      /const handleMediaSelect = useCallback\(([\s\S]*?)\n\s*\},\s*\n\s*\[pickerTarget, onChange, onSeoChange\],\s*\n\s*\);/,
+      /const handleMediaSelect = useCallback\(([\s\S]*?)\n\s*\},\s*\n\s*\[pickerTarget, onChange, onSeoChange, seo.ogImage, values.coverImage\],\s*\n\s*\);/,
     );
     const handlerBody = handlerMatch?.[1] ?? "";
     expect(handlerBody).not.toContain("update.run(");

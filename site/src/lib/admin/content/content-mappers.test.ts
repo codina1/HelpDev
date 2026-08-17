@@ -7,6 +7,7 @@ import {
   groupSeoAnalysisFindings,
   isAbsoluteUrl,
   isValidSlug,
+  resolveContentCoverUrl,
   labelForContentStatus,
   labelForContentType,
   labelForNewsPriority,
@@ -116,6 +117,30 @@ describe("isAbsoluteUrl", () => {
     expect(isAbsoluteUrl("/relative")).toBe(false);
     expect(isAbsoluteUrl("example.com")).toBe(false);
     expect(isAbsoluteUrl("javascript:alert(1)")).toBe(false);
+  });
+});
+
+describe("resolveContentCoverUrl", () => {
+  it("prefers the content cover over the OG image", () => {
+    expect(
+      resolveContentCoverUrl(
+        "https://cdn.example/cover.png",
+        "https://cdn.example/og.png",
+      ),
+    ).toBe("https://cdn.example/cover.png");
+  });
+
+  it("falls back to the OG image when the cover is missing", () => {
+    expect(resolveContentCoverUrl("", "https://cdn.example/og.png")).toBe(
+      "https://cdn.example/og.png",
+    );
+    expect(resolveContentCoverUrl(null, "https://cdn.example/og.png")).toBe(
+      "https://cdn.example/og.png",
+    );
+  });
+
+  it("returns empty when neither cover nor OG image is set", () => {
+    expect(resolveContentCoverUrl("", "")).toBe("");
   });
 });
 

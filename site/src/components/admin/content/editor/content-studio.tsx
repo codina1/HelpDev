@@ -219,14 +219,17 @@ export function ContentStudio({
   // closes the picker. Never triggers a save by itself.
   const handleMediaSelect = useCallback(
     (selection: MediaPickerSelection) => {
+      const url = selection.absoluteUrl;
       if (pickerTarget === "cover") {
-        onChange({ coverImage: selection.absoluteUrl });
+        onChange({ coverImage: url });
+        if (!seo.ogImage.trim()) onSeoChange({ ogImage: url });
       } else if (pickerTarget === "og") {
-        onSeoChange({ ogImage: selection.absoluteUrl });
+        onSeoChange({ ogImage: url });
+        if (!values.coverImage.trim()) onChange({ coverImage: url });
       }
       setPickerTarget(null);
     },
-    [pickerTarget, onChange, onSeoChange],
+    [pickerTarget, onChange, onSeoChange, seo.ogImage, values.coverImage],
   );
 
   const isDirty = useMemo(

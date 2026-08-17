@@ -1,3 +1,4 @@
+import { resolveMediaUrl } from "@/lib/admin/media/media-mappers";
 import type { AdminDashboardDto } from "@/lib/admin/dashboard/dashboard-types";
 import {
   CONTENT_LIMITS,
@@ -157,6 +158,15 @@ export function validateContentForm(values: ContentFormValues): ContentFormError
 
 export function hasFormErrors(errors: Record<string, unknown>): boolean {
   return Object.keys(errors).length > 0;
+}
+
+/** Cover URL for overview/preview: content cover, then OG image. */
+export function resolveContentCoverUrl(
+  coverImage?: string | null,
+  ogImage?: string | null,
+): string {
+  const candidate = (coverImage ?? "").trim() || (ogImage ?? "").trim();
+  return candidate ? resolveMediaUrl(candidate) : "";
 }
 
 /** Validates an absolute http(s) URL (mirrors backend `Uri.TryCreate` + scheme check). */

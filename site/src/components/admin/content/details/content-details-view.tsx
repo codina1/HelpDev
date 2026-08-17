@@ -12,6 +12,7 @@ import { ContentDetailsCard } from "@/components/admin/content/details/content-d
 import { ContentMetaCard } from "@/components/admin/content/details/content-meta-card";
 import { ContentDetailTabs } from "@/components/admin/content/details/content-detail-tabs";
 import { RelatedKnowledgePanel } from "@/components/admin/content/related/related-knowledge-panel";
+import { resolveContentCoverUrl } from "@/lib/admin/content/content-mappers";
 import type { AdminContentDetail, ContentDetail } from "@/lib/admin/content/content-types";
 
 /** Adapts the Admin Read Model to the existing overview cards' view model. */
@@ -21,7 +22,7 @@ function toContentDetail(admin: AdminContentDetail): ContentDetail {
     title: admin.title,
     slug: admin.slug,
     body: admin.body,
-    coverImage: admin.coverImage,
+    coverImage: resolveContentCoverUrl(admin.coverImage, admin.seo.ogImage),
     type: admin.type,
     typeLabel: admin.typeLabel,
     authorId: admin.authorId,
