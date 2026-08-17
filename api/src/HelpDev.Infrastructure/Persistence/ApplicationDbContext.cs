@@ -26,8 +26,10 @@ using HelpDev.Modules.Toolbox.Domain.Execution;
 using HelpDev.Modules.Toolbox.Domain.Favorites;
 using HelpDev.Modules.Toolbox.Domain.Tools;
 using HelpDev.Modules.PromptLab.Application.Persistence;
+using HelpDev.Modules.PromptLab.Domain.AiModels;
 using HelpDev.Modules.PromptLab.Domain.Categories;
 using HelpDev.Modules.PromptLab.Domain.Favorites;
+using HelpDev.Modules.PromptLab.Domain.Packs;
 using HelpDev.Modules.PromptLab.Domain.Prompts;
 using HelpDev.Modules.PromptLab.Domain.Rendering;
 using HelpDev.Modules.Analytics.Application.Persistence;
@@ -158,6 +160,14 @@ public class ApplicationDbContext :
     public DbSet<PromptCategory> PromptCategories => Set<PromptCategory>();
 
     public DbSet<PromptDefinition> PromptDefinitions => Set<PromptDefinition>();
+
+    public DbSet<Prompt> Prompts => Set<Prompt>();
+
+    public DbSet<AiModel> AiModels => Set<AiModel>();
+
+    public DbSet<PromptPack> PromptPacks => Set<PromptPack>();
+
+    public DbSet<PromptPackItem> PromptPackItems => Set<PromptPackItem>();
 
     public DbSet<PromptFavorite> PromptFavorites => Set<PromptFavorite>();
 

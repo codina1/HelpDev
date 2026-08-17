@@ -4,7 +4,7 @@ namespace HelpDev.Testing.PostgreSQL.Infrastructure;
 
 public static class PostgreSqlDatabaseHelper
 {
-    public const int ExpectedMigrationCount = 24;
+    public const int ExpectedMigrationCount = 25;
 
     private static readonly HashSet<(string SourceTable, string TargetTable)> AllowedCrossModuleForeignKeys =
     [
@@ -42,6 +42,10 @@ public static class PostgreSqlDatabaseHelper
         "toolbox_execution_records",
         "promptlab_categories",
         "promptlab_prompts",
+        "promptlab_library_prompts",
+        "promptlab_ai_models",
+        "promptlab_packs",
+        "promptlab_pack_items",
         "promptlab_versions",
         "promptlab_variables",
         "promptlab_favorites",
