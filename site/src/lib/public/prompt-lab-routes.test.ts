@@ -3,8 +3,10 @@ import { isAdminPath } from "@/lib/admin/routes";
 import {
   PROMPT_LAB_HERO_SUBTITLE,
   PROMPT_LAB_HERO_TITLE,
+  PUBLIC_PROMPT_LAB_PACKS_PATH,
   PUBLIC_PROMPT_LAB_PATH,
   publicPromptLabDetailPath,
+  publicPromptLabPackPath,
 } from "@/lib/public/prompt-lab-routes";
 
 describe("public prompt lab route", () => {
@@ -20,5 +22,13 @@ describe("public prompt lab route", () => {
       "/prompt-lab/system-boundary-review",
     );
     expect(isAdminPath(publicPromptLabDetailPath("system-boundary-review"))).toBe(false);
+  });
+
+  it("builds a public pack path that is not admin", () => {
+    expect(PUBLIC_PROMPT_LAB_PACKS_PATH).toBe("/prompt-lab/packs");
+    expect(publicPromptLabPackPath("modular-monolith-studio")).toBe(
+      "/prompt-lab/packs/modular-monolith-studio",
+    );
+    expect(isAdminPath(publicPromptLabPackPath("glass-ui-kit"))).toBe(false);
   });
 });

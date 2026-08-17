@@ -1,0 +1,14 @@
+.page {
+  background: var(--home-bg);
+  color: var(--home-text);
+}
+
+.body {
+  padding-block: 1.75rem 2.75rem;
+}
+
+@media (min-width: 1024px) {
+  .body {
+    padding-block: 2.15rem 3.25rem;
+  }
+}
