@@ -1,4 +1,6 @@
+import Link from "next/link";
 import type { PromptLabCardItem } from "@/lib/public/prompt-lab-mock";
+import { publicPromptLabDetailPath } from "@/lib/public/prompt-lab-routes";
 import styles from "./prompt-lab-card.module.css";
 
 const NUMBER_FA = new Intl.NumberFormat("fa-IR");
@@ -10,7 +12,7 @@ type PromptLabCardProps = {
 /** Glass prompt card — cover, title, description, model, category, copy/view counts. */
 export function PromptLabCard({ item }: PromptLabCardProps) {
   return (
-    <article className={styles.card}>
+    <Link href={publicPromptLabDetailPath(item.slug)} className={styles.card}>
       <div className={styles.visual}>
         <img src={item.coverImage} alt="" className={styles.image} />
         <span className={styles.shade} aria-hidden />
@@ -33,7 +35,7 @@ export function PromptLabCard({ item }: PromptLabCardProps) {
           </span>
         </p>
       </div>
-    </article>
+    </Link>
   );
 }
 

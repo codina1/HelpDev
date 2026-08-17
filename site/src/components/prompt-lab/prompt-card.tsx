@@ -68,15 +68,16 @@ export function PromptCard({
     return null;
   }
 
-  const coverSrc = item.coverImage?.trim() ?? "";
+  const prompt = item;
+  const coverSrc = prompt.coverImage?.trim() ?? "";
   const showImage = coverSrc.length > 0 && !imageFailed;
-  const mediaLabel = labelPromptCardMediaType(item.mediaType);
+  const mediaLabel = labelPromptCardMediaType(prompt.mediaType);
   const isCopied = copied || copiedLocal;
-  const viewCount = item.viewCount ?? 0;
+  const viewCount = prompt.viewCount ?? 0;
   const state = showImage ? "ready" : "empty-image";
 
   async function handleCopy() {
-    const text = item.copyText?.trim();
+    const text = prompt.copyText?.trim();
     if (text && typeof navigator !== "undefined" && navigator.clipboard) {
       try {
         await navigator.clipboard.writeText(text);
@@ -107,7 +108,7 @@ export function PromptCard({
         ) : (
           <div className={styles.emptyCover} data-empty-cover>
             <span className={styles.emptyOrb} aria-hidden>
-              <MediaGlyph mediaType={item.mediaType} />
+              <MediaGlyph mediaType={prompt.mediaType} />
             </span>
             <span className={styles.emptyLabel}>بدون تصویر</span>
           </div>
@@ -116,11 +117,11 @@ export function PromptCard({
         <span className={`${styles.badge} ${styles.media} ${styles.mediaChip}`}>{mediaLabel}</span>
       </div>
       <div className={styles.body}>
-        <h3 className={styles.title}>{item.title}</h3>
-        {item.description ? <p className={styles.description}>{item.description}</p> : null}
+        <h3 className={styles.title}>{prompt.title}</h3>
+        {prompt.description ? <p className={styles.description}>{prompt.description}</p> : null}
         <div className={styles.badges}>
-          <span className={`${styles.badge} ${styles.category}`}>{item.category}</span>
-          <span className={`${styles.badge} ${styles.model}`}>{item.aiModel}</span>
+          <span className={`${styles.badge} ${styles.category}`}>{prompt.category}</span>
+          <span className={`${styles.badge} ${styles.model}`}>{prompt.aiModel}</span>
           <span className={`${styles.badge} ${styles.media}`}>{mediaLabel}</span>
         </div>
         <div className={styles.footer}>

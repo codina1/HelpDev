@@ -14,5 +14,6 @@ describe("prompt lab card", () => {
     expect(html).toContain(item.category);
     expect(html).toContain("کپی");
     expect(html).toContain("بازدید");
+    expect(html).toContain(`/prompt-lab/${item.slug}`);
   });
 });

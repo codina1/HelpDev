@@ -1,0 +1,60 @@
+.section {
+  margin-top: 2rem;
+}
+
+.heading {
+  margin: 0 0 0.9rem;
+  font-size: clamp(1.15rem, 2vw, var(--home-title-size));
+  font-weight: var(--home-title-weight);
+  color: var(--home-text);
+}
+
+.card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  padding: 1.15rem 1.2rem;
+  border: 1px solid var(--home-border);
+  border-radius: var(--home-radius-xl);
+  background: var(--home-surface);
+  box-shadow: var(--home-shadow-sm), 0 0 22px color-mix(in srgb, var(--home-purple) 12%, transparent);
+  backdrop-filter: blur(18px);
+}
+
+.avatar {
+  display: flex;
+  height: 3.25rem;
+  width: 3.25rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--home-purple) 40%, transparent);
+  border-radius: 999px;
+  background: var(--home-purple-soft);
+  box-shadow: var(--home-glow-purple);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--home-text);
+}
+
+.name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--home-text);
+}
+
+.role {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--home-cyan);
+}
+
+.bio {
+  margin: 0.55rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--home-text-muted);
+}
