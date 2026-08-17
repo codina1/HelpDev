@@ -19,6 +19,17 @@ export function ContentDetailsCard({ content }: { content: ContentDetail }) {
         </p>
       </div>
 
+      {content.coverImage ? (
+        <figure className="overflow-hidden rounded-xl border border-[var(--adm-border)] bg-[var(--adm-surface-2)]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={content.coverImage}
+            alt={`تصویر کاور ${content.title}`}
+            className="max-h-[22rem] w-full object-cover"
+          />
+        </figure>
+      ) : null}
+
       <MarkdownPreview source={content.body} />
     </AdminSurface>
   );

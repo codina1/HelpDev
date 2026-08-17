@@ -422,6 +422,7 @@ export type ContentDetail = {
   title: string;
   slug: string;
   body: string;
+  coverImage?: string;
   type: string;
   typeLabel: string;
   authorId: string;

@@ -21,6 +21,7 @@ function toContentDetail(admin: AdminContentDetail): ContentDetail {
     title: admin.title,
     slug: admin.slug,
     body: admin.body,
+    coverImage: admin.coverImage,
     type: admin.type,
     typeLabel: admin.typeLabel,
     authorId: admin.authorId,
