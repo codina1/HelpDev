@@ -20,7 +20,10 @@ public sealed class PromptLabExceptionFilter : IExceptionFilter
                 or PromptLabApplicationErrorCodes.PromptDisabled
                 or PromptLabApplicationErrorCodes.PromptUnpublished
                 or PromptLabApplicationErrorCodes.PromptVersionNotFound
-                or PromptLabApplicationErrorCodes.HistoryNotFound => StatusCodes.Status404NotFound,
+                or PromptLabApplicationErrorCodes.HistoryNotFound
+                or PromptLabApplicationErrorCodes.AiModelNotFound => StatusCodes.Status404NotFound,
+
+            PromptLabApplicationErrorCodes.PromptEditForbidden => StatusCodes.Status403Forbidden,
 
             PromptLabApplicationErrorCodes.RenderRequiresAuthentication
                 or PromptLabApplicationErrorCodes.FavoriteRequiresAuthentication
@@ -29,8 +32,11 @@ public sealed class PromptLabExceptionFilter : IExceptionFilter
             PromptLabApplicationErrorCodes.CategorySlugDuplicate
                 or PromptLabApplicationErrorCodes.PromptSlugDuplicate
                 or PromptLabApplicationErrorCodes.CategoryInactive
+                or PromptLabApplicationErrorCodes.AiModelInactive
                 or PromptLabApplicationErrorCodes.PromptCannotPublish
-                or PromptLabApplicationErrorCodes.PromptCategoryInvalid => StatusCodes.Status409Conflict,
+                or PromptLabApplicationErrorCodes.PromptCategoryInvalid
+                or PromptLabApplicationErrorCodes.PromptNotDraft
+                or PromptLabApplicationErrorCodes.PromptStatusInvalid => StatusCodes.Status409Conflict,
 
             _ => StatusCodes.Status400BadRequest,
         };

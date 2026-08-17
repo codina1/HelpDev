@@ -16,11 +16,14 @@ public static class DependencyInjection
     {
         services.AddScoped<IPromptCategoryRepository, PromptCategoryRepository>();
         services.AddScoped<IPromptDefinitionRepository, PromptDefinitionRepository>();
+        services.AddScoped<IPromptRepository, PromptRepository>();
+        services.AddScoped<IAiModelRepository, AiModelRepository>();
         services.AddScoped<IPromptFavoriteRepository, PromptFavoriteRepository>();
         services.AddScoped<IPromptRenderRecordRepository, PromptRenderRecordRepository>();
 
         services.AddScoped<IPromptCatalogQueries, PromptCatalogQueries>();
         services.AddScoped<IPromptPublicQueries, PromptPublicQueries>();
+        services.AddScoped<IPromptWriterQueries, PromptWriterQueries>();
         services.AddScoped<IPromptCategoryQueries, PromptCategoryQueries>();
         services.AddScoped<IPromptDefinitionQueries, PromptDefinitionQueries>();
         services.AddScoped<IPromptFavoriteQueries, PromptFavoriteQueries>();
@@ -28,6 +31,7 @@ public static class DependencyInjection
 
         services.AddScoped<IPromptCategoryService, PromptCategoryService>();
         services.AddScoped<IPromptDefinitionService, PromptDefinitionService>();
+        services.AddScoped<IPromptWriterService, PromptWriterService>();
         services.AddScoped<IPromptRenderService, PromptRenderService>();
         services.AddScoped<IPromptFavoriteService, PromptFavoriteService>();
 

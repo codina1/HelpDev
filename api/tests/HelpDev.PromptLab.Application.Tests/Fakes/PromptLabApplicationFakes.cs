@@ -4,6 +4,7 @@ using HelpDev.Modules.PromptLab.Application.Favorites;
 using HelpDev.Modules.PromptLab.Application.Persistence;
 using HelpDev.Modules.PromptLab.Application.Prompts;
 using HelpDev.Modules.PromptLab.Application.Rendering;
+using HelpDev.Modules.PromptLab.Domain.AiModels;
 using HelpDev.Modules.PromptLab.Domain.Categories;
 using HelpDev.Modules.PromptLab.Domain.Favorites;
 using HelpDev.Modules.PromptLab.Domain.Prompts;
@@ -233,6 +234,47 @@ internal sealed class FakePromptRenderRecordRepository : IPromptRenderRecordRepo
     }
 }
 
+internal sealed class FakePromptRepository : IPromptRepository
+{
+    private readonly List<Prompt> _items = [];
+
+    public int AddCallCount { get; private set; }
+
+    public IReadOnlyList<Prompt> Items => _items;
+
+    public void Seed(Prompt prompt) => _items.Add(prompt);
+
+    public Task<Prompt?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        Task.FromResult(_items.FirstOrDefault(item => item.Id == id));
+
+    public Task<bool> ExistsBySlugAsync(
+        string slug,
+        Guid? excludingId = null,
+        CancellationToken cancellationToken = default) =>
+        Task.FromResult(_items.Any(item =>
+            string.Equals(item.Slug.Value, slug, StringComparison.OrdinalIgnoreCase)
+            && (!excludingId.HasValue || item.Id != excludingId.Value)));
+
+    public Task AddAsync(Prompt prompt, CancellationToken cancellationToken = default)
+    {
+        AddCallCount++;
+        _items.Add(prompt);
+        return Task.CompletedTask;
+    }
+}
+
+internal sealed class FakeAiModelRepository : IAiModelRepository
+{
+    private readonly List<AiModel> _items = [];
+
+    public IReadOnlyList<AiModel> Items => _items;
+
+    public void Seed(AiModel model) => _items.Add(model);
+
+    public Task<AiModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        Task.FromResult(_items.FirstOrDefault(item => item.Id == id));
+}
+
 internal static class ServiceFactory
 {
     public static PromptCategoryService CreateCategoryService(
@@ -301,6 +343,24 @@ internal static class ServiceFactory
             unitOfWork,
             clock,
             NullLogger<PromptFavoriteService>.Instance);
+
+    public static PromptWriterService CreateWriterService(
+        FakePromptRepository prompts,
+        FakePromptCategoryRepository categories,
+        FakeAiModelRepository aiModels,
+        FakeUnitOfWork unitOfWork,
+        FakeDateTimeProvider clock,
+        IAuditRecorder? auditRecorder = null,
+        IAuditRequestContext? auditRequestContext = null) =>
+        new(
+            prompts,
+            categories,
+            aiModels,
+            unitOfWork,
+            clock,
+            auditRecorder ?? new NoOpAuditRecorder(),
+            auditRequestContext ?? new FakeAuditRequestContext(),
+            NullLogger<PromptWriterService>.Instance);
 
     public static PromptCategory CreateActiveCategory(DateTime utcNow, string slug = "coding") =>
         PromptCategory.Create(Guid.NewGuid(), "Coding", slug, null, null, 0, utcNow);

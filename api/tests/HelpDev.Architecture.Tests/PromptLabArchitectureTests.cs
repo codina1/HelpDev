@@ -4,6 +4,7 @@ using System.Reflection;
 using HelpDev.API.Controllers;
 using HelpDev.Infrastructure.Outbox;
 using HelpDev.Modules.PromptLab.Application.Catalog;
+using HelpDev.Modules.PromptLab.Application.Prompts;
 using HelpDev.Modules.PromptLab.Application.Rendering;
 using HelpDev.Modules.PromptLab.Domain.Favorites;
 using HelpDev.Modules.PromptLab.Domain.Prompts;
@@ -177,6 +178,18 @@ public sealed class PromptLabArchitectureTests
         Assert.Contains(ctor.GetParameters(), p => p.ParameterType == typeof(IPromptRenderService));
         Assert.Contains(ctor.GetParameters(), p => p.ParameterType == typeof(IPromptCatalogQueries));
         Assert.Contains(ctor.GetParameters(), p => p.ParameterType == typeof(IPromptPublicQueries));
+        Assert.DoesNotContain(
+            ctor.GetParameters(),
+            p => typeof(DbContext).IsAssignableFrom(p.ParameterType)
+                || p.ParameterType.Name.Contains("Repository", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void Writer_depends_on_writer_service_and_queries_not_DbContext()
+    {
+        var ctor = typeof(PromptLabWriterController).GetConstructors().Single();
+        Assert.Contains(ctor.GetParameters(), p => p.ParameterType == typeof(IPromptWriterService));
+        Assert.Contains(ctor.GetParameters(), p => p.ParameterType == typeof(IPromptWriterQueries));
         Assert.DoesNotContain(
             ctor.GetParameters(),
             p => typeof(DbContext).IsAssignableFrom(p.ParameterType)

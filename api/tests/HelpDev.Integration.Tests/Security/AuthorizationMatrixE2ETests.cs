@@ -51,6 +51,10 @@ public sealed class AuthorizationMatrixE2ETests : IntegrationTestClassBase
         yield return ["User", "GET", "/api/prompts", HttpStatusCode.OK];
         yield return ["Admin", "GET", "/api/prompts", HttpStatusCode.OK];
 
+        yield return ["Anonymous", "GET", "/api/writer/prompts", HttpStatusCode.Unauthorized];
+        yield return ["User", "GET", "/api/writer/prompts", HttpStatusCode.Forbidden];
+        yield return ["Admin", "GET", "/api/writer/prompts", HttpStatusCode.OK];
+
         yield return ["Anonymous", "GET", "/api/search?q=test", HttpStatusCode.OK];
         yield return ["User", "GET", "/api/search?q=test", HttpStatusCode.OK];
         yield return ["Admin", "GET", "/api/search?q=test", HttpStatusCode.OK];

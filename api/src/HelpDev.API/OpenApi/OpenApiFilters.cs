@@ -337,7 +337,7 @@ public sealed class AudienceDocumentFilter : IDocumentFilter
             [ApiTags.Learning] = "Public course catalog and authenticated enrollment/progress.",
             [ApiTags.Search] = "Published resource search. Indexing may be eventually consistent.",
             [ApiTags.Toolbox] = "Published tools catalog and execution.",
-            [ApiTags.PromptLab] = "Published prompts catalog and rendering.",
+            [ApiTags.PromptLab] = "Public approved prompts, writer drafts, and rendering.",
             [ApiTags.Administration] = "Admin feature flags, settings, announcements, and user management.",
             [ApiTags.Analytics] = "Admin aggregate analytics reports. Eventually consistent.",
             [ApiTags.Audit] = "Admin immutable audit records with sanitized metadata.",

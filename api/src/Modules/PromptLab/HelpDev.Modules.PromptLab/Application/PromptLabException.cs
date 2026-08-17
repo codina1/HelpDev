@@ -78,4 +78,18 @@ public static class PromptLabApplicationErrorCodes
     public const string HistoryAccessDenied = Domain.PromptLabErrorCodes.HistoryAccessDenied;
 
     public const string PaginationInvalid = Domain.PromptLabErrorCodes.PaginationInvalid;
+
+    public const string AiModelNotFound = Domain.PromptLabErrorCodes.AiModelNotFound;
+    public const string AiModelInactive = Domain.PromptLabErrorCodes.AiModelInactive;
+    public const string PromptTitleRequired = Domain.PromptLabErrorCodes.PromptTitleRequired;
+    public const string PromptTitleInvalid = Domain.PromptLabErrorCodes.PromptTitleInvalid;
+    public const string PromptContentRequired = Domain.PromptLabErrorCodes.PromptContentRequired;
+    public const string PromptContentInvalid = Domain.PromptLabErrorCodes.PromptContentInvalid;
+    public const string PromptMediaTypeInvalid = Domain.PromptLabErrorCodes.PromptMediaTypeInvalid;
+    public const string PromptAiModelInvalid = Domain.PromptLabErrorCodes.PromptAiModelInvalid;
+    public const string PromptCoverImageInvalid = Domain.PromptLabErrorCodes.PromptCoverImageInvalid;
+    public const string PromptAuthorInvalid = Domain.PromptLabErrorCodes.PromptAuthorInvalid;
+    public const string PromptNotDraft = Domain.PromptLabErrorCodes.PromptNotDraft;
+    public const string PromptEditForbidden = Domain.PromptLabErrorCodes.PromptEditForbidden;
+    public const string PromptStatusInvalid = Domain.PromptLabErrorCodes.PromptStatusInvalid;
 }

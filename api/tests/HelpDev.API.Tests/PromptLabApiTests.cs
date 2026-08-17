@@ -6,6 +6,7 @@ using HelpDev.API.Tests.Fakes;
 using HelpDev.Modules.Identity.Application.Auth;
 using HelpDev.Modules.PromptLab.Application;
 using HelpDev.Modules.PromptLab.Application.Catalog;
+using HelpDev.Modules.PromptLab.Application.Prompts;
 using HelpDev.Modules.PromptLab.Application.Favorites;
 using HelpDev.Modules.PromptLab.Application.History;
 using HelpDev.Modules.PromptLab.Application.Rendering;
@@ -38,6 +39,65 @@ public sealed class PromptLabApiTests
             typeof(PromptLabMeController).GetCustomAttributes(typeof(AuthorizeAttribute), inherit: true)
                 .Cast<AuthorizeAttribute>());
         Assert.Equal(AuthorizationPolicies.Authenticated, attribute.Policy);
+    }
+
+    [Fact]
+    public void Writer_controller_requires_WriterOrAdmin()
+    {
+        var attribute = Assert.Single(
+            typeof(PromptLabWriterController).GetCustomAttributes(typeof(AuthorizeAttribute), inherit: true)
+                .Cast<AuthorizeAttribute>());
+        Assert.Equal(AuthorizationPolicies.WriterOrAdmin, attribute.Policy);
+        Assert.DoesNotContain(
+            typeof(PromptLabWriterController).GetConstructors().Single().GetParameters(),
+            p => p.ParameterType.Name.Contains("Repository", StringComparison.Ordinal)
+                || p.ParameterType.Name.Contains("DbContext", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public async Task Writer_endpoints_use_authenticated_user_id()
+    {
+        var writer = new FakeWriterService();
+        var queries = new FakeWriterQueries();
+        var controller = new PromptLabWriterController(writer, queries);
+        var userId = Guid.NewGuid();
+        ControllerTestHelper.SetUser(controller, userId, AppRoles.Writer);
+
+        var created = await controller.Create(
+            new CreateWriterPromptRequest(
+                "Title",
+                "title",
+                null,
+                "body",
+                null,
+                "Text",
+                Guid.NewGuid(),
+                Guid.NewGuid()),
+            CancellationToken.None);
+        Assert.IsType<CreatedAtActionResult>(created.Result);
+
+        Assert.IsType<OkObjectResult>((await controller.List(null, 1, 20, CancellationToken.None)).Result);
+        var missing = await Assert.ThrowsAsync<PromptLabException>(
+            () => controller.GetById(Guid.NewGuid(), CancellationToken.None));
+        Assert.Equal(PromptLabApplicationErrorCodes.PromptNotFound, missing.Code);
+
+        await controller.Update(
+            writer.LastId,
+            new UpdateWriterPromptRequest(
+                "Title",
+                "title",
+                null,
+                "body",
+                null,
+                "Text",
+                Guid.NewGuid(),
+                Guid.NewGuid()),
+            CancellationToken.None);
+        await controller.Submit(writer.LastId, CancellationToken.None);
+
+        Assert.Equal(userId, writer.LastAuthorId);
+        Assert.Equal(userId, queries.LastAuthorId);
+        Assert.False(writer.PublishedAutomatically);
     }
 
     [Fact]
@@ -153,6 +213,8 @@ public sealed class PromptLabApiTests
     [InlineData(PromptLabApplicationErrorCodes.PromptNotFound, StatusCodes.Status404NotFound)]
     [InlineData(PromptLabApplicationErrorCodes.RenderRequiresAuthentication, StatusCodes.Status401Unauthorized)]
     [InlineData(PromptLabApplicationErrorCodes.PromptSlugDuplicate, StatusCodes.Status409Conflict)]
+    [InlineData(PromptLabApplicationErrorCodes.PromptEditForbidden, StatusCodes.Status403Forbidden)]
+    [InlineData(PromptLabApplicationErrorCodes.PromptNotDraft, StatusCodes.Status409Conflict)]
     [InlineData(PromptLabApplicationErrorCodes.RenderPatternTimeout, StatusCodes.Status400BadRequest)]
     public void Exception_filter_maps_codes(string code, int status)
     {
@@ -168,6 +230,87 @@ public sealed class PromptLabApiTests
         var result = Assert.IsType<ObjectResult>(context.Result);
         Assert.Equal(status, result.StatusCode);
         Assert.True(context.ExceptionHandled);
+    }
+
+    private sealed class FakeWriterService : IPromptWriterService
+    {
+        public Guid LastAuthorId { get; private set; }
+
+        public Guid LastId { get; private set; } = Guid.NewGuid();
+
+        public bool PublishedAutomatically { get; private set; }
+
+        public Task<WriterPromptDetailsDto> CreateAsync(
+            Guid authorId,
+            CreateWriterPromptRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            LastAuthorId = authorId;
+            return Task.FromResult(Details(nameof(HelpDev.Modules.PromptLab.Domain.Prompts.PromptStatus.Draft)));
+        }
+
+        public Task<WriterPromptDetailsDto> UpdateAsync(
+            Guid authorId,
+            Guid id,
+            UpdateWriterPromptRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            LastAuthorId = authorId;
+            LastId = id;
+            return Task.FromResult(Details(nameof(HelpDev.Modules.PromptLab.Domain.Prompts.PromptStatus.Draft)));
+        }
+
+        public Task<WriterPromptDetailsDto> SubmitAsync(
+            Guid authorId,
+            Guid id,
+            CancellationToken cancellationToken = default)
+        {
+            LastAuthorId = authorId;
+            LastId = id;
+            PublishedAutomatically = false;
+            return Task.FromResult(Details(nameof(HelpDev.Modules.PromptLab.Domain.Prompts.PromptStatus.Submitted)));
+        }
+
+        private WriterPromptDetailsDto Details(string status) =>
+            new(
+                LastId,
+                "Title",
+                "title",
+                null,
+                "body",
+                null,
+                "Text",
+                Guid.NewGuid(),
+                Guid.NewGuid(),
+                status,
+                0,
+                0,
+                DateTime.UtcNow,
+                DateTime.UtcNow,
+                PublishedAt: null);
+    }
+
+    private sealed class FakeWriterQueries : IPromptWriterQueries
+    {
+        public Guid LastAuthorId { get; private set; }
+
+        public Task<WriterPromptPageDto> GetMyPromptsAsync(
+            Guid authorId,
+            WriterPromptFilter filter,
+            CancellationToken cancellationToken = default)
+        {
+            LastAuthorId = authorId;
+            return Task.FromResult(new WriterPromptPageDto(filter.Page, filter.PageSize, 0, []));
+        }
+
+        public Task<WriterPromptDetailsDto?> GetMyByIdAsync(
+            Guid authorId,
+            Guid id,
+            CancellationToken cancellationToken = default)
+        {
+            LastAuthorId = authorId;
+            return Task.FromResult<WriterPromptDetailsDto?>(null);
+        }
     }
 
     private sealed class FakePublicQueries : IPromptPublicQueries
