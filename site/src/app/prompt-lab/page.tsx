@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/layout";
-import { PromptLab } from "@/components/prompt-lab/prompt-lab";
+import { PublicPromptLabPage } from "@/components/public/prompt-lab/public-prompt-lab-page";
+import {
+  PROMPT_LAB_HERO_SUBTITLE,
+  PROMPT_LAB_HERO_TITLE,
+} from "@/lib/public/prompt-lab-routes";
 
 export const metadata: Metadata = {
-  title: "Prompt Lab",
+  title: PROMPT_LAB_HERO_TITLE,
+  description: PROMPT_LAB_HERO_SUBTITLE,
 };
 
 export default function PromptLabPage() {
-  return (
-    <>
-      <PageHeader
-        title="Prompt Lab"
-        description="درخواست کوتاه خود را به پرامپت حرفه‌ای و ساخت‌یافته تبدیل کنید."
-      />
-      <PromptLab />
-    </>
-  );
+  return <PublicPromptLabPage />;
 }

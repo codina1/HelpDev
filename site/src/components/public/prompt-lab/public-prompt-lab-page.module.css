@@ -1,0 +1,4 @@
+.page {
+  background: var(--home-bg);
+  color: var(--home-text);
+}
