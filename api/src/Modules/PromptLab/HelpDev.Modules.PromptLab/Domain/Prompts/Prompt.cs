@@ -1,3 +1,4 @@
+using HelpDev.Modules.PromptLab.Domain.AiModels;
 using HelpDev.Modules.PromptLab.Domain.Categories;
 using HelpDev.SharedKernel.Common;
 using HelpDev.SharedKernel.Exceptions;
@@ -33,7 +34,7 @@ public sealed class Prompt : AggregateRoot<Guid>
 
     public PromptMediaType MediaType { get; private set; }
 
-    public string AiModel { get; private set; } = string.Empty;
+    public Guid AiModelId { get; private set; }
 
     public PromptStatus Status { get; private set; }
 
@@ -62,7 +63,7 @@ public sealed class Prompt : AggregateRoot<Guid>
         string content,
         string? coverImage,
         PromptMediaType mediaType,
-        string aiModel,
+        Guid aiModelId,
         Guid categoryId,
         Guid authorId,
         DateTime utcNow)
@@ -82,6 +83,7 @@ public sealed class Prompt : AggregateRoot<Guid>
         var prompt = new Prompt(id)
         {
             CategoryId = EnsureCategoryId(categoryId),
+            AiModelId = EnsureAiModelId(aiModelId),
             AuthorId = authorId,
             Status = PromptStatus.Draft,
             Views = 0,
@@ -96,7 +98,7 @@ public sealed class Prompt : AggregateRoot<Guid>
                 PromptLabErrorCodes.PromptSlugInvalid),
         };
 
-        prompt.ApplyDetails(title, description, content, coverImage, mediaType, aiModel, force: true);
+        prompt.ApplyDetails(title, description, content, coverImage, mediaType, force: true);
         return prompt;
     }
 
@@ -108,12 +110,14 @@ public sealed class Prompt : AggregateRoot<Guid>
         string content,
         string? coverImage,
         PromptMediaType mediaType,
-        string aiModel,
+        AiModel aiModel,
         PromptCategory category,
         Guid authorId,
         DateTime utcNow)
     {
+        ArgumentNullException.ThrowIfNull(aiModel);
         ArgumentNullException.ThrowIfNull(category);
+        aiModel.EnsureActive();
         category.EnsureActive();
         return Create(
             id,
@@ -123,7 +127,7 @@ public sealed class Prompt : AggregateRoot<Guid>
             content,
             coverImage,
             mediaType,
-            aiModel,
+            aiModel.Id,
             category.Id,
             authorId,
             utcNow);
@@ -137,7 +141,6 @@ public sealed class Prompt : AggregateRoot<Guid>
         string content,
         string? coverImage,
         PromptMediaType mediaType,
-        string aiModel,
         DateTime utcNow)
     {
         EnsureOwner(actorUserId);
@@ -150,7 +153,7 @@ public sealed class Prompt : AggregateRoot<Guid>
             PromptLabErrorCodes.PromptSlugRequired,
             PromptLabErrorCodes.PromptSlugInvalid);
 
-        var changed = ApplyDetails(title, description, content, coverImage, mediaType, aiModel, force: false);
+        var changed = ApplyDetails(title, description, content, coverImage, mediaType, force: false);
         if (Slug != nextSlug)
         {
             Slug = nextSlug;
@@ -187,6 +190,29 @@ public sealed class Prompt : AggregateRoot<Guid>
         ArgumentNullException.ThrowIfNull(category);
         category.EnsureActive();
         return ChangeCategory(actorUserId, category.Id, utcNow);
+    }
+
+    public bool ChangeAiModel(Guid actorUserId, Guid aiModelId, DateTime utcNow)
+    {
+        EnsureOwner(actorUserId);
+        EnsureDraft();
+
+        var nextAiModelId = EnsureAiModelId(aiModelId);
+        if (AiModelId == nextAiModelId)
+        {
+            return false;
+        }
+
+        AiModelId = nextAiModelId;
+        UpdatedAt = utcNow;
+        return true;
+    }
+
+    public bool ChangeAiModel(Guid actorUserId, AiModel aiModel, DateTime utcNow)
+    {
+        ArgumentNullException.ThrowIfNull(aiModel);
+        aiModel.EnsureActive();
+        return ChangeAiModel(actorUserId, aiModel.Id, utcNow);
     }
 
     public void Submit(Guid actorUserId, DateTime utcNow)
@@ -275,7 +301,6 @@ public sealed class Prompt : AggregateRoot<Guid>
         string content,
         string? coverImage,
         PromptMediaType mediaType,
-        string aiModel,
         bool force)
     {
         var normalizedTitle = NormalizeRequired(
@@ -296,11 +321,6 @@ public sealed class Prompt : AggregateRoot<Guid>
             coverImage,
             PromptLabLimits.MaxPromptCoverImageLength,
             PromptLabErrorCodes.PromptCoverImageInvalid);
-        var normalizedAiModel = NormalizeRequired(
-            aiModel,
-            PromptLabLimits.MaxPromptAiModelLength,
-            PromptLabErrorCodes.PromptAiModelRequired,
-            PromptLabErrorCodes.PromptAiModelInvalid);
 
         var changed =
             force
@@ -308,15 +328,13 @@ public sealed class Prompt : AggregateRoot<Guid>
             || !string.Equals(Description, normalizedDescription, StringComparison.Ordinal)
             || !string.Equals(Content, normalizedContent, StringComparison.Ordinal)
             || !string.Equals(CoverImage, normalizedCoverImage, StringComparison.Ordinal)
-            || MediaType != mediaType
-            || !string.Equals(AiModel, normalizedAiModel, StringComparison.Ordinal);
+            || MediaType != mediaType;
 
         Title = normalizedTitle;
         Description = normalizedDescription;
         Content = normalizedContent;
         CoverImage = normalizedCoverImage;
         MediaType = mediaType;
-        AiModel = normalizedAiModel;
         return changed;
     }
 
@@ -336,6 +354,16 @@ public sealed class Prompt : AggregateRoot<Guid>
         }
 
         return categoryId;
+    }
+
+    private static Guid EnsureAiModelId(Guid aiModelId)
+    {
+        if (aiModelId == Guid.Empty)
+        {
+            throw new DomainException("AI model id is required.", PromptLabErrorCodes.PromptAiModelInvalid);
+        }
+
+        return aiModelId;
     }
 
     private static string NormalizeRequired(string value, int maxLength, string requiredCode, string invalidCode)

@@ -10,6 +10,17 @@ public static class PromptLabErrorCodes
     public const string CategorySlugDuplicate = "promptlab_category_slug_duplicate";
     public const string CategoryInactive = "promptlab_category_inactive";
 
+    public const string AiModelNotFound = "promptlab_ai_model_not_found";
+    public const string AiModelNameRequired = "promptlab_ai_model_name_required";
+    public const string AiModelNameInvalid = "promptlab_ai_model_name_invalid";
+    public const string AiModelSlugRequired = "promptlab_ai_model_slug_required";
+    public const string AiModelSlugInvalid = "promptlab_ai_model_slug_invalid";
+    public const string AiModelSlugDuplicate = "promptlab_ai_model_slug_duplicate";
+    public const string AiModelProviderRequired = "promptlab_ai_model_provider_required";
+    public const string AiModelProviderInvalid = "promptlab_ai_model_provider_invalid";
+    public const string AiModelLogoInvalid = "promptlab_ai_model_logo_invalid";
+    public const string AiModelInactive = "promptlab_ai_model_inactive";
+
     public const string PromptNotFound = "promptlab_prompt_not_found";
     public const string PromptNameRequired = "promptlab_prompt_name_required";
     public const string PromptNameInvalid = "promptlab_prompt_name_invalid";
