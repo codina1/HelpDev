@@ -19,4 +19,5 @@ public static class PromptLabLimits
     public const int MaxPromptContentLength = MaxTemplateLength;
     public const int MaxPromptCoverImageLength = 2048;
     public const int MaxPromptAiModelLength = 80;
+    public const int MaxPromptPackItems = 100;
 }

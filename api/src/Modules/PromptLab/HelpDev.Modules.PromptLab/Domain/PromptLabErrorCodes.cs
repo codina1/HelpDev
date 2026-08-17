@@ -87,4 +87,22 @@ public static class PromptLabErrorCodes
     public const string HistoryAccessDenied = "promptlab_history_access_denied";
 
     public const string PaginationInvalid = "promptlab_pagination_invalid";
+
+    public const string PackNotFound = "promptlab_pack_not_found";
+    public const string PackTitleRequired = "promptlab_pack_title_required";
+    public const string PackTitleInvalid = "promptlab_pack_title_invalid";
+    public const string PackSlugRequired = "promptlab_pack_slug_required";
+    public const string PackSlugInvalid = "promptlab_pack_slug_invalid";
+    public const string PackAuthorInvalid = "promptlab_pack_author_invalid";
+    public const string PackCoverImageInvalid = "promptlab_pack_cover_image_invalid";
+    public const string PackNotDraft = "promptlab_pack_not_draft";
+    public const string PackEditForbidden = "promptlab_pack_edit_forbidden";
+    public const string PackNotPublic = "promptlab_pack_not_public";
+    public const string PackStatusInvalid = "promptlab_pack_status_invalid";
+    public const string PackEmpty = "promptlab_pack_empty";
+    public const string PackItemInvalid = "promptlab_pack_item_invalid";
+    public const string PackItemDuplicate = "promptlab_pack_item_duplicate";
+    public const string PackItemNotFound = "promptlab_pack_item_not_found";
+    public const string PackItemOrderInvalid = "promptlab_pack_item_order_invalid";
+    public const string PackItemPromptNotPublic = "promptlab_pack_item_prompt_not_public";
 }
