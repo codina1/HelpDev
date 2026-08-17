@@ -171,11 +171,12 @@ public sealed class PromptLabArchitectureTests
     }
 
     [Fact]
-    public void Catalog_depends_on_IPromptRenderService_and_IPromptCatalogQueries_not_DbContext()
+    public void Catalog_depends_on_render_catalog_and_public_queries_not_DbContext()
     {
         var ctor = typeof(PromptLabCatalogController).GetConstructors().Single();
         Assert.Contains(ctor.GetParameters(), p => p.ParameterType == typeof(IPromptRenderService));
         Assert.Contains(ctor.GetParameters(), p => p.ParameterType == typeof(IPromptCatalogQueries));
+        Assert.Contains(ctor.GetParameters(), p => p.ParameterType == typeof(IPromptPublicQueries));
         Assert.DoesNotContain(
             ctor.GetParameters(),
             p => typeof(DbContext).IsAssignableFrom(p.ParameterType)

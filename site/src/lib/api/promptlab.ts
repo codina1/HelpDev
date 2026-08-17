@@ -4,36 +4,76 @@ export type PromptCategoryDto = {
   id: string;
   name: string;
   slug: string;
+  description?: string | null;
+  icon?: string | null;
+  displayOrder?: number;
 };
 
-export type PromptSummaryDto = {
+export type PublicPromptCategoryRefDto = {
+  id: string;
+  name: string;
+  slug: string;
+};
+
+export type PublicPromptAiModelRefDto = {
+  id: string;
+  name: string;
+  slug: string;
+  provider: string;
+};
+
+export type PublicPromptListItemDto = {
   id: string;
   title: string;
   slug: string;
-  categorySlug?: string;
-  status: string;
+  description: string | null;
+  coverImage: string | null;
+  mediaType: string;
+  category: PublicPromptCategoryRefDto;
+  aiModel: PublicPromptAiModelRefDto;
+  views: number;
+  copyCount: number;
+  publishedAt: string | null;
 };
 
-export type PromptDetailDto = PromptSummaryDto & {
-  description?: string;
-  variables?: Array<{ name: string; label?: string; required?: boolean }>;
+export type PublicPromptDetailsDto = PublicPromptListItemDto & {
+  content: string;
 };
 
-export type PromptRenderResponseDto = {
-  renderedPrompt: string;
-  correlationId?: string;
+export type PublicPromptPageDto = {
+  page: number;
+  pageSize: number;
+  total: number;
+  items: PublicPromptListItemDto[];
+};
+
+export type PublicPromptFilter = {
+  category?: string;
+  aiModel?: string;
+  mediaType?: string;
+  search?: string;
+  popular?: boolean;
+  page?: number;
+  pageSize?: number;
 };
 
 export function listPromptCategories(signal?: AbortSignal): Promise<PromptCategoryDto[]> {
   return apiRequest<PromptCategoryDto[]>({ path: "/prompts/categories", signal });
 }
 
-export function listPrompts(signal?: AbortSignal): Promise<PromptSummaryDto[]> {
-  return apiRequest<PromptSummaryDto[]>({ path: "/prompts", signal });
+export function listPrompts(
+  filter?: PublicPromptFilter,
+  signal?: AbortSignal,
+): Promise<PublicPromptPageDto> {
+  return apiRequest<PublicPromptPageDto>({
+    path: "/prompts",
+    query: filter,
+    signal,
+  });
 }
 
-export function getPromptBySlug(slug: string, signal?: AbortSignal): Promise<PromptDetailDto> {
-  return apiRequest<PromptDetailDto>({
+export function getPromptBySlug(slug: string, signal?: AbortSignal): Promise<PublicPromptDetailsDto> {
+  return apiRequest<PublicPromptDetailsDto>({
     path: `/prompts/${encodeURIComponent(slug)}`,
     signal,
   });
@@ -56,3 +96,8 @@ export function renderPrompt(
     signal: options?.signal,
   });
 }
+
+export type PromptRenderResponseDto = {
+  renderedPrompt: string;
+  correlationId?: string;
+};

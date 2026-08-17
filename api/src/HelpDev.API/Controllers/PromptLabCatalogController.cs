@@ -22,13 +22,16 @@ namespace HelpDev.API.Controllers;
 public sealed class PromptLabCatalogController : ControllerBase
 {
     private readonly IPromptCatalogQueries _catalogQueries;
+    private readonly IPromptPublicQueries _publicQueries;
     private readonly IPromptRenderService _renderService;
 
     public PromptLabCatalogController(
         IPromptCatalogQueries catalogQueries,
+        IPromptPublicQueries publicQueries,
         IPromptRenderService renderService)
     {
         _catalogQueries = catalogQueries;
+        _publicQueries = publicQueries;
         _renderService = renderService;
     }
 
@@ -44,33 +47,38 @@ public sealed class PromptLabCatalogController : ControllerBase
 
     [HttpGet]
     [OpenApiOperationId("PromptLabCatalog_GetPrompts")]
-    [OpenApiSummary("List prompts", "Returns a paginated catalog of published prompts.")]
-    [ProducesResponseType(typeof(PromptCatalogPageDto), StatusCodes.Status200OK)]
-    public async Task<ActionResult<PromptCatalogPageDto>> GetPrompts(
+    [OpenApiSummary(
+        "List prompts",
+        "Returns a paginated catalog of approved public prompts. Draft, submitted, and rejected prompts are never returned.")]
+    [ProducesResponseType(typeof(PublicPromptPageDto), StatusCodes.Status200OK)]
+    public async Task<ActionResult<PublicPromptPageDto>> GetPrompts(
         [FromQuery] string? category,
-        [FromQuery] string? purpose,
+        [FromQuery] string? aiModel,
+        [FromQuery] string? mediaType,
         [FromQuery] string? search,
+        [FromQuery] bool popular = false,
         [FromQuery] int page = 1,
         [FromQuery] int pageSize = PromptLabPaging.DefaultPageSize,
         CancellationToken cancellationToken = default)
     {
-        var result = await _catalogQueries.GetPromptsAsync(
-            new PromptCatalogFilter(category, purpose, search, page, pageSize),
+        var result = await _publicQueries.GetPromptsAsync(
+            new PublicPromptFilter(category, aiModel, mediaType, search, popular, page, pageSize),
             cancellationToken);
         return Ok(result);
     }
 
     [HttpGet("{slug}")]
     [OpenApiOperationId("PromptLabCatalog_GetBySlug")]
-    [OpenApiSummary("Get prompt by slug", "Returns a published prompt by its slug.")]
-    [ProducesResponseType(typeof(PromptDetailsDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status401Unauthorized)]
+    [OpenApiSummary(
+        "Get prompt by slug",
+        "Returns an approved public prompt by its slug. Unpublished prompts are indistinguishable from missing ones.")]
+    [ProducesResponseType(typeof(PublicPromptDetailsDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<PromptDetailsDto>> GetBySlug(
+    public async Task<ActionResult<PublicPromptDetailsDto>> GetBySlug(
         string slug,
         CancellationToken cancellationToken)
     {
-        var prompt = await _catalogQueries.GetBySlugAsync(slug, User.GetUserId(), cancellationToken);
+        var prompt = await _publicQueries.GetBySlugAsync(slug, cancellationToken);
         if (prompt is null)
         {
             throw new PromptLabException(

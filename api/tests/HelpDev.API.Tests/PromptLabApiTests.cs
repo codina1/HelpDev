@@ -41,11 +41,12 @@ public sealed class PromptLabApiTests
     }
 
     [Fact]
-    public void Catalog_controller_depends_on_render_service_and_catalog_queries()
+    public void Catalog_controller_depends_on_render_catalog_and_public_queries()
     {
         var parameters = typeof(PromptLabCatalogController).GetConstructors().Single().GetParameters();
         Assert.Contains(parameters, p => p.ParameterType == typeof(IPromptRenderService));
         Assert.Contains(parameters, p => p.ParameterType == typeof(IPromptCatalogQueries));
+        Assert.Contains(parameters, p => p.ParameterType == typeof(IPromptPublicQueries));
         Assert.DoesNotContain(
             parameters,
             p => p.ParameterType.Name.Contains("Repository", StringComparison.Ordinal)
@@ -56,12 +57,14 @@ public sealed class PromptLabApiTests
     public async Task Catalog_and_render_forward_to_services()
     {
         var catalog = new FakeCatalogQueries();
+        var publicQueries = new FakePublicQueries();
         var render = new FakeRenderService();
-        var controller = new PromptLabCatalogController(catalog, render);
+        var controller = new PromptLabCatalogController(catalog, publicQueries, render);
         ControllerTestHelper.SetUser(controller, userId: null);
 
         Assert.IsType<OkObjectResult>((await controller.GetCategories(CancellationToken.None)).Result);
-        Assert.IsType<OkObjectResult>((await controller.GetPrompts(null, null, null, 1, 20, CancellationToken.None)).Result);
+        Assert.IsType<OkObjectResult>(
+            (await controller.GetPrompts(null, null, null, null, false, 1, 20, CancellationToken.None)).Result);
 
         var values = new Dictionary<string, JsonElement>(StringComparer.OrdinalIgnoreCase)
         {
@@ -73,6 +76,61 @@ public sealed class PromptLabApiTests
             CancellationToken.None);
         Assert.IsType<OkObjectResult>(renderResult.Result);
         Assert.Equal("code-review", render.LastSlug);
+        Assert.NotNull(publicQueries.LastFilter);
+    }
+
+    [Fact]
+    public async Task Public_list_forwards_filters_to_public_queries()
+    {
+        var publicQueries = new FakePublicQueries();
+        var controller = new PromptLabCatalogController(
+            new FakeCatalogQueries(),
+            publicQueries,
+            new FakeRenderService());
+
+        await controller.GetPrompts(
+            "coding",
+            "chatgpt",
+            "Image",
+            "review",
+            popular: true,
+            page: 2,
+            pageSize: 10,
+            CancellationToken.None);
+
+        var filter = Assert.IsType<PublicPromptFilter>(publicQueries.LastFilter);
+        Assert.Equal("coding", filter.Category);
+        Assert.Equal("chatgpt", filter.AiModel);
+        Assert.Equal("Image", filter.MediaType);
+        Assert.Equal("review", filter.Search);
+        Assert.True(filter.Popular);
+        Assert.Equal(2, filter.Page);
+        Assert.Equal(10, filter.PageSize);
+    }
+
+    [Fact]
+    public async Task Unpublished_slug_is_not_found()
+    {
+        var controller = new PromptLabCatalogController(
+            new FakeCatalogQueries(),
+            new FakePublicQueries { Details = null },
+            new FakeRenderService());
+
+        var ex = await Assert.ThrowsAsync<PromptLabException>(
+            () => controller.GetBySlug("secret-draft", CancellationToken.None));
+        Assert.Equal(PromptLabApplicationErrorCodes.PromptNotFound, ex.Code);
+    }
+
+    [Fact]
+    public void Public_dtos_do_not_expose_workflow_status()
+    {
+        Assert.DoesNotContain(
+            typeof(PublicPromptListItemDto).GetProperties().Select(property => property.Name),
+            name => name.Contains("Status", StringComparison.OrdinalIgnoreCase));
+        Assert.DoesNotContain(
+            typeof(PublicPromptDetailsDto).GetProperties().Select(property => property.Name),
+            name => name.Contains("Status", StringComparison.OrdinalIgnoreCase));
+        Assert.Null(typeof(PublicPromptListItemDto).GetProperty("Content"));
     }
 
     [Fact]
@@ -110,6 +168,26 @@ public sealed class PromptLabApiTests
         var result = Assert.IsType<ObjectResult>(context.Result);
         Assert.Equal(status, result.StatusCode);
         Assert.True(context.ExceptionHandled);
+    }
+
+    private sealed class FakePublicQueries : IPromptPublicQueries
+    {
+        public PublicPromptFilter? LastFilter { get; private set; }
+
+        public PublicPromptDetailsDto? Details { get; init; }
+
+        public Task<PublicPromptPageDto> GetPromptsAsync(
+            PublicPromptFilter filter,
+            CancellationToken cancellationToken = default)
+        {
+            LastFilter = filter;
+            return Task.FromResult(new PublicPromptPageDto(filter.Page, filter.PageSize, 0, []));
+        }
+
+        public Task<PublicPromptDetailsDto?> GetBySlugAsync(
+            string slug,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult(Details);
     }
 
     private sealed class FakeCatalogQueries : IPromptCatalogQueries

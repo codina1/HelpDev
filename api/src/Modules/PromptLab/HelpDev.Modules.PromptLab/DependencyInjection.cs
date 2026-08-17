@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.AddScoped<IPromptRenderRecordRepository, PromptRenderRecordRepository>();
 
         services.AddScoped<IPromptCatalogQueries, PromptCatalogQueries>();
+        services.AddScoped<IPromptPublicQueries, PromptPublicQueries>();
         services.AddScoped<IPromptCategoryQueries, PromptCategoryQueries>();
         services.AddScoped<IPromptDefinitionQueries, PromptDefinitionQueries>();
         services.AddScoped<IPromptFavoriteQueries, PromptFavoriteQueries>();
