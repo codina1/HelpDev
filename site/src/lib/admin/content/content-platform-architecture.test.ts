@@ -30,7 +30,7 @@ describe("Sprint 47A — ContentWorkspaceRegistry", () => {
     expect(listContentWorkspaces()).toHaveLength(7);
   });
 
-  it("maps article/news/tool/roadmap to content-api with locked types", () => {
+  it("maps persisted workspaces to content-api with locked types", () => {
     expect(getContentWorkspace("article").persistence).toBe("content-api");
     expect(getContentWorkspace("article").contentType).toBe("Article");
     expect(getContentWorkspace("news").contentType).toBe("News");
@@ -38,13 +38,13 @@ describe("Sprint 47A — ContentWorkspaceRegistry", () => {
     expect(getContentWorkspace("tool").contentType).toBe("Tool");
     expect(getContentWorkspace("roadmap").persistence).toBe("content-api");
     expect(getContentWorkspace("roadmap").contentType).toBe("Roadmap");
+    expect(getContentWorkspace("tutorial").persistence).toBe("content-api");
+    expect(getContentWorkspace("tutorial").contentType).toBe("Course");
   });
 
-  it("keeps comparison/tutorial without persistence", () => {
-    for (const id of ["comparison", "tutorial"] as const) {
-      expect(ContentWorkspaceRegistry[id].persistence).toBe("none");
-      expect(ContentWorkspaceRegistry[id].contentType).toBeUndefined();
-    }
+  it("keeps comparison without persistence", () => {
+    expect(ContentWorkspaceRegistry.comparison.persistence).toBe("none");
+    expect(ContentWorkspaceRegistry.comparison.contentType).toBeUndefined();
   });
 
   it("delegates prompts to Prompt Lab", () => {
@@ -80,6 +80,7 @@ describe("Sprint 47A — routes", () => {
       expect(pageExists("admin", "content", slug), slug).toBe(true);
       expect(pageExists("admin", "content", slug, "new"), `${slug}/new`).toBe(true);
     }
+    expect(pageExists("admin", "content", "tutorials", "[id]")).toBe(true);
   });
 
   it("aligns ADMIN_ROUTES with pages", () => {

@@ -61,6 +61,18 @@ export function adminContentNewsRoute(id: string): string {
   return `${ADMIN_ROUTES.contentNews}/${encodeURIComponent(id)}`;
 }
 
+export function adminContentToolRoute(id: string): string {
+  return `${ADMIN_ROUTES.contentTools}/${encodeURIComponent(id)}`;
+}
+
+export function adminContentRoadmapRoute(id: string): string {
+  return `${ADMIN_ROUTES.contentRoadmaps}/${encodeURIComponent(id)}`;
+}
+
+export function adminContentTutorialRoute(id: string): string {
+  return `${ADMIN_ROUTES.contentTutorials}/${encodeURIComponent(id)}`;
+}
+
 export function adminContentItemRoute(id: string): string {
   return `${ADMIN_ROUTES.content}/${encodeURIComponent(id)}`;
 }

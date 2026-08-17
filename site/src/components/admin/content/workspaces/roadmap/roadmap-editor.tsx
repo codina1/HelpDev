@@ -1,12 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth";
 import { getWorkspaceByKey } from "@/lib/admin/content/factory";
-import { ADMIN_ROUTES, adminContentItemRoute } from "@/lib/admin/routes";
-import { useCreateContent } from "@/lib/admin/content/content-hooks";
+import { adminContentItemRoute, adminContentRoadmapRoute } from "@/lib/admin/routes";
 import {
   addRoadmapStep,
   getRoadmapMetadata,
@@ -19,11 +17,8 @@ import {
   type RoadmapDetailDto,
   type RoadmapStepDto,
 } from "@/lib/api/content";
-import { slugify, validateContentForm, hasFormErrors } from "@/lib/admin/content/content-mappers";
-import type { ContentFormErrors, ContentFormValues } from "@/lib/admin/content/content-types";
 import { WorkspaceHeader } from "@/components/admin/content/workspaces/workspace-header";
-import { ContentForm } from "@/components/admin/content/editor/content-form";
-import { PublishPanel } from "@/components/admin/content/editor/publish-panel";
+import { ContentStudio } from "@/components/admin/content/editor/content-studio";
 import { AdminSurface } from "@/components/admin/page/admin-surface";
 import { AdminErrorState } from "@/components/admin/feedback/admin-error-state";
 import { AdminLoadingState } from "@/components/admin/feedback/admin-loading-state";
@@ -33,6 +28,11 @@ import { DragDropOrdering } from "@/components/admin/content/workspaces/roadmap/
 
 const workspace = getWorkspaceByKey("roadmap");
 const LEVELS = ["Beginner", "Intermediate", "Advanced"] as const;
+const LEVEL_LABELS: Record<(typeof LEVELS)[number], string> = {
+  Beginner: "مبتدی",
+  Intermediate: "متوسط",
+  Advanced: "پیشرفته",
+};
 
 export type RoadmapMetaForm = {
   level: (typeof LEVELS)[number];
@@ -54,106 +54,42 @@ export function RoadmapList() {
 
 /** Create roadmap: Content (type=Roadmap) + metadata upsert. */
 export function RoadmapEditor() {
-  const router = useRouter();
   const { token } = useAuth();
-  const create = useCreateContent();
-  const [values, setValues] = useState<ContentFormValues>({
-    title: "",
-    slug: "",
-    type: "Roadmap",
-    body: "",
-    status: "Draft",
-    excerpt: "",
-    coverImage: "",
-  });
-  const [errors, setErrors] = useState<ContentFormErrors>({});
-  const [slugTouched, setSlugTouched] = useState(false);
   const [meta, setMeta] = useState<RoadmapMetaForm>(EMPTY_META);
   const [metaError, setMetaError] = useState<string | null>(null);
 
-  const onChange = useCallback(
-    (patch: Partial<ContentFormValues>) => {
-      setValues((prev) => {
-        const next = { ...prev, ...patch, type: "Roadmap" as const };
-        if (patch.slug !== undefined) setSlugTouched(true);
-        if (patch.title !== undefined && !slugTouched) next.slug = slugify(patch.title);
-        return next;
-      });
-    },
-    [slugTouched],
-  );
-
-  const submit = useCallback(
-    async (status: "Draft" | "Published") => {
-      const next = { ...values, type: "Roadmap" as const, status };
-      const validation = validateContentForm(next);
-      setErrors(validation);
-      if (hasFormErrors(validation)) return;
-      if (!meta.goal.trim() || !meta.estimatedDuration.trim()) {
-        setMetaError("هدف و مدت تخمینی الزامی است.");
-        return;
-      }
-      setMetaError(null);
-      if (!token) return;
-
-      try {
-        const created = await create.create({
-          title: next.title.trim(),
-          slug: next.slug.trim(),
-          body: next.body,
-          type: "Roadmap",
-          status,
-        });
-        await updateRoadmapMetadata(token, created.id, {
+  const createExtension = useMemo(
+    () => ({
+      panel: (
+        <AdminSurface className="space-y-4 p-4">
+          <RoadmapMetaFields meta={meta} onChange={setMeta} error={metaError} />
+        </AdminSurface>
+      ),
+      validate: () => {
+        if (!meta.goal.trim() || !meta.estimatedDuration.trim()) {
+          setMetaError("هدف و مدت تخمینی الزامی است.");
+          return false;
+        }
+        setMetaError(null);
+        return true;
+      },
+      persist: async (contentId: string) => {
+        if (!token) {
+          throw new Error("برای ذخیره مشخصات نقشه راه باید وارد شوید.");
+        }
+        await updateRoadmapMetadata(token, contentId, {
           level: meta.level,
           estimatedDuration: meta.estimatedDuration.trim(),
           goal: meta.goal.trim(),
           prerequisites: meta.prerequisites.trim() || null,
         });
-        router.push(`${ADMIN_ROUTES.contentRoadmaps}/${encodeURIComponent(created.id)}`);
-      } catch {
-        // create.error
-      }
-    },
-    [values, meta, create, token, router],
+      },
+      successPath: adminContentRoadmapRoute,
+    }),
+    [meta, metaError, token],
   );
 
-  return (
-    <div className="space-y-6">
-      <WorkspaceHeader
-        workspace={{ ...workspace, title: workspace.createTitle }}
-        showCreate={false}
-        secondaryActions={
-          <Link href={workspace.listHref} className="adm-btn adm-btn-outline adm-focus">
-            بازگشت
-          </Link>
-        }
-      />
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-        <ContentForm
-          values={values}
-          errors={errors}
-          disabled={create.submitting}
-          lockedType="Roadmap"
-          formTitle="محتوای نقشه راه"
-          onChange={onChange}
-          onRegenerateSlug={() => {
-            setSlugTouched(true);
-            setValues((prev) => ({ ...prev, slug: slugify(prev.title) }));
-          }}
-          afterFields={<RoadmapMetaFields meta={meta} onChange={setMeta} error={metaError} />}
-        />
-        <PublishPanel
-          status={values.status}
-          submitting={create.submitting}
-          canMutate
-          error={create.error}
-          onSaveDraft={() => void submit("Draft")}
-          onPublish={() => void submit("Published")}
-        />
-      </div>
-    </div>
-  );
+  return <ContentStudio createType="Roadmap" createExtension={createExtension} />;
 }
 
 /** Edit roadmap builder on /admin/content/roadmaps/[id]. */
@@ -357,7 +293,7 @@ function RoadmapMetaFields({
         >
           {LEVELS.map((level) => (
             <option key={level} value={level}>
-              {level}
+              {LEVEL_LABELS[level]}
             </option>
           ))}
         </select>

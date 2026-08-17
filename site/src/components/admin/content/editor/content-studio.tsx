@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import {
   ADMIN_ROUTES,
   adminContentArticleRoute,
@@ -108,9 +115,18 @@ function initialContentValues(
 export function ContentStudio({
   initial,
   createType = "Article",
+  createExtension,
+  createSuccessPath,
 }: {
   initial?: AdminContentDetail;
   createType?: ContentTypeValue;
+  createExtension?: {
+    panel: ReactNode;
+    validate: () => boolean;
+    persist: (contentId: string) => Promise<void>;
+    successPath: (contentId: string) => string;
+  };
+  createSuccessPath?: (contentId: string) => string;
 }) {
   const router = useRouter();
   const create = useCreateContent();
@@ -250,6 +266,10 @@ export function ContentStudio({
         return;
       }
     }
+    if (!contentId && createExtension && !createExtension.validate()) {
+      setContentSave("error");
+      return;
+    }
     setContentSave("saving");
     try {
       if (!contentId) {
@@ -279,11 +299,17 @@ export function ContentStudio({
         if (createType === "News") {
           await newsMutation.run(created.id, buildNewsPayload(newsMeta.values));
         }
+        if (createExtension) {
+          await createExtension.persist(created.id);
+        }
 
         clearDraft();
         setContentSave("saved");
-        const createdRoute =
-          createType === "Article"
+        const createdRoute = createExtension
+          ? createExtension.successPath(created.id)
+          : createSuccessPath
+            ? createSuccessPath(created.id)
+          : createType === "Article"
             ? adminContentArticleRoute(created.id)
             : createType === "News"
               ? adminContentNewsRoute(created.id)
@@ -324,6 +350,8 @@ export function ContentStudio({
     articleMeta.values,
     newsMutation,
     newsMeta.values,
+    createExtension,
+    createSuccessPath,
     router,
     seoAnalysis,
   ]);
@@ -639,6 +667,7 @@ export function ContentStudio({
 
         {/* RIGHT — SEO + type-specific settings */}
         <aside className="order-2 space-y-4 xl:order-3">
+          {!contentId && createExtension ? createExtension.panel : null}
           {contentType === "Article" ? (
             <AdminSurface className="p-4">
               <ArticleSettingsPanel

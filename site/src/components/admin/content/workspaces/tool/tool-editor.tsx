@@ -2,11 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth";
 import { getWorkspaceByKey } from "@/lib/admin/content/factory";
-import { ADMIN_ROUTES, adminContentItemRoute } from "@/lib/admin/routes";
-import { useCreateContent } from "@/lib/admin/content/content-hooks";
+import { adminContentItemRoute, adminContentToolRoute } from "@/lib/admin/routes";
 import {
   addToolFeature,
   getToolMetadata,
@@ -18,11 +16,8 @@ import {
   type ToolDetailDto,
   type ToolFeatureDto,
 } from "@/lib/api/content";
-import { slugify, validateContentForm, hasFormErrors } from "@/lib/admin/content/content-mappers";
-import type { ContentFormErrors, ContentFormValues } from "@/lib/admin/content/content-types";
 import { WorkspaceHeader } from "@/components/admin/content/workspaces/workspace-header";
-import { ContentForm } from "@/components/admin/content/editor/content-form";
-import { PublishPanel } from "@/components/admin/content/editor/publish-panel";
+import { ContentStudio } from "@/components/admin/content/editor/content-studio";
 import { AdminSurface } from "@/components/admin/page/admin-surface";
 import { AdminErrorState } from "@/components/admin/feedback/admin-error-state";
 import { AdminLoadingState } from "@/components/admin/feedback/admin-loading-state";
@@ -39,6 +34,23 @@ import {
 } from "@/components/admin/content/workspaces/tool/tool-form-types";
 
 const workspace = getWorkspaceByKey("tool");
+const TOOL_PRICING_LABELS: Record<ToolFormState["pricingModel"], string> = {
+  Free: "رایگان",
+  Freemium: "رایگان با امکانات پولی",
+  Paid: "پولی",
+  OpenSource: "متن‌باز",
+};
+const TOOL_LICENSE_LABELS: Record<ToolFormState["licenseType"], string> = {
+  Commercial: "تجاری",
+  OpenSource: "متن‌باز",
+  Community: "جامعه‌محور",
+};
+const TOOL_PLATFORM_LABELS: Record<(typeof TOOL_PLATFORMS)[number], string> = {
+  Windows: "ویندوز",
+  Linux: "لینوکس",
+  MacOS: "مک",
+  Web: "وب",
+};
 
 export type { ToolFormState };
 
@@ -48,57 +60,34 @@ export function ToolList() {
 
 /** Create tool: Content (type=Tool) + Tool Metadata upsert. */
 export function ToolEditor() {
-  const router = useRouter();
   const { token } = useAuth();
-  const create = useCreateContent();
-  const [values, setValues] = useState<ContentFormValues>({
-    title: "",
-    slug: "",
-    type: "Tool",
-    body: "",
-    status: "Draft",
-    excerpt: "",
-    coverImage: "",
-  });
-  const [errors, setErrors] = useState<ContentFormErrors>({});
-  const [slugTouched, setSlugTouched] = useState(false);
   const [tool, setTool] = useState<ToolFormState>(EMPTY_TOOL_FORM);
   const [toolError, setToolError] = useState<string | null>(null);
 
-  const onChange = useCallback((patch: Partial<ContentFormValues>) => {
-    setValues((prev) => {
-      const next = { ...prev, ...patch, type: "Tool" as const };
-      if (patch.slug !== undefined) setSlugTouched(true);
-      if (patch.title !== undefined && !slugTouched) next.slug = slugify(patch.title);
-      if (patch.title !== undefined && !tool.toolName) {
-        setTool((t) => ({ ...t, toolName: patch.title ?? t.toolName }));
-      }
-      return next;
-    });
-  }, [slugTouched, tool.toolName]);
-
-  const submit = useCallback(
-    async (status: "Draft" | "Published") => {
-      const next = { ...values, type: "Tool" as const, status };
-      const validation = validateContentForm(next);
-      setErrors(validation);
-      if (hasFormErrors(validation)) return;
-      if (!tool.toolName.trim() || !tool.officialWebsiteUrl.trim() || !tool.toolCategory.trim()) {
-        setToolError("نام، وب‌سایت و دسته ابزار الزامی است.");
-        return;
-      }
-      setToolError(null);
-      if (!token) return;
-
-      try {
-        const created = await create.create({
-          title: next.title.trim(),
-          slug: next.slug.trim(),
-          body: next.body,
-          type: "Tool",
-          status,
-        });
-        await updateToolMetadata(token, created.id, {
+  const createExtension = useMemo(
+    () => ({
+      panel: (
+        <AdminSurface className="space-y-4 p-4">
+          <ToolCatalogFields tool={tool} onChange={setTool} error={toolError} />
+        </AdminSurface>
+      ),
+      validate: () => {
+        if (
+          !tool.toolName.trim() ||
+          !tool.officialWebsiteUrl.trim() ||
+          !tool.toolCategory.trim()
+        ) {
+          setToolError("نام، وب‌سایت و دسته ابزار الزامی است.");
+          return false;
+        }
+        setToolError(null);
+        return true;
+      },
+      persist: async (contentId: string) => {
+        if (!token) {
+          throw new Error("برای ذخیره تنظیمات ابزار باید وارد شوید.");
+        }
+        await updateToolMetadata(token, contentId, {
           toolName: tool.toolName.trim(),
           officialWebsiteUrl: tool.officialWebsiteUrl.trim(),
           githubUrl: tool.githubUrl.trim() || null,
@@ -110,55 +99,13 @@ export function ToolEditor() {
           licenseType: tool.licenseType,
           alternatives: tool.alternatives,
         });
-        router.push(`${ADMIN_ROUTES.contentTools}/${encodeURIComponent(created.id)}`);
-      } catch {
-        // create.error
-      }
-    },
-    [values, tool, create, token, router],
+      },
+      successPath: adminContentToolRoute,
+    }),
+    [tool, toolError, token],
   );
 
-  return (
-    <div className="space-y-6">
-      <WorkspaceHeader
-        workspace={{ ...workspace, title: workspace.createTitle }}
-        showCreate={false}
-        secondaryActions={
-          <Link href={workspace.listHref} className="adm-btn adm-btn-outline adm-focus">
-            بازگشت
-          </Link>
-        }
-      />
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-        <div className="space-y-4">
-          <ContentForm
-            values={values}
-            errors={errors}
-            disabled={create.submitting}
-            lockedType="Tool"
-            formTitle="محتوای ابزار"
-            onChange={onChange}
-            onRegenerateSlug={() => {
-              setSlugTouched(true);
-              setValues((prev) => ({ ...prev, slug: slugify(prev.title) }));
-            }}
-            afterFields={<ToolCatalogFields tool={tool} onChange={setTool} error={toolError} />}
-          />
-        </div>
-        <div className="space-y-4">
-          <ToolPreview tool={tool} title={values.title} body={values.body} />
-          <PublishPanel
-            status={values.status}
-            submitting={create.submitting}
-            canMutate
-            error={create.error}
-            onSaveDraft={() => void submit("Draft")}
-            onPublish={() => void submit("Published")}
-          />
-        </div>
-      </div>
-    </div>
-  );
+  return <ContentStudio createType="Tool" createExtension={createExtension} />;
 }
 
 /** Edit existing tool metadata + features on /admin/content/tools/[id]. */
@@ -370,7 +317,7 @@ function ToolCatalogFields({
         >
           {TOOL_PRICING.map((p) => (
             <option key={p} value={p}>
-              {p}
+              {TOOL_PRICING_LABELS[p]}
             </option>
           ))}
         </select>
@@ -384,7 +331,7 @@ function ToolCatalogFields({
         >
           {TOOL_LICENSES.map((p) => (
             <option key={p} value={p}>
-              {p}
+              {TOOL_LICENSE_LABELS[p]}
             </option>
           ))}
         </select>
@@ -407,7 +354,7 @@ function ToolCatalogFields({
                     })
                   }
                 />
-                {platform}
+                {TOOL_PLATFORM_LABELS[platform]}
               </label>
             );
           })}

@@ -9,6 +9,9 @@ describe("content creation workspaces", () => {
   it.each([
     ["article/article-editor.tsx", "Article"],
     ["news/news-editor.tsx", "News"],
+    ["tool/tool-editor.tsx", "Tool"],
+    ["roadmap/roadmap-editor.tsx", "Roadmap"],
+    ["tutorial/tutorial-editor.tsx", "Course"],
   ])("uses the full Content Studio for %s", (file, type) => {
     const source = readFileSync(
       join(process.cwd(), "src/components/admin/content/workspaces", file),

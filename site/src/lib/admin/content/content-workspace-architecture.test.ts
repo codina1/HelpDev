@@ -18,9 +18,9 @@ describe("Sprint 46.6 / 47A — content workspace factory (compat)", () => {
     expect(CONTENT_TYPE_REGISTRY.news.contentType).toBe("News");
     expect(CONTENT_TYPE_REGISTRY.tool.contentType).toBe("Tool");
     expect(CONTENT_TYPE_REGISTRY.roadmap.contentType).toBe("Roadmap");
+    expect(CONTENT_TYPE_REGISTRY.tutorial.contentType).toBe("Course");
     expect(CONTENT_TYPE_REGISTRY.prompt.contentType).toBe("none");
     expect(CONTENT_TYPE_REGISTRY.comparison.contentType).toBe("none");
-    expect(CONTENT_TYPE_REGISTRY.tutorial.contentType).toBe("none");
   });
 
   it("resolves workspace by content type for API-backed types only", () => {
@@ -28,6 +28,7 @@ describe("Sprint 46.6 / 47A — content workspace factory (compat)", () => {
     expect(getWorkspaceByContentType("News")?.key).toBe("news");
     expect(getWorkspaceByContentType("Tool")?.key).toBe("tool");
     expect(getWorkspaceByContentType("Roadmap")?.key).toBe("roadmap");
+    expect(getWorkspaceByContentType("Course")?.key).toBe("tutorial");
     expect(getWorkspaceByContentType("RoadmapStep")).toBeUndefined();
   });
 
@@ -64,6 +65,9 @@ describe("Sprint 46.6 — workspace routes", () => {
     expect(pageExists("admin", "content", "roadmaps")).toBe(true);
     expect(pageExists("admin", "content", "roadmaps", "new")).toBe(true);
     expect(pageExists("admin", "content", "roadmaps", "[id]")).toBe(true);
+    expect(pageExists("admin", "content", "tutorials")).toBe(true);
+    expect(pageExists("admin", "content", "tutorials", "new")).toBe(true);
+    expect(pageExists("admin", "content", "tutorials", "[id]")).toBe(true);
     expect(pageExists("admin", "content", "prompts")).toBe(true);
     expect(pageExists("admin", "content", "prompts", "new")).toBe(true);
   });

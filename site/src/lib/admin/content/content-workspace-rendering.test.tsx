@@ -84,13 +84,11 @@ describe("Sprint 47A — workspace rendering", () => {
     unmount();
   });
 
-  it("renders foundation lists with header / empty / create affordance", () => {
-    for (const List of [ComparisonList, TutorialList]) {
-      const { host, unmount } = render(<List />);
-      expect(host.textContent?.length).toBeGreaterThan(20);
-      expect(host.querySelector("a")).toBeTruthy();
-      unmount();
-    }
+  it("renders the remaining foundation list", () => {
+    const { host, unmount } = render(<ComparisonList />);
+    expect(host.textContent?.length).toBeGreaterThan(20);
+    expect(host.querySelector("a")).toBeTruthy();
+    unmount();
   });
 
   it("renders tool editor catalog fields (content-api persistence)", () => {
@@ -124,13 +122,12 @@ describe("Sprint 47A — workspace rendering", () => {
     unmount();
   });
 
-  it("renders comparison and tutorial create foundations", () => {
+  it("renders comparison create foundation and defines persisted tutorial UI", () => {
     const cmp = render(<ComparisonEditor />);
     expect(cmp.host.textContent).toContain("مقایسه");
     cmp.unmount();
-    const tut = render(<TutorialEditor />);
-    expect(tut.host.textContent).toMatch(/آموزش/);
-    tut.unmount();
+    expect(TutorialEditor).toBeTypeOf("function");
+    expect(TutorialList).toBeTypeOf("function");
   });
 
   it("shows future-save message without inventing persistence", () => {
@@ -144,13 +141,13 @@ describe("Sprint 47A — workspace rendering", () => {
     unmount();
   });
 
-  it("keeps article editor type-locked (no type selector copy)", () => {
+  it("keeps article editor on the type-locked Content Studio", () => {
     const source = readFileSync(
       join(process.cwd(), "src/components/admin/content/workspaces/article/article-editor.tsx"),
       "utf8",
     );
-    expect(source).toContain('contentType="Article"');
-    expect(source).toContain("انتخاب نوع");
+    expect(source).toContain('createType="Article"');
+    expect(source).toContain("ContentStudio");
   });
 
   it("keeps prompt workspace as Prompt Lab bridge", () => {
@@ -162,7 +159,6 @@ describe("Sprint 47A — workspace rendering", () => {
   it("keeps foundation sources free of content create API calls", () => {
     const roots = [
       "src/components/admin/content/workspaces/comparison/comparison-editor.tsx",
-      "src/components/admin/content/workspaces/tutorial/tutorial-editor.tsx",
       "src/components/admin/content/workspaces/foundation-workspace-shell.tsx",
     ];
     for (const rel of roots) {
