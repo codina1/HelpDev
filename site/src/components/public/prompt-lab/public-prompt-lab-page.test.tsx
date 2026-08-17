@@ -13,27 +13,25 @@ describe("public prompt lab homepage", () => {
     expect(existsSync(join(process.cwd(), "src", "app", "prompt-lab", "page.tsx"))).toBe(true);
   });
 
-  it("renders hero, categories, featured, popular, and latest from local mock data", () => {
+  it("renders hero, categories, and loading catalog shells", () => {
     const html = renderToStaticMarkup(<PublicPromptLabPage />);
     expect(html).toContain("Prompt Lab");
     expect(html).toContain("کدنویسی");
     expect(html).toContain("پرامپت‌های منتخب");
     expect(html).toContain("پرامپت‌های محبوب");
     expect(html).toContain("تازه‌ترین پرامپت‌ها");
-    expect(html).toContain("/home/cover-");
-    expect(html).not.toContain("/api/");
+    expect(html).toContain("aria-busy");
   });
 
-  it("keeps the public page free of API and admin imports", () => {
+  it("loads the public catalog through the existing API client", () => {
     const page = readFileSync(join(process.cwd(), "src/app/prompt-lab/page.tsx"), "utf8");
     const shell = readFileSync(
       join(process.cwd(), "src/components/public/prompt-lab/public-prompt-lab-page.tsx"),
       "utf8",
     );
     expect(page).toContain("PublicPromptLabPage");
-    expect(page).not.toContain("promptLabApi");
-    expect(page).not.toContain("listPrompts");
-    expect(shell).not.toContain("@/lib/api");
+    expect(shell).toContain("fetchPromptLabCatalog");
+    expect(shell).not.toContain("PROMPT_LAB_PROMPTS");
     expect(shell).not.toContain("@/components/admin");
     expect(shell).not.toContain("@/components/public/home");
   });

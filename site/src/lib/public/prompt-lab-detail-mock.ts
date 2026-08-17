@@ -1,4 +1,4 @@
-import { type PromptLabCategorySlug } from "@/lib/public/prompt-lab-covers";
+import { isPromptLabCategorySlug, type PromptLabCategorySlug } from "@/lib/public/prompt-lab-covers";
 import { PROMPT_LAB_PROMPTS, type PromptLabCardItem } from "@/lib/public/prompt-lab-mock";
 
 export type PromptLabMediaType = "Text" | "Image" | "Audio" | "Video";
@@ -15,7 +15,7 @@ export type PromptLabDetail = PromptLabCardItem & {
   author: PromptLabAuthor;
   content: string;
   tags: readonly string[];
-  mediaType: PromptLabMediaType;
+  mediaType: string;
 };
 
 export const PROMPT_LAB_AUTHORS = {
@@ -240,12 +240,13 @@ function contentFor(item: PromptLabCardItem): string {
 }
 
 export function toPromptLabDetail(item: PromptLabCardItem): PromptLabDetail {
+  const categorySlug = isPromptLabCategorySlug(item.categorySlug) ? item.categorySlug : "writing";
   return {
     ...item,
-    author: AUTHOR_BY_CATEGORY[item.categorySlug],
+    author: AUTHOR_BY_CATEGORY[categorySlug],
     content: contentFor(item),
     tags: tagsFor(item),
-    mediaType: mediaTypeFor(item.categorySlug),
+    mediaType: mediaTypeFor(categorySlug),
   };
 }
 

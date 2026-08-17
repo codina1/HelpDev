@@ -128,9 +128,57 @@
   gap: 0.3rem;
 }
 
+.skeletonCard {
+  pointer-events: none;
+}
+
+.skeletonBlock {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--home-surface-elevated) 70%, transparent) 0%,
+    color-mix(in srgb, var(--home-purple) 22%, var(--home-surface)) 48%,
+    color-mix(in srgb, var(--home-surface-elevated) 70%, transparent) 100%
+  );
+  background-size: 200% 100%;
+  animation: promptLabCardShimmer 1.35s ease-in-out infinite;
+}
+
+.skeletonCover {
+  height: 8.5rem;
+}
+
+.skeletonTitle {
+  height: 0.9rem;
+  width: 78%;
+  border-radius: 0.4rem;
+}
+
+.skeletonText {
+  height: 0.65rem;
+  width: 100%;
+  border-radius: 0.35rem;
+}
+
+.skeletonTextShort {
+  width: 58%;
+}
+
+@keyframes promptLabCardShimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .card,
   .card:hover {
     transform: none;
+  }
+
+  .skeletonBlock {
+    animation: none;
   }
 }

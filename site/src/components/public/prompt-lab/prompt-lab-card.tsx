@@ -39,6 +39,19 @@ export function PromptLabCard({ item }: PromptLabCardProps) {
   );
 }
 
+export function PromptLabCardSkeleton() {
+  return (
+    <article className={`${styles.card} ${styles.skeletonCard}`} aria-hidden>
+      <div className={`${styles.visual} ${styles.skeletonBlock} ${styles.skeletonCover}`} />
+      <div className={styles.body}>
+        <div className={`${styles.skeletonBlock} ${styles.skeletonTitle}`} />
+        <div className={`${styles.skeletonBlock} ${styles.skeletonText}`} />
+        <div className={`${styles.skeletonBlock} ${styles.skeletonText} ${styles.skeletonTextShort}`} />
+      </div>
+    </article>
+  );
+}
+
 function CopyIcon() {
   return (
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>

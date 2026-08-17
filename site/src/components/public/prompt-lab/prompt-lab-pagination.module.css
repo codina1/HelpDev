@@ -1,0 +1,14 @@
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.meta {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--home-text-muted);
+}

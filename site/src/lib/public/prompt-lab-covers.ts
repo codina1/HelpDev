@@ -12,6 +12,10 @@ export const PROMPT_LAB_CATEGORY_SLUGS = [
 
 export type PromptLabCategorySlug = (typeof PROMPT_LAB_CATEGORY_SLUGS)[number];
 
+export function isPromptLabCategorySlug(value: string): value is PromptLabCategorySlug {
+  return (PROMPT_LAB_CATEGORY_SLUGS as readonly string[]).includes(value);
+}
+
 export function coverForPromptLabCategory(slug: PromptLabCategorySlug): string {
   if (slug === "image" || slug === "design") return HOME_COVERS.frontend;
   if (slug === "video") return HOME_COVERS.devops;
@@ -19,4 +23,8 @@ export function coverForPromptLabCategory(slug: PromptLabCategorySlug): string {
   if (slug === "writing") return HOME_COVERS.article;
   if (slug === "marketing") return HOME_COVERS.ai;
   return HOME_COVERS.backend;
+}
+
+export function coverForPromptLabCategorySlug(slug: string): string {
+  return isPromptLabCategorySlug(slug) ? coverForPromptLabCategory(slug) : HOME_COVERS.article;
 }

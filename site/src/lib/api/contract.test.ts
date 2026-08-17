@@ -4,7 +4,7 @@ import { fetchMyProfile } from "./profile";
 import { listPublishedContent } from "./content";
 import { search } from "./search";
 import { executeTool } from "./toolbox";
-import { renderPrompt } from "./promptlab";
+import { renderPrompt, listPrompts, getPromptBySlug } from "./promptlab";
 import { adminApi } from "./admin";
 import { ApiClientError } from "./errors";
 
@@ -82,6 +82,34 @@ describe("representative DTO contracts", () => {
     fetchMock.mockResolvedValueOnce(json({ renderedPrompt: "hello" }));
     const dto = await renderPrompt("slug", { name: "x" });
     expect(dto.renderedPrompt).toBe("hello");
+  });
+
+  it("Public prompt list page", async () => {
+    fetchMock.mockResolvedValueOnce(json({ page: 1, pageSize: 20, total: 0, items: [] }));
+    const dto = await listPrompts({ page: 1, pageSize: 20 });
+    expect(dto).toMatchObject({ page: 1, total: 0, items: [] });
+  });
+
+  it("Public prompt details", async () => {
+    fetchMock.mockResolvedValueOnce(
+      json({
+        id: "1",
+        title: "t",
+        slug: "s",
+        description: null,
+        content: "body",
+        coverImage: null,
+        mediaType: "Text",
+        category: { id: "c", name: "Coding", slug: "coding" },
+        aiModel: { id: "m", name: "Claude", slug: "claude", provider: "Anthropic" },
+        views: 0,
+        copyCount: 0,
+        publishedAt: null,
+      }),
+    );
+    const dto = await getPromptBySlug("s");
+    expect(dto.slug).toBe("s");
+    expect(dto.content).toBe("body");
   });
 
   it("Operational version response", async () => {

@@ -51,3 +51,27 @@
 .bottom {
   padding-block: 0 2.75rem;
 }
+
+.error {
+  max-width: 36rem;
+  margin: 3rem auto;
+  padding: 1.25rem 1.3rem 1.4rem;
+  border: 1px solid color-mix(in srgb, var(--home-purple) 28%, var(--home-border));
+  border-radius: var(--home-radius-xl);
+  background: var(--home-surface);
+  box-shadow: var(--home-shadow-sm);
+  backdrop-filter: blur(18px);
+}
+
+.errorTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--home-text);
+}
+
+.errorText {
+  margin: 0.55rem 0 1rem;
+  color: var(--home-text-muted);
+  line-height: 1.7;
+}

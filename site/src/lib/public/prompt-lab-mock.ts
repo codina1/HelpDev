@@ -13,7 +13,7 @@ export type PromptLabCardItem = {
   coverImage: string;
   aiModel: string;
   category: string;
-  categorySlug: PromptLabCategorySlug;
+  categorySlug: string;
   copyCount: number;
   viewCount: number;
   featured: boolean;

@@ -2,13 +2,25 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
-import { PublicPromptLabDetailPage } from "./public-prompt-lab-detail-page";
-import {
-  getPromptLabDetail,
-  relatedPromptLabPrompts,
-  similarPromptLabPrompts,
-} from "@/lib/public/prompt-lab-detail-mock";
+import { PublicPromptLabDetailError, PublicPromptLabDetailPage } from "./public-prompt-lab-detail-page";
+import { toPromptLabDetail } from "@/lib/public/prompt-lab-mappers";
 import { publicPromptLabDetailPath } from "@/lib/public/prompt-lab-routes";
+import type { PublicPromptDetailsDto } from "@/lib/api/promptlab";
+
+const SAMPLE: PublicPromptDetailsDto = {
+  id: "11111111-1111-1111-1111-111111111111",
+  title: "بازبینی مرز ماژول",
+  slug: "system-boundary-review",
+  description: "پرامپت بررسی قرارداد دامنه.",
+  content: "You are a staff engineer.",
+  coverImage: "/home/cover-architecture.svg",
+  mediaType: "Text",
+  category: { id: "c1", name: "Coding", slug: "coding" },
+  aiModel: { id: "m1", name: "Claude", slug: "claude", provider: "Anthropic" },
+  views: 1240,
+  copyCount: 186,
+  publishedAt: "2026-08-16T08:00:00.000Z",
+};
 
 describe("public prompt lab detail page", () => {
   it("is mounted at /prompt-lab/[slug]", () => {
@@ -20,20 +32,15 @@ describe("public prompt lab detail page", () => {
     );
   });
 
-  it("renders hero, description, viewer, sidebar, similar, and author from mock data", () => {
-    const detail = getPromptLabDetail("system-boundary-review");
-    expect(detail).not.toBeNull();
+  it("renders hero, description, viewer, sidebar, similar, and author", () => {
+    const detail = toPromptLabDetail(SAMPLE);
     const html = renderToStaticMarkup(
-      <PublicPromptLabDetailPage
-        detail={detail!}
-        related={relatedPromptLabPrompts(detail!.slug)}
-        similar={similarPromptLabPrompts(detail!.slug)}
-      />,
+      <PublicPromptLabDetailPage detail={detail} related={[]} similar={[]} />,
     );
-    expect(html).toContain(detail!.title);
-    expect(html).toContain(detail!.category);
-    expect(html).toContain(detail!.aiModel);
-    expect(html).toContain(detail!.author.name);
+    expect(html).toContain(detail.title);
+    expect(html).toContain(detail.category);
+    expect(html).toContain(detail.aiModel);
+    expect(html).toContain(detail.author.name);
     expect(html).toContain("شرح پرامپت");
     expect(html).toContain("متن پرامپت");
     expect(html).toContain('aria-label="کپی پرامپت"');
@@ -41,15 +48,21 @@ describe("public prompt lab detail page", () => {
     expect(html).toContain("برچسب‌ها");
     expect(html).toContain("پرامپت‌های مشابه");
     expect(html).toContain("درباره نویسنده");
-    expect(html).toContain(detail!.coverImage);
+    expect(html).toContain(detail.coverImage);
     expect(html).toContain('dir="rtl"');
   });
 
-  it("keeps the detail route free of API imports", () => {
+  it("renders a recoverable error state", () => {
+    const html = renderToStaticMarkup(<PublicPromptLabDetailError />);
+    expect(html).toContain("پرامپت در دسترس نیست");
+    expect(html).toContain("بازگشت به Prompt Lab");
+  });
+
+  it("loads prompt details through the existing API client", () => {
     const page = readFileSync(join(process.cwd(), "src/app/prompt-lab/[slug]/page.tsx"), "utf8");
-    expect(page).toContain("getPromptLabDetail");
-    expect(page).not.toContain("promptLabApi");
-    expect(page).not.toContain("@/lib/api");
+    expect(page).toContain("getPromptBySlug");
+    expect(page).toContain("fetchPromptLabCatalog");
+    expect(page).not.toContain("getPromptLabDetail");
     expect(page).not.toContain("@/components/admin");
   });
 });
