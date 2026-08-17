@@ -16,4 +16,7 @@ public static class PromptLabLimits
     public const int MaxHistoryInputPreview = 500;
     public const int MaxHistoryOutputPreview = 1000;
     public const int MaxChangeNotesLength = 1000;
+    public const int MaxPromptContentLength = MaxTemplateLength;
+    public const int MaxPromptCoverImageLength = 2048;
+    public const int MaxPromptAiModelLength = 80;
 }

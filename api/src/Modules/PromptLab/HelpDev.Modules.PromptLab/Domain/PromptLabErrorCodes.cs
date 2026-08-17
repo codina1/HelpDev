@@ -25,6 +25,21 @@ public static class PromptLabErrorCodes
     public const string PromptVersionNotFound = "promptlab_prompt_version_not_found";
     public const string PromptVersionInvalid = "promptlab_prompt_version_invalid";
 
+    public const string PromptTitleRequired = "promptlab_prompt_title_required";
+    public const string PromptTitleInvalid = "promptlab_prompt_title_invalid";
+    public const string PromptContentRequired = "promptlab_prompt_content_required";
+    public const string PromptContentInvalid = "promptlab_prompt_content_invalid";
+    public const string PromptContentNotPublic = "promptlab_prompt_content_not_public";
+    public const string PromptNotPublic = "promptlab_prompt_not_public";
+    public const string PromptNotDraft = "promptlab_prompt_not_draft";
+    public const string PromptEditForbidden = "promptlab_prompt_edit_forbidden";
+    public const string PromptAuthorInvalid = "promptlab_prompt_author_invalid";
+    public const string PromptMediaTypeInvalid = "promptlab_prompt_media_type_invalid";
+    public const string PromptAiModelRequired = "promptlab_prompt_ai_model_required";
+    public const string PromptAiModelInvalid = "promptlab_prompt_ai_model_invalid";
+    public const string PromptCoverImageInvalid = "promptlab_prompt_cover_image_invalid";
+    public const string PromptStatusInvalid = "promptlab_prompt_status_invalid";
+
     public const string TemplateRequired = "promptlab_template_required";
     public const string TemplateTooLong = "promptlab_template_too_long";
     public const string TemplateSyntaxInvalid = "promptlab_template_syntax_invalid";
