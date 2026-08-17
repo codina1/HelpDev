@@ -89,6 +89,7 @@ describe("MediaPagination", () => {
     );
     expect(html).toContain("صفحه قبل");
     expect(html).toContain("۲۴ در صفحه");
+    expect(html).toContain('data-compact="true"');
   });
 });
 

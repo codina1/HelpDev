@@ -16,6 +16,8 @@ export type AdminPaginationProps = {
   ariaLabel?: string;
   /** Unique id prefix for the page-size `<select>` (avoids duplicate ids when reused on the same page). */
   idPrefix?: string;
+  /** Uses smaller controls and only the essential page indicator. */
+  compact?: boolean;
   onPageChange: (page: number) => void;
   onPageSizeChange: (pageSize: number) => void;
 };
@@ -34,6 +36,7 @@ export function AdminPagination({
   pageSizeOptions = ADMIN_CONTENT_PAGE_SIZES,
   ariaLabel = "صفحه‌بندی فهرست محتوا",
   idPrefix = "admin-content",
+  compact = false,
   onPageChange,
   onPageSizeChange,
 }: AdminPaginationProps) {
@@ -45,9 +48,14 @@ export function AdminPagination({
   return (
     <nav
       aria-label={ariaLabel}
-      className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+      data-compact={compact || undefined}
+      className={
+        compact
+          ? "flex w-fit flex-row items-center gap-2"
+          : "flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+      }
     >
-      <p className="adm-muted text-[12px]" aria-live="polite">
+      <p className={compact ? "sr-only" : "adm-muted text-[12px]"} aria-live="polite">
         {totalCount === 0
           ? "نتیجه‌ای نیست"
           : `${formatNumberFa(totalCount)} نتیجه · صفحه ${formatNumberFa(page)} از ${formatNumberFa(safeTotalPages)}`}
@@ -59,7 +67,11 @@ export function AdminPagination({
         </label>
         <select
           id={pageSizeId}
-          className="adm-input w-auto text-[12px]"
+          className={
+            compact
+              ? "adm-input !h-8 !w-[7rem] !px-2 !py-1 text-[11px]"
+              : "adm-input w-auto text-[12px]"
+          }
           value={pageSize}
           disabled={disabled}
           onChange={(event) => onPageSizeChange(Number(event.target.value))}
@@ -74,14 +86,18 @@ export function AdminPagination({
         <div className="flex items-center gap-1">
           <button
             type="button"
-            className="adm-btn adm-btn-outline adm-focus px-2.5 py-1.5 text-[12px]"
+            className={
+              compact
+                ? "adm-btn adm-btn-outline adm-focus !h-8 !min-h-0 !px-2 !py-1 text-[11px]"
+                : "adm-btn adm-btn-outline adm-focus px-2.5 py-1.5 text-[12px]"
+            }
             disabled={disabled || atStart}
             aria-label="صفحه قبل"
             onClick={() => onPageChange(page - 1)}
           >
             <AdminIcon name="collapse" size={14} className="rtl:hidden" />
             <AdminIcon name="expand" size={14} className="hidden rtl:inline" />
-            <span className="ms-1 hidden sm:inline">قبلی</span>
+            <span className={compact ? "sr-only" : "ms-1 hidden sm:inline"}>قبلی</span>
           </button>
           <span
             className="adm-text min-w-[2.5rem] text-center text-[12px] font-semibold"
@@ -91,12 +107,16 @@ export function AdminPagination({
           </span>
           <button
             type="button"
-            className="adm-btn adm-btn-outline adm-focus px-2.5 py-1.5 text-[12px]"
+            className={
+              compact
+                ? "adm-btn adm-btn-outline adm-focus !h-8 !min-h-0 !px-2 !py-1 text-[11px]"
+                : "adm-btn adm-btn-outline adm-focus px-2.5 py-1.5 text-[12px]"
+            }
             disabled={disabled || atEnd}
             aria-label="صفحه بعد"
             onClick={() => onPageChange(page + 1)}
           >
-            <span className="me-1 hidden sm:inline">بعدی</span>
+            <span className={compact ? "sr-only" : "me-1 hidden sm:inline"}>بعدی</span>
             <AdminIcon name="expand" size={14} className="rtl:hidden" />
             <AdminIcon name="collapse" size={14} className="hidden rtl:inline" />
           </button>

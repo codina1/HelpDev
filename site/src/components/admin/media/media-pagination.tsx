@@ -27,6 +27,7 @@ export function MediaPagination({
       pageSizeOptions={ADMIN_MEDIA_PAGE_SIZES}
       ariaLabel="صفحه‌بندی رسانه‌ها"
       idPrefix={idPrefix}
+      compact
       onPageSizeChange={(pageSize) => onPageSizeChange(pageSize as AdminMediaPageSize)}
     />
   );
