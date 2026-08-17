@@ -7,5 +7,11 @@
     "timezone": "Asia/Tehran",
     "finalDllName": "HelpDev.API",
     "csprojectFile": "src/HelpDev.API/HelpDev.API.csproj"
-  }
+  },
+  "disks": [
+    {
+      "name": "media",
+      "mountTo": "/data/media"
+    }
+  ]
 }
