@@ -108,7 +108,7 @@ export const ContentWorkspaceRegistry: Record<
     createRoute: ADMIN_ROUTES.contentPromptsNew,
     icon: "prompt",
     persistence: "prompt-lab",
-    createLabel: "باز کردن Prompt Lab",
+    createLabel: "ایجاد پرامپت",
   },
   comparison: {
     id: "comparison",

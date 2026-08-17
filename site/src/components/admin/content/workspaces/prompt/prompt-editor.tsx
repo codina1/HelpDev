@@ -10,10 +10,7 @@ import { WorkspaceNote } from "@/components/admin/content/workspaces/future-capa
 
 const workspace = getWorkspaceByKey("prompt");
 
-/**
- * Prompt workspace does not duplicate PromptLab.
- * It links to the existing Prompt Lab Admin module.
- */
+/** Create prompt — form UI is planned; list lives in Writer Prompt Studio. */
 export function PromptEditor() {
   return (
     <div className="space-y-6">
@@ -22,23 +19,23 @@ export function PromptEditor() {
         <div className="flex items-start gap-3">
           <AdminIcon name="prompt" size={24} />
           <div className="space-y-2">
-            <h2 className="adm-text text-[15px] font-bold">مدیریت پرامپت در Prompt Lab</h2>
+            <h2 className="adm-text text-[15px] font-bold">ایجاد پرامپت</h2>
             <p className="adm-muted text-[13px] leading-6">
-              موجودیت پرامپت متعلق به ماژول Prompt Lab است. برای جلوگیری از تکرار و دادهٔ
-              ساختگی، ایجاد/ویرایش از همان فضای کار انجام می‌شود.
+              فرم ایجاد/ویرایش پرامپت به‌زودی در همین فضای کار اضافه می‌شود. تا آن زمان
+              پرامپت‌های خود را از داشبورد Writer Prompt Studio مدیریت کنید.
             </p>
           </div>
         </div>
         <WorkspaceNote>
-          از ایجاد Content با نوع Prompt در این مسیر خودداری شده تا با قرارداد Prompt Lab
+          ایجاد Content با نوع Prompt از این مسیر انجام نمی‌شود تا با قرارداد Prompt Lab
           تداخل نداشته باشد.
         </WorkspaceNote>
         <div className="flex flex-wrap gap-2">
           <Link href={ADMIN_ROUTES.promptLab} className="adm-btn adm-btn-primary adm-focus">
-            رفتن به Prompt Lab
+            بازگشت به داشبورد
           </Link>
           <Link href={workspace.listHref} className="adm-btn adm-btn-outline adm-focus">
-            بازگشت
+            فهرست پرامپت‌ها
           </Link>
         </div>
       </AdminSurface>

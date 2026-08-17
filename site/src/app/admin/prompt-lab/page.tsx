@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
-import { AdminModulePlaceholder } from "@/components/admin/page/admin-module-placeholder";
+import { WriterPromptDashboard } from "@/components/admin/prompt-lab/writer-prompt-dashboard";
 
-export const metadata: Metadata = { title: "Prompt Lab" };
+export const metadata: Metadata = { title: "Writer Prompt Studio" };
 
 export default function AdminPromptLabPage() {
-  return (
-    <AdminModulePlaceholder
-      icon="prompt"
-      title="مدیریت Prompt Lab"
-      description="پرامپت‌ها، نسخه‌ها و دسته‌بندی‌ها."
-    />
-  );
+  return <WriterPromptDashboard />;
 }
