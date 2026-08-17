@@ -7,6 +7,7 @@ using HelpDev.Modules.PromptLab.Application.Catalog;
 using HelpDev.Modules.PromptLab.Application.Rendering;
 using HelpDev.Modules.PromptLab.Domain.Favorites;
 using HelpDev.Modules.PromptLab.Domain.Prompts;
+using HelpDev.Modules.PromptLab.Presentation;
 using HelpDev.SharedApplication.Abstractions.Events;
 using Microsoft.EntityFrameworkCore;
 using NetArchTest.Rules;
@@ -22,6 +23,71 @@ namespace HelpDev.Architecture.Tests;
 
 public sealed class PromptLabArchitectureTests
 {
+    [Fact]
+    public void PromptLab_module_exposes_layered_namespaces_and_registration()
+    {
+        var assembly = typeof(PromptLabModuleMarker).Assembly;
+        var namespaces = assembly.GetTypes().Select(type => type.Namespace ?? string.Empty).ToHashSet();
+
+        Assert.Contains(namespaces, ns => ns.Contains(".Domain", StringComparison.Ordinal));
+        Assert.Contains(namespaces, ns => ns.Contains(".Application", StringComparison.Ordinal));
+        Assert.Contains(namespaces, ns => ns.Contains(".Infrastructure", StringComparison.Ordinal));
+        Assert.Contains(namespaces, ns => ns.Contains(".Presentation", StringComparison.Ordinal));
+        Assert.NotNull(typeof(PromptLabPresentationMarker));
+
+        var registration = typeof(HelpDev.Modules.PromptLab.DependencyInjection)
+            .GetMethod(nameof(HelpDev.Modules.PromptLab.DependencyInjection.AddPromptLabModule));
+        Assert.NotNull(registration);
+        Assert.True(registration!.IsStatic);
+    }
+
+    [Fact]
+    public void PromptLab_Domain_does_not_depend_on_Application_Infrastructure_or_Presentation()
+    {
+        var result = Types.InAssembly(typeof(PromptLabModuleMarker).Assembly)
+            .That()
+            .ResideInNamespaceContaining(".Domain")
+            .ShouldNot()
+            .HaveDependencyOnAny(
+                "HelpDev.Modules.PromptLab.Application",
+                "HelpDev.Modules.PromptLab.Infrastructure",
+                "HelpDev.Modules.PromptLab.Presentation")
+            .GetResult();
+
+        Assert.True(result.IsSuccessful, FormatFailures(result));
+    }
+
+    [Fact]
+    public void PromptLab_Application_does_not_depend_on_Infrastructure_or_Presentation()
+    {
+        var result = Types.InAssembly(typeof(PromptLabModuleMarker).Assembly)
+            .That()
+            .ResideInNamespaceContaining(".Application")
+            .ShouldNot()
+            .HaveDependencyOnAny(
+                "HelpDev.Modules.PromptLab.Infrastructure",
+                "HelpDev.Modules.PromptLab.Presentation")
+            .GetResult();
+
+        Assert.True(result.IsSuccessful, FormatFailures(result));
+    }
+
+    [Fact]
+    public void PromptLab_Presentation_does_not_depend_on_Infrastructure()
+    {
+        var result = Types.InAssembly(typeof(PromptLabModuleMarker).Assembly)
+            .That()
+            .ResideInNamespaceContaining(".Presentation")
+            .ShouldNot()
+            .HaveDependencyOnAny(
+                "HelpDev.Modules.PromptLab.Infrastructure",
+                "Microsoft.EntityFrameworkCore",
+                "Microsoft.AspNetCore")
+            .GetResult();
+
+        Assert.True(result.IsSuccessful, FormatFailures(result));
+    }
+
     [Fact]
     public void PromptLab_Domain_depends_only_on_allowed_building_blocks()
     {
