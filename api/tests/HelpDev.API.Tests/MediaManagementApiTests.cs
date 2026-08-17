@@ -96,7 +96,9 @@ public sealed class MediaManagementApiTests
         var result = await controller.Get(2026, 8, "sample.png", CancellationToken.None);
 
         Assert.IsType<FileStreamResult>(result);
-        Assert.Equal("cross-origin", controller.Response.Headers.CrossOriginResourcePolicy);
+        Assert.Equal(
+            "cross-origin",
+            controller.Response.Headers["Cross-Origin-Resource-Policy"]);
     }
 
     private static MediaManagementController CreateController(
