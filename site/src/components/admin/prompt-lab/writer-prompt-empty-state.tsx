@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ADMIN_ROUTES } from "@/lib/admin/routes";
+import { WRITER_PROMPT_NEW_PATH } from "@/lib/admin/prompt-lab/writer-prompt-types";
 import { AdminSurface } from "@/components/admin/page/admin-surface";
 import { AdminIcon } from "@/components/admin/shared/admin-icons";
 
@@ -25,7 +25,7 @@ export function WriterPromptEmptyState({ filtered, onClearFilters }: WriterPromp
       </div>
       <div className="flex flex-wrap justify-center gap-2">
         {!filtered ? (
-          <Link href={ADMIN_ROUTES.contentPromptsNew} className="adm-btn adm-btn-primary adm-focus">
+          <Link href={WRITER_PROMPT_NEW_PATH} className="adm-btn adm-btn-primary adm-focus">
             ایجاد پرامپت
           </Link>
         ) : null}

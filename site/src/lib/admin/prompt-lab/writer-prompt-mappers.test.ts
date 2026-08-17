@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
+  hasWriterPromptFormErrors,
   labelForWriterPromptStatus,
   mapWriterPromptListItem,
   mapWriterPromptPagedResult,
+  validateWriterPromptForm,
 } from "./writer-prompt-mappers";
 
 describe("writer-prompt-mappers", () => {
@@ -44,5 +46,39 @@ describe("writer-prompt-mappers", () => {
     expect(page.totalCount).toBe(41);
     expect(page.totalPages).toBe(3);
     expect(page.items).toHaveLength(1);
+  });
+
+  it("validates required writer prompt fields", () => {
+    const errors = validateWriterPromptForm({
+      title: "",
+      slug: "",
+      description: "",
+      coverImage: "",
+      content: "",
+      aiModelId: "",
+      categoryId: "",
+      mediaType: "Text",
+      tags: "",
+    });
+    expect(errors.title).toBeTruthy();
+    expect(errors.slug).toBeTruthy();
+    expect(errors.content).toBeTruthy();
+    expect(errors.aiModelId).toBeTruthy();
+    expect(errors.categoryId).toBeTruthy();
+  });
+
+  it("accepts a complete writer prompt form", () => {
+    const errors = validateWriterPromptForm({
+      title: "بازبینی مرز سیستم",
+      slug: "system-boundary-review",
+      description: "توضیح",
+      coverImage: "",
+      content: "You are a reviewer.",
+      aiModelId: "model-1",
+      categoryId: "cat-1",
+      mediaType: "Text",
+      tags: "کدنویسی، معماری",
+    });
+    expect(hasWriterPromptFormErrors(errors)).toBe(false);
   });
 });

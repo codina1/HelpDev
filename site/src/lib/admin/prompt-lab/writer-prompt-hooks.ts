@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "@/components/auth";
 import { listWriterPrompts } from "@/lib/api/promptlab-writer";
+import { listPromptAiModels, listPromptCategories } from "@/lib/api/promptlab";
 import { mapWriterPromptPagedResult } from "@/lib/admin/prompt-lab/writer-prompt-mappers";
 import { writerPromptListQueryKey } from "@/lib/admin/prompt-lab/writer-prompt-url-state";
 import type {
@@ -161,4 +162,63 @@ export function useWriterPromptStats(): WriterPromptStatsState {
   }, [load]);
 
   return { stats, loading, error, reload };
+}
+
+export type WriterPromptCatalogState = {
+  categories: { id: string; name: string; slug: string }[];
+  aiModels: { id: string; name: string; slug: string; provider: string }[];
+  loading: boolean;
+  error: unknown | null;
+  reload: () => void;
+};
+
+/** Loads active categories and AI models for the writer prompt form. */
+export function useWriterPromptCatalog(): WriterPromptCatalogState {
+  const controllerRef = useRef<AbortController | null>(null);
+  const [categories, setCategories] = useState<WriterPromptCatalogState["categories"]>([]);
+  const [aiModels, setAiModels] = useState<WriterPromptCatalogState["aiModels"]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<unknown | null>(null);
+
+  const load = useCallback(() => {
+    controllerRef.current?.abort();
+    const controller = new AbortController();
+    controllerRef.current = controller;
+    const { signal } = controller;
+
+    setLoading(true);
+    setError(null);
+
+    Promise.all([listPromptCategories(signal), listPromptAiModels(signal)])
+      .then(([nextCategories, nextModels]) => {
+        if (signal.aborted) return;
+        setCategories(
+          nextCategories.map((item) => ({ id: item.id, name: item.name, slug: item.slug })),
+        );
+        setAiModels(
+          nextModels.map((item) => ({
+            id: item.id,
+            name: item.name,
+            slug: item.slug,
+            provider: item.provider,
+          })),
+        );
+      })
+      .catch((err) => {
+        if (signal.aborted) return;
+        setError(err);
+        setCategories([]);
+        setAiModels([]);
+      })
+      .finally(() => {
+        if (!signal.aborted) setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    load();
+    return () => controllerRef.current?.abort();
+  }, [load]);
+
+  return { categories, aiModels, loading, error, reload: load };
 }

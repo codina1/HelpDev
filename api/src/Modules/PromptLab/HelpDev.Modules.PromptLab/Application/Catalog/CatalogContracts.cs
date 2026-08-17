@@ -8,6 +8,12 @@ public sealed record PromptCategoryDto(
     string? Icon,
     int DisplayOrder);
 
+public sealed record PromptAiModelDto(
+    Guid Id,
+    string Name,
+    string Slug,
+    string Provider);
+
 public sealed record PromptCatalogItemDto(
     Guid Id,
     string Slug,
@@ -80,6 +86,8 @@ public sealed record PromptCatalogPageDto(
 public interface IPromptCatalogQueries
 {
     Task<IReadOnlyList<PromptCategoryDto>> GetCategoriesAsync(CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<PromptAiModelDto>> GetAiModelsAsync(CancellationToken cancellationToken = default);
 
     Task<PromptCatalogPageDto> GetPromptsAsync(
         PromptCatalogFilter filter,

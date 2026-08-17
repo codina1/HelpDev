@@ -46,6 +46,32 @@ public sealed class PromptCatalogQueries : IPromptCatalogQueries
             .ToList();
     }
 
+    public async Task<IReadOnlyList<PromptAiModelDto>> GetAiModelsAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var rows = await _dbContext.AiModels
+            .AsNoTracking()
+            .Where(model => model.IsActive)
+            .OrderBy(model => model.Name)
+            .ThenBy(model => model.Id)
+            .Select(model => new
+            {
+                model.Id,
+                model.Name,
+                model.Slug,
+                model.Provider,
+            })
+            .ToListAsync(cancellationToken);
+
+        return rows
+            .Select(row => new PromptAiModelDto(
+                row.Id,
+                row.Name,
+                row.Slug.Value,
+                row.Provider))
+            .ToList();
+    }
+
     public async Task<PromptCatalogPageDto> GetPromptsAsync(
         PromptCatalogFilter filter,
         CancellationToken cancellationToken = default)

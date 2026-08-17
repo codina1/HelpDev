@@ -1,4 +1,5 @@
 import { ADMIN_ROUTES } from "@/lib/admin/routes";
+import { WRITER_PROMPT_NEW_PATH } from "@/lib/admin/prompt-lab/writer-prompt-types";
 import type { AdminIconName } from "@/lib/admin/navigation";
 import type { ContentTypeValue } from "@/lib/admin/content/content-types";
 
@@ -105,7 +106,7 @@ export const ContentWorkspaceRegistry: Record<
     shortTitle: "Prompt Lab",
     description: "مدیریت پرامپت در ماژول Prompt Lab — بدون تکرار API.",
     route: ADMIN_ROUTES.contentPrompts,
-    createRoute: ADMIN_ROUTES.contentPromptsNew,
+    createRoute: WRITER_PROMPT_NEW_PATH,
     icon: "prompt",
     persistence: "prompt-lab",
     createLabel: "ایجاد پرامپت",

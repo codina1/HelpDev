@@ -17,6 +17,7 @@ import {
 } from "@/lib/admin/prompt-lab/writer-prompt-url-state";
 import {
   DEFAULT_WRITER_PROMPT_LIST_QUERY,
+  WRITER_PROMPT_NEW_PATH,
   type WriterPromptListQuery,
   type WriterPromptPageSize,
 } from "@/lib/admin/prompt-lab/writer-prompt-types";
@@ -112,7 +113,7 @@ function WriterPromptDashboardInner({
 
   const createAction = (
     <Link
-      href={ADMIN_ROUTES.contentPromptsNew}
+      href={WRITER_PROMPT_NEW_PATH}
       className="adm-btn adm-btn-primary adm-focus inline-flex items-center gap-1.5"
     >
       <AdminIcon name="plus" size={16} />

@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { ADMIN_ROUTES } from "@/lib/admin/routes";
+import { WRITER_PROMPT_NEW_PATH } from "@/lib/admin/prompt-lab/writer-prompt-types";
 import { WriterPromptStatusBadge } from "@/components/admin/prompt-lab/writer-prompt-status-badge";
 import { WriterPromptTable } from "@/components/admin/prompt-lab/writer-prompt-table";
 import { WriterPromptEmptyState } from "@/components/admin/prompt-lab/writer-prompt-empty-state";
@@ -48,6 +48,6 @@ describe("Writer Prompt Studio widgets", () => {
   it("renders empty state CTA", () => {
     const html = renderToStaticMarkup(<WriterPromptEmptyState filtered={false} />);
     expect(html).toContain("ایجاد پرامپت");
-    expect(html).toContain(ADMIN_ROUTES.contentPromptsNew);
+    expect(html).toContain(WRITER_PROMPT_NEW_PATH);
   });
 });

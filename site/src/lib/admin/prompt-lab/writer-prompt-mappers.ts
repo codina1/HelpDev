@@ -1,10 +1,18 @@
 import type { WriterPromptListItemDto, WriterPromptPageDto } from "@/lib/api/promptlab-writer";
+import { isValidSlug, slugify } from "@/lib/admin/content/content-mappers";
 import type {
+  WriterPromptFormErrors,
+  WriterPromptFormValues,
   WriterPromptListItem,
+  WriterPromptMediaType,
   WriterPromptPagedResult,
   WriterPromptStatus,
 } from "./writer-prompt-types";
-import { WRITER_PROMPT_STATUSES } from "./writer-prompt-types";
+import {
+  WRITER_PROMPT_LIMITS,
+  WRITER_PROMPT_MEDIA_TYPES,
+  WRITER_PROMPT_STATUSES,
+} from "./writer-prompt-types";
 
 export const WRITER_PROMPT_STATUS_LABELS: Record<WriterPromptStatus, string> = {
   Draft: "پیش‌نویس",
@@ -51,4 +59,95 @@ export function mapWriterPromptPagedResult(raw: WriterPromptPageDto): WriterProm
     totalPages: raw.total === 0 ? 0 : totalPages,
     items: raw.items.map(mapWriterPromptListItem),
   };
+}
+
+export const WRITER_PROMPT_MEDIA_TYPE_LABELS: Record<WriterPromptMediaType, string> = {
+  Text: "متن",
+  Image: "تصویر",
+};
+
+export const WRITER_PROMPT_CATEGORY_LABELS: Record<string, string> = {
+  image: "تصویر",
+  video: "ویدیو",
+  coding: "کدنویسی",
+  writing: "نوشتار",
+  marketing: "بازاریابی",
+  design: "طراحی",
+  education: "آموزش",
+};
+
+export function labelForWriterPromptMediaType(value: string): string {
+  return WRITER_PROMPT_MEDIA_TYPE_LABELS[value as WriterPromptMediaType] ?? value;
+}
+
+export function labelForWriterPromptCategory(name: string, slug?: string): string {
+  const key = (slug ?? name).trim().toLowerCase();
+  return WRITER_PROMPT_CATEGORY_LABELS[key] ?? name;
+}
+
+export function slugifyWriterPromptTitle(title: string): string {
+  const slug = slugify(title).slice(0, WRITER_PROMPT_LIMITS.slug);
+  return slug.length >= 2 ? slug : "prompt";
+}
+
+export function isKnownWriterPromptMediaType(value: string): value is WriterPromptMediaType {
+  return (WRITER_PROMPT_MEDIA_TYPES as readonly string[]).includes(value);
+}
+
+export function parseWriterPromptTags(raw: string): string[] {
+  return raw
+    .split(/[,،]+/)
+    .map((tag) => tag.trim())
+    .filter((tag) => tag.length > 0);
+}
+
+export function validateWriterPromptForm(values: WriterPromptFormValues): WriterPromptFormErrors {
+  const errors: WriterPromptFormErrors = {};
+  const title = values.title.trim();
+  const slug = values.slug.trim().toLowerCase();
+  const content = values.content.trim();
+
+  if (!title) {
+    errors.title = "عنوان الزامی است.";
+  } else if (title.length > WRITER_PROMPT_LIMITS.title) {
+    errors.title = `عنوان حداکثر ${WRITER_PROMPT_LIMITS.title} نویسه است.`;
+  }
+
+  if (!slug) {
+    errors.slug = "اسلاگ الزامی است.";
+  } else if (!isValidSlug(slug) || slug.length > WRITER_PROMPT_LIMITS.slug) {
+    errors.slug = "اسلاگ باید انگلیسی کوچک، عدد و خط تیره باشد.";
+  }
+
+  if (values.description.trim().length > WRITER_PROMPT_LIMITS.description) {
+    errors.description = `توضیح حداکثر ${WRITER_PROMPT_LIMITS.description} نویسه است.`;
+  }
+
+  if (values.coverImage.trim().length > WRITER_PROMPT_LIMITS.coverImage) {
+    errors.coverImage = "نشانی تصویر کاور خیلی بلند است.";
+  }
+
+  if (!content) {
+    errors.content = "متن پرامپت الزامی است.";
+  } else if (content.length > WRITER_PROMPT_LIMITS.content) {
+    errors.content = `متن پرامپت حداکثر ${WRITER_PROMPT_LIMITS.content} نویسه است.`;
+  }
+
+  if (!values.aiModelId) {
+    errors.aiModelId = "مدل هوش مصنوعی را انتخاب کنید.";
+  }
+
+  if (!values.categoryId) {
+    errors.categoryId = "دسته‌بندی را انتخاب کنید.";
+  }
+
+  if (!isKnownWriterPromptMediaType(values.mediaType)) {
+    errors.mediaType = "نوع رسانه نامعتبر است.";
+  }
+
+  return errors;
+}
+
+export function hasWriterPromptFormErrors(errors: WriterPromptFormErrors): boolean {
+  return Object.values(errors).some(Boolean);
 }

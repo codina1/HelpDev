@@ -61,6 +61,17 @@ export function listPromptCategories(signal?: AbortSignal): Promise<PromptCatego
   return apiRequest<PromptCategoryDto[]>({ path: "/prompts/categories", signal });
 }
 
+export type PromptAiModelDto = {
+  id: string;
+  name: string;
+  slug: string;
+  provider: string;
+};
+
+export function listPromptAiModels(signal?: AbortSignal): Promise<PromptAiModelDto[]> {
+  return apiRequest<PromptAiModelDto[]>({ path: "/prompts/ai-models", signal });
+}
+
 export function listPrompts(
   filter?: PublicPromptFilter,
   signal?: AbortSignal,

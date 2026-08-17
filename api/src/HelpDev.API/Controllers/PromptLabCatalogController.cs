@@ -45,6 +45,16 @@ public sealed class PromptLabCatalogController : ControllerBase
         return Ok(await _catalogQueries.GetCategoriesAsync(cancellationToken));
     }
 
+    [HttpGet("ai-models")]
+    [OpenApiOperationId("PromptLabCatalog_GetAiModels")]
+    [OpenApiSummary("List AI models", "Returns all active AI models that prompts can target.")]
+    [ProducesResponseType(typeof(IReadOnlyList<PromptAiModelDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IReadOnlyList<PromptAiModelDto>>> GetAiModels(
+        CancellationToken cancellationToken)
+    {
+        return Ok(await _catalogQueries.GetAiModelsAsync(cancellationToken));
+    }
+
     [HttpGet]
     [OpenApiOperationId("PromptLabCatalog_GetPrompts")]
     [OpenApiSummary(

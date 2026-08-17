@@ -123,6 +123,7 @@ public sealed class PromptLabApiTests
         ControllerTestHelper.SetUser(controller, userId: null);
 
         Assert.IsType<OkObjectResult>((await controller.GetCategories(CancellationToken.None)).Result);
+        Assert.IsType<OkObjectResult>((await controller.GetAiModels(CancellationToken.None)).Result);
         Assert.IsType<OkObjectResult>(
             (await controller.GetPrompts(null, null, null, null, false, 1, 20, CancellationToken.None)).Result);
 
@@ -337,6 +338,9 @@ public sealed class PromptLabApiTests
     {
         public Task<IReadOnlyList<PromptCategoryDto>> GetCategoriesAsync(CancellationToken cancellationToken = default) =>
             Task.FromResult<IReadOnlyList<PromptCategoryDto>>([]);
+
+        public Task<IReadOnlyList<PromptAiModelDto>> GetAiModelsAsync(CancellationToken cancellationToken = default) =>
+            Task.FromResult<IReadOnlyList<PromptAiModelDto>>([]);
 
         public Task<PromptCatalogPageDto> GetPromptsAsync(
             PromptCatalogFilter filter,
