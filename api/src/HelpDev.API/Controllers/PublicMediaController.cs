@@ -67,6 +67,9 @@ public sealed class PublicMediaController : ControllerBase
         var stream = await _storage.OpenReadAsync(storageKey, cancellationToken);
         Response.Headers.CacheControl = "public, max-age=31536000, immutable";
         Response.Headers.XContentTypeOptions = "nosniff";
+        // Media is intentionally embedded by the public site on a different
+        // origin (helpdev.ir -> helpdevapi.liara.run).
+        Response.Headers.CrossOriginResourcePolicy = "cross-origin";
         // inline for images; filename is server-generated so header injection risk is low,
         // but still strip quotes/CRLF defensively.
         var safeName = fileName.Replace("\"", string.Empty, StringComparison.Ordinal)

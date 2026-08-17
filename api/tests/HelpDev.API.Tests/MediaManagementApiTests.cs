@@ -4,6 +4,7 @@ using HelpDev.API.Tests.Fakes;
 using HelpDev.Modules.Identity.Application.Auth;
 using HelpDev.Modules.Media.Application.Assets;
 using HelpDev.Modules.Media.Application.Common;
+using HelpDev.Modules.Media.Application.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -81,8 +82,50 @@ public sealed class MediaManagementApiTests
         Assert.NotNull(method!.GetCustomAttributes(typeof(HttpPostAttribute), false).Single());
     }
 
+    [Fact]
+    public async Task Public_media_allows_cross_origin_embedding()
+    {
+        var controller = new PublicMediaController(
+            new ExistingMediaStorage(),
+            Options.Create(new Modules.Media.Application.Options.MediaOptions()));
+        controller.ControllerContext = new ControllerContext
+        {
+            HttpContext = new DefaultHttpContext(),
+        };
+
+        var result = await controller.Get(2026, 8, "sample.png", CancellationToken.None);
+
+        Assert.IsType<FileStreamResult>(result);
+        Assert.Equal("cross-origin", controller.Response.Headers.CrossOriginResourcePolicy);
+    }
+
     private static MediaManagementController CreateController(
         IMediaAssetService service,
         IMediaAssetQueries queries) =>
         new(service, queries, Options.Create(new Modules.Media.Application.Options.MediaOptions()));
+
+    private sealed class ExistingMediaStorage : IMediaStorage
+    {
+        public Task StoreAsync(
+            Stream content,
+            string storageKey,
+            string contentType,
+            CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+
+        public Task<Stream> OpenReadAsync(
+            string storageKey,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult<Stream>(new MemoryStream([1, 2, 3]));
+
+        public Task<bool> ExistsAsync(
+            string storageKey,
+            CancellationToken cancellationToken = default) =>
+            Task.FromResult(true);
+
+        public Task DeleteAsync(
+            string storageKey,
+            CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+    }
 }
