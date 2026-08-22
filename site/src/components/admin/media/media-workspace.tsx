@@ -30,7 +30,7 @@ import { MediaDetailPanel } from "@/components/admin/media/media-detail-panel";
  * `/admin/media` — Media Library workspace.
  * List source: `GET /api/v1/admin/media` (server pagination + search).
  * Upload: `POST /api/v1/admin/media` (multipart/form-data).
- * There is NO delete endpoint — no delete UI is offered here.
+ * Delete/update: confirmed from the detail panel.
  */
 export function MediaWorkspace() {
   return (
@@ -143,7 +143,11 @@ function MediaWorkspaceInner() {
         onUploaded={handleUploaded}
       />
 
-      <MediaDetailPanel id={detailId} onClose={() => setDetailId(null)} />
+      <MediaDetailPanel
+        id={detailId}
+        onClose={() => setDetailId(null)}
+        onChanged={() => list.reload()}
+      />
     </div>
   );
 }

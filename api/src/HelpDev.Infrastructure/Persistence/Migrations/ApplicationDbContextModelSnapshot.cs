@@ -822,6 +822,19 @@ namespace HelpDev.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(2048)")
                         .HasColumnName("cover_image");
 
+                    b.Property<string>("ContentFormat")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnName("content_format");
+
+                    b.Property<string>("ContentHtml")
+                        .HasColumnType("text")
+                        .HasColumnName("content_html");
+
+                    b.Property<string>("ContentJson")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("content_json");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -834,6 +847,15 @@ namespace HelpDev.Infrastructure.Persistence.Migrations
                         .HasDefaultValue("")
                         .HasColumnName("excerpt");
 
+                    b.Property<string>("EditorVersion")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("editor_version");
+
+                    b.Property<DateTime?>("LastAutosavedAtUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_autosaved_at_utc");
+
                     b.Property<DateTime?>("PublishedAtUtc")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("published_at_utc");
@@ -843,6 +865,10 @@ namespace HelpDev.Infrastructure.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasDefaultValue(0)
                         .HasColumnName("saves");
+
+                    b.Property<int?>("ReadingTimeMinutes")
+                        .HasColumnType("integer")
+                        .HasColumnName("reading_time_minutes");
 
                     b.Property<string>("Slug")
                         .IsRequired()
@@ -879,6 +905,10 @@ namespace HelpDev.Infrastructure.Persistence.Migrations
                         .HasColumnType("integer")
                         .HasDefaultValue(0)
                         .HasColumnName("views");
+
+                    b.Property<int?>("WordCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("word_count");
 
                     b.ComplexProperty<Dictionary<string, object>>("SeoMetadata", "HelpDev.Modules.Content.Domain.Entities.Content.SeoMetadata#SeoMetadata", b1 =>
                         {

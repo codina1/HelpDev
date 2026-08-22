@@ -7,8 +7,9 @@ import { apiRequest } from "./client";
  *   returns the full `MediaAssetDto`.
  * - `GET /admin/media`: server-paginated list (`PagedResult<MediaAssetListItemDto>`).
  * - `GET /admin/media/{id}`: full `MediaAssetDto` detail.
- *
- * There is NO delete endpoint — do not add one here or in the UI.
+ * - `GET /admin/media/config`: upload limits used by the editor/picker.
+ * - `PUT /admin/media/{id}`: update alt/caption.
+ * - `DELETE /admin/media/{id}`: archive asset and remove stored bytes.
  */
 
 // MediaAssetDto — full detail (upload response + GET /admin/media/{id}).
@@ -65,6 +66,20 @@ export type UploadMediaAssetRequest = {
   caption?: string | null;
 };
 
+export type UpdateMediaAssetRequestDto = {
+  altText?: string | null;
+  caption?: string | null;
+};
+
+export type MediaLibraryConfigDto = {
+  maxUploadBytes: number;
+  maxWidth: number;
+  maxHeight: number;
+  allowedContentTypes: string[];
+  maxAltTextLength: number;
+  maxCaptionLength: number;
+};
+
 /**
  * POST /admin/media (multipart/form-data). The shared `apiRequest` client
  * detects the `FormData` body and lets the browser set its own
@@ -117,6 +132,48 @@ export function getAdminMediaById(
   signal?: AbortSignal,
 ): Promise<MediaAssetDto> {
   return apiRequest<MediaAssetDto>({
+    path: `/admin/media/${encodeURIComponent(id)}`,
+    token,
+    signal,
+  });
+}
+
+/** GET /admin/media/config — upload limits for the editor and picker. */
+export function getAdminMediaConfig(
+  token: string,
+  signal?: AbortSignal,
+): Promise<MediaLibraryConfigDto> {
+  return apiRequest<MediaLibraryConfigDto>({
+    path: "/admin/media/config",
+    token,
+    signal,
+  });
+}
+
+/** PUT /admin/media/{id} — update alt text and caption. */
+export function updateMediaAsset(
+  token: string,
+  id: string,
+  request: UpdateMediaAssetRequestDto,
+  signal?: AbortSignal,
+): Promise<MediaAssetDto> {
+  return apiRequest<MediaAssetDto>({
+    method: "PUT",
+    path: `/admin/media/${encodeURIComponent(id)}`,
+    token,
+    body: request,
+    signal,
+  });
+}
+
+/** DELETE /admin/media/{id} — archives the asset and removes stored bytes. */
+export function deleteMediaAsset(
+  token: string,
+  id: string,
+  signal?: AbortSignal,
+): Promise<void> {
+  return apiRequest<void>({
+    method: "DELETE",
     path: `/admin/media/${encodeURIComponent(id)}`,
     token,
     signal,

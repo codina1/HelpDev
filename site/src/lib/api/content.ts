@@ -14,6 +14,10 @@ export type ContentSummaryDto = {
 export type ContentDetailDto = ContentSummaryDto & {
   body: string;
   authorId: string;
+  contentHtml?: string | null;
+  contentFormat?: string | null;
+  wordCount?: number | null;
+  readingTimeMinutes?: number | null;
 };
 
 export type CreateContentRequestDto = {
@@ -49,6 +53,13 @@ export type AdminContentDetailDto = {
   updatedAtUtc: string;
   publishedAtUtc: string | null;
   seo: SeoMetadataDto;
+  contentJson?: string | null;
+  contentHtml?: string | null;
+  contentFormat?: string | null;
+  editorVersion?: string | null;
+  wordCount?: number | null;
+  readingTimeMinutes?: number | null;
+  lastAutosavedAtUtc?: string | null;
 };
 
 export type UpdateContentRequestDto = {
@@ -58,6 +69,29 @@ export type UpdateContentRequestDto = {
   body: string;
   excerpt: string | null;
   coverImage: string | null;
+  contentJson?: string | null;
+  contentFormat?: string | null;
+  editorVersion?: string | null;
+  autosave?: boolean;
+};
+
+export type PreviewArticleRequestDto = {
+  contentJson?: string | null;
+  body?: string | null;
+};
+
+export type PreviewHeadingDto = {
+  id: string;
+  level: number;
+  text: string;
+};
+
+export type PreviewArticleDto = {
+  html: string;
+  plainText: string;
+  wordCount: number;
+  readingTimeMinutes: number;
+  headings: PreviewHeadingDto[];
 };
 
 export type UpdateSeoMetadataRequestDto = {
@@ -405,6 +439,21 @@ export function updateContent(
   return apiRequest<AdminContentDetailDto>({
     method: "PUT",
     path: `/admin/content/${encodeURIComponent(id)}`,
+    token,
+    body: request,
+    signal,
+  });
+}
+
+/** POST /admin/content/preview — compiles TipTap JSON without persisting. */
+export function previewArticle(
+  token: string,
+  request: PreviewArticleRequestDto,
+  signal?: AbortSignal,
+): Promise<PreviewArticleDto> {
+  return apiRequest<PreviewArticleDto>({
+    method: "POST",
+    path: "/admin/content/preview",
     token,
     body: request,
     signal,

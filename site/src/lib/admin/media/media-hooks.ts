@@ -5,8 +5,11 @@ import { useAuth } from "@/components/auth";
 import {
   MEDIA_CAPABILITIES,
   MediaOperationUnsupportedError,
+  deleteMediaAssetItem,
   fetchAdminMediaById,
+  fetchAdminMediaConfig,
   fetchAdminMediaList,
+  updateMediaAssetItem,
   uploadMediaAssetItem,
 } from "@/lib/admin/media/media-api";
 import { mapAdminMediaDetail, mapAdminMediaPagedResult } from "@/lib/admin/media/media-mappers";
@@ -15,6 +18,7 @@ import type {
   AdminMediaDetail,
   AdminMediaListQuery,
   AdminMediaPagedResult,
+  UpdateMediaPayload,
   UploadMediaPayload,
 } from "@/lib/admin/media/media-types";
 
@@ -202,6 +206,105 @@ export function useUploadMediaAsset(): UploadMediaAssetState {
   const reset = useCallback(() => setError(null), []);
 
   return { upload, submitting, error, reset };
+}
+
+export type UpdateMediaAssetState = {
+  update: (id: string, payload: UpdateMediaPayload) => Promise<AdminMediaDetail>;
+  submitting: boolean;
+  error: unknown | null;
+  reset: () => void;
+};
+
+export function useUpdateMediaAsset(): UpdateMediaAssetState {
+  const { token } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<unknown | null>(null);
+
+  const update = useCallback(
+    async (id: string, payload: UpdateMediaPayload): Promise<AdminMediaDetail> => {
+      if (!token) {
+        throw new MediaOperationUnsupportedError("برای ویرایش رسانه باید وارد شوید.");
+      }
+      setSubmitting(true);
+      setError(null);
+      try {
+        const raw = await updateMediaAssetItem(token, id, payload);
+        return mapAdminMediaDetail(raw);
+      } catch (err) {
+        setError(err);
+        throw err;
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [token],
+  );
+
+  const reset = useCallback(() => setError(null), []);
+  return { update, submitting, error, reset };
+}
+
+export type DeleteMediaAssetState = {
+  remove: (id: string) => Promise<void>;
+  submitting: boolean;
+  error: unknown | null;
+  reset: () => void;
+};
+
+export function useDeleteMediaAsset(): DeleteMediaAssetState {
+  const { token } = useAuth();
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<unknown | null>(null);
+
+  const remove = useCallback(
+    async (id: string): Promise<void> => {
+      if (!token) {
+        throw new MediaOperationUnsupportedError("برای حذف رسانه باید وارد شوید.");
+      }
+      setSubmitting(true);
+      setError(null);
+      try {
+        await deleteMediaAssetItem(token, id);
+      } catch (err) {
+        setError(err);
+        throw err;
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [token],
+  );
+
+  const reset = useCallback(() => setError(null), []);
+  return { remove, submitting, error, reset };
+}
+
+export function useAdminMediaConfig() {
+  const { token } = useAuth();
+  const [data, setData] = useState<{
+    maxUploadBytes: number;
+    allowedContentTypes: string[];
+  } | null>(null);
+
+  useEffect(() => {
+    if (!token) return;
+    const controller = new AbortController();
+    fetchAdminMediaConfig(token, controller.signal)
+      .then((config) => {
+        if (!controller.signal.aborted) {
+          setData({
+            maxUploadBytes: config.maxUploadBytes,
+            allowedContentTypes: config.allowedContentTypes,
+          });
+        }
+      })
+      .catch(() => {
+        // Config is optional UX; upload still validates against local allow-list.
+      });
+    return () => controller.abort();
+  }, [token]);
+
+  return data;
 }
 
 export { MEDIA_CAPABILITIES };

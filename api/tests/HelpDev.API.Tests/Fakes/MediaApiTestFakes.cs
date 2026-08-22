@@ -37,6 +37,29 @@ internal sealed class FakeMediaAssetService : IMediaAssetService
         return Task.FromResult(DetailToReturn);
     }
 
+    public Task<MediaAssetDto> UpdateMetadataAsync(
+        MediaManagementActor actor,
+        Guid id,
+        UpdateMediaAssetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        LastActor = actor;
+        LastId = id;
+        LastOperation = nameof(UpdateMetadataAsync);
+        return Task.FromResult(DetailToReturn);
+    }
+
+    public Task DeleteAsync(
+        MediaManagementActor actor,
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        LastActor = actor;
+        LastId = id;
+        LastOperation = nameof(DeleteAsync);
+        return Task.CompletedTask;
+    }
+
     internal static MediaAssetDto CreateSample() =>
         new(
             Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),

@@ -58,4 +58,6 @@ public interface IContentService
         ContentManagementActor actor,
         Guid id,
         CancellationToken cancellationToken = default);
+
+    PreviewArticleDto Preview(PreviewArticleRequest request);
 }

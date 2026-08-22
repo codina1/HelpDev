@@ -64,6 +64,10 @@ export type ContentDetailRawDto = {
   views: number;
   saves: number;
   createdAt: string;
+  contentHtml?: string | null;
+  contentFormat?: string | null;
+  wordCount?: number | null;
+  readingTimeMinutes?: number | null;
 };
 
 // POST /content — CreateContentRequest.
@@ -168,6 +172,13 @@ export type AdminContentDetailRawDto = {
   updatedAtUtc: string;
   publishedAtUtc: string | null;
   seo: SeoMetadataRawDto;
+  contentJson?: string | null;
+  contentHtml?: string | null;
+  contentFormat?: string | null;
+  editorVersion?: string | null;
+  wordCount?: number | null;
+  readingTimeMinutes?: number | null;
+  lastAutosavedAtUtc?: string | null;
 };
 
 // PUT /admin/content/{id} — UpdateContentRequest.
@@ -178,6 +189,18 @@ export type UpdateContentPayload = {
   body: string;
   excerpt: string | null;
   coverImage: string | null;
+  contentJson?: string | null;
+  contentFormat?: string | null;
+  editorVersion?: string | null;
+  autosave?: boolean;
+};
+
+export type PreviewArticleRawDto = {
+  html: string;
+  plainText: string;
+  wordCount: number;
+  readingTimeMinutes: number;
+  headings: Array<{ id: string; level: number; text: string }>;
 };
 
 // PUT /admin/content/{id}/seo — UpdateSeoMetadataRequest (nullable fields).
@@ -431,6 +454,10 @@ export type ContentDetail = {
   views: number;
   saves: number;
   createdAt: string;
+  contentHtml?: string | null;
+  contentFormat?: string | null;
+  wordCount?: number | null;
+  readingTimeMinutes?: number | null;
 };
 
 /** Full Admin Read Model used by the Content Studio and details workspace. */
@@ -452,6 +479,13 @@ export type AdminContentDetail = {
   updatedAtUtc: string;
   publishedAtUtc: string | null;
   seo: SeoFormValues;
+  contentJson?: string | null;
+  contentHtml?: string | null;
+  contentFormat?: string | null;
+  editorVersion?: string | null;
+  wordCount?: number | null;
+  readingTimeMinutes?: number | null;
+  lastAutosavedAtUtc?: string | null;
 };
 
 export type ContentStats = {

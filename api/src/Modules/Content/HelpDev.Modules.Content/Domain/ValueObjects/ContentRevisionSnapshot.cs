@@ -1,3 +1,4 @@
+using HelpDev.Modules.Content.Domain.Articles;
 using HelpDev.Modules.Content.Domain.Enums;
 using HelpDev.SharedKernel.Common;
 using ContentEntity = HelpDev.Modules.Content.Domain.Entities.Content;
@@ -17,7 +18,13 @@ public sealed class ContentRevisionSnapshot : ValueObject
         string excerpt,
         string? coverImage,
         string contentType,
-        ContentRevisionSeoSnapshot seoMetadata)
+        ContentRevisionSeoSnapshot seoMetadata,
+        string? contentJson = null,
+        string? contentHtml = null,
+        string? contentFormat = null,
+        string? editorVersion = null,
+        int? wordCount = null,
+        int? readingTimeMinutes = null)
     {
         Title = title;
         Slug = slug;
@@ -26,6 +33,12 @@ public sealed class ContentRevisionSnapshot : ValueObject
         CoverImage = coverImage;
         ContentType = contentType;
         SeoMetadata = seoMetadata;
+        ContentJson = contentJson;
+        ContentHtml = contentHtml;
+        ContentFormat = contentFormat;
+        EditorVersion = editorVersion;
+        WordCount = wordCount;
+        ReadingTimeMinutes = readingTimeMinutes;
     }
 
     public string Title { get; }
@@ -42,6 +55,34 @@ public sealed class ContentRevisionSnapshot : ValueObject
 
     public ContentRevisionSeoSnapshot SeoMetadata { get; }
 
+    public string? ContentJson { get; }
+
+    public string? ContentHtml { get; }
+
+    public string? ContentFormat { get; }
+
+    public string? EditorVersion { get; }
+
+    public int? WordCount { get; }
+
+    public int? ReadingTimeMinutes { get; }
+
+    public ArticleEditorDocument? ToEditorDocument()
+    {
+        if (ContentJson is null && ContentHtml is null && ContentFormat is null)
+        {
+            return null;
+        }
+
+        return new ArticleEditorDocument(
+            ContentJson,
+            ContentHtml,
+            ContentFormat,
+            EditorVersion,
+            WordCount,
+            ReadingTimeMinutes);
+    }
+
     public static ContentRevisionSnapshot FromContent(ContentEntity content)
     {
         ArgumentNullException.ThrowIfNull(content);
@@ -53,7 +94,13 @@ public sealed class ContentRevisionSnapshot : ValueObject
             content.Excerpt,
             content.CoverImage,
             content.Type.ToString(),
-            ContentRevisionSeoSnapshot.From(content.SeoMetadata));
+            ContentRevisionSeoSnapshot.From(content.SeoMetadata),
+            content.ContentJson,
+            content.ContentHtml,
+            content.ContentFormat,
+            content.EditorVersion,
+            content.WordCount,
+            content.ReadingTimeMinutes);
     }
 
     public static ContentRevisionSnapshot Create(
@@ -63,7 +110,13 @@ public sealed class ContentRevisionSnapshot : ValueObject
         string excerpt,
         string? coverImage,
         string contentType,
-        ContentRevisionSeoSnapshot seoMetadata)
+        ContentRevisionSeoSnapshot seoMetadata,
+        string? contentJson = null,
+        string? contentHtml = null,
+        string? contentFormat = null,
+        string? editorVersion = null,
+        int? wordCount = null,
+        int? readingTimeMinutes = null)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -99,7 +152,13 @@ public sealed class ContentRevisionSnapshot : ValueObject
             excerpt?.Trim() ?? string.Empty,
             string.IsNullOrWhiteSpace(coverImage) ? null : coverImage.Trim(),
             contentType.Trim(),
-            seoMetadata);
+            seoMetadata,
+            string.IsNullOrWhiteSpace(contentJson) ? null : contentJson,
+            string.IsNullOrWhiteSpace(contentHtml) ? null : contentHtml,
+            string.IsNullOrWhiteSpace(contentFormat) ? null : contentFormat.Trim(),
+            string.IsNullOrWhiteSpace(editorVersion) ? null : editorVersion.Trim(),
+            wordCount,
+            readingTimeMinutes);
     }
 
     protected override IEnumerable<object?> GetEqualityComponents()
@@ -111,6 +170,12 @@ public sealed class ContentRevisionSnapshot : ValueObject
         yield return CoverImage;
         yield return ContentType;
         yield return SeoMetadata;
+        yield return ContentJson;
+        yield return ContentHtml;
+        yield return ContentFormat;
+        yield return EditorVersion;
+        yield return WordCount;
+        yield return ReadingTimeMinutes;
     }
 }
 

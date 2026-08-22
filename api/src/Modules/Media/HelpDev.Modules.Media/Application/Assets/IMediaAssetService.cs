@@ -25,4 +25,15 @@ public interface IMediaAssetService
         MediaManagementActor actor,
         Guid id,
         CancellationToken cancellationToken = default);
+
+    Task<MediaAssetDto> UpdateMetadataAsync(
+        MediaManagementActor actor,
+        Guid id,
+        UpdateMediaAssetRequest request,
+        CancellationToken cancellationToken = default);
+
+    Task DeleteAsync(
+        MediaManagementActor actor,
+        Guid id,
+        CancellationToken cancellationToken = default);
 }

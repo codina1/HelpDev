@@ -334,5 +334,8 @@ public sealed class ContentAiAssistantServiceTests
             Guid id,
             CancellationToken cancellationToken = default) =>
             throw new NotSupportedException();
+
+        public PreviewArticleDto Preview(PreviewArticleRequest request) =>
+            throw new NotSupportedException();
     }
 }

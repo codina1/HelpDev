@@ -26,12 +26,27 @@ public sealed class MediaManagementApiTests
     }
 
     [Fact]
-    public void Controller_has_no_delete_action()
+    public void Controller_exposes_owned_delete_and_metadata_update()
     {
-        var methods = typeof(MediaManagementController).GetMethods()
-            .Where(m => m.GetCustomAttributes(typeof(HttpDeleteAttribute), false).Length > 0)
-            .ToArray();
-        Assert.Empty(methods);
+        Assert.NotNull(typeof(MediaManagementController).GetMethod(nameof(MediaManagementController.Delete)));
+        Assert.NotNull(typeof(MediaManagementController).GetMethod(nameof(MediaManagementController.UpdateMetadata)));
+        Assert.NotNull(typeof(MediaManagementController).GetMethod(nameof(MediaManagementController.GetConfig)));
+    }
+
+    [Fact]
+    public async Task Delete_forwards_actor_and_id()
+    {
+        var service = new FakeMediaAssetService();
+        var controller = CreateController(service, new FakeMediaAssetQueries());
+        var userId = Guid.NewGuid();
+        ControllerTestHelper.SetUser(controller, userId, AppRoles.Admin);
+        var id = Guid.NewGuid();
+
+        var result = await controller.Delete(id, CancellationToken.None);
+
+        Assert.IsType<NoContentResult>(result);
+        Assert.Equal(id, service.LastId);
+        Assert.Equal(nameof(IMediaAssetService.DeleteAsync), service.LastOperation);
     }
 
     [Fact]

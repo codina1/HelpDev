@@ -3,6 +3,7 @@ using HelpDev.Modules.Media.Application.Persistence;
 using HelpDev.Modules.Media.Application.Storage;
 using HelpDev.Modules.Media.Application.Validation;
 using HelpDev.Modules.Media.Domain.Assets;
+using HelpDev.Modules.Media.Domain.Enums;
 using HelpDev.Modules.Media.Domain.ValueObjects;
 using HelpDev.SharedKernel.Exceptions;
 using HelpDev.SharedKernel.Time;
@@ -201,7 +202,7 @@ public sealed class MediaAssetService : IMediaAssetService
         ArgumentNullException.ThrowIfNull(actor);
 
         var detail = await _queries.GetByIdAsync(id, cancellationToken).ConfigureAwait(false);
-        if (detail is null)
+        if (detail is null || !string.Equals(detail.Status, nameof(MediaAssetStatus.Active), StringComparison.Ordinal))
         {
             throw new MediaException("رسانه یافت نشد.", MediaErrorCodes.NotFound);
         }
@@ -212,6 +213,69 @@ public sealed class MediaAssetService : IMediaAssetService
         }
 
         return detail;
+    }
+
+    public async Task<MediaAssetDto> UpdateMetadataAsync(
+        MediaManagementActor actor,
+        Guid id,
+        UpdateMediaAssetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(actor);
+        ArgumentNullException.ThrowIfNull(request);
+
+        var asset = await GetOwnedAssetAsync(actor, id, cancellationToken).ConfigureAwait(false);
+        try
+        {
+            asset.UpdateMetadata(
+                request.AltText,
+                request.Caption,
+                _clock.UtcNow,
+                _options.MaxAltTextLength,
+                _options.MaxCaptionLength);
+            await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            return Map(asset);
+        }
+        catch (DomainException ex)
+        {
+            throw new MediaException(ex.Message, MediaErrorCodes.Validation, ex);
+        }
+    }
+
+    public async Task DeleteAsync(
+        MediaManagementActor actor,
+        Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(actor);
+
+        var asset = await GetOwnedAssetAsync(actor, id, cancellationToken).ConfigureAwait(false);
+        if (!asset.Archive(_clock.UtcNow))
+        {
+            return;
+        }
+
+        await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await TryCleanupStorageAsync(asset.StorageKey, cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task<MediaAsset> GetOwnedAssetAsync(
+        MediaManagementActor actor,
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var asset = await _repository.GetByIdAsync(id, cancellationToken).ConfigureAwait(false);
+        if (asset is null || asset.Status != MediaAssetStatus.Active)
+        {
+            throw new MediaException("رسانه یافت نشد.", MediaErrorCodes.NotFound);
+        }
+
+        if (!actor.CanManageAllAssets && asset.UploadedByUserId != actor.UserId)
+        {
+            throw new MediaException("رسانه یافت نشد.", MediaErrorCodes.NotFound);
+        }
+
+        return asset;
     }
 
     private async Task TryCleanupStorageAsync(string storageKey, CancellationToken cancellationToken)

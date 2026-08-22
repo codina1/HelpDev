@@ -16,6 +16,7 @@ public sealed class MediaExceptionFilter : IExceptionFilter
         var statusCode = exception.Code switch
         {
             MediaErrorCodes.NotFound => StatusCodes.Status404NotFound,
+            MediaErrorCodes.Forbidden => StatusCodes.Status403Forbidden,
             MediaErrorCodes.PayloadTooLarge => StatusCodes.Status413PayloadTooLarge,
             MediaErrorCodes.UnsupportedType => StatusCodes.Status415UnsupportedMediaType,
             MediaErrorCodes.StorageFailed => StatusCodes.Status500InternalServerError,

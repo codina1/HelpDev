@@ -5,6 +5,7 @@ import { AdminLoadingState } from "@/components/admin/feedback/admin-loading-sta
 import { AdminErrorState } from "@/components/admin/feedback/admin-error-state";
 import { AdminEmptyState } from "@/components/admin/feedback/admin-empty-state";
 import { ContentStudio } from "@/components/admin/content/editor/content-studio";
+import { ArticleBlockEditor } from "@/components/admin/content/block-editor/article-block-editor";
 
 /**
  * Loads content by id from the Admin Read Model then renders the Content Studio.
@@ -29,5 +30,5 @@ export function ContentEditView({ id }: { id: string }) {
     );
   }
 
-  return <ContentStudio initial={data} />;
+  return data.type === "Article" ? <ArticleBlockEditor initial={data} /> : <ContentStudio initial={data} />;
 }

@@ -18,4 +18,11 @@ public sealed record AdminContentDetailDto(
     DateTime CreatedAtUtc,
     DateTime UpdatedAtUtc,
     DateTime? PublishedAtUtc,
-    SeoMetadataDto Seo);
+    SeoMetadataDto Seo,
+    string? ContentJson = null,
+    string? ContentHtml = null,
+    string? ContentFormat = null,
+    string? EditorVersion = null,
+    int? WordCount = null,
+    int? ReadingTimeMinutes = null,
+    DateTime? LastAutosavedAtUtc = null);

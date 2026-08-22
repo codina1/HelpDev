@@ -1,13 +1,18 @@
 import {
+  deleteMediaAsset as deleteMediaAssetRequest,
   getAdminMediaById as getAdminMediaByIdRequest,
+  getAdminMediaConfig as getAdminMediaConfigRequest,
   getAdminMediaList as getAdminMediaListRequest,
+  updateMediaAsset as updateMediaAssetRequest,
   uploadMediaAsset as uploadMediaAssetRequest,
   type AdminMediaListOptions,
 } from "@/lib/api/media";
 import type {
   AdminMediaListQuery,
   MediaAssetRawDto,
+  MediaLibraryConfigRawDto,
   MediaPagedResultRawDto,
+  UpdateMediaPayload,
   UploadMediaPayload,
 } from "@/lib/admin/media/media-types";
 
@@ -21,8 +26,9 @@ export const MEDIA_CAPABILITIES = {
   upload: true,
   list: true,
   getById: true,
-  // The backend has NO delete endpoint — never flip this to true without one.
-  delete: false,
+  config: true,
+  update: true,
+  delete: true,
 } as const;
 
 /** Raised when a not-yet-supported (or unauthenticated) media operation is invoked. */
@@ -74,4 +80,37 @@ export async function uploadMediaAssetItem(
     signal,
   );
   return detail as unknown as MediaAssetRawDto;
+}
+
+/** GET /admin/media/config — upload limits. */
+export async function fetchAdminMediaConfig(
+  token: string,
+  signal?: AbortSignal,
+): Promise<MediaLibraryConfigRawDto> {
+  return getAdminMediaConfigRequest(token, signal);
+}
+
+/** PUT /admin/media/{id} — alt/caption. */
+export async function updateMediaAssetItem(
+  token: string,
+  id: string,
+  payload: UpdateMediaPayload,
+  signal?: AbortSignal,
+): Promise<MediaAssetRawDto> {
+  const detail = await updateMediaAssetRequest(
+    token,
+    id,
+    { altText: payload.altText, caption: payload.caption },
+    signal,
+  );
+  return detail as unknown as MediaAssetRawDto;
+}
+
+/** DELETE /admin/media/{id} — archive + storage cleanup. */
+export async function deleteMediaAssetItem(
+  token: string,
+  id: string,
+  signal?: AbortSignal,
+): Promise<void> {
+  await deleteMediaAssetRequest(token, id, signal);
 }

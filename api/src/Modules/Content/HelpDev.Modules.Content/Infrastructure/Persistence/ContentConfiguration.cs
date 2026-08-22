@@ -1,3 +1,4 @@
+using HelpDev.Modules.Content.Domain.Articles;
 using HelpDev.Modules.Content.Domain.Enums;
 using HelpDev.Modules.Content.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +51,31 @@ public class ContentConfiguration : IEntityTypeConfiguration<ContentEntity>
         builder.Property(content => content.CoverImage)
             .HasMaxLength(ContentEntity.MaxCoverImageLength)
             .HasColumnName("cover_image");
+
+        builder.Property(content => content.ContentJson)
+            .HasColumnType("jsonb")
+            .HasColumnName("content_json");
+
+        builder.Property(content => content.ContentHtml)
+            .HasColumnType("text")
+            .HasColumnName("content_html");
+
+        builder.Property(content => content.ContentFormat)
+            .HasMaxLength(ArticleEditorLimits.MaxContentFormatLength)
+            .HasColumnName("content_format");
+
+        builder.Property(content => content.EditorVersion)
+            .HasMaxLength(ArticleEditorLimits.MaxEditorVersionLength)
+            .HasColumnName("editor_version");
+
+        builder.Property(content => content.WordCount)
+            .HasColumnName("word_count");
+
+        builder.Property(content => content.ReadingTimeMinutes)
+            .HasColumnName("reading_time_minutes");
+
+        builder.Property(content => content.LastAutosavedAtUtc)
+            .HasColumnName("last_autosaved_at_utc");
 
         builder.Property(content => content.Type)
             .IsRequired()

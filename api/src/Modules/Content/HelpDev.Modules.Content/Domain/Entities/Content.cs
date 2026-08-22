@@ -1,3 +1,4 @@
+using HelpDev.Modules.Content.Domain.Articles;
 using HelpDev.Modules.Content.Domain.Enums;
 using HelpDev.Modules.Content.Domain.Workflow;
 using HelpDev.Modules.Content.Domain.Events;
@@ -50,6 +51,20 @@ public class Content : AggregateRoot<Guid>
     public DateTime UpdatedAt { get; private set; }
 
     public DateTime? PublishedAtUtc { get; private set; }
+
+    public string? ContentJson { get; private set; }
+
+    public string? ContentHtml { get; private set; }
+
+    public string? ContentFormat { get; private set; }
+
+    public string? EditorVersion { get; private set; }
+
+    public int? WordCount { get; private set; }
+
+    public int? ReadingTimeMinutes { get; private set; }
+
+    public DateTime? LastAutosavedAtUtc { get; private set; }
 
     public static Content Create(
         Guid id,
@@ -124,10 +139,17 @@ public class Content : AggregateRoot<Guid>
         string body,
         string? excerpt,
         string? coverImage,
-        DateTime updatedAtUtc)
+        DateTime updatedAtUtc,
+        ArticleEditorDocument? editorDocument = null)
     {
         ArgumentNullException.ThrowIfNull(slug);
-        return ApplyDetails(title, slug, type, body, excerpt, coverImage, updatedAtUtc, raiseUpdatedEvent: true);
+        return ApplyDetails(title, slug, type, body, excerpt, coverImage, updatedAtUtc, raiseUpdatedEvent: true, editorDocument);
+    }
+
+    public bool MarkAutosaved(DateTime utcNow)
+    {
+        LastAutosavedAtUtc = utcNow;
+        return true;
     }
 
     public ContentWorkflowTransition SubmitForReview(Guid actorUserId, DateTime utc)
@@ -262,7 +284,8 @@ public class Content : AggregateRoot<Guid>
             snapshot.Excerpt,
             snapshot.CoverImage,
             updatedAtUtc,
-            raiseUpdatedEvent: false);
+            raiseUpdatedEvent: false,
+            snapshot.ToEditorDocument());
 
         SeoMetadata = seo;
         UpdatedAt = updatedAtUtc;
@@ -283,7 +306,8 @@ public class Content : AggregateRoot<Guid>
         string? excerpt,
         string? coverImage,
         DateTime timestampUtc,
-        bool raiseUpdatedEvent)
+        bool raiseUpdatedEvent,
+        ArticleEditorDocument? editorDocument = null)
     {
         if (string.IsNullOrWhiteSpace(title) || title.Length > 300)
         {
@@ -299,6 +323,7 @@ public class Content : AggregateRoot<Guid>
         var normalizedCoverImage = NormalizeCoverImage(coverImage);
         var normalizedTitle = title.Trim();
         var normalizedBody = body.Trim();
+        var normalizedDocument = NormalizeEditorDocument(editorDocument);
 
         var changed =
             !string.Equals(Title, normalizedTitle, StringComparison.Ordinal)
@@ -307,7 +332,8 @@ public class Content : AggregateRoot<Guid>
             || Type != type
             || !string.Equals(Body, normalizedBody, StringComparison.Ordinal)
             || !string.Equals(Excerpt, normalizedExcerpt, StringComparison.Ordinal)
-            || !string.Equals(CoverImage, normalizedCoverImage, StringComparison.Ordinal);
+            || !string.Equals(CoverImage, normalizedCoverImage, StringComparison.Ordinal)
+            || !EditorDocumentEquals(normalizedDocument);
 
         Title = normalizedTitle;
         Slug = slug;
@@ -315,6 +341,7 @@ public class Content : AggregateRoot<Guid>
         Body = normalizedBody;
         Excerpt = normalizedExcerpt;
         CoverImage = normalizedCoverImage;
+        ApplyEditorDocument(normalizedDocument);
 
         if (!changed)
         {
@@ -330,6 +357,95 @@ public class Content : AggregateRoot<Guid>
         }
 
         return true;
+    }
+
+    private bool EditorDocumentEquals(ArticleEditorDocument? document)
+    {
+        if (document is null)
+        {
+            return true;
+        }
+
+        return string.Equals(ContentJson, document.ContentJson, StringComparison.Ordinal)
+            && string.Equals(ContentHtml, document.ContentHtml, StringComparison.Ordinal)
+            && string.Equals(ContentFormat, document.ContentFormat, StringComparison.Ordinal)
+            && string.Equals(EditorVersion, document.EditorVersion, StringComparison.Ordinal)
+            && WordCount == document.WordCount
+            && ReadingTimeMinutes == document.ReadingTimeMinutes;
+    }
+
+    private void ApplyEditorDocument(ArticleEditorDocument? document)
+    {
+        if (document is null)
+        {
+            return;
+        }
+
+        ContentJson = document.ContentJson;
+        ContentHtml = document.ContentHtml;
+        ContentFormat = document.ContentFormat;
+        EditorVersion = document.EditorVersion;
+        WordCount = document.WordCount;
+        ReadingTimeMinutes = document.ReadingTimeMinutes;
+    }
+
+    private static ArticleEditorDocument? NormalizeEditorDocument(ArticleEditorDocument? document)
+    {
+        if (document is null)
+        {
+            return null;
+        }
+
+        var format = string.IsNullOrWhiteSpace(document.ContentFormat)
+            ? null
+            : document.ContentFormat.Trim().ToLowerInvariant();
+        if (format is not null && format.Length > ArticleEditorLimits.MaxContentFormatLength)
+        {
+            throw new DomainException("فرمت محتوا معتبر نیست.");
+        }
+
+        if (format is not null
+            && format != ArticleEditorLimits.MarkdownFormat
+            && format != ArticleEditorLimits.BlocksFormat)
+        {
+            throw new DomainException("فرمت محتوا معتبر نیست.");
+        }
+
+        var version = string.IsNullOrWhiteSpace(document.EditorVersion)
+            ? null
+            : document.EditorVersion.Trim();
+        if (version is not null && version.Length > ArticleEditorLimits.MaxEditorVersionLength)
+        {
+            throw new DomainException("نسخه ویرایشگر معتبر نیست.");
+        }
+
+        if (document.ContentJson is { Length: > ArticleEditorLimits.MaxContentJsonLength })
+        {
+            throw new DomainException("ساختار بلوکی محتوا بیش از حد مجاز است.");
+        }
+
+        if (document.ContentHtml is { Length: > ArticleEditorLimits.MaxContentHtmlLength })
+        {
+            throw new DomainException("خروجی HTML محتوا بیش از حد مجاز است.");
+        }
+
+        if (document.WordCount is < 0)
+        {
+            throw new DomainException("تعداد کلمات معتبر نیست.");
+        }
+
+        if (document.ReadingTimeMinutes is < 0 or > ArticleEditorLimits.MaxReadingTimeMinutes)
+        {
+            throw new DomainException("زمان مطالعه معتبر نیست.");
+        }
+
+        return document with
+        {
+            ContentFormat = format,
+            EditorVersion = version,
+            ContentJson = string.IsNullOrWhiteSpace(document.ContentJson) ? null : document.ContentJson,
+            ContentHtml = string.IsNullOrWhiteSpace(document.ContentHtml) ? null : document.ContentHtml,
+        };
     }
 
     private static string NormalizeExcerpt(string? excerpt)

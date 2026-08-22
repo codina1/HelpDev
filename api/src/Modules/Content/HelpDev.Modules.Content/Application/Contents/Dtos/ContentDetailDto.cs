@@ -10,4 +10,8 @@ public sealed record ContentDetailDto(
     string Status,
     int Views,
     int Saves,
-    DateTime CreatedAt);
+    DateTime CreatedAt,
+    string? ContentHtml = null,
+    string? ContentFormat = null,
+    int? WordCount = null,
+    int? ReadingTimeMinutes = null);

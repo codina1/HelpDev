@@ -13,4 +13,12 @@ public sealed class UpdateContentRequest
     public string? Excerpt { get; set; }
 
     public string? CoverImage { get; set; }
+
+    public string? ContentJson { get; set; }
+
+    public string? ContentFormat { get; set; }
+
+    public string? EditorVersion { get; set; }
+
+    public bool Autosave { get; set; }
 }

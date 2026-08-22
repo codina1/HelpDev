@@ -141,13 +141,13 @@ describe("Sprint 47A — workspace rendering", () => {
     unmount();
   });
 
-  it("keeps article editor on the type-locked Content Studio", () => {
+  it("uses the article block editor for article creation", () => {
     const source = readFileSync(
       join(process.cwd(), "src/components/admin/content/workspaces/article/article-editor.tsx"),
       "utf8",
     );
-    expect(source).toContain('createType="Article"');
-    expect(source).toContain("ContentStudio");
+    expect(source).toContain("ArticleBlockEditor");
+    expect(source).not.toContain("ContentStudio");
   });
 
   it("keeps prompt workspace as Prompt Lab bridge", () => {

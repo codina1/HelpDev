@@ -132,16 +132,11 @@ describe("Detail panel never exposes a storage key/filesystem path", () => {
 });
 
 describe("Media module guardrails", () => {
-  it("has no delete endpoint, capability or UI action anywhere in the module", () => {
-    const offenders: string[] = [];
-    for (const dir of MEDIA_DIRS) {
-      for (const file of collect(dir)) {
-        const text = readFileSync(file, "utf8");
-        if (/method:\s*["']DELETE["']/.test(text)) offenders.push(`${file} -> DELETE verb`);
-        if (/deleteMediaAsset/i.test(text)) offenders.push(`${file} -> deleteMediaAsset`);
-      }
-    }
-    expect(offenders, offenders.join("\n")).toHaveLength(0);
+  it("requires confirmation before delete in the detail panel", () => {
+    const detail = readFileSync(DETAIL_PANEL_FILE, "utf8");
+    expect(detail).toContain("confirmDelete");
+    expect(detail).toContain("تأیید حذف");
+    expect(detail).toContain("useDeleteMediaAsset");
   });
 
   it("never persists file bytes or base64 into localStorage", () => {

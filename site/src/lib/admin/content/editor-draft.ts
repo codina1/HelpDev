@@ -16,6 +16,8 @@ export type EditorDraft = {
   body: string;
   excerpt: string;
   timestamp: number;
+  /** Optional TipTap JSON for the article block editor. Absent on older drafts. */
+  contentJson?: string;
 };
 
 function isBrowser(): boolean {
@@ -25,13 +27,16 @@ function isBrowser(): boolean {
 function isValidDraft(value: unknown): value is EditorDraft {
   if (typeof value !== "object" || value === null) return false;
   const draft = value as Record<string, unknown>;
+  const contentJsonOk =
+    draft.contentJson === undefined || typeof draft.contentJson === "string";
   return (
     typeof draft.contentId === "string" &&
     typeof draft.title === "string" &&
     typeof draft.body === "string" &&
     typeof draft.excerpt === "string" &&
     typeof draft.timestamp === "number" &&
-    Number.isFinite(draft.timestamp)
+    Number.isFinite(draft.timestamp) &&
+    contentJsonOk
   );
 }
 
@@ -46,6 +51,9 @@ export function saveDraft(draft: Omit<EditorDraft, "timestamp">): void {
       excerpt: draft.excerpt,
       timestamp: Date.now(),
     };
+    if (typeof draft.contentJson === "string") {
+      payload.contentJson = draft.contentJson;
+    }
     window.localStorage.setItem(CONTENT_DRAFT_STORAGE_KEY, JSON.stringify(payload));
   } catch {
     // Ignore write failures (private mode / quota exceeded).

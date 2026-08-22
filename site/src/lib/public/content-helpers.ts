@@ -51,14 +51,50 @@ export function extractTocFromBody(body: string): TocHeading[] {
     const level = match[1].length === 2 ? 2 : 3;
     const text = match[2].replace(/[#*`_]/g, "").trim();
     if (!text) continue;
-    let id = slugifyHeading(text);
-    const count = (seen.get(id) ?? 0) + 1;
-    seen.set(id, count);
-    if (count > 1) id = `${id}-${count}`;
-    headings.push({ id, text, level });
+    headings.push(nextHeading(text, level, seen));
   }
 
   return headings;
+}
+
+/** Extracts h2/h3 headings from server-compiled article HTML. */
+export function extractTocFromHtml(html: string): TocHeading[] {
+  const headings: TocHeading[] = [];
+  const seen = new Map<string, number>();
+  const matches = html.matchAll(/<h([23])\b([^>]*)>([\s\S]*?)<\/h\1>/gi);
+  for (const match of matches) {
+    const level = Number(match[1]) === 3 ? 3 : 2;
+    const attrId = /\bid="([^"]+)"/i.exec(match[2] ?? "")?.[1];
+    const text = stripTags(match[3] ?? "").trim();
+    if (!text) continue;
+    const heading = nextHeading(text, level, seen);
+    headings.push({ ...heading, id: attrId || heading.id });
+  }
+  return headings;
+}
+
+export function isBlockArticle(format: string | null | undefined, html: string | null | undefined): boolean {
+  return (format ?? "").toLowerCase() === "blocks" && Boolean(html?.trim());
+}
+
+/** Extra client-side defense on server-compiled HTML (scripts/handlers stripped). */
+export function sanitizeArticleHtml(html: string): string {
+  return html
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "")
+    .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+    .replace(/javascript:/gi, "");
+}
+
+function nextHeading(text: string, level: 2 | 3, seen: Map<string, number>): TocHeading {
+  let id = slugifyHeading(text);
+  const count = (seen.get(id) ?? 0) + 1;
+  seen.set(id, count);
+  if (count > 1) id = `${id}-${count}`;
+  return { id, text, level };
+}
+
+function stripTags(value: string): string {
+  return value.replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").trim();
 }
 
 function slugifyHeading(text: string): string {

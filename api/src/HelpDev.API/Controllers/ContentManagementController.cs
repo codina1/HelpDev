@@ -150,6 +150,16 @@ public sealed class ContentManagementController : ControllerBase
         return Ok(content);
     }
 
+    [HttpPost("preview")]
+    [OpenApiOperationId("ContentManagement_PreviewArticle")]
+    [OpenApiSummary("Preview article blocks", "Compiles TipTap JSON into sanitized HTML without persisting.")]
+    [ProducesResponseType(typeof(PreviewArticleDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
+    public ActionResult<PreviewArticleDto> PreviewArticle([FromBody] PreviewArticleRequest request)
+    {
+        return Ok(_contentService.Preview(request));
+    }
+
     [HttpPost("{id:guid}/submit-review")]
     [OpenApiOperationId("ContentManagement_SubmitReview")]
     [OpenApiSummary("Submit for review", "Moves content from Draft to ReviewPending.")]

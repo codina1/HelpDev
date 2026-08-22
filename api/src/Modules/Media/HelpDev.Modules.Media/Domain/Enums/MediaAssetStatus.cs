@@ -4,4 +4,5 @@ namespace HelpDev.Modules.Media.Domain.Enums;
 public enum MediaAssetStatus
 {
     Active = 0,
+    Archived = 1,
 }

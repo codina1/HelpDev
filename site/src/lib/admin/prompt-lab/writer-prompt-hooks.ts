@@ -161,7 +161,7 @@ export function useWriterPromptStats(): WriterPromptStatsState {
     return () => controllerRef.current?.abort();
   }, [load]);
 
-  return { stats, loading, error, reload };
+  return { stats, loading, error, reload: load };
 }
 
 export type WriterPromptCatalogState = {

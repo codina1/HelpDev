@@ -137,5 +137,11 @@ public sealed class ContentRevisionQueries : IContentRevisionQueries
                 snapshot.SeoMetadata.SeoDescription,
                 snapshot.SeoMetadata.CanonicalUrl,
                 snapshot.SeoMetadata.OgImage,
-                snapshot.SeoMetadata.FocusKeyword));
+                snapshot.SeoMetadata.FocusKeyword),
+            snapshot.ContentJson,
+            snapshot.ContentHtml,
+            snapshot.ContentFormat,
+            snapshot.EditorVersion,
+            snapshot.WordCount,
+            snapshot.ReadingTimeMinutes);
 }

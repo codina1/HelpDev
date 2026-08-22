@@ -5,8 +5,9 @@
  * - `POST /admin/media` (multipart/form-data) — upload a single image.
  * - `GET /admin/media` — paged, searchable list (`MediaAssetListItemDto`).
  * - `GET /admin/media/{id}` — full detail (`MediaAssetDto`).
- *
- * There is NO delete endpoint on the backend — never add delete UI/state here.
+ * - `GET /admin/media/config` — upload limits.
+ * - `PUT /admin/media/{id}` — update alt/caption.
+ * - `DELETE /admin/media/{id}` — archive and remove stored bytes (UI must confirm).
  */
 
 export const ADMIN_MEDIA_PAGE_SIZE_DEFAULT = 24;
@@ -123,6 +124,20 @@ export type UploadMediaPayload = {
   file: File;
   altText: string | null;
   caption: string | null;
+};
+
+export type UpdateMediaPayload = {
+  altText: string | null;
+  caption: string | null;
+};
+
+export type MediaLibraryConfigRawDto = {
+  maxUploadBytes: number;
+  maxWidth: number;
+  maxHeight: number;
+  allowedContentTypes: string[];
+  maxAltTextLength: number;
+  maxCaptionLength: number;
 };
 
 /**

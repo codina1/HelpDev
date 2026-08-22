@@ -4,14 +4,21 @@ import { GlassCard, PremiumBadge, PublicContainer } from "@/components/ui/public
 import type { ContentDetailDto } from "@/lib/api/content";
 import { formatDateFa, labelForContentType, shortAuthorId } from "@/lib/admin/content/content-mappers";
 import { estimateReadingLabel, softDifficulty } from "@/lib/public/display-meta";
-import { extractTocFromBody } from "@/lib/public/content-helpers";
+import { extractTocFromBody, extractTocFromHtml, isBlockArticle } from "@/lib/public/content-helpers";
+import { ArticleHtmlBody } from "@/components/public/articles/article-html-body";
 
 type ArticleDetailViewProps = {
   article: ContentDetailDto;
 };
 
 export function ArticleDetailView({ article }: ArticleDetailViewProps) {
-  const toc = extractTocFromBody(article.body ?? "");
+  const usesBlocks = isBlockArticle(article.contentFormat, article.contentHtml);
+  const toc = usesBlocks
+    ? extractTocFromHtml(article.contentHtml ?? "")
+    : extractTocFromBody(article.body ?? "");
+  const readingLabel = article.readingTimeMinutes
+    ? `${article.readingTimeMinutes.toLocaleString("fa-IR")} دقیقه مطالعه`
+    : estimateReadingLabel(article.title);
 
   return (
     <PublicContainer className="py-8 lg:py-12">
@@ -23,7 +30,7 @@ export function ArticleDetailView({ article }: ArticleDetailViewProps) {
               <div className="flex flex-wrap gap-2">
                 <PremiumBadge variant="primary">{labelForContentType(article.type)}</PremiumBadge>
                 <PremiumBadge variant="outline">{softDifficulty(article.type)}</PremiumBadge>
-                <PremiumBadge variant="muted">{estimateReadingLabel(article.title)}</PremiumBadge>
+                <PremiumBadge variant="muted">{readingLabel}</PremiumBadge>
               </div>
               <h1 className="text-2xl font-extrabold leading-10 text-[color:var(--pub-fg)] sm:text-3xl lg:text-4xl">
                 {article.title}
@@ -50,7 +57,11 @@ export function ArticleDetailView({ article }: ArticleDetailViewProps) {
           </div>
 
           <GlassCard elevate={false} className="p-5 sm:p-7">
-            <ReadingBody body={article.body ?? ""} headings={toc} />
+            {usesBlocks ? (
+              <ArticleHtmlBody html={article.contentHtml ?? ""} />
+            ) : (
+              <ReadingBody body={article.body ?? ""} headings={toc} />
+            )}
           </GlassCard>
         </div>
 

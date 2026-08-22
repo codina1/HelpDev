@@ -32,7 +32,7 @@ function parseStatus(raw: string | null): WriterPromptStatus | "all" {
 }
 
 export function parseWriterPromptListQuery(
-  params: URLSearchParams | ReadonlyURLSearchParams | null | undefined,
+  params: URLSearchParams | { get(name: string): string | null } | null | undefined,
 ): WriterPromptListQuery {
   if (!params) return { ...DEFAULT_WRITER_PROMPT_LIST_QUERY };
 
@@ -57,7 +57,7 @@ export function serializeWriterPromptListQuery(query: WriterPromptListQuery): UR
 
 export function buildWriterPromptListHref(
   query: WriterPromptListQuery,
-  basePath = ADMIN_ROUTES.promptLab,
+  basePath: string = ADMIN_ROUTES.promptLab,
 ): string {
   const params = serializeWriterPromptListQuery(query);
   const qs = params.toString();

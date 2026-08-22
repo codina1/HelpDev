@@ -186,6 +186,9 @@ public sealed class AiResearchServiceTests
 
         public Task<SeoAuditReportDto> AnalyzeSeoAsync(ContentManagementActor actor, Guid id, CancellationToken cancellationToken = default) =>
             throw new NotSupportedException();
+
+        public PreviewArticleDto Preview(PreviewArticleRequest request) =>
+            throw new NotSupportedException();
     }
 
     private sealed class UnusedContentRepository : IContentRepository

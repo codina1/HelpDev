@@ -1,8 +1,8 @@
 "use client";
 
-import { ContentStudio } from "@/components/admin/content/editor/content-studio";
+import { ArticleBlockEditor } from "@/components/admin/content/block-editor/article-block-editor";
 
-/** Article creation uses the same full Content Studio as article editing. */
+/** Article creation uses the Gutenberg-style TipTap block editor. */
 export function ArticleEditor() {
-  return <ContentStudio createType="Article" />;
+  return <ArticleBlockEditor />;
 }

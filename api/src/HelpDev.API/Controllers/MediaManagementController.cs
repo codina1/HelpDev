@@ -16,7 +16,6 @@ namespace HelpDev.API.Controllers;
 
 /// <summary>
 /// Admin Media Library. Routed under /api/v1/admin/media.
-/// No delete endpoint in v1.
 /// </summary>
 [ApiController]
 [ApiVersion("1.0")]
@@ -78,6 +77,57 @@ public sealed class MediaManagementController : ControllerBase
 
         var asset = await _mediaService.GetManagedByIdAsync(actor, id, cancellationToken);
         return Ok(asset);
+    }
+
+    [HttpGet("config")]
+    [OpenApiOperationId("MediaManagement_GetConfig")]
+    [OpenApiSummary("Media library limits", "Returns upload limits used by the editor and media picker.")]
+    [ProducesResponseType(typeof(MediaLibraryConfigDto), StatusCodes.Status200OK)]
+    public ActionResult<MediaLibraryConfigDto> GetConfig()
+    {
+        return Ok(new MediaLibraryConfigDto(
+            _options.MaxUploadBytes,
+            _options.MaxWidth,
+            _options.MaxHeight,
+            _options.AllowedContentTypes,
+            _options.MaxAltTextLength,
+            _options.MaxCaptionLength));
+    }
+
+    [HttpPut("{id:guid}")]
+    [OpenApiOperationId("MediaManagement_UpdateMetadata")]
+    [OpenApiSummary("Update media metadata", "Updates alt text and caption for an owned media asset.")]
+    [ProducesResponseType(typeof(MediaAssetDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<MediaAssetDto>> UpdateMetadata(
+        Guid id,
+        [FromBody] UpdateMediaAssetRequest request,
+        CancellationToken cancellationToken)
+    {
+        if (!TryResolveActor(out var actor, out var unauthorized))
+        {
+            return unauthorized;
+        }
+
+        var asset = await _mediaService.UpdateMetadataAsync(actor, id, request, cancellationToken);
+        return Ok(asset);
+    }
+
+    [HttpDelete("{id:guid}")]
+    [OpenApiOperationId("MediaManagement_Delete")]
+    [OpenApiSummary("Delete media asset", "Archives the asset and removes stored bytes. Requires confirmation in the UI.")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
+    {
+        if (!TryResolveActor(out var actor, out var unauthorized))
+        {
+            return unauthorized;
+        }
+
+        await _mediaService.DeleteAsync(actor, id, cancellationToken);
+        return NoContent();
     }
 
     [HttpPost]

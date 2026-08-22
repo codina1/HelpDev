@@ -6,8 +6,17 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 describe("content creation workspaces", () => {
+  it("uses the article block editor for new articles", () => {
+    const source = readFileSync(
+      join(process.cwd(), "src/components/admin/content/workspaces/article/article-editor.tsx"),
+      "utf8",
+    );
+    expect(source).toContain("ArticleBlockEditor");
+    expect(source).not.toContain("ContentStudio");
+    expect(source).not.toContain("WorkspaceCreateEditor");
+  });
+
   it.each([
-    ["article/article-editor.tsx", "Article"],
     ["news/news-editor.tsx", "News"],
     ["tool/tool-editor.tsx", "Tool"],
     ["roadmap/roadmap-editor.tsx", "Roadmap"],

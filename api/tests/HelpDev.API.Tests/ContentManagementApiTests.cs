@@ -195,6 +195,20 @@ public sealed class ContentManagementApiTests
     }
 
     [Fact]
+    public void Preview_compiles_article_json_without_persisting()
+    {
+        var service = new FakeContentService();
+        var controller = CreateManagementController(service, new FakeAdminContentQueries());
+        ControllerTestHelper.SetUser(controller, Guid.NewGuid(), AppRoles.Writer);
+
+        var result = controller.PreviewArticle(new PreviewArticleRequest("""{"type":"doc","content":[]}""", "body"));
+
+        Assert.IsType<OkObjectResult>(result.Result);
+        Assert.Equal(nameof(IContentService.Preview), service.LastOperation);
+        Assert.Null(service.LastContentId);
+    }
+
+    [Fact]
     public async Task Publish_forwards_route_id_and_admin_actor()
     {
         var workflow = new FakeContentWorkflowService();

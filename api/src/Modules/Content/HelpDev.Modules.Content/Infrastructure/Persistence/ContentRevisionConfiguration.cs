@@ -59,6 +59,12 @@ public sealed class ContentRevisionConfiguration : IEntityTypeConfiguration<Cont
             Excerpt = snapshot.Excerpt,
             CoverImage = snapshot.CoverImage,
             ContentType = snapshot.ContentType,
+            ContentJson = snapshot.ContentJson,
+            ContentHtml = snapshot.ContentHtml,
+            ContentFormat = snapshot.ContentFormat,
+            EditorVersion = snapshot.EditorVersion,
+            WordCount = snapshot.WordCount,
+            ReadingTimeMinutes = snapshot.ReadingTimeMinutes,
             SeoMetadata = new SeoPayload
             {
                 SeoTitle = snapshot.SeoMetadata.SeoTitle,
@@ -91,7 +97,13 @@ public sealed class ContentRevisionConfiguration : IEntityTypeConfiguration<Cont
             payload.Excerpt,
             payload.CoverImage,
             payload.ContentType,
-            seo);
+            seo,
+            payload.ContentJson,
+            payload.ContentHtml,
+            payload.ContentFormat,
+            payload.EditorVersion,
+            payload.WordCount,
+            payload.ReadingTimeMinutes);
     }
 
     private sealed class SnapshotPayload
@@ -107,6 +119,18 @@ public sealed class ContentRevisionConfiguration : IEntityTypeConfiguration<Cont
         public string? CoverImage { get; set; }
 
         public string ContentType { get; set; } = string.Empty;
+
+        public string? ContentJson { get; set; }
+
+        public string? ContentHtml { get; set; }
+
+        public string? ContentFormat { get; set; }
+
+        public string? EditorVersion { get; set; }
+
+        public int? WordCount { get; set; }
+
+        public int? ReadingTimeMinutes { get; set; }
 
         public SeoPayload? SeoMetadata { get; set; }
     }

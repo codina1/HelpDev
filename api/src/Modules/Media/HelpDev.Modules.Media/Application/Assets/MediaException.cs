@@ -29,4 +29,5 @@ public static class MediaErrorCodes
     public const string UnsupportedType = "media_unsupported_type";
     public const string PayloadTooLarge = "media_payload_too_large";
     public const string StorageFailed = "media_storage_failed";
+    public const string Forbidden = "media_forbidden";
 }

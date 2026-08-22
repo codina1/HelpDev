@@ -97,7 +97,7 @@ public sealed class DeploymentCommandsTests
             Assert.Equal("net8.0", root.GetProperty("targetFramework").GetString());
             Assert.Equal("Release", root.GetProperty("configuration").GetString());
             Assert.Equal("v1", root.GetProperty("openApiVersion").GetString());
-            Assert.Equal(24, root.GetProperty("migrationCount").GetInt32());
+            Assert.Equal(27, root.GetProperty("migrationCount").GetInt32());
             Assert.Equal(4321, root.GetProperty("testCount").GetInt32());
 
             var rawText = await File.ReadAllTextAsync(outputPath);

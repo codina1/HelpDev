@@ -83,3 +83,18 @@ public sealed class UploadMediaAssetRequest
 
     public string? Caption { get; init; }
 }
+
+public sealed class UpdateMediaAssetRequest
+{
+    public string? AltText { get; init; }
+
+    public string? Caption { get; init; }
+}
+
+public sealed record MediaLibraryConfigDto(
+    long MaxUploadBytes,
+    int MaxWidth,
+    int MaxHeight,
+    IReadOnlyList<string> AllowedContentTypes,
+    int MaxAltTextLength,
+    int MaxCaptionLength);

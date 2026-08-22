@@ -6,6 +6,7 @@ import {
   mapWriterPromptPagedResult,
   validateWriterPromptForm,
 } from "./writer-prompt-mappers";
+import type { WriterPromptListItemDto } from "@/lib/api/promptlab-writer";
 
 describe("writer-prompt-mappers", () => {
   it("maps Persian status labels", () => {
@@ -16,7 +17,7 @@ describe("writer-prompt-mappers", () => {
   });
 
   it("maps list items and paged results", () => {
-    const item = mapWriterPromptListItem({
+    const raw: WriterPromptListItemDto = {
       id: "a",
       title: "T",
       slug: "t",
@@ -31,7 +32,8 @@ describe("writer-prompt-mappers", () => {
       createdAt: "2026-07-01T00:00:00Z",
       updatedAt: "2026-07-02T00:00:00Z",
       publishedAt: null,
-    });
+    };
+    const item = mapWriterPromptListItem(raw);
 
     expect(item.statusLabel).toBe("در انتظار بررسی");
     expect(item.copyCount).toBe(7);
@@ -40,7 +42,7 @@ describe("writer-prompt-mappers", () => {
       page: 1,
       pageSize: 20,
       total: 41,
-      items: [item],
+      items: [raw],
     });
 
     expect(page.totalCount).toBe(41);

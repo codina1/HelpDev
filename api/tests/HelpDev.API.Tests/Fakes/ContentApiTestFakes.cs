@@ -102,6 +102,13 @@ internal sealed class FakeContentService : IContentService
         return Task.FromResult(ReportToReturn);
     }
 
+    public PreviewArticleDto Preview(PreviewArticleRequest request)
+    {
+        ThrowIfNeeded();
+        LastOperation = nameof(Preview);
+        return new PreviewArticleDto("<p>ok</p>", "ok", 1, 1, []);
+    }
+
     private void ThrowIfNeeded()
     {
         if (ExceptionToThrow is not null)

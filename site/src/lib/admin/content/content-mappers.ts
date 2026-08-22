@@ -401,6 +401,10 @@ export function mapContentDetail(dto: ContentDetailRawDto): ContentDetail {
     views: dto.views,
     saves: dto.saves,
     createdAt: dto.createdAt,
+    contentHtml: dto.contentHtml ?? null,
+    contentFormat: dto.contentFormat ?? null,
+    wordCount: dto.wordCount ?? null,
+    readingTimeMinutes: dto.readingTimeMinutes ?? null,
   };
 }
 
@@ -425,6 +429,13 @@ export function mapAdminContentDetail(dto: AdminContentDetailRawDto): AdminConte
     updatedAtUtc: dto.updatedAtUtc,
     publishedAtUtc: dto.publishedAtUtc,
     seo: mapSeoForm(dto),
+    contentJson: dto.contentJson ?? null,
+    contentHtml: dto.contentHtml ?? null,
+    contentFormat: dto.contentFormat ?? null,
+    editorVersion: dto.editorVersion ?? null,
+    wordCount: dto.wordCount ?? null,
+    readingTimeMinutes: dto.readingTimeMinutes ?? null,
+    lastAutosavedAtUtc: dto.lastAutosavedAtUtc ?? null,
   };
 }
 

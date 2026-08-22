@@ -4,7 +4,7 @@ namespace HelpDev.Testing.PostgreSQL.Infrastructure;
 
 public static class PostgreSqlDatabaseHelper
 {
-    public const int ExpectedMigrationCount = 25;
+    public const int ExpectedMigrationCount = 27;
 
     private static readonly HashSet<(string SourceTable, string TargetTable)> AllowedCrossModuleForeignKeys =
     [

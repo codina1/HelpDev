@@ -47,6 +47,39 @@ public sealed class MediaAsset : AggregateRoot<Guid>
 
     public MediaAssetStatus Status { get; private set; } = MediaAssetStatus.Active;
 
+    public bool UpdateMetadata(
+        string? altText,
+        string? caption,
+        DateTime updatedAtUtc,
+        int maxAltTextLength = 200,
+        int maxCaptionLength = 500)
+    {
+        var normalizedAlt = NormalizeOptional(altText, maxAltTextLength, "متن جایگزین");
+        var normalizedCaption = NormalizeOptional(caption, maxCaptionLength, "توضیح");
+        if (string.Equals(AltText, normalizedAlt, StringComparison.Ordinal)
+            && string.Equals(Caption, normalizedCaption, StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        AltText = normalizedAlt;
+        Caption = normalizedCaption;
+        UpdatedAtUtc = updatedAtUtc;
+        return true;
+    }
+
+    public bool Archive(DateTime updatedAtUtc)
+    {
+        if (Status == MediaAssetStatus.Archived)
+        {
+            return false;
+        }
+
+        Status = MediaAssetStatus.Archived;
+        UpdatedAtUtc = updatedAtUtc;
+        return true;
+    }
+
     public static MediaAsset Create(
         Guid id,
         MediaFileName originalFileName,

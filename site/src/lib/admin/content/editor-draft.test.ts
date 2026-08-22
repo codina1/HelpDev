@@ -21,6 +21,18 @@ describe("editor draft recovery", () => {
     expect(typeof draft?.timestamp).toBe("number");
   });
 
+  it("recovers optional block JSON without wiping a legacy draft", () => {
+    saveDraft({
+      contentId: "c1",
+      title: "T",
+      body: "B",
+      excerpt: "E",
+      contentJson: '{"type":"doc","content":[]}',
+    });
+    const draft = loadDraft("c1");
+    expect(draft?.contentJson).toContain('"type":"doc"');
+  });
+
   it("does not return a draft for a different content id", () => {
     saveDraft({ contentId: "c1", title: "T", body: "B", excerpt: "E" });
     expect(loadDraft("other")).toBeNull();

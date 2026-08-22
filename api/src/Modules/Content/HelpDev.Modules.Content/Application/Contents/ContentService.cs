@@ -1,9 +1,11 @@
 using HelpDev.Modules.Content.Application.Common;
+using HelpDev.Modules.Content.Application.Contents.BlockEditor;
 using HelpDev.Modules.Content.Application.Contents.Dtos;
 using HelpDev.Modules.Content.Application.Contents.Revisions;
 using HelpDev.Modules.Content.Application.Contents.Workflow;
 using HelpDev.Modules.Content.Application.Persistence;
 using HelpDev.Modules.Content.Application.SeoAnalysis;
+using HelpDev.Modules.Content.Domain.Articles;
 using HelpDev.Modules.Content.Domain.Enums;
 using HelpDev.Modules.Content.Domain.ValueObjects;
 using HelpDev.SharedApplication.Abstractions.Persistence;
@@ -158,19 +160,32 @@ public sealed class ContentService : IContentService
 
         try
         {
+            var compiled = CompileEditorDocument(request);
             var changed = content.UpdateDetails(
                 request.Title,
                 slug,
                 type,
-                request.Body,
+                compiled?.PlainText ?? request.Body,
                 request.Excerpt,
                 request.CoverImage,
-                _clock.UtcNow);
+                _clock.UtcNow,
+                compiled?.ToDocument());
 
             if (changed)
             {
-                await _revisionService.AppendRevisionAsync(content, actor.UserId, changeReason: null, cancellationToken)
-                    .ConfigureAwait(false);
+                if (request.Autosave)
+                {
+                    content.MarkAutosaved(_clock.UtcNow);
+                }
+                else
+                {
+                    await _revisionService.AppendRevisionAsync(content, actor.UserId, changeReason: null, cancellationToken)
+                        .ConfigureAwait(false);
+                }
+            }
+            else if (request.Autosave)
+            {
+                content.MarkAutosaved(_clock.UtcNow);
             }
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -241,6 +256,25 @@ public sealed class ContentService : IContentService
         return detail;
     }
 
+    public PreviewArticleDto Preview(PreviewArticleRequest request)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        try
+        {
+            var compiled = ArticleDocumentCompiler.Compile(request.ContentJson);
+            return new PreviewArticleDto(
+                compiled.ContentHtml,
+                compiled.PlainText,
+                compiled.WordCount,
+                compiled.ReadingTimeMinutes,
+                compiled.Headings.Select(heading => new PreviewHeadingDto(heading.Id, heading.Level, heading.Text)).ToList());
+        }
+        catch (DomainException ex)
+        {
+            throw new ContentException(ex.Message, ContentErrorCodes.Validation, ex);
+        }
+    }
+
     public async Task<SeoAuditReportDto> AnalyzeSeoAsync(
         ContentManagementActor actor,
         Guid id,
@@ -308,27 +342,7 @@ public sealed class ContentService : IContentService
     }
 
     private static AdminContentDetailDto MapToAdminDetail(ContentEntity content) =>
-        new(
-            content.Id,
-            content.Title,
-            content.Slug.Value,
-            content.Body,
-            content.Excerpt,
-            content.CoverImage,
-            content.Type.ToString(),
-            content.Status.ToString(),
-            content.AuthorId,
-            content.Views,
-            content.Saves,
-            content.CreatedAt,
-            content.UpdatedAt,
-            content.PublishedAtUtc,
-            new SeoMetadataDto(
-                content.SeoMetadata.SeoTitle,
-                content.SeoMetadata.SeoDescription,
-                content.SeoMetadata.CanonicalUrl,
-                content.SeoMetadata.OgImage,
-                content.SeoMetadata.FocusKeyword));
+        ContentDtoMapper.ToAdminDetail(content);
 
     private static ContentListItemDto MapToListItem(ContentEntity content) =>
         new(
@@ -342,17 +356,35 @@ public sealed class ContentService : IContentService
             content.CreatedAt);
 
     private static ContentDetailDto MapToDetail(ContentEntity content) =>
-        new(
-            content.Id,
-            content.Title,
-            content.Slug.Value,
-            content.Body,
-            content.Type.ToString(),
-            content.AuthorId,
-            content.Status.ToString(),
-            content.Views,
-            content.Saves,
-            content.CreatedAt);
+        ContentDtoMapper.ToPublicDetail(content);
+
+    private static CompiledEditorState? CompileEditorDocument(UpdateContentRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.ContentJson)
+            && !string.Equals(request.ContentFormat, ArticleEditorLimits.BlocksFormat, StringComparison.OrdinalIgnoreCase))
+        {
+            return null;
+        }
+
+        var compiled = ArticleDocumentCompiler.Compile(request.ContentJson);
+        return new CompiledEditorState(
+            compiled,
+            request.EditorVersion ?? ArticleDocumentCompiler.EditorVersion);
+    }
+
+    private sealed record CompiledEditorState(CompiledArticleDocument Document, string EditorVersion)
+    {
+        public string PlainText => Document.PlainText;
+
+        public ArticleEditorDocument ToDocument() =>
+            new(
+                Document.ContentJson,
+                Document.ContentHtml,
+                ArticleEditorLimits.BlocksFormat,
+                EditorVersion,
+                Document.WordCount,
+                Document.ReadingTimeMinutes);
+    }
 
     private async Task TryIngestViewAsync(
         ContentEntity content,

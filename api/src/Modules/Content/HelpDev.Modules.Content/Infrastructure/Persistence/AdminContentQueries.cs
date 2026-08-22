@@ -153,6 +153,13 @@ public sealed class AdminContentQueries : IAdminContentQueries
             CanonicalUrl = content.SeoMetadata.CanonicalUrl,
             OgImage = content.SeoMetadata.OgImage,
             FocusKeyword = content.SeoMetadata.FocusKeyword,
+            ContentJson = content.ContentJson,
+            ContentHtml = content.ContentHtml,
+            ContentFormat = content.ContentFormat,
+            EditorVersion = content.EditorVersion,
+            WordCount = content.WordCount,
+            ReadingTimeMinutes = content.ReadingTimeMinutes,
+            LastAutosavedAtUtc = content.LastAutosavedAtUtc,
         });
 
     private static AdminContentDetailDto MapDetail(DetailRow row) =>
@@ -176,7 +183,14 @@ public sealed class AdminContentQueries : IAdminContentQueries
                 row.SeoDescription,
                 row.CanonicalUrl,
                 row.OgImage,
-                row.FocusKeyword));
+                row.FocusKeyword),
+            row.ContentJson,
+            row.ContentHtml,
+            row.ContentFormat,
+            row.EditorVersion,
+            row.WordCount,
+            row.ReadingTimeMinutes,
+            row.LastAutosavedAtUtc);
 
     private static ContentStatus ParseStatusOrThrow(string status)
     {
@@ -264,5 +278,19 @@ public sealed class AdminContentQueries : IAdminContentQueries
         public string? OgImage { get; init; }
 
         public string? FocusKeyword { get; init; }
+
+        public string? ContentJson { get; init; }
+
+        public string? ContentHtml { get; init; }
+
+        public string? ContentFormat { get; init; }
+
+        public string? EditorVersion { get; init; }
+
+        public int? WordCount { get; init; }
+
+        public int? ReadingTimeMinutes { get; init; }
+
+        public DateTime? LastAutosavedAtUtc { get; init; }
     }
 }

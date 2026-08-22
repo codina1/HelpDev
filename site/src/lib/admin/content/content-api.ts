@@ -13,6 +13,7 @@ import {
   updateContent as updateContentRequest,
   updateContentSeoMetadata as updateContentSeoMetadataRequest,
   updateNewsMetadata as updateNewsMetadataRequest,
+  previewArticle as previewArticleRequest,
   type AdminContentListOptions,
   type ContentAiAction,
   type ContentAiResultDto,
@@ -28,6 +29,7 @@ import type {
   ContentStats,
   CreateContentPayload,
   NewsMetadataRawDto,
+  PreviewArticleRawDto,
   SeoAuditReportRawDto,
   UpdateArticleMetadataPayload,
   UpdateContentPayload,
@@ -139,6 +141,16 @@ export async function updateContentItem(
 ): Promise<AdminContentDetailRawDto> {
   const detail = await updateContentRequest(token, id, payload, signal);
   return detail as unknown as AdminContentDetailRawDto;
+}
+
+/** POST /admin/content/preview — compile blocks without saving. */
+export async function previewArticleContent(
+  token: string,
+  payload: { contentJson?: string | null; body?: string | null },
+  signal?: AbortSignal,
+): Promise<PreviewArticleRawDto> {
+  const preview = await previewArticleRequest(token, payload, signal);
+  return preview as PreviewArticleRawDto;
 }
 
 // POST /admin/content/{id}/publish — Draft → Published (idempotent).

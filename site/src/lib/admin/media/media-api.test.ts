@@ -35,11 +35,13 @@ describe("media API adapter", () => {
     expect(content).not.toMatch(/["'`]\/api\/(?!v1)/);
   });
 
-  it("advertises the real backend capabilities and explicitly has no delete", () => {
+  it("advertises the real backend capabilities including update/delete/config", () => {
     expect(MEDIA_CAPABILITIES.upload).toBe(true);
     expect(MEDIA_CAPABILITIES.list).toBe(true);
     expect(MEDIA_CAPABILITIES.getById).toBe(true);
-    expect(MEDIA_CAPABILITIES.delete).toBe(false);
+    expect(MEDIA_CAPABILITIES.config).toBe(true);
+    expect(MEDIA_CAPABILITIES.update).toBe(true);
+    expect(MEDIA_CAPABILITIES.delete).toBe(true);
   });
 
   it("maps workspace query to API options and omits an empty search", () => {
@@ -81,14 +83,12 @@ describe("media resource endpoints target the real backend routes/verbs", () => 
     expect(source).not.toMatch(/Content-Type.*multipart/i);
   });
 
-  it("has no delete endpoint defined anywhere in the media source files", () => {
-    for (const dir of MEDIA_DIRS) {
-      for (const file of collect(dir)) {
-        const text = readFileSync(file, "utf8");
-        expect(text).not.toMatch(/method:\s*["']DELETE["']/);
-        expect(text).not.toMatch(/deleteMediaAsset/i);
-      }
-    }
+  it("defines delete, metadata update, and config endpoints", () => {
+    expect(source).toContain("deleteMediaAsset");
+    expect(source).toMatch(/method:\s*["']DELETE["']/);
+    expect(source).toContain("updateMediaAsset");
+    expect(source).toMatch(/method:\s*["']PUT["']/);
+    expect(source).toContain('path: "/admin/media/config"');
   });
 });
 
@@ -101,7 +101,7 @@ describe("shared client supports FormData without manually setting Content-Type"
   });
 });
 
-describe("guardrails: no storage key, no SVG, no delete, no AI/cloud SDK", () => {
+describe("guardrails: no storage key, no SVG, confirmed delete, no AI/cloud SDK", () => {
   it("never exposes a storage key or filesystem path field in Media types/UI", () => {
     const forbidden = [/storageKey/i, /filePath/i, /diskPath/i];
     const offenders: string[] = [];
