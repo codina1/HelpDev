@@ -6,22 +6,25 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const EDITOR = join(process.cwd(), "src/components/admin/content/block-editor/article-block-editor.tsx");
+const RICH = join(process.cwd(), "src/components/admin/content/block-editor/article-rich-text-editor.tsx");
 const EXTENSIONS = join(process.cwd(), "src/components/admin/content/block-editor/extensions.ts");
 const EDIT_VIEW = join(process.cwd(), "src/components/admin/content/editor/content-edit-view.tsx");
 
 describe("article block editor wiring", () => {
-  it("is RTL and uses TipTap", () => {
+  it("is RTL and uses the shared TipTap editor", () => {
     const source = readFileSync(EDITOR, "utf8");
-    expect(source).toContain('dir: "rtl"');
-    expect(source).toContain("useEditor");
+    const rich = readFileSync(RICH, "utf8");
+    expect(source).toContain("ArticleRichTextEditor");
     expect(source).toContain("autosave: true");
     expect(source).toContain("beforeunload");
     expect(source).toContain("saveDraft");
     expect(source).toContain("previewArticleContent");
     expect(source).toContain("MediaPickerDialog");
-    expect(source).toContain("handlePaste");
-    expect(source).toContain("handleDrop");
-    expect(source).toContain("SlashCommandMenu");
+    expect(rich).toContain('dir: "rtl"');
+    expect(rich).toContain("useEditor");
+    expect(rich).toContain("handlePaste");
+    expect(rich).toContain("handleDrop");
+    expect(rich).toContain("SlashCommandMenu");
   });
 
   it("registers Gutenberg-style blocks including code, table, callout and media", () => {
@@ -43,10 +46,10 @@ describe("article block editor wiring", () => {
   });
 
   it("keeps keyboard shortcuts for save, duplicate and move", () => {
-    const source = readFileSync(EDITOR, "utf8");
-    expect(source).toContain('event.key.toLowerCase() === "s"');
-    expect(source).toContain('event.key.toLowerCase() === "d"');
-    expect(source).toContain('event.key === "ArrowUp"');
-    expect(source).toContain("duplicateSelectedBlock");
+    const rich = readFileSync(RICH, "utf8");
+    expect(rich).toContain('event.key.toLowerCase() === "s"');
+    expect(rich).toContain('event.key.toLowerCase() === "d"');
+    expect(rich).toContain('event.key === "ArrowUp"');
+    expect(rich).toContain("duplicateSelectedBlock");
   });
 });

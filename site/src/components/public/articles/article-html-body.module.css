@@ -53,11 +53,66 @@
   border-radius: 14px;
 }
 
-.body :global(.hd-callout) {
-  margin: 1rem 0;
-  border-radius: 14px;
-  padding: 0.85rem 1rem;
-  background: color-mix(in srgb, var(--pub-primary) 10%, transparent);
+.body :global(.hd-callout-info),
+.body :global(.hd-callout-note) {
+  background: color-mix(in srgb, #38bdf8 16%, transparent);
+}
+
+.body :global(.hd-callout-warning) {
+  background: color-mix(in srgb, #f59e0b 18%, transparent);
+}
+
+.body :global(.hd-callout-success) {
+  background: color-mix(in srgb, #22c55e 16%, transparent);
+}
+
+.body :global(.hd-callout-tip) {
+  background: color-mix(in srgb, var(--pub-primary) 16%, transparent);
+}
+
+.body :global(.hd-callout-title) {
+  margin: 0 0 0.4rem;
+  font-weight: 800;
+}
+
+.body :global(.hd-image-right) {
+  text-align: right;
+}
+
+.body :global(.hd-image-left) {
+  text-align: left;
+}
+
+.body :global(.hd-image-center),
+.body :global(.hd-image-full),
+.body :global(.hd-image-wide) {
+  text-align: center;
+}
+
+.body :global(.hd-align-left) {
+  text-align: left;
+}
+
+.body :global(.hd-align-right) {
+  text-align: right;
+}
+
+.body :global(.hd-align-center) {
+  text-align: center;
+}
+
+.body :global(.hd-align-justify) {
+  text-align: justify;
+}
+
+.body :global(.hd-code-block[data-language])::before {
+  content: attr(data-language);
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 11px;
+  opacity: 0.7;
+  direction: ltr;
+  text-align: left;
 }
 
 .body :global(.hd-embed) {

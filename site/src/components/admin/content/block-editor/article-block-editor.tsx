@@ -2,15 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { EditorContent, useEditor, type Editor } from "@tiptap/react";
-import type { JSONContent } from "@tiptap/core";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "@/components/auth";
 import { ADMIN_ROUTES, adminContentArticleRoute } from "@/lib/admin/routes";
 import {
@@ -50,15 +42,12 @@ import {
   ARTICLE_EDITOR_VERSION,
   countWords,
   EMPTY_ARTICLE_DOC,
-  estimateReadingMinutes,
   extractOutline,
   extractPlainText,
   parseArticleDoc,
   serializeArticleDoc,
 } from "@/lib/admin/content/block-editor/document";
-import { markdownToTiptapDoc } from "@/lib/admin/content/block-editor/markdown-adapter";
-import { filterSlashCommands, type SlashCommandItem } from "@/lib/admin/content/block-editor/slash-items";
-import { duplicateSelectedBlock, moveSelectedBlock } from "@/lib/admin/content/block-editor/block-commands";
+import { legacyBodyToTiptapDoc } from "@/lib/admin/content/block-editor/html-adapter";
 import { AdminIcon } from "@/components/admin/shared/admin-icons";
 import { ContentStatusBadge } from "@/components/admin/content/list/content-status-badge";
 import { SaveStatusIndicator, type SaveState } from "@/components/admin/content/editor/save-status";
@@ -69,11 +58,12 @@ import { MediaPickerDialog } from "@/components/admin/media/media-picker-dialog"
 import type { MediaPickerSelection } from "@/lib/admin/media/media-types";
 import { useUploadMediaAsset } from "@/lib/admin/media/media-hooks";
 import { validateMediaFile } from "@/lib/admin/media/media-validation";
-import { createArticleExtensions, runSlashCommand } from "./extensions";
-import { FloatingTextToolbar } from "./floating-text-toolbar";
-import { SlashCommandMenu } from "./slash-command-menu";
 import { BlockSettingsPanel } from "./block-settings-panel";
 import { ArticlePreview, type PreviewDevice } from "./article-preview";
+import {
+  ArticleRichTextEditor,
+  type ArticleRichTextEditorHandle,
+} from "./article-rich-text-editor";
 import styles from "./article-block-editor.module.css";
 
 const AUTOSAVE_MS = 3000;
@@ -101,27 +91,13 @@ function initialValues(initial: AdminContentDetail | undefined): ContentFormValu
   };
 }
 
-function initialDoc(initial: AdminContentDetail | undefined, recoveredJson?: string): JSONContent {
+function initialDoc(initial: AdminContentDetail | undefined, recoveredJson?: string) {
   const recovered = parseArticleDoc(recoveredJson);
   if (recovered) return recovered;
   const stored = parseArticleDoc(initial?.contentJson);
   if (stored) return stored;
-  if (initial?.body?.trim()) return markdownToTiptapDoc(initial.body);
+  if (initial?.body?.trim()) return legacyBodyToTiptapDoc(initial.body);
   return EMPTY_ARTICLE_DOC;
-}
-
-function getSlashState(editor: Editor): { from: number; to: number; query: string } | null {
-  const { $from } = editor.state.selection;
-  if (!$from.parent.isTextblock) return null;
-  const text = $from.parent.textBetween(0, $from.parentOffset, undefined, "\ufffc");
-  const match = /(^|\s)\/([^\s]*)$/.exec(text);
-  if (!match) return null;
-  const slashOffset = match.index + match[1].length;
-  return {
-    from: $from.start() + slashOffset,
-    to: $from.pos,
-    query: match[2] ?? "",
-  };
 }
 
 type PickerTarget = "cover" | "og" | "image" | "gallery";
@@ -141,13 +117,14 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
   const autoRerunAfterSaveRef = useRef(false);
   const savingRef = useRef(false);
   const pendingAutosaveRef = useRef(false);
-  const editorRef = useRef<Editor | null>(null);
-  const canvasRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<ArticleRichTextEditorHandle>(null);
   const persistRef = useRef<(options: { autosave: boolean }) => Promise<void>>(async () => undefined);
-  const uploadFilesRef = useRef<(files: File[]) => Promise<void>>(async () => undefined);
   const draftReadyRef = useRef(false);
+  const failedFilesRef = useRef<File[]>([]);
+  const [editorReady, setEditorReady] = useState(false);
 
   const [values, setValues] = useState<ContentFormValues>(() => initialValues(initial));
+  const [doc, setDoc] = useState(() => initialDoc(initial));
   const [errors, setErrors] = useState<ContentFormErrors>({});
   const [seo, setSeo] = useState<SeoFormValues>(() => initial?.seo ?? { ...EMPTY_SEO_FORM });
   const [seoErrors, setSeoErrors] = useState<SeoFormErrors>({});
@@ -164,103 +141,11 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [lastSavedAt, setLastSavedAt] = useState<string | null>(initial?.lastAutosavedAtUtc ?? initial?.updatedAtUtc ?? null);
-  const [slash, setSlash] = useState<{ items: SlashCommandItem[]; index: number; left: number; top: number; from: number; to: number } | null>(null);
-  const [toolbar, setToolbar] = useState<{ left: number; top: number } | null>(null);
-  const [selectionEpoch, setSelectionEpoch] = useState(0);
 
   const savedSnapshot = useRef("");
 
-  const editor = useEditor({
-    immediatelyRender: false,
-    extensions: createArticleExtensions(),
-    content: initialDoc(initial),
-    editorProps: {
-      attributes: {
-        dir: "rtl",
-        lang: "fa",
-        class: "tiptap",
-      },
-      handlePaste: (_view, event) => {
-        const files = event.clipboardData?.files;
-        if (files && files.length > 0) {
-          void uploadFilesRef.current(Array.from(files));
-          return true;
-        }
-        return false;
-      },
-      handleDrop: (_view, event) => {
-        const files = event.dataTransfer?.files;
-        if (files && files.length > 0) {
-          event.preventDefault();
-          void uploadFilesRef.current(Array.from(files));
-          return true;
-        }
-        return false;
-      },
-      handleKeyDown: (_view, event) => {
-        const current = editorRef.current;
-        if (!current) return false;
-        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "z") return false;
-        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {
-          event.preventDefault();
-          void persistRef.current({ autosave: false });
-          return true;
-        }
-        if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "d") {
-          event.preventDefault();
-          duplicateSelectedBlock(current);
-          return true;
-        }
-        if (event.altKey && event.key === "ArrowUp") {
-          event.preventDefault();
-          moveSelectedBlock(current, -1);
-          return true;
-        }
-        if (event.altKey && event.key === "ArrowDown") {
-          event.preventDefault();
-          moveSelectedBlock(current, 1);
-          return true;
-        }
-        const slashState = getSlashState(current);
-        if (!slashState) return false;
-        const items = filterSlashCommands(slashState.query);
-        if (event.key === "ArrowDown") {
-          event.preventDefault();
-          setSlash((prev) => (prev ? { ...prev, index: (prev.index + 1) % Math.max(items.length, 1) } : prev));
-          return true;
-        }
-        if (event.key === "ArrowUp") {
-          event.preventDefault();
-          setSlash((prev) =>
-            prev ? { ...prev, index: (prev.index - 1 + Math.max(items.length, 1)) % Math.max(items.length, 1) } : prev,
-          );
-          return true;
-        }
-        if (event.key === "Enter" && items[0]) {
-          event.preventDefault();
-          applySlash(items[slash?.index ?? 0] ?? items[0], slashState.from, slashState.to);
-          return true;
-        }
-        if (event.key === "Escape") {
-          setSlash(null);
-          return true;
-        }
-        return false;
-      },
-    },
-    onUpdate: ({ editor: instance }) => {
-      const json = instance.getJSON();
-      const plain = extractPlainText(json);
-      setValues((prev) => ({ ...prev, body: plain }));
-      setContentSave((prev) => (prev === "saving" ? prev : "unsaved"));
-      seoAnalysis.markStale();
-    },
-  });
-
-  editorRef.current = editor;
-
   useEffect(() => {
-    if (!editor || draftReadyRef.current) return;
+    if (draftReadyRef.current) return;
     const draft = loadDraft(draftKey);
     if (draft) {
       setValues((prev) => ({
@@ -270,56 +155,12 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
         excerpt: draft.excerpt,
       }));
       const recoveredDoc = parseArticleDoc(draft.contentJson);
-      if (recoveredDoc) editor.commands.setContent(recoveredDoc);
+      if (recoveredDoc) setDoc(recoveredDoc);
       setDraftRecovered(true);
       setContentSave("unsaved");
     }
     draftReadyRef.current = true;
-  }, [draftKey, editor]);
-
-  useEffect(() => {
-    if (!editor) return;
-    const refreshUi = () => {
-      setSelectionEpoch((value) => value + 1);
-      const slashState = getSlashState(editor);
-      if (slashState) {
-        const coords = editor.view.coordsAtPos(slashState.to);
-        const canvas = canvasRef.current?.getBoundingClientRect();
-        setSlash({
-          items: filterSlashCommands(slashState.query),
-          index: 0,
-          from: slashState.from,
-          to: slashState.to,
-          left: coords.left - (canvas?.left ?? 0),
-          top: coords.bottom - (canvas?.top ?? 0) + 8,
-        });
-      } else {
-        setSlash(null);
-      }
-      const { empty, from } = editor.state.selection;
-      if (empty || !editor.view.hasFocus()) {
-        setToolbar(null);
-        return;
-      }
-      const coords = editor.view.coordsAtPos(from);
-      const canvas = canvasRef.current?.getBoundingClientRect();
-      setToolbar({
-        left: Math.max(8, coords.left - (canvas?.left ?? 0)),
-        top: Math.max(8, coords.top - (canvas?.top ?? 0) - 44),
-      });
-    };
-    editor.on("transaction", refreshUi);
-    editor.on("selectionUpdate", refreshUi);
-    return () => {
-      editor.off("transaction", refreshUi);
-      editor.off("selectionUpdate", refreshUi);
-    };
-  }, [editor]);
-
-  const documentJson = editor?.getJSON() ?? EMPTY_ARTICLE_DOC;
-  const wordCount = countWords(extractPlainText(documentJson));
-  const readingTime = estimateReadingMinutes(wordCount);
-  const outline = extractOutline(documentJson);
+  }, [draftKey]);
 
   useEffect(() => {
     savedSnapshot.current = JSON.stringify({
@@ -329,9 +170,9 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
   }, [initial]);
 
   const isDirty = useMemo(() => {
-    const current = JSON.stringify({ values, json: serializeArticleDoc(documentJson) });
+    const current = JSON.stringify({ values, json: serializeArticleDoc(doc) });
     return current !== savedSnapshot.current;
-  }, [values, documentJson]);
+  }, [values, doc]);
 
   useEffect(() => {
     if (!draftReadyRef.current) return;
@@ -340,9 +181,9 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
       title: values.title,
       body: values.body,
       excerpt: values.excerpt,
-      contentJson: serializeArticleDoc(documentJson),
+      contentJson: serializeArticleDoc(doc),
     });
-  }, [draftKey, values.title, values.body, values.excerpt, documentJson]);
+  }, [draftKey, values.title, values.body, values.excerpt, doc]);
 
   useEffect(() => {
     const onLeave = (event: BeforeUnloadEvent) => {
@@ -356,7 +197,7 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
 
   const persist = useCallback(
     async ({ autosave }: { autosave: boolean }) => {
-      const json = editorRef.current?.getJSON() ?? documentJson;
+      const json = editorRef.current?.getJSON() ?? doc;
       const serialized = serializeArticleDoc(json);
       const plain = extractPlainText(json).trim() || values.body;
       const payload = {
@@ -437,19 +278,7 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
         }
       }
     },
-    [
-      articleMeta.values,
-      articleMutation,
-      contentId,
-      create,
-      documentJson,
-      router,
-      seo,
-      seoAnalysis,
-      seoMutation,
-      update,
-      values,
-    ],
+    [articleMeta.values, articleMutation, contentId, create, doc, router, seo, seoAnalysis, seoMutation, update, values],
   );
 
   useEffect(() => {
@@ -458,33 +287,36 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
       void persist({ autosave: true });
     }, AUTOSAVE_MS);
     return () => window.clearTimeout(timer);
-  }, [contentId, isDirty, contentSave, persist, values, documentJson]);
+  }, [contentId, isDirty, contentSave, persist]);
 
   const uploadFiles = useCallback(
     async (files: File[]) => {
       setUploadError(null);
+      failedFilesRef.current = [];
       for (const file of files) {
         const check = validateMediaFile(file);
         if (!check.valid) {
           setUploadError(check.error);
+          failedFilesRef.current.push(file);
           continue;
         }
         try {
           const asset = await upload.upload({ file, altText: file.name, caption: null });
-          editorRef.current
-            ?.chain()
-            .focus()
-            .insertContent({
-              type: "image",
-              attrs: {
-                src: asset.absoluteUrl,
-                alt: asset.altText || file.name,
-                caption: asset.caption || "",
-                align: "center",
-              },
-            })
-            .run();
+          editorRef.current?.insertContent({
+            type: "image",
+            attrs: {
+              src: asset.absoluteUrl,
+              mediaId: asset.id,
+              alt: asset.altText || file.name,
+              title: "",
+              caption: asset.caption || "",
+              align: "center",
+              width: asset.width,
+              height: asset.height,
+            },
+          });
         } catch {
+          failedFilesRef.current.push(file);
           setUploadError("بارگذاری تصویر ناموفق بود. دوباره تلاش کنید.");
         }
       }
@@ -492,50 +324,6 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
     [upload],
   );
   persistRef.current = persist;
-  uploadFilesRef.current = uploadFiles;
-
-  const applySlash = useCallback(
-    (item: SlashCommandItem, from: number, to: number) => {
-      const instance = editorRef.current;
-      if (!instance) return;
-      instance.chain().focus().deleteRange({ from, to }).run();
-      setSlash(null);
-      if (item.command === "image") {
-        setPickerTarget("image");
-        return;
-      }
-      if (item.command === "gallery") {
-        setPickerTarget("gallery");
-        return;
-      }
-      if (item.command === "youtube") {
-        const src = window.prompt("نشانی ویدیوی یوتیوب");
-        if (src) runSlashCommand(instance, "youtube", { src });
-        return;
-      }
-      if (item.command === "fileDownload") {
-        const href = window.prompt("نشانی فایل", "/");
-        const name = window.prompt("نام فایل", "دانلود فایل") ?? "دانلود فایل";
-        if (href) runSlashCommand(instance, "fileDownload", { href, name });
-        return;
-      }
-      if (item.command === "cta") {
-        const label = window.prompt("متن دکمه", "ادامه مطلب") ?? "ادامه مطلب";
-        const href = window.prompt("نشانی دکمه", "/");
-        if (href) runSlashCommand(instance, "cta", { href, label });
-        return;
-      }
-      if (item.command === "articleLink") {
-        const slug = window.prompt("اسلاگ مقاله") ?? "";
-        const title = window.prompt("عنوان نمایشی", slug) ?? slug;
-        const href = slug.startsWith("/") ? slug : `/articles/${slug}`;
-        runSlashCommand(instance, "articleLink", { href, title, slug });
-        return;
-      }
-      runSlashCommand(instance, item.command);
-    },
-    [],
-  );
 
   const handleMediaSelect = useCallback(
     (selection: MediaPickerSelection) => {
@@ -549,16 +337,20 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
         setSeoSave("unsaved");
         if (!values.coverImage.trim()) setValues((prev) => ({ ...prev, coverImage: url }));
       } else if (pickerTarget === "image") {
-        editorRef.current
-          ?.chain()
-          .focus()
-          .insertContent({
-            type: "image",
-            attrs: { src: url, alt: selection.altText, caption: "", align: "center" },
-          })
-          .run();
+        editorRef.current?.insertContent({
+          type: "image",
+          attrs: {
+            src: url,
+            mediaId: selection.id,
+            alt: selection.altText,
+            caption: "",
+            align: "center",
+            width: selection.width,
+            height: selection.height,
+          },
+        });
       } else if (pickerTarget === "gallery") {
-        const current = editorRef.current;
+        const current = editorRef.current?.getEditor();
         if (current?.isActive("gallery")) {
           const items = (current.getAttributes("gallery").items ?? []) as Array<{ src: string; alt?: string }>;
           current.chain().focus().updateAttributes("gallery", { items: [...items, { src: url, alt: selection.altText }] }).run();
@@ -579,14 +371,14 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
     if (!token) return;
     try {
       const preview = await previewArticleContent(token, {
-        contentJson: serializeArticleDoc(editorRef.current?.getJSON() ?? documentJson),
+        contentJson: serializeArticleDoc(editorRef.current?.getJSON() ?? doc),
         body: values.body,
       });
       setPreviewHtml(preview.html);
     } catch {
       setPreviewHtml("");
     }
-  }, [documentJson, token, values.body]);
+  }, [doc, token, values.body]);
 
   useEffect(() => {
     if (centerTab !== "preview") return;
@@ -652,18 +444,23 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
     setContentSave((prev) => (prev === "saving" ? prev : "unsaved"));
   };
 
+  const outline = extractOutline(doc);
+  const wordCount = countWords(extractPlainText(doc));
+
   const settings = (
-    <div className="space-y-4" data-selection-epoch={selectionEpoch}>
-      {editor ? <BlockSettingsPanel editor={editor} /> : null}
+    <div className="space-y-4">
+      {editorReady && editorRef.current?.getEditor() ? (
+        <BlockSettingsPanel editor={editorRef.current.getEditor()!} />
+      ) : null}
       <section className="space-y-2">
-        <h2 className="adm-text text-[14px] font-bold">نمای کلی</h2>
+        <h2 className="adm-text text-[14px] font-bold">فهرست مطالب</h2>
         {outline.length === 0 ? (
           <p className="adm-subtle text-[12px]">هنوز عنوانی در متن نیست.</p>
         ) : (
           <ul className="space-y-1">
-            {outline.map((item) => (
+            {outline.filter((item) => item.level === 2 || item.level === 3).map((item) => (
               <li key={item.id} className="adm-text text-[12px]" style={{ paddingInlineStart: (item.level - 2) * 12 }}>
-                {item.text}
+                <a href={`#${item.id}`}>{item.text}</a>
               </li>
             ))}
           </ul>
@@ -715,7 +512,7 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
           <ContentStatusBadge status={status} />
           <SaveStatusIndicator state={contentSave} />
           <span className={styles.topMeta}>
-            {wordCount.toLocaleString("fa-IR")} واژه · حدود {readingTime.toLocaleString("fa-IR")} دقیقه مطالعه
+            {wordCount.toLocaleString("fa-IR")} واژه
             {lastSavedAt ? ` · آخرین ذخیره ${new Date(lastSavedAt).toLocaleTimeString("fa-IR")}` : null}
           </span>
         </div>
@@ -768,7 +565,7 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
             onClick={() => {
               clearDraft();
               setDraftRecovered(false);
-              editor?.commands.setContent(initialDoc(initial));
+              setDoc(initialDoc(initial));
               setValues(initialValues(initial));
               setContentSave("idle");
             }}
@@ -797,7 +594,7 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
               <ArticlePreview html={previewHtml} device={previewDevice} />
             </div>
           ) : (
-            <div className={styles.canvas} ref={canvasRef} style={{ position: "relative" }}>
+            <div className={styles.canvas}>
               <input
                 className={styles.titleInput}
                 value={values.title}
@@ -849,61 +646,27 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
                   onChange={(event) => onChange({ excerpt: event.target.value })}
                 />
               </label>
-              <div className="mb-2 flex flex-wrap gap-1.5">
-                <button type="button" className="adm-btn adm-btn-ghost adm-focus px-2 py-1 text-[11px]" onClick={() => editor?.chain().focus().undo().run()}>
-                  واگرد
-                </button>
-                <button type="button" className="adm-btn adm-btn-ghost adm-focus px-2 py-1 text-[11px]" onClick={() => editor?.chain().focus().redo().run()}>
-                  انجام مجدد
-                </button>
-                <button
-                  type="button"
-                  className="adm-btn adm-btn-ghost adm-focus px-2 py-1 text-[11px]"
-                  onClick={() => {
-                    const slashState = editor ? getSlashState(editor) : null;
-                    if (slashState) {
-                      setSlash({
-                        items: filterSlashCommands(""),
-                        index: 0,
-                        from: slashState.from,
-                        to: slashState.to,
-                        left: 16,
-                        top: 120,
-                      });
-                      return;
-                    }
-                    editor?.chain().focus().insertContent("/").run();
-                  }}
-                >
-                  + بلوک
-                </button>
-                <button type="button" className="adm-btn adm-btn-ghost adm-focus px-2 py-1 text-[11px]" onClick={() => setPickerTarget("image")}>
-                  تصویر
-                </button>
-              </div>
-              <div className={styles.editorRoot}>
-                <EditorContent editor={editor} />
-              </div>
-              {upload.submitting ? <p className="adm-subtle mt-2 text-[12px]">در حال بارگذاری تصویر…</p> : null}
-              {uploadError ? (
-                <div className={styles.uploadError}>
-                  {uploadError}
-                  <button type="button" className="adm-btn adm-btn-ghost adm-focus ms-2 px-2 py-0.5 text-[11px]" onClick={() => setUploadError(null)}>
-                    بستن
-                  </button>
-                </div>
-              ) : null}
-              {errors.body ? <p className="mt-2 text-[11px] font-semibold text-[var(--adm-danger)]">{errors.body}</p> : null}
-              {toolbar && editor ? <FloatingTextToolbar editor={editor} left={toolbar.left} top={toolbar.top} /> : null}
-              {slash ? (
-                <SlashCommandMenu
-                  items={slash.items}
-                  activeIndex={slash.index}
-                  left={slash.left}
-                  top={slash.top}
-                  onSelect={(item) => applySlash(item, slash.from, slash.to)}
-                />
-              ) : null}
+              <ArticleRichTextEditor
+                ref={editorRef}
+                value={doc}
+                onChange={(next) => {
+                  setDoc(next);
+                  setValues((prev) => ({ ...prev, body: extractPlainText(next) }));
+                  setContentSave((prev) => (prev === "saving" ? prev : "unsaved"));
+                  seoAnalysis.markStale();
+                }}
+                error={errors.body}
+                saveState={contentSave}
+                lastSavedAt={lastSavedAt}
+                uploading={upload.submitting}
+                uploadError={uploadError}
+                onRetryUpload={() => void uploadFiles(failedFilesRef.current)}
+                onUploadFiles={(files) => void uploadFiles(files)}
+                onRequestMediaLibrary={() => setPickerTarget("image")}
+                onPreview={() => setCenterTab("preview")}
+                onSave={() => void persist({ autosave: false })}
+                onReady={() => setEditorReady(true)}
+              />
             </div>
           )}
         </div>

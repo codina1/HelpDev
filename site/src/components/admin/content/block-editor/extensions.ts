@@ -5,32 +5,68 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
+import Underline from "@tiptap/extension-underline";
+import Highlight from "@tiptap/extension-highlight";
+import { TextStyle } from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
+import Typography from "@tiptap/extension-typography";
+import CharacterCount from "@tiptap/extension-character-count";
 import { Table, TableCell, TableHeader, TableRow } from "@tiptap/extension-table";
 import TaskList from "@tiptap/extension-task-list";
 import TaskItem from "@tiptap/extension-task-item";
 import Youtube from "@tiptap/extension-youtube";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
+import csharp from "highlight.js/lib/languages/csharp";
+import kotlin from "highlight.js/lib/languages/kotlin";
+import dart from "highlight.js/lib/languages/dart";
+import powershell from "highlight.js/lib/languages/powershell";
 import type { Editor } from "@tiptap/react";
 
 const lowlight = createLowlight(common);
+lowlight.register("csharp", csharp);
+lowlight.register("cs", csharp);
+lowlight.register("kotlin", kotlin);
+lowlight.register("dart", dart);
+lowlight.register("powershell", powershell);
+
+export const ARTICLE_EDITOR_PLACEHOLDER =
+  "محتوای مقاله را اینجا بنویسید؛ برای افزودن بلوک جدید / را تایپ کنید...";
 
 const ArticleImage = Image.extend({
   addAttributes() {
     return {
       ...this.parent?.(),
+      mediaId: { default: null },
       caption: { default: null },
+      title: { default: null },
       align: { default: "center" },
       width: { default: null },
+      height: { default: null },
       href: { default: null },
       target: { default: null },
     };
   },
   renderHTML({ HTMLAttributes }) {
-    const { caption, align, href, target, ...imgAttrs } = HTMLAttributes as Record<string, string>;
-    const image = ["img", mergeAttributes(imgAttrs, { class: "hd-editor-image", loading: "lazy" })];
+    const { caption, align, href, target, mediaId, ...imgAttrs } = HTMLAttributes as Record<string, string>;
+    const image = [
+      "img",
+      mergeAttributes(imgAttrs, {
+        class: "hd-editor-image",
+        loading: "lazy",
+        "data-media-id": mediaId || null,
+      }),
+    ];
     const inner = href
-      ? ["a", { href, target: target === "_blank" ? "_blank" : null, rel: target === "_blank" ? "noopener" : null }, image]
+      ? [
+          "a",
+          {
+            href,
+            target: target === "_blank" ? "_blank" : null,
+            rel: target === "_blank" ? "noopener noreferrer" : null,
+          },
+          image,
+        ]
       : image;
     return [
       "figure",
@@ -49,6 +85,7 @@ const Callout = Node.create({
   addAttributes() {
     return {
       variant: { default: "info" },
+      title: { default: null },
     };
   },
   parseHTML() {
@@ -56,7 +93,11 @@ const Callout = Node.create({
   },
   renderHTML({ HTMLAttributes }) {
     const variant = HTMLAttributes.variant || "info";
-    return ["aside", mergeAttributes(HTMLAttributes, { "data-callout": variant, class: `hd-callout hd-callout-${variant}` }), 0];
+    return [
+      "aside",
+      mergeAttributes(HTMLAttributes, { "data-callout": variant, class: `hd-callout hd-callout-${variant}` }),
+      0,
+    ];
   },
 });
 
@@ -191,12 +232,12 @@ const HighlightedCodeBlock = CodeBlockLowlight.extend({
   addAttributes() {
     return {
       ...this.parent?.(),
-      showLineNumbers: { default: false },
+      showLineNumbers: { default: true },
     };
   },
 }).configure({ lowlight });
 
-export function createArticleExtensions() {
+export function createArticleExtensions(placeholder = ARTICLE_EDITOR_PLACEHOLDER) {
   return [
     StarterKit.configure({
       heading: { levels: [2, 3, 4] },
@@ -204,12 +245,16 @@ export function createArticleExtensions() {
       link: {
         openOnClick: false,
         autolink: true,
-        HTMLAttributes: { rel: "noopener" },
+        HTMLAttributes: { rel: "noopener noreferrer" },
       },
     }),
-    Placeholder.configure({
-      placeholder: "متن را بنویسید یا با / یک بلوک اضافه کنید…",
-    }),
+    Underline,
+    Highlight.configure({ multicolor: false }),
+    TextStyle,
+    Color,
+    Typography,
+    CharacterCount,
+    Placeholder.configure({ placeholder }),
     TextAlign.configure({ types: ["heading", "paragraph"] }),
     ArticleImage.configure({ inline: false, allowBase64: false }),
     TaskList,
@@ -263,7 +308,7 @@ export function runSlashCommand(editor: Editor, command: string, extras?: Record
       return chain
         .insertContent({
           type: "callout",
-          attrs: { variant: command.replace("callout-", "") },
+          attrs: { variant: command.replace("callout-", ""), title: null },
           content: [{ type: "paragraph" }],
         })
         .run();
@@ -303,9 +348,13 @@ export function runSlashCommand(editor: Editor, command: string, extras?: Record
           type: "image",
           attrs: {
             src: extras.src,
+            mediaId: extras.mediaId ?? null,
             alt: extras.alt ?? "",
+            title: extras.title ?? "",
             caption: extras.caption ?? "",
-            align: "center",
+            align: extras.align ?? "center",
+            width: extras.width ?? null,
+            height: extras.height ?? null,
           },
         })
         .run();

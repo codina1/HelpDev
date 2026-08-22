@@ -52,17 +52,49 @@ export type ArticleOutlineItem = {
   text: string;
 };
 
+export function headingIdFromText(text: string, used: Set<string>): string {
+  const collapsed = text
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\u0600-\u06FF]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  const base = collapsed.slice(0, 80) || "h";
+  let id = base;
+  let n = 2;
+  while (used.has(id)) {
+    id = `${base}-${n}`;
+    n += 1;
+  }
+  used.add(id);
+  return id;
+}
+
 export function extractOutline(doc: JSONContent | null | undefined): ArticleOutlineItem[] {
   const items: ArticleOutlineItem[] = [];
+  const used = new Set<string>();
   walk(doc, (node) => {
     if (node.type !== "heading") return;
     const level = Number(node.attrs?.level);
     if (level !== 2 && level !== 3 && level !== 4) return;
     const text = extractPlainText(node).trim();
     if (!text) return;
-    items.push({ id: `h-${items.length + 1}`, level, text });
+    items.push({ id: headingIdFromText(text, used), level, text });
   });
   return items;
+}
+
+export function countCharacters(text: string): number {
+  return text.length;
+}
+
+export function containsBase64Image(doc: JSONContent | null | undefined): boolean {
+  let found = false;
+  walk(doc, (node) => {
+    if (found) return;
+    const src = typeof node.attrs?.src === "string" ? node.attrs.src : "";
+    if (src.startsWith("data:") || src.includes("base64,")) found = true;
+  });
+  return found;
 }
 
 export function insertBlockAt(

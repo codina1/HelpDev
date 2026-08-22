@@ -1,11 +1,18 @@
+/**
+ * @vitest-environment node
+ */
 import { describe, expect, it } from "vitest";
 import { markdownToTiptapDoc } from "./markdown-adapter";
+import { looksLikeHtml } from "./html-adapter";
 import {
+  containsBase64Image,
   extractOutline,
+  headingIdFromText,
   insertBlockAt,
   serializeArticleDoc,
 } from "./document";
 import { filterSlashCommands } from "./slash-items";
+import { isSafeImageSrc } from "@/components/admin/content/block-editor/image-insert-dialog";
 import { sanitizeArticleHtml } from "@/lib/public/content-helpers";
 
 describe("markdown to TipTap adapter", () => {
@@ -40,35 +47,55 @@ describe("article document helpers", () => {
     });
     expect(next.content?.map((node) => node.type)).toEqual(["paragraph", "image", "paragraph"]);
     expect(serializeArticleDoc(next)).toContain("/media/x.jpg");
+    expect(containsBase64Image(next)).toBe(false);
   });
 
-  it("extracts outline from headings", () => {
+  it("rejects base64 image sources", () => {
+    expect(isSafeImageSrc("data:image/png;base64,abc")).toBe(false);
+    expect(isSafeImageSrc("/media/2026/08/cover.png")).toBe(true);
+    expect(
+      containsBase64Image({
+        type: "doc",
+        content: [{ type: "image", attrs: { src: "data:image/png;base64,abc" } }],
+      }),
+    ).toBe(true);
+  });
+
+  it("extracts unique outline ids from persian headings", () => {
     const outline = extractOutline({
       type: "doc",
       content: [
         { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "مقدمه" }] },
         { type: "heading", attrs: { level: 3 }, content: [{ type: "text", text: "جزئیات" }] },
+        { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "مقدمه" }] },
       ],
     });
-    expect(outline).toEqual([
-      { id: "h-1", level: 2, text: "مقدمه" },
-      { id: "h-2", level: 3, text: "جزئیات" },
-    ]);
+    expect(outline.map((item) => item.text)).toEqual(["مقدمه", "جزئیات", "مقدمه"]);
+    expect(outline[0].id).toBe(headingIdFromText("مقدمه", new Set()));
+    expect(outline[2].id).not.toBe(outline[0].id);
   });
 });
 
 describe("slash menu", () => {
-  it("filters commands by keyword", () => {
-    const items = filterSlashCommands("code");
-    expect(items.some((item) => item.command === "codeBlock")).toBe(true);
-    expect(items.some((item) => item.command === "table")).toBe(false);
+  it("filters commands by keyword in persian and english", () => {
+    expect(filterSlashCommands("code").some((item) => item.command === "codeBlock")).toBe(true);
+    expect(filterSlashCommands("هشدار").some((item) => item.command === "callout-warning")).toBe(true);
+    expect(filterSlashCommands("code").some((item) => item.command === "table")).toBe(false);
   });
 
-  it("includes callout, table and media commands", () => {
+  it("includes required block types", () => {
     const all = filterSlashCommands("");
-    expect(all.some((item) => item.command === "callout-warning")).toBe(true);
+    expect(all.some((item) => item.title === "متن معمولی")).toBe(true);
     expect(all.some((item) => item.command === "table")).toBe(true);
     expect(all.some((item) => item.command === "image")).toBe(true);
+    expect(all.some((item) => item.command === "callout-tip")).toBe(true);
+  });
+});
+
+describe("legacy html detection", () => {
+  it("recognizes html bodies", () => {
+    expect(looksLikeHtml("<p>سلام</p>")).toBe(true);
+    expect(looksLikeHtml("فقط متن ساده")).toBe(false);
   });
 });
 

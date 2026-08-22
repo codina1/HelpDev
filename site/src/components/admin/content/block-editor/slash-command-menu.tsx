@@ -1,7 +1,7 @@
 "use client";
 
 import type { SlashCommandItem } from "@/lib/admin/content/block-editor/slash-items";
-import styles from "./article-block-editor.module.css";
+import styles from "./article-rich-text-editor.module.css";
 
 type SlashCommandMenuProps = {
   items: SlashCommandItem[];

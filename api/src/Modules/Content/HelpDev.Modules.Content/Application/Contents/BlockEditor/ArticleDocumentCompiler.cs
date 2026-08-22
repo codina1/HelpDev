@@ -24,7 +24,7 @@ public static class ArticleDocumentCompiler
 
     private static readonly HashSet<string> AllowedMarks = new(StringComparer.Ordinal)
     {
-        "bold", "italic", "underline", "strike", "code", "link",
+        "bold", "italic", "underline", "strike", "code", "link", "highlight", "textStyle",
     };
 
     public static CompiledArticleDocument Compile(string? contentJson)
@@ -61,7 +61,8 @@ public static class ArticleDocumentCompiler
             var html = new StringBuilder();
             var text = new StringBuilder();
             var headings = new List<CompiledHeading>();
-            RenderNode(root, html, text, headings, depth: 0);
+            var headingIds = new HashSet<string>(StringComparer.Ordinal);
+            RenderNode(root, html, text, headings, headingIds, depth: 0);
 
             var plain = NormalizePlainText(text.ToString());
             if (string.IsNullOrWhiteSpace(plain))
@@ -113,6 +114,7 @@ public static class ArticleDocumentCompiler
         StringBuilder html,
         StringBuilder text,
         List<CompiledHeading> headings,
+        HashSet<string> headingIds,
         int depth)
     {
         if (depth > 40)
@@ -128,29 +130,31 @@ public static class ArticleDocumentCompiler
         var type = GetString(node, "type");
         if (string.IsNullOrEmpty(type) || !AllowedNodes.Contains(type))
         {
-            RenderChildren(node, html, text, headings, depth);
+            RenderChildren(node, html, text, headings, headingIds, depth);
             return;
         }
 
         switch (type)
         {
             case "doc":
-                RenderChildren(node, html, text, headings, depth);
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 break;
             case "paragraph":
-                html.Append("<p>");
-                RenderChildren(node, html, text, headings, depth);
+                html.Append(OpenAlignedTag("p", GetAttrString(node, "textAlign")));
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 html.Append("</p>");
                 text.AppendLine();
                 break;
             case "heading":
                 var level = ClampInt(GetAttrInt(node, "level"), 2, 4);
-                var headingId = $"h-{headings.Count + 1}";
+                var innerHtml = new StringBuilder();
                 var headingText = new StringBuilder();
-                html.Append("<h").Append(level).Append(" id=\"").Append(Enc(headingId)).Append("\">");
-                RenderChildren(node, html, headingText, headings, depth);
-                html.Append("</h").Append(level).Append('>');
+                RenderChildren(node, innerHtml, headingText, headings, headingIds, depth);
                 var headingPlain = NormalizePlainText(headingText.ToString());
+                var headingId = MakeHeadingId(headingPlain, headingIds);
+                html.Append(OpenAlignedTag("h" + level, GetAttrString(node, "textAlign"), headingId));
+                html.Append(innerHtml);
+                html.Append("</h").Append(level).Append('>');
                 if (!string.IsNullOrWhiteSpace(headingPlain))
                 {
                     headings.Add(new CompiledHeading(headingId, level, headingPlain));
@@ -159,28 +163,28 @@ public static class ArticleDocumentCompiler
                 break;
             case "blockquote":
                 html.Append("<blockquote>");
-                RenderChildren(node, html, text, headings, depth);
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 html.Append("</blockquote>");
                 text.AppendLine();
                 break;
             case "bulletList":
                 html.Append("<ul>");
-                RenderChildren(node, html, text, headings, depth);
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 html.Append("</ul>");
                 break;
             case "orderedList":
                 html.Append("<ol>");
-                RenderChildren(node, html, text, headings, depth);
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 html.Append("</ol>");
                 break;
             case "taskList":
                 html.Append("<ul class=\"hd-task-list\">");
-                RenderChildren(node, html, text, headings, depth);
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 html.Append("</ul>");
                 break;
             case "listItem":
                 html.Append("<li>");
-                RenderChildren(node, html, text, headings, depth);
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 html.Append("</li>");
                 text.AppendLine();
                 break;
@@ -189,7 +193,7 @@ public static class ArticleDocumentCompiler
                 html.Append("<li class=\"hd-task-item\"><input type=\"checkbox\" disabled");
                 if (checkedItem) html.Append(" checked");
                 html.Append(" /><span>");
-                RenderChildren(node, html, text, headings, depth);
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 html.Append("</span></li>");
                 text.AppendLine();
                 break;
@@ -231,7 +235,13 @@ public static class ArticleDocumentCompiler
                     variant = "info";
                 }
                 html.Append("<aside class=\"hd-callout hd-callout-").Append(Enc(variant)).Append("\">");
-                RenderChildren(node, html, text, headings, depth);
+                var calloutTitle = GetAttrString(node, "title");
+                if (!string.IsNullOrWhiteSpace(calloutTitle))
+                {
+                    html.Append("<p class=\"hd-callout-title\"><strong>").Append(Enc(calloutTitle.Trim())).Append("</strong></p>");
+                    text.AppendLine(calloutTitle.Trim());
+                }
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 html.Append("</aside>");
                 text.AppendLine();
                 break;
@@ -257,29 +267,29 @@ public static class ArticleDocumentCompiler
                 break;
             case "table":
                 html.Append("<div class=\"hd-table-wrap\"><table>");
-                RenderChildren(node, html, text, headings, depth);
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 html.Append("</table></div>");
                 break;
             case "tableRow":
                 html.Append("<tr>");
-                RenderChildren(node, html, text, headings, depth);
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 html.Append("</tr>");
                 break;
             case "tableHeader":
                 html.Append("<th>");
-                RenderChildren(node, html, text, headings, depth);
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 html.Append("</th>");
                 break;
             case "tableCell":
                 html.Append("<td>");
-                RenderChildren(node, html, text, headings, depth);
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 html.Append("</td>");
                 break;
             case "text":
                 RenderText(node, html, text);
                 break;
             default:
-                RenderChildren(node, html, text, headings, depth);
+                RenderChildren(node, html, text, headings, headingIds, depth);
                 break;
         }
     }
@@ -289,6 +299,7 @@ public static class ArticleDocumentCompiler
         StringBuilder html,
         StringBuilder text,
         List<CompiledHeading> headings,
+        HashSet<string> headingIds,
         int depth)
     {
         if (!node.TryGetProperty("content", out var content) || content.ValueKind != JsonValueKind.Array)
@@ -298,7 +309,7 @@ public static class ArticleDocumentCompiler
 
         foreach (var child in content.EnumerateArray())
         {
-            RenderNode(child, html, text, headings, depth + 1);
+            RenderNode(child, html, text, headings, headingIds, depth + 1);
         }
     }
 
@@ -370,6 +381,20 @@ public static class ArticleDocumentCompiler
                     open.Add("<code>");
                     close.Add("</code>");
                     break;
+                case "highlight":
+                    open.Add("<mark>");
+                    close.Add("</mark>");
+                    break;
+                case "textStyle":
+                    var color = SanitizeCssColor(GetAttrString(mark, "color"));
+                    if (color is null)
+                    {
+                        break;
+                    }
+
+                    open.Add($"<span style=\"color:{color}\">");
+                    close.Add("</span>");
+                    break;
                 case "link":
                     var href = SanitizeUrl(GetAttrString(mark, "href"));
                     if (href is null)
@@ -379,7 +404,11 @@ public static class ArticleDocumentCompiler
 
                     var target = GetAttrString(mark, "target") == "_blank" ? "_blank" : null;
                     var relParts = new List<string>();
-                    if (target == "_blank") relParts.Add("noopener");
+                    if (target == "_blank")
+                    {
+                        relParts.Add("noopener");
+                        relParts.Add("noreferrer");
+                    }
                     var rel = GetAttrString(mark, "rel");
                     if (ContainsToken(rel, "nofollow")) relParts.Add("nofollow");
                     if (ContainsToken(rel, "sponsored")) relParts.Add("sponsored");
@@ -415,17 +444,19 @@ public static class ArticleDocumentCompiler
         }
 
         var width = ClampInt(GetAttrInt(node, "width"), 0, 2400);
+        var height = ClampInt(GetAttrInt(node, "height"), 0, 2400);
         var href = SanitizeUrl(GetAttrString(node, "href"));
         html.Append("<figure class=\"hd-image hd-image-").Append(Enc(align)).Append("\">");
         if (href is not null)
         {
-            var target = GetAttrString(node, "target") == "_blank" ? " target=\"_blank\" rel=\"noopener\"" : string.Empty;
+            var target = GetAttrString(node, "target") == "_blank" ? " target=\"_blank\" rel=\"noopener noreferrer\"" : string.Empty;
             html.Append("<a href=\"").Append(Enc(href)).Append('"').Append(target).Append('>');
         }
 
         html.Append("<img src=\"").Append(Enc(src)).Append("\" alt=\"").Append(Enc(alt)).Append('"');
         if (!string.IsNullOrEmpty(title)) html.Append(" title=\"").Append(Enc(title)).Append('"');
         if (width > 0) html.Append(" width=\"").Append(width).Append('"');
+        if (height > 0) html.Append(" height=\"").Append(height).Append('"');
         html.Append(" loading=\"lazy\" />");
         if (href is not null) html.Append("</a>");
         if (!string.IsNullOrWhiteSpace(caption))
@@ -582,6 +613,77 @@ public static class ArticleDocumentCompiler
     }
 
     private static string Enc(string? value) => WebUtility.HtmlEncode(value ?? string.Empty);
+
+    private static string OpenAlignedTag(string tag, string? align, string? id = null)
+    {
+        var safeAlign = align is "left" or "right" or "center" or "justify" ? align : null;
+        var builder = new StringBuilder("<").Append(tag);
+        if (!string.IsNullOrEmpty(id))
+        {
+            builder.Append(" id=\"").Append(Enc(id)).Append('"');
+        }
+
+        if (safeAlign is not null)
+        {
+            builder.Append(" class=\"hd-align-").Append(safeAlign).Append('"');
+        }
+
+        return builder.Append('>').ToString();
+    }
+
+    private static string MakeHeadingId(string text, HashSet<string> used)
+    {
+        var builder = new StringBuilder();
+        foreach (var ch in text.Trim().ToLowerInvariant())
+        {
+            if (char.IsLetterOrDigit(ch))
+            {
+                builder.Append(ch);
+            }
+            else if (builder.Length > 0 && builder[^1] != '-')
+            {
+                builder.Append('-');
+            }
+        }
+
+        var baseId = builder.ToString().Trim('-');
+        if (baseId.Length > 80)
+        {
+            baseId = baseId[..80].Trim('-');
+        }
+
+        if (string.IsNullOrEmpty(baseId))
+        {
+            baseId = "h";
+        }
+
+        var id = baseId;
+        var n = 2;
+        while (!used.Add(id))
+        {
+            id = $"{baseId}-{n++}";
+        }
+
+        return id;
+    }
+
+    private static string? SanitizeCssColor(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        var trimmed = value.Trim();
+        if (trimmed.Length is 4 or 7
+            && trimmed[0] == '#'
+            && trimmed.Skip(1).All(ch => Uri.IsHexDigit(ch)))
+        {
+            return trimmed.ToLowerInvariant();
+        }
+
+        return null;
+    }
 
     private static int ClampInt(int value, int min, int max) => Math.Clamp(value, min, max);
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { ArticleHtmlBody } from "@/components/public/articles/article-html-body";
 import styles from "./article-block-editor.module.css";
 
 export type PreviewDevice = "desktop" | "tablet" | "mobile";
@@ -16,7 +17,7 @@ export function ArticlePreview({ html, device }: ArticlePreviewProps) {
   return (
     <div className={`${styles.previewFrame} ${deviceClass}`} dir="rtl">
       {html.trim() ? (
-        <div className="hd-article-html space-y-3 text-[15px] leading-8" dangerouslySetInnerHTML={{ __html: html }} />
+        <ArticleHtmlBody html={html} />
       ) : (
         <p className="adm-subtle text-center text-[13px]">پیش‌نمایش خالی است.</p>
       )}

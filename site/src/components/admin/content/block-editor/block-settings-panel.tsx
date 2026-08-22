@@ -75,20 +75,27 @@ export function BlockSettingsPanel({ editor }: BlockSettingsPanelProps) {
       ) : null}
 
       {type === "callout" ? (
-        <label className="block space-y-1.5">
-          <span className="adm-text text-[12px] font-semibold">نوع کادر</span>
-          <select
-            className="adm-input"
-            value={String(attrs.variant ?? "info")}
-            onChange={(event) => editor.chain().focus().updateAttributes("callout", { variant: event.target.value }).run()}
-          >
-            <option value="info">اطلاعات</option>
-            <option value="warning">هشدار</option>
-            <option value="success">موفقیت</option>
-            <option value="note">یادداشت</option>
-            <option value="tip">راهنمایی</option>
-          </select>
-        </label>
+        <>
+          <label className="block space-y-1.5">
+            <span className="adm-text text-[12px] font-semibold">نوع کادر</span>
+            <select
+              className="adm-input"
+              value={String(attrs.variant ?? "info")}
+              onChange={(event) => editor.chain().focus().updateAttributes("callout", { variant: event.target.value }).run()}
+            >
+              <option value="info">اطلاعات</option>
+              <option value="warning">هشدار</option>
+              <option value="success">موفقیت</option>
+              <option value="tip">نکته</option>
+              <option value="note">یادداشت</option>
+            </select>
+          </label>
+          <Field
+            label="عنوان کادر"
+            value={String(attrs.title ?? "")}
+            onChange={(value) => editor.chain().focus().updateAttributes("callout", { title: value || null }).run()}
+          />
+        </>
       ) : null}
 
       {type === "image" ? (
@@ -100,6 +107,11 @@ export function BlockSettingsPanel({ editor }: BlockSettingsPanelProps) {
           />
           <Field
             label="عنوان تصویر"
+            value={String(attrs.title ?? "")}
+            onChange={(value) => editor.chain().focus().updateAttributes("image", { title: value }).run()}
+          />
+          <Field
+            label="شرح تصویر"
             value={String(attrs.caption ?? "")}
             onChange={(value) => editor.chain().focus().updateAttributes("image", { caption: value }).run()}
           />
