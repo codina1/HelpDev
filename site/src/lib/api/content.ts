@@ -9,6 +9,7 @@ export type ContentSummaryDto = {
   views: number;
   saves: number;
   createdAt: string;
+  coverImage?: string | null;
 };
 
 export type ContentDetailDto = ContentSummaryDto & {

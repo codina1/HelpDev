@@ -8,4 +8,5 @@ public sealed record ContentListItemDto(
     Guid AuthorId,
     int Views,
     int Saves,
-    DateTime CreatedAt);
+    DateTime CreatedAt,
+    string? CoverImage = null);

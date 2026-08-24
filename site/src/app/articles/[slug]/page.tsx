@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArticleDetailView } from "@/components/public/articles/article-detail-view";
 import { PageErrorState } from "@/components/ui/page-error-state";
+import { resolveContentCoverUrl } from "@/lib/admin/content/content-mappers";
 import { getContentBySlug } from "@/lib/api/content";
 import { ApiClientError } from "@/lib/api/errors";
 
@@ -10,13 +11,21 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   try {
     const article = await getContentBySlug(slug);
+    const cover = resolveContentCoverUrl(article.coverImage);
     return {
       title: article.title,
       description: article.body?.slice(0, 160) || article.title,
+      openGraph: cover
+        ? {
+            images: [{ url: cover }],
+          }
+        : undefined,
     };
   } catch {
     return { title: "مقاله" };

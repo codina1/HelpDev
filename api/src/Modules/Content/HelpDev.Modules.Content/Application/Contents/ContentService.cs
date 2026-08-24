@@ -353,7 +353,8 @@ public sealed class ContentService : IContentService
             content.AuthorId,
             content.Views,
             content.Saves,
-            content.CreatedAt);
+            content.CreatedAt,
+            content.CoverImage);
 
     private static ContentDetailDto MapToDetail(ContentEntity content) =>
         ContentDtoMapper.ToPublicDetail(content);

@@ -401,6 +401,31 @@ describe("mapContentList / mapContentDetail", () => {
     expect(mapped.typeLabel).toBe("خبر");
     expect(mapped.body).toBe("بدنه");
   });
+
+  it("maps public coverImage onto list and detail view models", () => {
+    const mappedList = mapContentList([
+      {
+        ...listDto[0],
+        coverImage: "/media/2026/08/cover.png",
+      },
+    ]);
+    expect(mappedList[0].coverImage).toBe("/media/2026/08/cover.png");
+
+    const mappedDetail = mapContentDetail({
+      id: "1",
+      title: "مقاله",
+      slug: "an-article",
+      body: "بدنه",
+      type: "Article",
+      authorId: "abc",
+      status: "Published",
+      views: 0,
+      saves: 0,
+      createdAt: "2026-07-01T00:00:00Z",
+      coverImage: "/media/2026/08/cover.png",
+    });
+    expect(mappedDetail.coverImage).toBe("/media/2026/08/cover.png");
+  });
 });
 
 describe("mapContentStats", () => {

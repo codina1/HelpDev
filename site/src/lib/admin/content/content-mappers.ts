@@ -341,6 +341,7 @@ export function mapContentListItem(dto: ContentListRawDto): ContentListItem {
     views: dto.views,
     saves: dto.saves,
     createdAt: dto.createdAt,
+    coverImage: dto.coverImage ?? undefined,
     // GET /content returns published content only.
     status: "Published",
     statusLabel: CONTENT_STATUS_LABELS.Published,
@@ -405,6 +406,7 @@ export function mapContentDetail(dto: ContentDetailRawDto): ContentDetail {
     contentFormat: dto.contentFormat ?? null,
     wordCount: dto.wordCount ?? null,
     readingTimeMinutes: dto.readingTimeMinutes ?? null,
+    coverImage: dto.coverImage ?? undefined,
   };
 }
 

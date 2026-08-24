@@ -11,6 +11,7 @@ export type KnowledgeCardProps = {
   difficulty?: string | null;
   author?: string | null;
   coverTone?: "violet" | "cyan" | "indigo";
+  coverImage?: string | null;
   featured?: boolean;
   className?: string;
 };
@@ -30,9 +31,11 @@ export function KnowledgeCard({
   difficulty,
   author,
   coverTone = "violet",
+  coverImage,
   featured = false,
   className = "",
 }: KnowledgeCardProps) {
+  const resolvedCover = coverImage?.trim() ?? "";
   return (
     <Link href={href} className={["focus-ring block h-full rounded-[var(--pub-radius)]", className].join(" ")}>
       <GlassCard
@@ -41,13 +44,17 @@ export function KnowledgeCard({
       >
         <div
           className={[
-            "relative h-28 bg-gradient-to-bl sm:h-32",
+            "relative h-28 overflow-hidden bg-gradient-to-bl sm:h-32",
             COVER[coverTone],
             featured ? "h-36 sm:h-44" : "",
           ].join(" ")}
           aria-hidden
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,color-mix(in_srgb,var(--pub-primary)_35%,transparent),transparent_55%)]" />
+          {resolvedCover ? (
+            <img src={resolvedCover} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          ) : (
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,color-mix(in_srgb,var(--pub-primary)_35%,transparent),transparent_55%)]" />
+          )}
           <div className="absolute bottom-3 start-3 flex flex-wrap gap-1.5">
             {category ? <PremiumBadge variant="primary">{category}</PremiumBadge> : null}
             {difficulty ? <PremiumBadge variant="outline">{difficulty}</PremiumBadge> : null}

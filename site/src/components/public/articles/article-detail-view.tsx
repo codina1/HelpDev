@@ -2,7 +2,12 @@ import { ArticleAiAssistantPanel } from "@/components/public/articles/article-ai
 import { ArticleToc, RelatedContentPlaceholder } from "@/components/public/articles/article-toc";
 import { GlassCard, PremiumBadge, PublicContainer } from "@/components/ui/public/v2";
 import type { ContentDetailDto } from "@/lib/api/content";
-import { formatDateFa, labelForContentType, shortAuthorId } from "@/lib/admin/content/content-mappers";
+import {
+  formatDateFa,
+  labelForContentType,
+  resolveContentCoverUrl,
+  shortAuthorId,
+} from "@/lib/admin/content/content-mappers";
 import { estimateReadingLabel, softDifficulty } from "@/lib/public/display-meta";
 import { extractTocFromBody, extractTocFromHtml, isBlockArticle } from "@/lib/public/content-helpers";
 import { ArticleHtmlBody } from "@/components/public/articles/article-html-body";
@@ -19,13 +24,25 @@ export function ArticleDetailView({ article }: ArticleDetailViewProps) {
   const readingLabel = article.readingTimeMinutes
     ? `${article.readingTimeMinutes.toLocaleString("fa-IR")} دقیقه مطالعه`
     : estimateReadingLabel(article.title);
+  const coverUrl = resolveContentCoverUrl(article.coverImage);
 
   return (
     <PublicContainer className="py-8 lg:py-12">
       <article className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_300px]" dir="rtl">
         <div className="min-w-0">
           <GlassCard elevate={false} strong className="mb-8 overflow-hidden p-0">
-            <div className="h-36 bg-gradient-to-bl from-[color:var(--pub-primary)]/35 via-[color:var(--pub-primary-2)]/15 to-transparent sm:h-44" aria-hidden />
+            {coverUrl ? (
+              <img
+                src={coverUrl}
+                alt=""
+                className="h-48 w-full object-cover sm:h-56"
+              />
+            ) : (
+              <div
+                className="h-36 bg-gradient-to-bl from-[color:var(--pub-primary)]/35 via-[color:var(--pub-primary-2)]/15 to-transparent sm:h-44"
+                aria-hidden
+              />
+            )}
             <header className="space-y-4 p-5 sm:p-7">
               <div className="flex flex-wrap gap-2">
                 <PremiumBadge variant="primary">{labelForContentType(article.type)}</PremiumBadge>

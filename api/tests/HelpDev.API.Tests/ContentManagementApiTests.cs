@@ -320,6 +320,7 @@ public sealed class ContentManagementApiTests
         Assert.DoesNotContain("SeoTitle", publicProps);
         Assert.DoesNotContain("CanonicalUrl", publicProps);
         Assert.DoesNotContain("FocusKeyword", publicProps);
+        Assert.Contains("CoverImage", publicProps);
     }
 
     [Fact]

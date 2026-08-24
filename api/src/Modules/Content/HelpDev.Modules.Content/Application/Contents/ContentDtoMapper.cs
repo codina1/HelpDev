@@ -50,5 +50,6 @@ internal static class ContentDtoMapper
             content.ContentHtml,
             content.ContentFormat,
             content.WordCount,
-            content.ReadingTimeMinutes);
+            content.ReadingTimeMinutes,
+            content.CoverImage);
 }

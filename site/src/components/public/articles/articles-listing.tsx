@@ -12,7 +12,7 @@ import {
   GlowButton,
 } from "@/components/ui/public/v2";
 import type { ContentSummaryDto } from "@/lib/api/content";
-import { formatDateFa, labelForContentType } from "@/lib/admin/content/content-mappers";
+import { formatDateFa, labelForContentType, resolveContentCoverUrl } from "@/lib/admin/content/content-mappers";
 import { estimateReadingLabel, softDifficulty } from "@/lib/public/display-meta";
 import { publicHrefForContent } from "@/lib/public/content-helpers";
 
@@ -131,6 +131,7 @@ export function ArticlesListing({ items }: ArticlesListingProps) {
                   difficulty={softDifficulty(featured.type)}
                   author={formatDateFa(featured.createdAt)}
                   coverTone="indigo"
+                  coverImage={resolveContentCoverUrl(featured.coverImage)}
                   className="pub-fade-up"
                 />
               ) : null}
@@ -146,6 +147,7 @@ export function ArticlesListing({ items }: ArticlesListingProps) {
                     difficulty={softDifficulty(item.type)}
                     author={formatDateFa(item.createdAt)}
                     coverTone={index % 3 === 0 ? "violet" : index % 3 === 1 ? "cyan" : "indigo"}
+                    coverImage={resolveContentCoverUrl(item.coverImage)}
                   />
                 ))}
               </div>

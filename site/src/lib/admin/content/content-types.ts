@@ -50,6 +50,7 @@ export type ContentListRawDto = {
   views: number;
   saves: number;
   createdAt: string;
+  coverImage?: string | null;
 };
 
 // GET /content/{slug} — ContentDetailDto (published only).
@@ -68,6 +69,7 @@ export type ContentDetailRawDto = {
   contentFormat?: string | null;
   wordCount?: number | null;
   readingTimeMinutes?: number | null;
+  coverImage?: string | null;
 };
 
 // POST /content — CreateContentRequest.
@@ -435,6 +437,7 @@ export type ContentListItem = {
   views: number;
   saves: number;
   createdAt: string;
+  coverImage?: string;
   // GET /content returns published items only.
   status: ContentStatusValue;
   statusLabel: string;
