@@ -17,7 +17,7 @@
   "healthCheck": {
     "command": "CMD curl --fail http://127.0.0.1:80/health/live || exit 1",
     "interval": 30000,
-    "timeout": 15000,
+    "timeout": 10000,
     "retries": 5,
     "startPeriod": 120000
   }
