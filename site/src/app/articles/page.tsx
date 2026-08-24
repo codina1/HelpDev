@@ -8,6 +8,10 @@ export const metadata: Metadata = {
   description: "مقالات آموزشی و اخبار منتشرشده HelpDev",
 };
 
+// Important: this page should reflect newly published content quickly.
+// Without this, Next may statically cache the empty published list at build time.
+export const dynamic = "force-dynamic";
+
 async function loadArticles(): Promise<ContentSummaryDto[]> {
   try {
     const all = await listPublishedContent();
