@@ -1,4 +1,5 @@
 import { HomeHero } from "@/components/public/home/home-hero";
+import { HomeQuickAccessSection } from "@/components/public/home/home-quick-access-section";
 import { HomeWorkflowSection } from "@/components/public/home/home-workflow-section";
 import { HomeValueSection } from "@/components/public/home/home-value-section";
 import { HomePathsSection } from "@/components/public/home/home-paths-section";
@@ -31,6 +32,7 @@ export async function PublicHomePage() {
     <div className="min-w-0 overflow-x-clip pb-10">
       <InteractionRevealObserver />
       <HomeHero />
+      <HomeQuickAccessSection />
       <HomeWorkflowSection />
       <HomeValueSection />
       <HomePathsSection roadmaps={roadmaps} />

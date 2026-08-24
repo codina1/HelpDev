@@ -10,6 +10,7 @@ describe("public homepage composition", () => {
 
   it("keeps the core homepage and omits the extra stacked sections", () => {
     expect(source).toContain("HomeHero");
+    expect(source).toContain("HomeQuickAccessSection");
     expect(source).toContain("HomeWorkflowSection");
     expect(source).toContain("HomeValueSection");
     expect(source).toContain("HomePathsSection");
