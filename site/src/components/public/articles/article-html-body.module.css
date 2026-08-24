@@ -22,8 +22,24 @@
   font-size: 1.15rem;
 }
 
+.body :global(p),
+.body :global(li),
+.body :global(blockquote) {
+  color: inherit;
+}
+
 .body :global(p) {
   margin: 0.7rem 0;
+}
+
+.body :global(ul),
+.body :global(ol) {
+  margin: 0.5rem 0 0.8rem;
+  padding-inline-start: 1.25rem;
+}
+
+.body :global(li) {
+  margin: 0.2rem 0;
 }
 
 .body :global(a) {

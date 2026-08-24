@@ -52,4 +52,10 @@ describe("article block editor wiring", () => {
     expect(rich).toContain('event.key === "ArrowUp"');
     expect(rich).toContain("duplicateSelectedBlock");
   });
+
+  it("remaps public text tokens so preview contrast matches the admin surface", () => {
+    const css = readFileSync(join(process.cwd(), "src/components/admin/content/block-editor/article-block-editor.module.css"), "utf8");
+    expect(css).toContain("--pub-fg: var(--adm-text)");
+    expect(css).toContain("color: var(--adm-text)");
+  });
 });

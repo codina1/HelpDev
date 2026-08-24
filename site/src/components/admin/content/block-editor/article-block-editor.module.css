@@ -264,7 +264,17 @@
   border: 1px solid var(--adm-border);
   border-radius: 16px;
   background: var(--adm-surface);
+  color: var(--adm-text);
   padding: 1.25rem;
+  /* ArticleHtmlBody uses public --pub-* tokens (dark-site light text).
+     Remap them here so preview stays readable on the admin surface. */
+  --pub-fg: var(--adm-text);
+  --pub-muted: var(--adm-text-muted);
+  --pub-bg: var(--adm-surface);
+  --pub-bg-elevated: var(--adm-surface-2);
+  --pub-glass-border: var(--adm-border);
+  --pub-primary: var(--adm-accent);
+  --pub-ai-from: var(--adm-accent);
 }
 
 .previewDesktop {
