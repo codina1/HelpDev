@@ -1,39 +1,40 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { HomeHero } from "@/components/public/home/home-hero";
+import { HomeHeroWorkspace } from "@/components/public/home/home-hero-workspace";
 
 describe("homepage hero", () => {
-  it("renders Persian copy, CTAs, and knowledge nodes without stats", () => {
+  it("renders platform copy, CTAs, search, chips, and stats", () => {
     const html = renderToStaticMarkup(<HomeHero />);
-    expect(html).toContain("از پرسش تا ساخت");
-    expect(html).toContain("با هوش HelpDev");
-    expect(html).toContain("/home/hero-scene.svg");
-    expect(html).toContain("شروع یادگیری");
-    expect(html).toContain("از AI بپرس");
+    expect(html).toContain("سیستم عامل رشد");
+    expect(html).toContain("توسعه‌دهندگان در عصر AI");
+    expect(html).toContain("یاد بگیر، ابزار بساز و سریع‌تر توسعه بده");
+    expect(html).toContain("شروع مسیر");
+    expect(html).toContain("کاوش HelpDev");
     expect(html).toContain("/learning");
-    expect(html).toContain("/learning/assistant");
-    expect(html).toContain("Articles");
-    expect(html).toContain("Tools");
-    expect(html).toContain("Learning");
-    expect(html).toContain("Roadmaps");
     expect(html).toContain("/articles");
-    expect(html).toContain("/toolbox");
-    expect(html).toContain("/roadmap");
-    expect(html).toContain("HelpDev AI");
-    expect(html).toContain("دانش منتشرشده");
-    expect(html).toContain("مسیر یادگیری");
-    expect(html).toContain("دستیار AI");
-    expect(html).not.toContain("Engineering Articles");
-    expect(html).not.toContain("Trust");
+    expect(html).toContain("هر چیزی که می‌خواهی جستجو کن");
+    expect(html).toContain("MCP");
+    expect(html).toContain("Cursor");
+    expect(html).toContain("Claude Code");
+    expect(html).toContain(".NET");
+    expect(html).toContain("React");
+    expect(html).toContain("Python");
+    expect(html).toContain("DevOps");
+    expect(html).toContain("AI Agent");
+    expect(html).toContain("مقاله آموزشی");
+    expect(html).toContain("Prompt آماده");
+    expect(html).toContain("ابزار کاربردی");
+    expect(html).toContain("توسعه‌دهنده");
   });
 
-  it("keeps the orbital scene off the light theme so the dark disc does not show", () => {
-    const css = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf8");
-    const svg = readFileSync(join(process.cwd(), "public/home/hero-scene.svg"), "utf8");
-    expect(css).toContain("html:not(.dark) .home-hero-scene");
-    expect(css).toContain("html:not(.dark) .home-hero-orb::before");
-    expect(svg).not.toContain('fill="#0B1020"');
+  it("renders the developer workspace with floating cards", () => {
+    const html = renderToStaticMarkup(<HomeHeroWorkspace />);
+    expect(html).toContain("AI Assistant");
+    expect(html).toContain("Prompt Card");
+    expect(html).toContain("Tools Card");
+    expect(html).toContain("Code Card");
+    expect(html).toContain("helpdev — workspace");
+    expect(html).toContain("home-hero-float");
   });
 });
