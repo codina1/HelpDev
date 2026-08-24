@@ -23,7 +23,7 @@ type HomeArticleCardProps = {
 /** Latest-article card — category, visual, title, excerpt, reading time, date. */
 export function HomeArticleCard({ item }: HomeArticleCardProps) {
   return (
-    <li className="home-article-item">
+    <li className="min-w-0">
       <Link href={item.href} className={`home-article-card home-article-card-${item.tone} focus-ring`}>
         <div className="home-article-visual">
           <img src={item.image} alt="" className="home-article-image" />

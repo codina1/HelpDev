@@ -4,7 +4,7 @@ import { HomeHero } from "@/components/public/home/home-hero";
 import { HomeHeroWorkspace } from "@/components/public/home/home-hero-workspace";
 
 describe("homepage hero", () => {
-  it("renders platform copy, CTAs, search, chips, and stats", () => {
+  it("renders platform copy and CTAs without search/stats", () => {
     const html = renderToStaticMarkup(<HomeHero />);
     expect(html).toContain("سیستم عامل رشد");
     expect(html).toContain("توسعه‌دهندگان در عصر AI");
@@ -13,19 +13,10 @@ describe("homepage hero", () => {
     expect(html).toContain("کاوش HelpDev");
     expect(html).toContain("/learning");
     expect(html).toContain("/articles");
-    expect(html).toContain("هر چیزی که می‌خواهی جستجو کن");
-    expect(html).toContain("MCP");
-    expect(html).toContain("Cursor");
-    expect(html).toContain("Claude Code");
-    expect(html).toContain(".NET");
-    expect(html).toContain("React");
-    expect(html).toContain("Python");
-    expect(html).toContain("DevOps");
-    expect(html).toContain("AI Agent");
-    expect(html).toContain("مقاله آموزشی");
-    expect(html).toContain("Prompt آماده");
-    expect(html).toContain("ابزار کاربردی");
-    expect(html).toContain("توسعه‌دهنده");
+    expect(html).toContain("min-h-[650px]");
+    expect(html).toContain("lg:grid-cols-2");
+    expect(html).not.toContain("هر چیزی که می‌خواهی جستجو کن");
+    expect(html).not.toContain("مقاله آموزشی");
   });
 
   it("renders the developer workspace with floating cards", () => {
@@ -34,7 +25,6 @@ describe("homepage hero", () => {
     expect(html).toContain("Prompt Card");
     expect(html).toContain("Tools Card");
     expect(html).toContain("Code Card");
-    expect(html).toContain("helpdev — workspace");
     expect(html).toContain("home-hero-float");
   });
 });

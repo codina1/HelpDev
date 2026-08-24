@@ -22,12 +22,11 @@ const published: ContentSummaryDto = {
 describe("homepage latest articles", () => {
   it("renders heading, view-all, and HelpDev topic cards when catalog is empty", () => {
     const html = renderToStaticMarkup(<HomeArticlesSection articles={[]} />);
-    expect(html).toContain("تازه‌ترین مقالات");
+    expect(html).toContain("جدیدترین مقالات");
     expect(html).toContain("/home/cover-");
     expect(html).toContain("همه مقالات");
     expect(html).toContain("/articles");
-    expect(html).toContain("home-articles-scroller");
-    expect(html).toContain("home-article-item");
+    expect(html).toContain("lg:grid-cols-5");
     for (const item of buildHomeArticles([])) {
       expect(html).toContain(item.title);
       expect(html).toContain(item.excerpt);

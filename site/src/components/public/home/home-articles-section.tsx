@@ -70,17 +70,6 @@ export const HOME_ARTICLE_TOPICS: readonly HomeArticleItem[] = [
     tone: "cyan",
     image: HOME_COVERS.frontend,
   },
-  {
-    id: "question-to-path",
-    title: "از سؤال فنی تا مسیر اجرا با گردش‌کار پنج‌مرحله‌ای",
-    excerpt: "درک مسئله، تحلیل معماری، تصمیم فناوری، نقشه اجرا و راه‌حل — روی دانش HelpDev.",
-    href: "/search?q=%D8%A7%D8%B2%20%D8%B3%D8%A4%D8%A7%D9%84%20%D8%AA%D8%A7%20%D8%B1%D8%A7%D9%87%DA%A9%D8%A7%D8%B1",
-    category: "معماری",
-    readingTime: estimateReadingLabel("از سؤال فنی تا مسیر اجرا با گردش‌کار پنج‌مرحله‌ای"),
-    date: "",
-    tone: "blue",
-    image: HOME_COVERS.architecture,
-  },
 ];
 
 type HomeArticlesSectionProps = {
@@ -130,41 +119,33 @@ export function buildHomeArticles(articles: ContentSummaryDto[]): HomeArticleIte
 }
 
 /**
- * Homepage latest engineering articles — published catalog first.
+ * Large latest-articles block — image, category, title, reading time.
  */
 export function HomeArticlesSection({ articles = [] }: HomeArticlesSectionProps) {
   const items = buildHomeArticles(articles);
 
   return (
     <PublicSection
-      className="home-articles home-reveal"
+      className="home-articles home-reveal py-10 sm:py-12 lg:py-14"
       containerSize="wide"
       aria-labelledby="home-articles-heading"
     >
       <div className="mb-8 flex flex-wrap items-end justify-between gap-3 sm:mb-10">
         <div className="max-w-xl text-start">
-          <h2 id="home-articles-heading" className="home-section-title">
-            تازه‌ترین مقالات
+          <p className="text-[12px] font-bold tracking-wide text-[#06B6D4]">مقالات</p>
+          <h2 id="home-articles-heading" className="mt-1 text-[1.45rem] font-extrabold text-white sm:text-[1.7rem]">
+            جدیدترین مقالات
           </h2>
-          <p
-            className="mt-3 text-[color:var(--home-text-muted)]"
-            style={{
-              fontSize: "var(--home-body-size)",
-              lineHeight: "var(--home-body-leading)",
-            }}
-          >
+          <p className="mt-3 text-[14px] leading-7 text-[#94A3B8]">
             تازه‌ترین دانش فنی HelpDev — معماری، هوش مصنوعی، بک‌اند و مسیر اجرا.
           </p>
         </div>
-        <Link
-          href="/articles"
-          className="home-section-more focus-ring"
-        >
+        <Link href="/articles" className="focus-ring text-[12px] font-semibold text-[#94A3B8] no-underline hover:text-white">
           همه مقالات
         </Link>
       </div>
 
-      <ul className="home-articles-scroller">
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
         {items.map((item) => (
           <HomeArticleCard key={item.id} item={item} />
         ))}

@@ -120,7 +120,7 @@
   --home-container: 100%;
   --home-container-wide: 100%;
   --home-container-narrow: 48rem;
-  --home-header-height: 72px;
+  --home-header-height: 64px;
 
   --home-font-family: var(--font-vazirmatn), Tahoma, system-ui, sans-serif;
   --home-display-size: 2.75rem;

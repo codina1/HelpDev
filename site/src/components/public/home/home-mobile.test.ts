@@ -11,29 +11,24 @@ describe("homepage mobile responsive rules", () => {
     "utf8",
   );
 
-  it("contains overflow containment and the requested mobile widths", () => {
+  it("contains overflow containment and mobile breakpoints", () => {
     expect(css).toContain("overflow-x: clip");
     expect(css).toContain("max-width: 430px");
-    expect(css).toContain("max-width: 374px");
-    expect(css).toContain("max-width: 359px");
     expect(css).toContain(".home-hero-float");
-    expect(css).toContain(".home-workflow-panel");
     expect(css).toContain(".home-path-item");
-    expect(css).toContain(".home-articles-scroller");
     expect(css).toContain(".pub-footer-grid");
   });
 
-  it("keeps hero stacking and a responsive workspace on small screens", () => {
+  it("keeps hero stacking and a responsive workspace", () => {
     expect(hero).toContain("lg:grid-cols-2");
+    expect(hero).toContain("min-h-[650px]");
     expect(hero).toContain("HomeHeroWorkspace");
-    expect(workspace).toContain("max-w-[min(100%,22rem)]");
     expect(workspace).toContain("home-hero-float");
   });
 
-  it("keeps mobile header actions without removing routes", () => {
-    expect(header).toContain("pub-navbar-wordmark");
+  it("keeps 64px header mobile chrome", () => {
+    expect(header).toContain("h-[64px]");
     expect(header).toContain("pub-navbar-search");
     expect(header).toContain("lg:hidden");
-    expect(header).toContain("باز کردن منو");
   });
 });

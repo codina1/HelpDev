@@ -8,26 +8,31 @@ describe("public homepage composition", () => {
     "utf8",
   );
 
-  it("keeps the core homepage and omits the extra stacked sections", () => {
-    expect(source).toContain("HomeHero");
-    expect(source).toContain("HomeQuickAccessSection");
-    expect(source).toContain("HomeWorkflowSection");
-    expect(source).toContain("HomeValueSection");
-    expect(source).toContain("HomePathsSection");
-    expect(source).toContain("HomeArticlesSection");
-    expect(source).toContain("HomeTrustSection");
-    expect(source).toContain("HomeNewsletterSection");
+  it("follows the design-reference section order", () => {
+    const order = [
+      "HomeHero",
+      "HomeSearchSection",
+      "HomeStatsSection",
+      "HomeQuickAccessSection",
+      "HomeHubSection",
+      "HomeCategoriesSection",
+      "HomeArticlesSection",
+      "HomeNewsSection",
+      "HomePathsSection",
+      "HomeNewsletterSection",
+    ];
+
+    let cursor = -1;
+    for (const name of order) {
+      const index = source.indexOf(name);
+      expect(index, name).toBeGreaterThan(cursor);
+      cursor = index;
+    }
+
+    expect(source).not.toContain("HomeWorkflowSection");
+    expect(source).not.toContain("HomeValueSection");
+    expect(source).not.toContain("HomeTrustSection");
     expect(source).not.toContain("HomeStatsStrip");
     expect(source).not.toContain("PersonalizedHero");
-    expect(source).not.toContain("EngineeringIntelligenceSection");
-    expect(source).not.toContain("AiWorkflowDemo");
-    expect(source).not.toContain("KnowledgeShowcaseV2");
-    expect(source).not.toContain("ToolExperienceV2");
-    expect(source).not.toContain("RoadmapExperienceV2");
-    expect(source).not.toContain("DeveloperJourneyTimeline");
-    expect(source).not.toContain("EngineeringCaseStudies");
-    expect(source).not.toContain("AiDecisionDemo");
-    expect(source).not.toContain("DeveloperIdentitySection");
-    expect(source).not.toContain("KnowledgeSearchSection");
   });
 });

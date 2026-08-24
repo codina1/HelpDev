@@ -14,7 +14,7 @@ const HEADER_NAV = [{ href: "/", label: "خانه" }, ...PUBLIC_PRODUCTS_NAV] as
 const THEME_STORAGE_KEY = "helpdev-public-theme";
 
 /**
- * Public sticky header — 72px, glass blur, RTL.
+ * Public sticky header — 64px, glass blur, RTL.
  * Desktop: Logo | Nav | Search + Theme + Auth
  * Mobile: Logo | Search | Menu
  */
@@ -51,7 +51,7 @@ export function PublicHeader() {
         className="pub-navbar sticky top-0 z-50 border-b border-white/[0.08] bg-[#050816]/70 backdrop-blur-xl backdrop-saturate-150"
         style={{ minHeight: "var(--home-header-height)" }}
       >
-        <PublicContainer size="wide" className="pub-navbar-inner h-[72px]">
+        <PublicContainer size="wide" className="pub-navbar-inner h-[64px]">
           {/* Start (right in RTL): Logo */}
           <Link
             href="/"
