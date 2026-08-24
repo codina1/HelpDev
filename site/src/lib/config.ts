@@ -12,7 +12,7 @@
 
 const CANONICAL_SUFFIX = "/api/v1";
 const DEV_FALLBACK_ORIGIN = "http://localhost:5221";
-const PRODUCTION_FALLBACK_ORIGIN = "https://helpdevapi.liara.run";
+const PRODUCTION_FALLBACK_ORIGIN = "https://api.helpdev.ir";
 
 function stripTrailingSlashes(value: string): string {
   return value.replace(/\/+$/, "");

@@ -4,7 +4,7 @@ import { assertValidApiBaseUrl, resolveApiBaseUrl } from "./config";
 describe("resolveApiBaseUrl", () => {
   it("uses the deployed Liara API when a Production build has no injected public env", () => {
     expect(resolveApiBaseUrl({ NODE_ENV: "production" })).toBe(
-      "https://helpdevapi.liara.run/api/v1",
+      "https://api.helpdev.ir/api/v1",
     );
   });
 

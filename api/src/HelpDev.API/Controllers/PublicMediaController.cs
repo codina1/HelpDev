@@ -68,7 +68,7 @@ public sealed class PublicMediaController : ControllerBase
         Response.Headers.CacheControl = "public, max-age=31536000, immutable";
         Response.Headers.XContentTypeOptions = "nosniff";
         // Media is intentionally embedded by the public site on a different
-        // origin (helpdev.ir -> helpdevapi.liara.run).
+        // origin (helpdev.ir -> api.helpdev.ir).
         Response.Headers["Cross-Origin-Resource-Policy"] = "cross-origin";
         // inline for images; filename is server-generated so header injection risk is low,
         // but still strip quotes/CRLF defensively.

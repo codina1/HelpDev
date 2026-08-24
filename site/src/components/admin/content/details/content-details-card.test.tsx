@@ -8,7 +8,7 @@ const content: ContentDetail = {
   title: "خبر آزمایشی",
   slug: "test-news",
   body: "متن خبر",
-  coverImage: "https://helpdevapi.liara.run/media/2026/08/cover.png",
+  coverImage: "https://api.helpdev.ir/media/2026/08/cover.png",
   type: "News",
   typeLabel: "خبر",
   authorId: "author-1",
