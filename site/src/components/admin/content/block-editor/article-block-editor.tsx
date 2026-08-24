@@ -452,15 +452,21 @@ export function ArticleBlockEditor({ initial }: { initial?: AdminContentDetail }
       {editorReady && editorRef.current?.getEditor() ? (
         <BlockSettingsPanel editor={editorRef.current.getEditor()!} />
       ) : null}
-      <section className="space-y-2">
-        <h2 className="adm-text text-[14px] font-bold">فهرست مطالب</h2>
+      <section className="space-y-1.5">
+        <h2 className="adm-text text-[12px] font-bold">فهرست مطالب</h2>
         {outline.length === 0 ? (
-          <p className="adm-subtle text-[12px]">هنوز عنوانی در متن نیست.</p>
+          <p className="adm-subtle text-[11px]">هنوز عنوانی در متن نیست.</p>
         ) : (
-          <ul className="space-y-1">
+          <ul className="space-y-0">
             {outline.filter((item) => item.level === 2 || item.level === 3).map((item) => (
-              <li key={item.id} className="adm-text text-[12px]" style={{ paddingInlineStart: (item.level - 2) * 12 }}>
-                <a href={`#${item.id}`}>{item.text}</a>
+              <li
+                key={item.id}
+                className="adm-text leading-5"
+                style={{ paddingInlineStart: (item.level - 2) * 8 }}
+              >
+                <a className="block truncate py-0.5 text-[11px] font-medium" href={`#${item.id}`}>
+                  {item.text}
+                </a>
               </li>
             ))}
           </ul>

@@ -74,7 +74,7 @@ export function EditorToolbar({
           />
         </label>
         <select
-          className="adm-input h-8 min-w-[4.5rem] py-0 text-[11px]"
+          className="adm-input h-9 min-w-[5.5rem] py-0 text-[12px]"
           aria-label="رنگ متن"
           disabled={disabled}
           value={String(editor.getAttributes("textStyle").color ?? "")}
@@ -103,7 +103,7 @@ export function EditorToolbar({
         <ToolBtn label="چک‌لیست" active={editor.isActive("taskList")} disabled={disabled} onClick={() => editor.chain().focus().toggleTaskList().run()}>☑</ToolBtn>
         <ToolBtn label="نقل‌قول" active={editor.isActive("blockquote")} disabled={disabled} onClick={() => editor.chain().focus().toggleBlockquote().run()}>❝</ToolBtn>
       </div>
-      <div className={`${styles.toolbarGroup} ${moreOpen ? "" : "max-[1100px]:hidden"}`}>
+      <div className={styles.toolbarGroup}>
         <ToolBtn label="پیوند" shortcut="Ctrl+K" active={editor.isActive("link")} disabled={disabled} onClick={onOpenLink}>🔗</ToolBtn>
         <ToolBtn label="تصویر" disabled={disabled} onClick={onOpenImage}>🖼</ToolBtn>
         <ToolBtn label="جدول" active={editor.isActive("table")} disabled={disabled} onClick={onInsertTable}>▦</ToolBtn>
@@ -114,7 +114,7 @@ export function EditorToolbar({
         <ToolBtn label="پاک‌کردن قالب" disabled={disabled} onClick={() => editor.chain().focus().unsetAllMarks().clearNodes().run()}>Tx</ToolBtn>
         {editor.isActive("codeBlock") ? (
           <select
-            className="adm-input h-8 min-w-[7rem] py-0 text-[11px]"
+            className="adm-input h-9 min-w-[7.5rem] py-0 text-[12px]"
             aria-label="زبان بلوک کد"
             disabled={disabled}
             value={String(editor.getAttributes("codeBlock").language ?? "javascript")}
