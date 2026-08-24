@@ -1,12 +1,16 @@
 import type { NavItem } from "@/lib/constants";
 
-/** Compact product nav for Sprint 50B public header. */
+/**
+ * Compact product nav for the public header (RTL order as shown).
+ * Home is prepended in the header itself.
+ */
 export const PUBLIC_PRODUCTS_NAV: NavItem[] = [
   { href: "/articles", label: "مقالات" },
-  { href: "/news", label: "اخبار" },
-  { href: "/toolbox", label: "ابزارها" },
-  { href: "/roadmap", label: "نقشه راه" },
   { href: "/learning", label: "یادگیری" },
+  { href: "/roadmap", label: "Roadmap" },
+  { href: "/prompt-lab", label: "Prompt Lab" },
+  { href: "/toolbox", label: "ابزارها" },
+  { href: "/news", label: "اخبار" },
 ];
 
 export const PUBLIC_BOTTOM_NAV = [

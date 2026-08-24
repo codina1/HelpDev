@@ -27,10 +27,11 @@ describe("homepage mobile responsive rules", () => {
     expect(hero).toContain("max-w-[min(100%,18.5rem)]");
   });
 
-  it("tightens header and stats without removing routes", () => {
+  it("keeps mobile header actions and stats without removing routes", () => {
     expect(header).toContain("pub-navbar-wordmark");
     expect(header).toContain("pub-navbar-search");
     expect(header).toContain("lg:hidden");
+    expect(header).toContain("باز کردن منو");
     expect(stat).toContain("home-stat");
     expect(stat).toContain("basis-[calc(50%-1px)]");
   });
