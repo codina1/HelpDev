@@ -24,7 +24,12 @@ describe("homepage quick access", () => {
     expect(html).toContain("h-16 w-16");
     expect(html).toContain("linear-gradient(145deg, #111827, #080d1c)");
     expect(html).toContain("text-[#A855F7]");
+    expect(html).toContain("absolute bottom-5 left-1/2");
+    expect(html).toContain("h-6 w-6");
+    expect(html).toContain("pb-[68px]");
+    expect(html).toContain("group-hover:translate-y-1");
     expect(html).toContain('width="64"');
+    expect(html).toContain('width="24"');
     expect(html).not.toContain("مسیرهای اصلی HelpDev");
 
     for (const item of QUICK_ACCESS_ITEMS) {

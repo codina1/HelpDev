@@ -89,7 +89,7 @@ function QuickAccessCard({ item }: { item: QuickAccessItem }) {
   return (
     <Link
       href={item.href}
-      className="group focus-ring relative flex h-[180px] w-full max-w-[220px] flex-col overflow-hidden rounded-[22px] border border-white/[0.08] p-5 no-underline transition duration-300 hover:-translate-y-2 hover:border-[rgba(124,58,237,0.55)] hover:shadow-[0_0_35px_rgba(124,58,237,0.25)] lg:w-[220px]"
+      className="group focus-ring relative flex h-[180px] w-full max-w-[220px] flex-col overflow-hidden rounded-[22px] border border-white/[0.08] px-5 pb-[68px] pt-5 no-underline transition duration-300 hover:-translate-y-2 hover:border-[rgba(124,58,237,0.55)] hover:shadow-[0_0_35px_rgba(124,58,237,0.25)] lg:w-[220px]"
       style={{
         backgroundImage: "linear-gradient(145deg, #111827, #080d1c)",
       }}
@@ -116,12 +116,12 @@ function QuickAccessCard({ item }: { item: QuickAccessItem }) {
       <h3 className="relative mt-3 text-start text-[18px] font-bold leading-snug text-white">
         {item.title}
       </h3>
-      <p className="relative mt-1 line-clamp-2 flex-1 text-start text-[13px] leading-5 text-[#94A3B8]">
+      <p className="relative mt-1 line-clamp-2 text-start text-[13px] leading-5 text-[#94A3B8]">
         {item.description}
       </p>
 
       <span
-        className="relative mt-auto inline-flex text-[#A855F7] transition duration-300 group-hover:translate-x-[-3px]"
+        className="absolute bottom-5 left-1/2 flex h-6 w-6 -translate-x-1/2 items-center justify-center text-[#A855F7] transition duration-300 group-hover:translate-x-[-50%] group-hover:translate-y-1"
         aria-hidden
       >
         <ArrowIcon />
@@ -283,8 +283,8 @@ function Icon3D({ tone }: { tone: QuickAccessItem["tone"] }) {
 
 function ArrowIcon(): ReactNode {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
-      <path d="M15 6 9 12l6 6" />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
+      <path d="M12 5v14M12 19l-5-5M12 19l5-5" />
     </svg>
   );
 }
