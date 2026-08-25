@@ -1,48 +1,53 @@
 import type { ReactNode } from "react";
 
 /**
- * Large floating AI developer workspace (≈600×500 on desktop).
- * Laptop center · Prompt TR · Tools BR · AI TL · Code BL
+ * 3D SaaS product workspace — 620×520 on desktop.
+ * Visual: AI TL · Prompt TR · Code BL · Tools BR · Laptop center
  */
 export function HomeHeroWorkspace() {
   return (
     <div
-      className="home-hero-workspace relative mx-auto h-[340px] w-full max-w-[360px] sm:h-[420px] sm:max-w-[480px] lg:h-[500px] lg:w-[600px] lg:max-w-none"
+      className="home-hero-workspace relative mx-auto h-[320px] w-full max-w-[340px] sm:h-[400px] sm:max-w-[460px] lg:h-[520px] lg:w-[620px] lg:max-w-none"
       role="img"
-      aria-label="فضای کار توسعه‌دهنده با لپ‌تاپ، ویرایشگر کد و کارت‌های AI، Prompt، Tools و Code"
+      aria-label="فضای کار توسعه‌دهنده با لپ‌تاپ و کارت‌های شناور AI، Prompt، Code و Tools"
     >
+      {/* Glow layers */}
       <div
-        className="pointer-events-none absolute inset-[-8%] rounded-full bg-[radial-gradient(circle_at_center,rgba(124,58,237,0.45),transparent_58%)] blur-3xl"
+        className="pointer-events-none absolute inset-[-12%] rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(124,58,237,0.5),transparent_58%)] blur-3xl"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-[8%] rounded-full bg-[radial-gradient(circle_at_70%_30%,rgba(6,182,212,0.28),transparent_55%)] blur-2xl"
+        className="pointer-events-none absolute -end-[4%] top-[8%] h-[55%] w-[55%] rounded-full bg-[radial-gradient(circle,rgba(6,182,212,0.32),transparent_60%)] blur-3xl"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-x-[12%] bottom-[2%] h-[20%] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.35),transparent_70%)] blur-md"
+        className="pointer-events-none absolute inset-[12%] rounded-[40%] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.35),transparent_70%)] blur-2xl"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-x-[14%] bottom-[4%] h-[18%] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.4),transparent_70%)] blur-md"
         aria-hidden
       />
 
-      {/* Laptop — larger 3D-ish center piece */}
-      <div className="home-hero-float-slow absolute inset-x-[12%] top-[14%] z-[2] sm:inset-x-[14%] sm:top-[12%] lg:inset-x-[15%] lg:top-[10%]">
+      {/* Laptop — central 3D product */}
+      <div className="home-hero-float-slow absolute inset-x-[11%] top-[16%] z-[2] sm:inset-x-[13%] sm:top-[14%] lg:inset-x-[14%] lg:top-[12%]">
         <div
-          className="overflow-hidden rounded-t-2xl border border-white/12 bg-[#0B1224] shadow-[0_32px_80px_rgba(2,6,23,0.75),0_0_56px_rgba(124,58,237,0.32)]"
-          style={{ transform: "perspective(900px) rotateX(6deg)" }}
+          className="overflow-hidden rounded-t-[18px] border border-white/15 bg-[#0B1224] shadow-[0_40px_90px_rgba(2,6,23,0.8),0_0_60px_rgba(124,58,237,0.35),0_0_40px_rgba(6,182,212,0.12)]"
+          style={{ transform: "perspective(1100px) rotateX(8deg) rotateY(-4deg)" }}
         >
-          <div className="flex items-center gap-1.5 border-b border-white/[0.06] bg-[#070B16] px-3.5 py-2.5">
-            <span className="h-2 w-2 rounded-full bg-[#F43F5E]/85" />
-            <span className="h-2 w-2 rounded-full bg-[#FBBF24]/85" />
-            <span className="h-2 w-2 rounded-full bg-[#34D399]/85" />
+          <div className="flex items-center gap-1.5 border-b border-white/[0.07] bg-[#070B16] px-4 py-2.5">
+            <span className="h-2 w-2 rounded-full bg-[#F43F5E]/9" />
+            <span className="h-2 w-2 rounded-full bg-[#FBBF24]/9" />
+            <span className="h-2 w-2 rounded-full bg-[#34D399]/9" />
             <span className="ms-2 truncate font-mono text-[10px] text-[#64748B]">helpdev — workspace</span>
           </div>
-          <div className="grid grid-cols-[auto_1fr] gap-0 bg-[#050816] p-3.5 sm:p-4" dir="ltr">
-            <div className="select-none pe-3 font-mono text-[9px] leading-[1.6] text-[#334155] sm:text-[10px]">
-              {Array.from({ length: 10 }, (_, i) => (
+          <div className="grid grid-cols-[auto_1fr] gap-0 bg-[#050816] p-4 sm:p-5" dir="ltr">
+            <div className="select-none pe-3 font-mono text-[9px] leading-[1.65] text-[#334155] sm:text-[10px]">
+              {Array.from({ length: 11 }, (_, i) => (
                 <div key={i}>{i + 1}</div>
               ))}
             </div>
-            <pre className="overflow-hidden font-mono text-[9px] leading-[1.6] text-[#CBD5E1] sm:text-[10px]">
+            <pre className="overflow-hidden font-mono text-[9px] leading-[1.65] text-[#CBD5E1] sm:text-[10.5px]">
               <code>
                 <span className="text-[#C084FC]">async</span>{" "}
                 <span className="text-[#67E8F9]">function</span>{" "}
@@ -74,33 +79,16 @@ export function HomeHeroWorkspace() {
           </div>
         </div>
         <div
-          className="relative mx-auto h-3 w-[112%] -translate-x-[5%] rounded-b-xl bg-gradient-to-b from-[#1E293B] to-[#0F172A] shadow-[0_18px_40px_rgba(2,6,23,0.55)]"
-          style={{ transform: "perspective(900px) rotateX(6deg)" }}
+          className="relative mx-auto h-3.5 w-[114%] -translate-x-[6%] rounded-b-2xl bg-gradient-to-b from-[#1E293B] via-[#152033] to-[#0B1224] shadow-[0_22px_48px_rgba(2,6,23,0.65)]"
+          style={{ transform: "perspective(1100px) rotateX(8deg) rotateY(-4deg)" }}
         >
-          <div className="absolute inset-x-[38%] top-1 h-1 rounded-full bg-white/15" />
+          <div className="absolute inset-x-[36%] top-1.5 h-1 rounded-full bg-white/20" />
         </div>
       </div>
 
+      {/* Visual Top-Left: AI */}
       <FloatingCard
-        className="home-hero-float start-0 top-[4%] z-[3] sm:start-[2%]"
-        delay="0.4s"
-        accent="cyan"
-        label="PROMPT"
-        title="Cursor"
-        icon={<PromptIcon />}
-      />
-
-      <FloatingCard
-        className="home-hero-float start-0 bottom-[2%] z-[3] sm:start-[1%]"
-        delay="1.1s"
-        accent="cyan"
-        label="TOOLS"
-        title="JSON · JWT · Regex"
-        icon={<ToolsIcon />}
-      />
-
-      <FloatingCard
-        className="home-hero-float end-0 top-[2%] z-[3] sm:end-[2%]"
+        className="home-hero-float left-0 top-[2%] z-[3] sm:left-[1%]"
         delay="0s"
         accent="purple"
         label="AI"
@@ -108,13 +96,34 @@ export function HomeHeroWorkspace() {
         icon={<SparkIcon />}
       />
 
+      {/* Visual Top-Right: Prompt */}
       <FloatingCard
-        className="home-hero-float end-0 bottom-[0%] z-[3] sm:end-[1%]"
-        delay="1.6s"
+        className="home-hero-float right-0 top-[4%] z-[3] sm:right-[1%]"
+        delay="0.45s"
+        accent="cyan"
+        label="PROMPT"
+        title="Cursor"
+        icon={<PromptIcon />}
+      />
+
+      {/* Visual Bottom-Left: Code */}
+      <FloatingCard
+        className="home-hero-float bottom-[1%] left-0 z-[3] sm:left-[1%]"
+        delay="1.5s"
         accent="purple"
         label="CODE"
         title="Code"
         icon={<CodeIcon />}
+      />
+
+      {/* Visual Bottom-Right: Tools */}
+      <FloatingCard
+        className="home-hero-float bottom-[2%] right-0 z-[3] sm:right-[1%]"
+        delay="1.05s"
+        accent="cyan"
+        label="TOOLS"
+        title="JSON · JWT · Regex"
+        icon={<ToolsIcon />}
       />
     </div>
   );
@@ -131,23 +140,23 @@ type FloatingCardProps = {
 
 const ACCENT: Record<FloatingCardProps["accent"], string> = {
   purple:
-    "border-[rgba(124,58,237,0.45)] text-[#C4B5FD] shadow-[0_12px_36px_rgba(124,58,237,0.28),0_0_24px_rgba(124,58,237,0.18)]",
+    "border-[rgba(124,58,237,0.5)] text-[#C4B5FD] shadow-[0_16px_40px_rgba(124,58,237,0.32),0_0_28px_rgba(124,58,237,0.2)]",
   cyan:
-    "border-[rgba(6,182,212,0.4)] text-[#67E8F9] shadow-[0_12px_36px_rgba(6,182,212,0.22),0_0_24px_rgba(6,182,212,0.14)]",
+    "border-[rgba(6,182,212,0.45)] text-[#67E8F9] shadow-[0_16px_40px_rgba(6,182,212,0.26),0_0_28px_rgba(6,182,212,0.16)]",
 };
 
 function FloatingCard({ className = "", delay, accent, label, title, icon }: FloatingCardProps) {
   return (
     <div
       className={[
-        "absolute w-[8.25rem] rounded-[18px] border bg-[rgba(15,23,42,0.8)] p-3 backdrop-blur-md sm:w-[9.5rem] sm:p-3.5",
+        "absolute w-[8.5rem] rounded-[18px] border bg-[rgba(15,23,42,0.8)] p-3 backdrop-blur-md sm:w-[9.75rem] sm:p-3.5",
         ACCENT[accent],
         className,
       ].join(" ")}
       style={{ animationDelay: delay }}
     >
       <div className="mb-1.5 flex items-center gap-1.5">
-        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/[0.06]">{icon}</span>
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/[0.07]">{icon}</span>
         <span className="font-mono text-[9px] font-bold tracking-wide opacity-90">{label}</span>
       </div>
       <p className="text-[12px] font-bold leading-4 text-white sm:text-[13px]">{title}</p>
