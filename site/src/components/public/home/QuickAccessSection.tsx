@@ -113,10 +113,10 @@ function QuickAccessCard({ item }: { item: QuickAccessItem }) {
         <Icon3D tone={item.tone} />
       </span>
 
-      <h3 className="relative mt-3 text-start text-[18px] font-bold leading-snug text-white">
+      <h3 className="relative mt-3 text-center text-[18px] font-bold leading-snug text-white">
         {item.title}
       </h3>
-      <p className="relative mt-1 line-clamp-2 text-start text-[13px] leading-5 text-[#94A3B8]">
+      <p className="relative mt-1 line-clamp-2 text-center text-[13px] leading-5 text-[#94A3B8]">
         {item.description}
       </p>
 
