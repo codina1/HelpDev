@@ -13,7 +13,7 @@ export const HOME_TOPIC_CHIPS = [
   "AI Agent",
 ] as const;
 
-/** Large search surface + topic chips under the hero. */
+/** Search ~70% width + dark-glass topic chips. */
 export function HomeSearchSection() {
   return (
     <PublicSection className="home-search home-reveal pt-0 sm:pt-1" bare aria-label="جستجوی دانش">
@@ -23,14 +23,15 @@ export function HomeSearchSection() {
           aria-label="جستجوی HelpDev"
           action="/search"
           method="get"
-          className="mx-auto w-full max-w-3xl"
+          className="mx-auto w-full max-w-none lg:w-[70%]"
         >
           <label className="sr-only" htmlFor="home-platform-search">
             جستجو
           </label>
           <div className="relative">
+            {/* Icon on the right in RTL */}
             <span
-              className="pointer-events-none absolute inset-y-0 start-4 flex items-center text-[#06B6D4]"
+              className="pointer-events-none absolute inset-y-0 start-4 flex items-center text-[#94A3B8]"
               aria-hidden
             >
               <SearchIcon />
@@ -40,14 +41,8 @@ export function HomeSearchSection() {
               name="q"
               type="search"
               placeholder="هر چیزی که می‌خواهی جستجو کن..."
-              className="focus-ring h-14 w-full rounded-2xl border border-white/[0.08] bg-[#0B1224] pe-24 ps-12 text-[14px] text-white outline-none placeholder:text-[#64748B] focus:border-[rgba(124,58,237,0.55)] focus:shadow-[0_0_0_3px_rgba(124,58,237,0.18),0_0_32px_rgba(124,58,237,0.2)] sm:h-16 sm:pe-28 sm:text-[15px]"
+              className="focus-ring h-14 w-full rounded-2xl border border-white/10 bg-[#0B1224] pe-4 ps-12 text-[14px] text-white outline-none placeholder:text-[#64748B] focus:border-[rgba(124,58,237,0.5)] focus:shadow-[0_0_0_3px_rgba(124,58,237,0.16),0_0_28px_rgba(124,58,237,0.18)]"
             />
-            <button
-              type="submit"
-              className="focus-ring absolute inset-y-2 end-2 inline-flex items-center rounded-xl bg-[#7C3AED] px-3.5 text-[12px] font-bold text-white shadow-[0_0_20px_rgba(124,58,237,0.35)] transition hover:bg-[#6D28D9] sm:px-4 sm:text-[13px]"
-            >
-              جستجو
-            </button>
           </div>
         </form>
 
@@ -59,7 +54,7 @@ export function HomeSearchSection() {
             <li key={topic}>
               <Link
                 href={`/search?q=${encodeURIComponent(topic)}`}
-                className="focus-ring inline-flex rounded-full border border-white/[0.08] bg-[#0B1224] px-3.5 py-1.5 text-[12px] font-semibold text-[#94A3B8] no-underline transition hover:border-[rgba(124,58,237,0.45)] hover:bg-[rgba(124,58,237,0.12)] hover:text-white hover:shadow-[0_0_18px_rgba(124,58,237,0.25)]"
+                className="focus-ring inline-flex rounded-full border border-white/[0.08] bg-[#0B1224]/80 px-3.5 py-1.5 text-[12px] font-semibold text-[#94A3B8] no-underline backdrop-blur transition hover:border-[rgba(124,58,237,0.45)] hover:bg-[rgba(124,58,237,0.12)] hover:text-white hover:shadow-[0_0_18px_rgba(124,58,237,0.28)]"
               >
                 {topic}
               </Link>

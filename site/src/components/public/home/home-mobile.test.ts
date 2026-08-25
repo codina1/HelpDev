@@ -21,8 +21,9 @@ describe("homepage mobile responsive rules", () => {
 
   it("keeps hero stacking and a responsive workspace", () => {
     expect(hero).toContain("lg:grid-cols-2");
-    expect(hero).toContain("min-h-[650px]");
+    expect(hero).toContain("min-h-[560px]");
     expect(hero).toContain("HomeHeroWorkspace");
+    expect(hero).toContain("order-1");
     expect(workspace).toContain("home-hero-float");
   });
 
@@ -30,5 +31,6 @@ describe("homepage mobile responsive rules", () => {
     expect(header).toContain("h-[64px]");
     expect(header).toContain("pub-navbar-search");
     expect(header).toContain("lg:hidden");
+    expect(header).toContain("rounded-xl");
   });
 });

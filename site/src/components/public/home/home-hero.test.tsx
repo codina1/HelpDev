@@ -9,14 +9,24 @@ describe("homepage hero", () => {
     expect(html).toContain("سیستم عامل رشد");
     expect(html).toContain("توسعه‌دهندگان در عصر AI");
     expect(html).toContain("یاد بگیر، ابزار بساز و سریع‌تر توسعه بده");
+    expect(html).toContain("HelpDev مجموعه‌ای از آموزش‌ها");
     expect(html).toContain("شروع مسیر");
     expect(html).toContain("کاوش HelpDev");
     expect(html).toContain("/learning");
     expect(html).toContain("/articles");
-    expect(html).toContain("min-h-[650px]");
+    expect(html).toContain("min-h-[560px]");
+    expect(html).toContain("lg:text-[56px]");
     expect(html).toContain("lg:grid-cols-2");
     expect(html).not.toContain("هر چیزی که می‌خواهی جستجو کن");
     expect(html).not.toContain("مقاله آموزشی");
+  });
+
+  it("stacks illustration above copy on mobile", () => {
+    const html = renderToStaticMarkup(<HomeHero />);
+    expect(html).toContain("order-1");
+    expect(html).toContain("order-2");
+    expect(html).toContain("lg:order-1");
+    expect(html).toContain("lg:order-2");
   });
 
   it("renders the developer workspace with floating cards", () => {

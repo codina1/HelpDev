@@ -14,9 +14,7 @@ const HEADER_NAV = [{ href: "/", label: "خانه" }, ...PUBLIC_PRODUCTS_NAV] as
 const THEME_STORAGE_KEY = "helpdev-public-theme";
 
 /**
- * Public sticky header — 64px, glass blur, RTL.
- * Desktop: Logo | Nav | Search + Theme + Auth
- * Mobile: Logo | Search | Menu
+ * Premium SaaS navbar — 64px, glass blur, RTL, Linear/Vercel density.
  */
 export function PublicHeader() {
   const pathname = usePathname();
@@ -48,29 +46,29 @@ export function PublicHeader() {
   return (
     <>
       <header
-        className="pub-navbar sticky top-0 z-50 border-b border-white/[0.08] bg-[#050816]/70 backdrop-blur-xl backdrop-saturate-150"
+        className="pub-navbar sticky top-0 z-50 border-b border-white/[0.08] bg-[#050816]/80 backdrop-blur-xl"
         style={{ minHeight: "var(--home-header-height)" }}
       >
         <PublicContainer size="wide" className="pub-navbar-inner h-[64px]">
-          {/* Start (right in RTL): Logo */}
+          {/* Right (RTL start): compact logo */}
           <Link
             href="/"
-            className="pub-navbar-brand focus-ring group inline-flex min-w-0 items-center gap-2.5 no-underline"
+            className="pub-navbar-brand focus-ring group inline-flex min-w-0 items-center gap-2 no-underline"
           >
             <span
-              className="pub-navbar-mark flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#7C3AED] via-[#6366F1] to-[#06B6D4] text-[11px] font-extrabold text-white shadow-[0_0_20px_rgba(124,58,237,0.35)] transition group-hover:shadow-[0_0_28px_rgba(124,58,237,0.5)]"
+              className="pub-navbar-mark flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#7C3AED] text-[10px] font-extrabold text-white shadow-[0_0_16px_rgba(124,58,237,0.4)]"
               aria-hidden
             >
               H
             </span>
-            <span className="pub-navbar-wordmark text-[15px] font-semibold tracking-tight text-white">
+            <span className="pub-navbar-wordmark text-[14px] font-semibold tracking-tight text-white">
               {SITE.name}
             </span>
           </Link>
 
-          {/* Center: Desktop nav */}
+          {/* Center: sparse nav */}
           <nav
-            className="pub-navbar-nav hidden items-center gap-0.5 lg:flex"
+            className="pub-navbar-nav hidden items-center gap-1 xl:gap-2 lg:flex"
             aria-label="ناوبری اصلی"
           >
             {HEADER_NAV.map((item) => {
@@ -80,17 +78,15 @@ export function PublicHeader() {
                   key={item.href}
                   href={item.href}
                   className={[
-                    "pub-navbar-link focus-ring relative rounded-md px-3 py-1.5 text-[13px] font-medium no-underline transition-colors",
-                    active
-                      ? "text-white"
-                      : "text-[#94A3B8] hover:text-white",
+                    "pub-navbar-link focus-ring relative px-2.5 py-1.5 text-[12px] font-medium tracking-wide no-underline transition-colors xl:px-3",
+                    active ? "text-white" : "text-[#94A3B8] hover:text-white",
                   ].join(" ")}
                   aria-current={active ? "page" : undefined}
                 >
                   {item.label}
                   {active ? (
                     <span
-                      className="pointer-events-none absolute inset-x-2 -bottom-px h-px bg-gradient-to-l from-transparent via-[#7C3AED] to-transparent shadow-[0_0_12px_2px_rgba(124,58,237,0.55)]"
+                      className="pointer-events-none absolute inset-x-1.5 -bottom-0.5 h-px rounded-full bg-[#7C3AED] shadow-[0_0_10px_3px_rgba(124,58,237,0.65)]"
                       aria-hidden
                     />
                   ) : null}
@@ -99,8 +95,8 @@ export function PublicHeader() {
             })}
           </nav>
 
-          {/* End (left in RTL): actions */}
-          <div className="pub-navbar-actions flex min-w-0 items-center justify-end gap-1.5">
+          {/* Left (RTL end): search · theme · auth */}
+          <div className="pub-navbar-actions flex min-w-0 items-center justify-end gap-1">
             <IconButton
               className="pub-navbar-search"
               label="جستجو — Ctrl+K"
@@ -109,21 +105,21 @@ export function PublicHeader() {
               <SearchIcon />
             </IconButton>
 
-            <div className="hidden items-center gap-1.5 sm:flex">
+            <div className="hidden sm:block">
               <ThemeToggle />
             </div>
 
             {isReady && user ? (
-              <div className="hidden items-center gap-1.5 md:flex">
+              <div className="hidden items-center gap-1 md:flex">
                 <Link
                   href="/dashboard"
-                  className="pub-navbar-quiet focus-ring hidden rounded-md px-2.5 py-1.5 text-[12px] font-semibold text-[#94A3B8] no-underline transition hover:bg-white/[0.04] hover:text-white lg:inline-flex"
+                  className="focus-ring hidden rounded-md px-2 py-1.5 text-[11px] font-semibold text-[#94A3B8] no-underline transition hover:text-white lg:inline-flex"
                 >
                   داشبورد
                 </Link>
                 <Link
                   href="/profile"
-                  className="pub-navbar-avatar focus-ring inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-full ring-1 ring-white/10"
+                  className="focus-ring inline-flex h-7 w-7 items-center justify-center overflow-hidden rounded-full ring-1 ring-white/10"
                   aria-label={getUserDisplayName(user)}
                 >
                   <UserAvatar user={user} />
@@ -131,7 +127,7 @@ export function PublicHeader() {
                 <button
                   type="button"
                   onClick={logout}
-                  className="pub-navbar-quiet focus-ring hidden rounded-md px-2.5 py-1.5 text-[12px] font-semibold text-[#94A3B8] transition hover:bg-white/[0.04] hover:text-white xl:inline-flex"
+                  className="focus-ring hidden rounded-md px-2 py-1.5 text-[11px] font-semibold text-[#94A3B8] transition hover:text-white xl:inline-flex"
                 >
                   خروج
                 </button>
@@ -140,7 +136,7 @@ export function PublicHeader() {
               <button
                 type="button"
                 onClick={() => setAuthOpen(true)}
-                className="pub-navbar-login focus-ring hidden h-8 items-center justify-center rounded-lg bg-[#7C3AED] px-3.5 text-[12px] font-semibold text-white shadow-[0_0_20px_rgba(124,58,237,0.35)] transition hover:bg-[#6D28D9] hover:shadow-[0_0_28px_rgba(124,58,237,0.5)] sm:inline-flex"
+                className="pub-navbar-login focus-ring hidden h-8 items-center justify-center rounded-xl bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] px-3.5 text-[12px] font-semibold text-white shadow-[0_0_18px_rgba(124,58,237,0.35)] transition hover:brightness-110 sm:inline-flex"
               >
                 ورود / ثبت‌نام
               </button>
@@ -158,7 +154,7 @@ export function PublicHeader() {
         </PublicContainer>
 
         {menuOpen ? (
-          <div className="pub-navbar-menu border-t border-white/[0.08] bg-[#050816]/92 backdrop-blur-xl lg:hidden">
+          <div className="border-t border-white/[0.08] bg-[#050816]/95 backdrop-blur-xl lg:hidden">
             <nav
               className="mx-auto flex w-full max-w-[var(--home-container-wide)] flex-col gap-0.5 px-4 py-3"
               aria-label="ناوبری موبایل"
@@ -170,9 +166,9 @@ export function PublicHeader() {
                     key={item.href}
                     href={item.href}
                     className={[
-                      "focus-ring rounded-lg px-3 py-2.5 text-[14px] font-medium no-underline transition",
+                      "focus-ring rounded-lg px-3 py-2.5 text-[13px] font-medium no-underline transition",
                       active
-                        ? "bg-[rgba(124,58,237,0.14)] text-white shadow-[inset_0_0_0_1px_rgba(124,58,237,0.35)]"
+                        ? "bg-[rgba(124,58,237,0.14)] text-white"
                         : "text-[#94A3B8] hover:bg-white/[0.04] hover:text-white",
                     ].join(" ")}
                     aria-current={active ? "page" : undefined}
@@ -188,14 +184,14 @@ export function PublicHeader() {
                   <>
                     <Link
                       href="/dashboard"
-                      className="focus-ring flex-1 rounded-lg px-3 py-2 text-center text-[13px] font-semibold text-[#94A3B8] no-underline hover:bg-white/[0.04] hover:text-white"
+                      className="focus-ring flex-1 rounded-lg px-3 py-2 text-center text-[12px] font-semibold text-[#94A3B8] no-underline"
                     >
                       داشبورد
                     </Link>
                     <button
                       type="button"
                       onClick={logout}
-                      className="focus-ring rounded-lg px-3 py-2 text-[13px] font-semibold text-[#94A3B8] hover:bg-white/[0.04] hover:text-white"
+                      className="focus-ring rounded-lg px-3 py-2 text-[12px] font-semibold text-[#94A3B8]"
                     >
                       خروج
                     </button>
@@ -207,7 +203,7 @@ export function PublicHeader() {
                       setMenuOpen(false);
                       setAuthOpen(true);
                     }}
-                    className="focus-ring flex-1 rounded-lg bg-[#7C3AED] px-3 py-2.5 text-[13px] font-semibold text-white shadow-[0_0_20px_rgba(124,58,237,0.35)]"
+                    className="focus-ring flex-1 rounded-xl bg-[#7C3AED] px-3 py-2.5 text-[12px] font-semibold text-white"
                   >
                     ورود / ثبت‌نام
                   </button>
@@ -244,7 +240,7 @@ function IconButton({
       aria-label={label}
       aria-pressed={pressed}
       className={[
-        "pub-navbar-icon focus-ring inline-flex h-8 w-8 items-center justify-center rounded-lg border-0 bg-transparent text-[#94A3B8] transition hover:bg-white/[0.06] hover:text-white",
+        "focus-ring inline-flex h-8 w-8 items-center justify-center rounded-lg text-[#94A3B8] transition hover:bg-white/[0.06] hover:text-white",
         className,
       ].join(" ")}
     >
@@ -287,7 +283,7 @@ function UserAvatar({ user }: { user: NonNullable<ReturnType<typeof useAuth>["us
     );
   }
   return (
-    <span className="flex h-full w-full items-center justify-center bg-[rgba(124,58,237,0.2)] text-[10px] font-semibold text-white">
+    <span className="flex h-full w-full items-center justify-center bg-[rgba(124,58,237,0.2)] text-[9px] font-semibold text-white">
       {getUserInitials(user)}
     </span>
   );
