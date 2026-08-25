@@ -1,23 +1,23 @@
 import type { ReactNode } from "react";
 
 /**
- * 3D SaaS product workspace — 620×520 on desktop.
+ * 3D SaaS product workspace — 650×500 on desktop.
  * Visual: AI TL · Prompt TR · Code BL · Tools BR · Laptop center
  */
 export function HomeHeroWorkspace() {
   return (
     <div
-      className="home-hero-workspace relative mx-auto h-[320px] w-full max-w-[340px] sm:h-[400px] sm:max-w-[460px] lg:h-[520px] lg:w-[620px] lg:max-w-none"
+      className="home-hero-workspace relative mx-auto h-[300px] w-full max-w-[340px] sm:h-[380px] sm:max-w-[480px] lg:h-[500px] lg:w-[650px] lg:max-w-none"
       role="img"
       aria-label="فضای کار توسعه‌دهنده با لپ‌تاپ و کارت‌های شناور AI، Prompt، Code و Tools"
     >
-      {/* Glow layers */}
+      {/* Glow layers — purple + blue */}
       <div
-        className="pointer-events-none absolute inset-[-12%] rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(124,58,237,0.5),transparent_58%)] blur-3xl"
+        className="pointer-events-none absolute inset-[-12%] rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(124,58,237,0.52),transparent_58%)] blur-3xl"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -end-[4%] top-[8%] h-[55%] w-[55%] rounded-full bg-[radial-gradient(circle,rgba(6,182,212,0.32),transparent_60%)] blur-3xl"
+        className="pointer-events-none absolute -right-[2%] top-[6%] h-[58%] w-[58%] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.34),transparent_60%)] blur-3xl"
         aria-hidden
       />
       <div
@@ -100,7 +100,7 @@ export function HomeHeroWorkspace() {
       <FloatingCard
         className="home-hero-float right-0 top-[4%] z-[3] sm:right-[1%]"
         delay="0.45s"
-        accent="cyan"
+        accent="blue"
         label="PROMPT"
         title="Cursor"
         icon={<PromptIcon />}
@@ -120,7 +120,7 @@ export function HomeHeroWorkspace() {
       <FloatingCard
         className="home-hero-float bottom-[2%] right-0 z-[3] sm:right-[1%]"
         delay="1.05s"
-        accent="cyan"
+        accent="blue"
         label="TOOLS"
         title="JSON · JWT · Regex"
         icon={<ToolsIcon />}
@@ -132,7 +132,7 @@ export function HomeHeroWorkspace() {
 type FloatingCardProps = {
   className?: string;
   delay: string;
-  accent: "purple" | "cyan";
+  accent: "purple" | "blue";
   label: string;
   title: string;
   icon: ReactNode;
@@ -140,26 +140,26 @@ type FloatingCardProps = {
 
 const ACCENT: Record<FloatingCardProps["accent"], string> = {
   purple:
-    "border-[rgba(124,58,237,0.5)] text-[#C4B5FD] shadow-[0_16px_40px_rgba(124,58,237,0.32),0_0_28px_rgba(124,58,237,0.2)]",
-  cyan:
-    "border-[rgba(6,182,212,0.45)] text-[#67E8F9] shadow-[0_16px_40px_rgba(6,182,212,0.26),0_0_28px_rgba(6,182,212,0.16)]",
+    "border-[rgba(124,58,237,0.5)] text-[#C4B5FD] shadow-[0_18px_44px_rgba(124,58,237,0.34),0_0_30px_rgba(124,58,237,0.22)]",
+  blue:
+    "border-[rgba(37,99,235,0.48)] text-[#93C5FD] shadow-[0_18px_44px_rgba(37,99,235,0.28),0_0_30px_rgba(37,99,235,0.18)]",
 };
 
 function FloatingCard({ className = "", delay, accent, label, title, icon }: FloatingCardProps) {
   return (
     <div
       className={[
-        "absolute w-[8.5rem] rounded-[18px] border bg-[rgba(15,23,42,0.8)] p-3 backdrop-blur-md sm:w-[9.75rem] sm:p-3.5",
+        "absolute w-[9.75rem] rounded-[18px] border bg-[rgba(15,23,42,0.8)] p-3.5 backdrop-blur-md sm:w-[11rem] sm:p-4",
         ACCENT[accent],
         className,
       ].join(" ")}
       style={{ animationDelay: delay }}
     >
-      <div className="mb-1.5 flex items-center gap-1.5">
-        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/[0.07]">{icon}</span>
-        <span className="font-mono text-[9px] font-bold tracking-wide opacity-90">{label}</span>
+      <div className="mb-2 flex items-center gap-2">
+        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.07]">{icon}</span>
+        <span className="font-mono text-[10px] font-bold tracking-wide opacity-90">{label}</span>
       </div>
-      <p className="text-[12px] font-bold leading-4 text-white sm:text-[13px]">{title}</p>
+      <p className="text-[13px] font-bold leading-4 text-white sm:text-[14px]">{title}</p>
     </div>
   );
 }
