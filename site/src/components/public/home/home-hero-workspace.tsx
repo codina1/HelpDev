@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 /**
  * Floating AI developer workspace — laptop center, cards around it.
- * Card placement (visual): Prompt TR · Tools BR · AI TL · Code BL
+ * Placement: Prompt TR · Tools BR · AI TL · Code BL
  */
 export function HomeHeroWorkspace() {
   return (
@@ -16,7 +16,7 @@ export function HomeHeroWorkspace() {
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-[5%] rounded-full bg-[radial-gradient(circle_at_70%_35%,rgba(6,182,212,0.28),transparent_55%)] blur-2xl"
+        className="pointer-events-none absolute inset-[5%] rounded-full bg-[radial-gradient(circle_at_70%_35%,rgba(37,99,235,0.28),transparent_55%)] blur-2xl"
         aria-hidden
       />
       <div
@@ -78,8 +78,7 @@ export function HomeHeroWorkspace() {
         delay="0.4s"
         accent="cyan"
         label="PROMPT"
-        title="Prompt Card"
-        body="قالب‌های Cursor و Claude"
+        title="Cursor"
         icon={<PromptIcon />}
       />
 
@@ -89,8 +88,7 @@ export function HomeHeroWorkspace() {
         delay="1.1s"
         accent="blue"
         label="TOOLS"
-        title="Tools Card"
-        body="JSON · JWT · Regex"
+        title="JSON · JWT · Regex"
         icon={<ToolsIcon />}
       />
 
@@ -101,7 +99,6 @@ export function HomeHeroWorkspace() {
         accent="purple"
         label="AI"
         title="AI Assistant"
-        body="پاسخ زمینه‌دار HelpDev"
         icon={<SparkIcon />}
       />
 
@@ -111,8 +108,7 @@ export function HomeHeroWorkspace() {
         delay="1.6s"
         accent="green"
         label="CODE"
-        title="Code Card"
-        body="snippet · refactor"
+        title="Code"
         icon={<CodeIcon />}
       />
     </div>
@@ -125,18 +121,17 @@ type FloatingCardProps = {
   accent: "purple" | "cyan" | "blue" | "green";
   label: string;
   title: string;
-  body: string;
   icon: ReactNode;
 };
 
 const ACCENT: Record<FloatingCardProps["accent"], string> = {
   purple: "border-[#7C3AED]/40 text-[#C4B5FD] shadow-[0_12px_32px_rgba(124,58,237,0.25)]",
   cyan: "border-[#06B6D4]/40 text-[#67E8F9] shadow-[0_12px_32px_rgba(6,182,212,0.2)]",
-  blue: "border-[#6366F1]/40 text-[#A5B4FC] shadow-[0_12px_32px_rgba(99,102,241,0.2)]",
+  blue: "border-[#2563EB]/40 text-[#93C5FD] shadow-[0_12px_32px_rgba(37,99,235,0.22)]",
   green: "border-[#34D399]/35 text-[#6EE7B7] shadow-[0_12px_32px_rgba(52,211,153,0.15)]",
 };
 
-function FloatingCard({ className = "", delay, accent, label, title, body, icon }: FloatingCardProps) {
+function FloatingCard({ className = "", delay, accent, label, title, icon }: FloatingCardProps) {
   return (
     <div
       className={[
@@ -151,7 +146,6 @@ function FloatingCard({ className = "", delay, accent, label, title, body, icon 
         <span className="font-mono text-[9px] font-bold tracking-wide opacity-90">{label}</span>
       </div>
       <p className="text-[11px] font-bold leading-4 text-white sm:text-[12px]">{title}</p>
-      <p className="mt-0.5 line-clamp-2 text-[9px] leading-snug text-[#94A3B8] sm:text-[10px]">{body}</p>
     </div>
   );
 }

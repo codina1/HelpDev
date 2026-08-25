@@ -1,6 +1,4 @@
 import { HomeHero } from "@/components/public/home/home-hero";
-import { HomeSearchSection } from "@/components/public/home/home-search-section";
-import { HomeStatsSection } from "@/components/public/home/home-stats-section";
 import { HomeQuickAccessSection } from "@/components/public/home/home-quick-access-section";
 import { HomeHubSection } from "@/components/public/home/home-hub-section";
 import { HomeCategoriesSection } from "@/components/public/home/home-categories-section";
@@ -39,7 +37,7 @@ function isNews(type: string) {
 
 /**
  * Public homepage — Design Reference order only:
- * Hero → Search → Stats → Quick Access → Hub → Categories →
+ * Hero (includes Search + Stats) → Quick Access → Hub → Categories →
  * Articles → News → Paths → Newsletter (Footer is global).
  */
 export async function PublicHomePage() {
@@ -59,8 +57,6 @@ export async function PublicHomePage() {
     <div className="min-w-0 overflow-x-clip bg-[#050816] pb-10">
       <InteractionRevealObserver />
       <HomeHero />
-      <HomeSearchSection />
-      <HomeStatsSection />
       <HomeQuickAccessSection />
       <HomeHubSection tools={tools} />
       <HomeCategoriesSection />

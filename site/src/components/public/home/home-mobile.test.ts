@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 
 describe("homepage mobile responsive rules", () => {
   const css = readFileSync(join(process.cwd(), "src/app/globals.css"), "utf8");
-  const hero = readFileSync(join(process.cwd(), "src/components/public/home/home-hero.tsx"), "utf8");
+  const hero = readFileSync(join(process.cwd(), "src/components/public/home/HeroSection.tsx"), "utf8");
   const header = readFileSync(join(process.cwd(), "src/components/public/public-header.tsx"), "utf8");
   const workspace = readFileSync(
     join(process.cwd(), "src/components/public/home/home-hero-workspace.tsx"),
@@ -21,7 +21,7 @@ describe("homepage mobile responsive rules", () => {
 
   it("keeps hero stacking and a responsive workspace", () => {
     expect(hero).toContain("lg:grid-cols-2");
-    expect(hero).toContain("min-h-[560px]");
+    expect(hero).toContain("lg:min-h-[650px]");
     expect(hero).toContain("HomeHeroWorkspace");
     expect(hero).toContain("order-1");
     expect(workspace).toContain("home-hero-float");

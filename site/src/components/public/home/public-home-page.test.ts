@@ -11,8 +11,6 @@ describe("public homepage composition", () => {
   it("follows the design-reference section order", () => {
     const order = [
       "HomeHero",
-      "HomeSearchSection",
-      "HomeStatsSection",
       "HomeQuickAccessSection",
       "HomeHubSection",
       "HomeCategoriesSection",
@@ -29,6 +27,8 @@ describe("public homepage composition", () => {
       cursor = index;
     }
 
+    expect(source).not.toContain("HomeSearchSection");
+    expect(source).not.toContain("HomeStatsSection");
     expect(source).not.toContain("HomeWorkflowSection");
     expect(source).not.toContain("HomeValueSection");
     expect(source).not.toContain("HomeTrustSection");
