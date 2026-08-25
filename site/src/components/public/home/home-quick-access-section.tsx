@@ -47,7 +47,7 @@ export const HOME_QUICK_ACCESS_ITEMS: readonly HomeQuickAccessItem[] = [
 export function HomeQuickAccessSection() {
   return (
     <PublicSection
-      className="home-quick-access home-reveal !pt-0 pb-6 sm:pb-7 lg:pb-8"
+      className="home-quick-access home-reveal pt-20 pb-6 sm:pb-7 lg:pb-8"
       bare
       aria-labelledby="home-quick-access-heading"
     >

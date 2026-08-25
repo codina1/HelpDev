@@ -20,6 +20,8 @@ describe("homepage hero", () => {
     expect(html).toContain("max-w-[520px]");
     expect(html).toContain("lg:w-[400px]");
     expect(html).toContain("h-[50px]");
+    expect(html).toContain("lg:pr-[56px]");
+    expect(html).toContain("text-2xl");
     expect(html).toContain("mt-5");
     expect(html).toContain("هر چیزی که می‌خواهی جستجو کن");
     expect(html).toContain("مقاله آموزشی");

@@ -11,28 +11,32 @@ export function HomeHeroWorkspace() {
       role="img"
       aria-label="فضای کار توسعه‌دهنده با لپ‌تاپ و کارت‌های شناور AI، Prompt، Code و Tools"
     >
-      {/* Glow layers — purple + blue */}
+      {/* Glow layers — stronger purple + blue depth */}
       <div
-        className="pointer-events-none absolute inset-[-12%] rounded-full bg-[radial-gradient(circle_at_50%_45%,rgba(124,58,237,0.52),transparent_58%)] blur-3xl"
+        className="pointer-events-none absolute inset-[-18%] rounded-full bg-[radial-gradient(circle_at_50%_42%,rgba(124,58,237,0.62),transparent_56%)] blur-[64px]"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -right-[2%] top-[6%] h-[58%] w-[58%] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.34),transparent_60%)] blur-3xl"
+        className="pointer-events-none absolute -right-[6%] top-[2%] h-[68%] w-[68%] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.42),transparent_58%)] blur-[56px]"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-[12%] rounded-[40%] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.35),transparent_70%)] blur-2xl"
+        className="pointer-events-none absolute -left-[8%] bottom-[8%] h-[45%] w-[45%] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.28),transparent_65%)] blur-[48px]"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-x-[14%] bottom-[4%] h-[18%] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.4),transparent_70%)] blur-md"
+        className="pointer-events-none absolute inset-[8%] rounded-[42%] bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.45),transparent_68%)] blur-2xl"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-x-[12%] bottom-[2%] h-[22%] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.5),transparent_70%)] blur-lg"
         aria-hidden
       />
 
       {/* Laptop — central 3D product */}
       <div className="home-hero-float-slow absolute inset-x-[11%] top-[16%] z-[2] sm:inset-x-[13%] sm:top-[14%] lg:inset-x-[14%] lg:top-[12%]">
         <div
-          className="overflow-hidden rounded-t-[18px] border border-white/15 bg-[#0B1224] shadow-[0_40px_90px_rgba(2,6,23,0.8),0_0_60px_rgba(124,58,237,0.35),0_0_40px_rgba(6,182,212,0.12)]"
+          className="overflow-hidden rounded-t-[18px] border border-white/15 bg-[#0B1224] shadow-[0_48px_110px_rgba(2,6,23,0.88),0_0_80px_rgba(124,58,237,0.45),0_0_56px_rgba(37,99,235,0.22)]"
           style={{ transform: "perspective(1100px) rotateX(8deg) rotateY(-4deg)" }}
         >
           <div className="flex items-center gap-1.5 border-b border-white/[0.07] bg-[#070B16] px-4 py-2.5">
@@ -140,9 +144,9 @@ type FloatingCardProps = {
 
 const ACCENT: Record<FloatingCardProps["accent"], string> = {
   purple:
-    "border-[rgba(124,58,237,0.5)] text-[#C4B5FD] shadow-[0_18px_44px_rgba(124,58,237,0.34),0_0_30px_rgba(124,58,237,0.22)]",
+    "border-[rgba(124,58,237,0.55)] text-[#C4B5FD] shadow-[0_22px_50px_rgba(124,58,237,0.4),0_0_36px_rgba(124,58,237,0.28)]",
   blue:
-    "border-[rgba(37,99,235,0.48)] text-[#93C5FD] shadow-[0_18px_44px_rgba(37,99,235,0.28),0_0_30px_rgba(37,99,235,0.18)]",
+    "border-[rgba(37,99,235,0.52)] text-[#93C5FD] shadow-[0_22px_50px_rgba(37,99,235,0.34),0_0_36px_rgba(37,99,235,0.22)]",
 };
 
 function FloatingCard({ className = "", delay, accent, label, title, icon }: FloatingCardProps) {
