@@ -15,10 +15,12 @@ describe("homepage quick access", () => {
     expect(html).toContain("sm:grid-cols-3");
     expect(html).toContain("grid-cols-2");
     expect(html).toContain("gap-4");
-    expect(html).toContain("min-h-[220px]");
+    expect(html).toContain("min-h-[240px]");
     expect(html).toContain("w-full");
     expect(html).not.toContain("lg:w-[220px]");
     expect(html).not.toContain("h-[180px]");
+    expect(html).not.toContain("pb-14");
+    expect(html).not.toContain("absolute bottom-5");
     expect(html).toContain("rounded-[22px]");
     expect(html).toContain("hover:-translate-y-2");
     expect(html).toContain("hover:shadow-[0_0_35px_rgba(124,58,237,0.25)]");
@@ -27,9 +29,8 @@ describe("homepage quick access", () => {
     expect(html).toContain("آخرین اخبار دنیای توسعه");
     expect(html).toContain("linear-gradient(145deg, #111827, #080d1c)");
     expect(html).toContain("text-[#A855F7]");
-    expect(html).toContain("absolute bottom-5 left-1/2");
-    expect(html).toContain("h-6 w-6");
-    expect(html).toContain("pb-14");
+    expect(html).toContain("mt-3 flex h-6 w-6");
+    expect(html).toContain("pb-5");
     expect(html).toContain("group-hover:translate-y-1");
     expect(html).toContain('width="64"');
     expect(html).toContain('width="24"');

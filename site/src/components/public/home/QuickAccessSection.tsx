@@ -62,7 +62,7 @@ const ICON_GLOW: Record<QuickAccessItem["tone"], string> = {
 export function QuickAccessSection() {
   return (
     <section
-      className="home-quick-access relative pt-20 pb-8 sm:pb-9 lg:pb-10"
+      className="home-quick-access relative pt-10 pb-8 sm:pt-12 sm:pb-9 lg:pt-14 lg:pb-10"
       aria-labelledby="quick-access-heading"
     >
       <PublicContainer size="wide">
@@ -89,13 +89,13 @@ function QuickAccessCard({ item }: { item: QuickAccessItem }) {
   return (
     <Link
       href={item.href}
-      className="group focus-ring relative flex min-h-[220px] w-full flex-col items-center overflow-hidden rounded-[22px] border border-white/[0.08] px-4 pb-14 pt-5 no-underline transition duration-300 hover:-translate-y-2 hover:border-[rgba(124,58,237,0.55)] hover:shadow-[0_0_35px_rgba(124,58,237,0.25)]"
+      className="group focus-ring relative flex min-h-[240px] w-full flex-col items-center rounded-[22px] border border-white/[0.08] px-4 pb-5 pt-5 no-underline transition duration-300 hover:-translate-y-2 hover:border-[rgba(124,58,237,0.55)] hover:shadow-[0_0_35px_rgba(124,58,237,0.25)]"
       style={{
         backgroundImage: "linear-gradient(145deg, #111827, #080d1c)",
       }}
     >
       <span
-        className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 overflow-hidden rounded-[22px] opacity-0 transition duration-300 group-hover:opacity-100"
         style={{
           background:
             "radial-gradient(ellipse 80% 55% at 50% 0%, rgba(124,58,237,0.16), transparent 70%)",
@@ -116,12 +116,12 @@ function QuickAccessCard({ item }: { item: QuickAccessItem }) {
       <h3 className="relative mt-3 text-center text-[16px] font-bold leading-snug text-white sm:text-[18px]">
         {item.title}
       </h3>
-      <p className="relative mt-1.5 line-clamp-2 min-h-[2.5rem] px-1 text-center text-[12px] leading-5 text-[#94A3B8] sm:text-[13px]">
+      <p className="relative mt-1.5 line-clamp-2 min-h-[2.5rem] flex-1 px-1 text-center text-[12px] leading-5 text-[#94A3B8] sm:text-[13px]">
         {item.description}
       </p>
 
       <span
-        className="absolute bottom-5 left-1/2 z-10 flex h-6 w-6 -translate-x-1/2 items-center justify-center text-[#A855F7] transition duration-300 group-hover:translate-x-[-50%] group-hover:translate-y-1"
+        className="relative z-10 mt-3 flex h-6 w-6 shrink-0 items-center justify-center text-[#A855F7] transition duration-300 group-hover:translate-y-1"
         aria-hidden
       >
         <ArrowIcon />
