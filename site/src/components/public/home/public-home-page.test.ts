@@ -13,7 +13,6 @@ describe("public homepage composition", () => {
       "HomeHero",
       "HomeQuickAccessSection",
       "HomeHubSection",
-      "HomeCategoriesSection",
       "HomeArticlesSection",
       "HomeNewsSection",
       "HomePathsSection",
@@ -27,6 +26,7 @@ describe("public homepage composition", () => {
       cursor = index;
     }
 
+    expect(source).not.toContain("HomeCategoriesSection");
     expect(source).not.toContain("HomeSearchSection");
     expect(source).not.toContain("HomeStatsSection");
     expect(source).not.toContain("HomeWorkflowSection");
