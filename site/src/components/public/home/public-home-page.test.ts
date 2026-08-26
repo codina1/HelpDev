@@ -15,8 +15,8 @@ describe("public homepage composition", () => {
       "HomeHubSection",
       "LatestArticlesSection",
       "HomeNewsSection",
-      "HomePathsSection",
-      "HomeNewsletterSection",
+      "LearningPathsSection",
+      "NewsletterSection",
     ];
 
     let cursor = -1;

@@ -62,11 +62,11 @@ describe("homepage platform sections", () => {
 
   it("keeps the five compact learning path roles", () => {
     expect(HOME_PATH_ITEMS.map((item) => item.title)).toEqual([
-      "AI Engineer",
-      "Backend Developer",
-      ".NET Developer",
       "Frontend Developer",
       "DevOps Engineer",
+      ".NET Developer",
+      "Backend Developer",
+      "AI Engineer",
     ]);
   });
 });

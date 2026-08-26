@@ -16,7 +16,7 @@ describe("homepage mobile responsive rules", () => {
     expect(css).toContain("max-width: 430px");
     expect(css).toContain(".home-hero-float");
     expect(css).toContain(".home-path-item");
-    expect(css).toContain(".pub-footer-grid");
+    expect(css).toContain(".pub-footer");
   });
 
   it("keeps hero stacking and a fluid workspace", () => {
