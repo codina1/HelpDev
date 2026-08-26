@@ -2,14 +2,15 @@ import Link from "next/link";
 import { PublicContainer } from "@/components/ui/public/v2/public-container";
 
 /**
- * Icon asset slots — replace files under /public/home without changing component code.
+ * Icon asset slots — one unique uploaded icon per path (no semantic duplicates).
+ * Files live under /public/home (icon-*.png) and /public/home/paths (path-*.png).
  */
 export const LEARNING_PATH_ICON_SLOTS = {
-  ai: "/home/icon-ai.png",
-  backend: "/home/icon-backend.png",
-  dotnet: "/home/icon-dotnet.png",
-  devops: "/home/icon-devops.png",
-  frontend: "/home/icon-frontend.png",
+  ai: "/home/paths/path-ai.png",
+  backend: "/home/paths/path-backend.png",
+  dotnet: "/home/paths/path-dotnet.png",
+  devops: "/home/paths/path-devops.png",
+  frontend: "/home/paths/path-frontend.png",
 } as const;
 
 export type LearningPathId = keyof typeof LEARNING_PATH_ICON_SLOTS;
@@ -19,7 +20,8 @@ export type LearningPathItem = {
   title: string;
   description: string;
   href: string;
-  lessons: number;
+  lessons: string;
+  difficulty: string;
   progress: number;
   iconSrc: string;
 };
@@ -30,8 +32,9 @@ export const LEARNING_PATH_ITEMS: readonly LearningPathItem[] = [
     title: "AI Engineer",
     description: "مسیر جامع مهندسی هوش مصنوعی",
     href: "/roadmap?track=ai-engineer",
-    lessons: 48,
-    progress: 42,
+    lessons: "28 درس",
+    difficulty: "پیشرفته",
+    progress: 60,
     iconSrc: LEARNING_PATH_ICON_SLOTS.ai,
   },
   {
@@ -39,8 +42,9 @@ export const LEARNING_PATH_ITEMS: readonly LearningPathItem[] = [
     title: "Backend Developer",
     description: "تبدیل شدن به توسعه‌دهنده بک‌اند",
     href: "/roadmap?track=backend-developer",
-    lessons: 36,
-    progress: 58,
+    lessons: "32 درس",
+    difficulty: "متوسط",
+    progress: 40,
     iconSrc: LEARNING_PATH_ICON_SLOTS.backend,
   },
   {
@@ -48,7 +52,8 @@ export const LEARNING_PATH_ITEMS: readonly LearningPathItem[] = [
     title: ".NET Developer",
     description: "تسلط بر اکوسیستم دات‌نت",
     href: "/roadmap?track=dotnet-developer",
-    lessons: 40,
+    lessons: "24 درس",
+    difficulty: "متوسط",
     progress: 55,
     iconSrc: LEARNING_PATH_ICON_SLOTS.dotnet,
   },
@@ -57,8 +62,9 @@ export const LEARNING_PATH_ITEMS: readonly LearningPathItem[] = [
     title: "DevOps Engineer",
     description: "تسلط بر CI/CD و زیرساخت‌ها",
     href: "/roadmap?track=devops-engineer",
-    lessons: 32,
-    progress: 48,
+    lessons: "27 درس",
+    difficulty: "پیشرفته",
+    progress: 65,
     iconSrc: LEARNING_PATH_ICON_SLOTS.devops,
   },
   {
@@ -66,8 +72,9 @@ export const LEARNING_PATH_ITEMS: readonly LearningPathItem[] = [
     title: "Frontend Developer",
     description: "توسعه رابط کاربری مدرن",
     href: "/roadmap?track=frontend-developer",
-    lessons: 38,
-    progress: 62,
+    lessons: "30 درس",
+    difficulty: "متوسط",
+    progress: 75,
     iconSrc: LEARNING_PATH_ICON_SLOTS.frontend,
   },
 ] as const;
@@ -101,8 +108,8 @@ function resolveHref(item: LearningPathItem, roadmaps: PublishedPath[]): string 
 }
 
 /**
- * Learning Paths — Design Reference compact premium cards (220×130).
- * Desktop 5 · Tablet 3 · Mobile 1.
+ * Learning Paths — dark glass cards with uploaded 3D icons.
+ * Desktop 5 · Tablet 3 · Mobile 1 · RTL.
  */
 export function LearningPathsSection({ roadmaps = [] }: LearningPathsSectionProps) {
   const items = LEARNING_PATH_ITEMS.map((item) => ({
@@ -114,6 +121,7 @@ export function LearningPathsSection({ roadmaps = [] }: LearningPathsSectionProp
     <section
       className="home-learning-paths relative bg-[#050816] py-10 sm:py-12 lg:py-14"
       aria-labelledby="learning-paths-heading"
+      dir="rtl"
     >
       <PublicContainer size="wide">
         <div className="mb-7 flex flex-wrap items-end justify-between gap-4 sm:mb-8">
@@ -132,7 +140,7 @@ export function LearningPathsSection({ roadmaps = [] }: LearningPathsSectionProp
           </Link>
         </div>
 
-        <ul className="grid grid-cols-1 justify-items-center gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:justify-items-stretch">
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {items.map((item) => (
             <LearningPathCard key={item.id} item={item} />
           ))}
@@ -146,47 +154,53 @@ function LearningPathCard({ item }: { item: LearningPathItem }) {
   const progress = Math.max(0, Math.min(100, item.progress));
 
   return (
-    <li className="w-full max-w-[220px] min-w-0 lg:max-w-none">
+    <li className="min-w-0">
       <Link
         href={item.href}
-        className="group focus-ring relative flex h-[130px] w-full max-w-[220px] flex-col overflow-hidden rounded-[18px] border border-white/[0.08] bg-[#0B1224] px-3.5 pb-3 pt-3 no-underline transition duration-300 hover:-translate-y-[6px] hover:border-[rgba(124,58,237,0.5)] hover:shadow-[0_0_32px_rgba(124,58,237,0.3)] lg:max-w-none"
+        className="group focus-ring relative flex h-full min-h-[220px] w-full flex-col overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.08)] bg-[#0B1224]/80 px-4 pb-4 pt-5 no-underline shadow-[0_0_24px_rgba(124,58,237,0.12)] backdrop-blur-sm transition duration-300 hover:-translate-y-[6px] hover:border-[rgba(124,58,237,0.5)] hover:shadow-[0_16px_40px_rgba(2,6,23,0.55),0_0_36px_rgba(124,58,237,0.35)]"
       >
         <span
-          className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100"
+          className="pointer-events-none absolute inset-0 opacity-70 transition duration-300 group-hover:opacity-100"
           style={{
             background:
-              "radial-gradient(ellipse 90% 70% at 50% 0%, rgba(124,58,237,0.2), transparent 70%)",
+              "radial-gradient(ellipse 90% 70% at 50% 0%, rgba(124,58,237,0.18), transparent 70%)",
           }}
           aria-hidden
         />
 
         <span
-          className="relative mx-auto flex h-9 w-9 shrink-0 items-center justify-center drop-shadow-[0_8px_18px_rgba(124,58,237,0.4)] transition duration-300 group-hover:scale-110"
+          className="relative mx-auto flex h-16 w-16 shrink-0 items-center justify-center drop-shadow-[0_10px_22px_rgba(124,58,237,0.45)] transition duration-300 group-hover:scale-110"
           aria-hidden
         >
           <img
             src={item.iconSrc}
             alt=""
-            width={36}
-            height={36}
+            width={64}
+            height={64}
             decoding="async"
-            className="h-9 w-9 object-contain"
+            className="h-16 w-16 object-contain"
             data-icon-slot={item.id}
           />
         </span>
 
-        <div className="relative mt-1.5 min-h-0 flex-1 text-center">
-          <h3 className="truncate text-[13px] font-bold leading-tight text-white">{item.title}</h3>
-          <p className="mt-0.5 line-clamp-2 text-[10px] leading-4 text-[#94A3B8]">{item.description}</p>
+        <div className="relative mt-3 min-h-0 flex-1 text-center">
+          <h3 className="text-[15px] font-bold leading-tight text-white">{item.title}</h3>
+          <p className="mt-1.5 line-clamp-2 text-[12px] leading-5 text-[#94A3B8]">{item.description}</p>
         </div>
 
-        <div className="relative mt-auto pt-1.5">
-          <div className="mb-1 flex items-center justify-between gap-2 text-[10px] font-semibold text-[#94A3B8]">
-            <span>{NUMBER_FA.format(item.lessons)} درس</span>
+        <div className="relative mt-auto pt-3">
+          <div className="mb-2 flex items-center justify-between gap-2 text-[11px] font-semibold text-[#94A3B8]">
+            <span>{item.lessons}</span>
+            <span className="rounded-md bg-white/[0.06] px-1.5 py-0.5 text-[10px] text-[#C4B5FD]">
+              {item.difficulty}
+            </span>
+          </div>
+          <div className="mb-1.5 flex items-center justify-between gap-2 text-[10px] font-semibold text-[#64748B]">
+            <span>پیشرفت</span>
             <span>{NUMBER_FA.format(progress)}٪</span>
           </div>
           <div
-            className="h-1 overflow-hidden rounded-full bg-white/[0.06]"
+            className="h-1.5 overflow-hidden rounded-full bg-white/[0.06]"
             role="progressbar"
             aria-valuenow={progress}
             aria-valuemin={0}
