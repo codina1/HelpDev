@@ -72,10 +72,16 @@ export function HomeHubSection({ tools = [] }: HomeHubSectionProps) {
                     className="focus-ring flex items-center gap-2.5 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2.5 text-[13px] font-semibold text-[#CBD5E1] no-underline transition hover:border-[rgba(6,182,212,0.35)] hover:bg-[rgba(6,182,212,0.08)] hover:text-white"
                   >
                     <span
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[rgba(6,182,212,0.12)] text-[#67E8F9]"
+                      className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[rgba(6,182,212,0.12)]"
                       aria-hidden
                     >
-                      <WrenchIcon />
+                      <img
+                        src={toolIconSrc(tool.id)}
+                        alt=""
+                        width={28}
+                        height={28}
+                        className="h-7 w-7 object-contain"
+                      />
                     </span>
                     <span className="truncate">{tool.title}</span>
                   </Link>
@@ -93,7 +99,16 @@ export function HomeHubSection({ tools = [] }: HomeHubSectionProps) {
               className="pointer-events-none absolute -end-10 -top-10 h-40 w-40 rounded-full bg-[rgba(124,58,237,0.25)] blur-3xl"
               aria-hidden
             />
-            <div className="relative">
+            <img
+              src="/home/icon-architect.png"
+              alt=""
+              width={128}
+              height={128}
+              decoding="async"
+              className="pointer-events-none absolute -end-2 bottom-2 h-28 w-28 object-contain opacity-90 drop-shadow-[0_12px_32px_rgba(37,99,235,0.45)] sm:h-32 sm:w-32"
+              aria-hidden
+            />
+            <div className="relative max-w-[85%]">
               <p className="text-[12px] font-bold tracking-wide text-[#C4B5FD]">Prompt Lab</p>
               <h3 id="home-prompt-heading" className="mt-2 text-[1.15rem] font-extrabold text-white sm:text-xl">
                 پرامپت‌های آماده برای کدنویسی با AI
@@ -125,10 +140,13 @@ export function HomeHubSection({ tools = [] }: HomeHubSectionProps) {
   );
 }
 
-function WrenchIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-      <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-3 3-2-2 3-3Z" />
-    </svg>
-  );
+function toolIconSrc(id: string): string {
+  const key = id.toLowerCase();
+  if (key.includes("jwt")) return "/home/icon-jwt.png";
+  if (key.includes("base64") || key.includes("64")) return "/home/icon-base64.png";
+  if (key.includes("markdown") || key.includes("md")) return "/home/icon-markdown.png";
+  if (key.includes("sql") || key.includes("db") || key.includes("uuid")) return "/home/icon-db.png";
+  if (key.includes("hash") || key.includes("security") || key.includes("cron")) return "/home/icon-security.png";
+  if (key.includes("json") || key.includes("regex")) return "/home/icon-code.png";
+  return "/home/icon-tools.png";
 }

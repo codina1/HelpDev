@@ -6,8 +6,9 @@ describe("homepage learning paths", () => {
   it("renders five horizontal path cards with honest learner counts", () => {
     const html = renderToStaticMarkup(<HomePathsSection />);
     expect(html).toContain("مسیرهای یادگیری");
-    expect(html).toContain("/home/cover-");
-    expect(html).toContain("home-paths-scroller");
+    expect(html).toContain("/home/");
+    expect(html).toContain("min-[1440px]:grid-cols-5");
+    expect(html).toContain("grid-cols-2");
     for (const item of HOME_PATH_ITEMS) {
       expect(html).toContain(item.title);
       expect(html).toContain(item.description);

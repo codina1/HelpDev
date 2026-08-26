@@ -24,7 +24,8 @@ describe("homepage mobile responsive rules", () => {
     expect(hero).toContain("min-[1440px]:min-h-[560px]");
     expect(hero).toContain("HomeHeroWorkspace");
     expect(hero).toContain("order-1");
-    expect(workspace).toContain("home-hero-float");
+    expect(workspace).toContain("home-hero-float-slow");
+    expect(workspace).toContain("hero-workspace.webp");
     expect(workspace).toContain("max-w-[320px]");
   });
 

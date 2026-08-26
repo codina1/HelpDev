@@ -25,14 +25,18 @@ describe("homepage quick access", () => {
     expect(html).toContain("hover:-translate-y-2");
     expect(html).toContain("hover:shadow-[0_0_35px_rgba(124,58,237,0.25)]");
     expect(html).toContain("group-hover:scale-110");
-    expect(html).toContain("sm:h-16 sm:w-16");
+    expect(html).toContain("sm:h-[72px] sm:w-[72px]");
+    expect(html).toContain("/home/icon-news.png");
+    expect(html).toContain("/home/icon-tools.png");
+    expect(html).toContain("/home/icon-prompt.png");
+    expect(html).toContain("/home/icon-roadmap.png");
+    expect(html).toContain("/home/icon-learning.png");
     expect(html).toContain("آخرین اخبار دنیای توسعه");
     expect(html).toContain("linear-gradient(145deg, #111827, #080d1c)");
     expect(html).toContain("text-[#A855F7]");
     expect(html).toContain("mt-3 flex h-6 w-6");
     expect(html).toContain("pb-5");
     expect(html).toContain("group-hover:translate-y-1");
-    expect(html).toContain('width="64"');
     expect(html).toContain('width="24"');
     expect(html).not.toContain("مسیرهای اصلی HelpDev");
 

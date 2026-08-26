@@ -1,14 +1,18 @@
 /** Local homepage illustrations — never remote stock or invented covers. */
 
 export const HOME_COVERS = {
-  hero: "/home/hero-scene.svg",
+  hero: "/home/hero-workspace.webp",
   newsletter: "/home/newsletter.svg",
-  architecture: "/home/cover-architecture.svg",
+  architecture: "/home/icon-architect.png",
   ai: "/home/cover-ai.svg",
-  backend: "/home/cover-backend.svg",
-  frontend: "/home/cover-frontend.svg",
+  backend: "/home/icon-db.png",
+  frontend: "/home/icon-code.png",
   devops: "/home/cover-devops.svg",
-  article: "/home/cover-article.svg",
+  article: "/home/icon-learning.png",
+  news: "/home/icon-news.png",
+  tools: "/home/icon-tools.png",
+  prompt: "/home/icon-prompt.png",
+  roadmap: "/home/icon-roadmap.png",
 } as const;
 
 export function coverForHomeCategory(category: string): string {

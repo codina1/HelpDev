@@ -44,19 +44,13 @@ describe("homepage hero", () => {
     expect(html).toContain("lg:order-2");
   });
 
-  it("renders a fluid 3D workspace with corner floating cards", () => {
+  it("renders the reference 3D workspace illustration", () => {
     const html = renderToStaticMarkup(<HomeHeroWorkspace />);
-    expect(html).toContain("AI Assistant");
-    expect(html).toContain("Cursor");
-    expect(html).toContain("JSON · JWT · Regex");
-    expect(html).toContain("CODE");
-    expect(html).toContain("home-hero-float");
+    expect(html).toContain("/home/hero-workspace.webp");
+    expect(html).toContain("home-hero-float-slow");
     expect(html).toContain("max-w-[320px]");
     expect(html).toContain("sm:max-w-[450px]");
     expect(html).toContain("min-[1440px]:max-w-[620px]");
-    expect(html).toContain("rounded-[18px]");
-    expect(html).toContain("bg-[rgba(15,23,42,0.8)]");
-    expect(html).toContain("left-0 top-[2%]");
-    expect(html).toContain("right-0 top-[4%]");
+    expect(html).toContain("object-contain");
   });
 });
