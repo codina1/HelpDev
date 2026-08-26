@@ -56,10 +56,10 @@ export function PublicHeader() {
             className="pub-navbar-brand focus-ring group inline-flex min-w-0 items-center gap-2 no-underline"
           >
             <span
-              className="pub-navbar-mark flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#7C3AED] text-[10px] font-extrabold text-white shadow-[0_0_16px_rgba(124,58,237,0.4)]"
+              className="pub-navbar-mark relative flex h-7 w-7 shrink-0 items-center justify-center text-[#A855F7] drop-shadow-[0_0_12px_rgba(168,85,247,0.55)]"
               aria-hidden
             >
-              H
+              <BrandMarkIcon />
             </span>
             <span className="pub-navbar-wordmark text-[14px] font-semibold tracking-tight text-white">
               {SITE.name}
@@ -319,6 +319,34 @@ function MenuIcon({ open }: { open: boolean }) {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden>
       {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 8h16M4 16h16" />}
+    </svg>
+  );
+}
+
+/** Stylized loop / heart mark — matches reference brand glyph. */
+function BrandMarkIcon() {
+  return (
+    <svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden>
+      <defs>
+        <linearGradient id="hd-brand" x1="4" y1="4" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#C084FC" />
+          <stop offset="0.55" stopColor="#A855F7" />
+          <stop offset="1" stopColor="#7C3AED" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M14 23.2c-1.1-.7-6.6-4.4-8.8-8.2C3.2 11.4 4 7.4 7.1 5.8c2-.9 4.1-.3 5.4 1.3C13.8 5.5 15.9 4.9 17.9 5.8c3.1 1.6 3.9 5.6 1.9 9.2-2.2 3.8-7.7 7.5-8.8 8.2Z"
+        fill="url(#hd-brand)"
+        opacity="0.95"
+      />
+      <path
+        d="M11.2 11.4c.7-1.4 2.1-2.1 3.5-1.8 1.6.3 2.7 1.7 2.7 3.4 0 2.2-1.8 3.6-3.4 4.8"
+        stroke="#F5F3FF"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        fill="none"
+        opacity="0.85"
+      />
     </svg>
   );
 }

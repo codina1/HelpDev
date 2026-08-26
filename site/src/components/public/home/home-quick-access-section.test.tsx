@@ -10,6 +10,8 @@ describe("homepage quick access", () => {
   it("renders five premium navigation cards with 3D icons", () => {
     const html = renderToStaticMarkup(<QuickAccessSection />);
     expect(html).toContain("دسترسی سریع");
+    expect(html).toContain("text-[#A855F7]");
+    expect(html).toContain("drop-shadow-[0_0_14px_rgba(168,85,247,0.65)]");
     expect(html).toContain("text-[28px]");
     expect(html).toContain("lg:grid-cols-5");
     expect(html).toContain("sm:grid-cols-3");

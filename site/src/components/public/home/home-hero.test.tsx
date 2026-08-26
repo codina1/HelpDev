@@ -20,13 +20,16 @@ describe("homepage hero", () => {
     expect(html).toContain("sm:text-[42px]");
     expect(html).toContain("min-[1440px]:text-[52px]");
     expect(html).toContain("grid-cols-2");
-    expect(html).toContain("sm:grid-cols-4");
+    expect(html).toContain("sm:grid-cols-3");
+    expect(html).toContain("lg:grid-cols-5");
     expect(html).toContain("max-w-[28rem]");
     expect(html).toContain("h-[50px]");
     expect(html).toContain("mt-6");
     expect(html).toContain("هر چیزی که می‌خواهی جستجو کن");
     expect(html).toContain("مقاله آموزشی");
     expect(html).toContain("+1200");
+    expect(html).toContain("+60");
+    expect(html).toContain("نقشه راه");
     expect(html).not.toContain("lg:w-[650px]");
   });
 

@@ -16,7 +16,8 @@ describe("public homepage header", () => {
     expect(source).toContain("GlobalSearchPalette");
     expect(source).toContain("AuthModal");
     expect(source).toContain("--home-header-height");
-    expect(source).toContain("lg:hidden");
+    expect(source).toContain("sm:hidden");
+    expect(source).toContain("BrandMarkIcon");
     expect(source).toContain("backdrop-blur");
     expect(source).toContain("sticky");
   });

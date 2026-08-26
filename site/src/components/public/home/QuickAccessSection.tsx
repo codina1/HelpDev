@@ -75,8 +75,14 @@ export function QuickAccessSection() {
       <PublicContainer size="wide">
         <h2
           id="quick-access-heading"
-          className="mb-7 text-start text-[24px] font-extrabold tracking-tight text-white sm:mb-8 sm:text-[28px]"
+          className="mb-7 flex items-center justify-start gap-2.5 text-[24px] font-extrabold tracking-tight text-white sm:mb-8 sm:text-[28px]"
         >
+          <span
+            className="inline-flex h-7 w-7 shrink-0 items-center justify-center text-[#A855F7] drop-shadow-[0_0_14px_rgba(168,85,247,0.65)]"
+            aria-hidden
+          >
+            <ZapIcon />
+          </span>
           دسترسی سریع
         </h2>
 
@@ -159,6 +165,14 @@ function ArrowIcon() {
     >
       <path d="M19 12H5" />
       <path d="M12 19l-7-7 7-7" />
+    </svg>
+  );
+}
+
+function ZapIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M13 2 4.5 13.2c-.35.46-.02 1.1.55 1.1H11l-1 7.8 8.7-11.4c.34-.45.01-1.1-.55-1.1H13l0-7.6Z" />
     </svg>
   );
 }

@@ -28,7 +28,7 @@ describe("homepage platform sections", () => {
 
   it("renders four platform stats", () => {
     const html = renderToStaticMarkup(<HomeStatsSection />);
-    expect(HOME_PLATFORM_STATS).toHaveLength(4);
+    expect(HOME_PLATFORM_STATS).toHaveLength(5);
     for (const stat of HOME_PLATFORM_STATS) {
       expect(html).toContain(stat.value);
       expect(html).toContain(stat.label);
