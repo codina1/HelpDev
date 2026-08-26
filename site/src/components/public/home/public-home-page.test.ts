@@ -13,7 +13,7 @@ describe("public homepage composition", () => {
       "HomeHero",
       "HomeQuickAccessSection",
       "HomeHubSection",
-      "HomeArticlesSection",
+      "LatestArticlesSection",
       "HomeNewsSection",
       "HomePathsSection",
       "HomeNewsletterSection",

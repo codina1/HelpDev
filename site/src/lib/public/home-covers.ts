@@ -16,11 +16,11 @@ export const HOME_COVERS = {
 } as const;
 
 export function coverForHomeCategory(category: string): string {
-  if (category === "معماری") return HOME_COVERS.architecture;
-  if (category === "هوش مصنوعی") return HOME_COVERS.ai;
+  if (category === "معماری" || category === ".NET") return HOME_COVERS.architecture;
+  if (category === "هوش مصنوعی" || category === "AI Coding" || category === "MCP") return HOME_COVERS.ai;
   if (category === "بک‌اند") return HOME_COVERS.backend;
   if (category === "فرانت‌اند") return HOME_COVERS.frontend;
-  if (category === "دواپس") return HOME_COVERS.devops;
+  if (category === "دواپس" || category === "Tools") return HOME_COVERS.devops;
   return HOME_COVERS.article;
 }
 

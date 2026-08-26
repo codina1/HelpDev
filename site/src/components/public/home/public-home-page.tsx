@@ -1,7 +1,7 @@
 import { HomeHero } from "@/components/public/home/home-hero";
 import { HomeQuickAccessSection } from "@/components/public/home/home-quick-access-section";
 import { HomeHubSection } from "@/components/public/home/home-hub-section";
-import { HomeArticlesSection } from "@/components/public/home/home-articles-section";
+import { LatestArticlesSection } from "@/components/public/home/LatestArticlesSection";
 import { HomeNewsSection } from "@/components/public/home/home-news-section";
 import { HomePathsSection } from "@/components/public/home/home-paths-section";
 import { HomeNewsletterSection } from "@/components/public/home/home-newsletter-section";
@@ -58,7 +58,7 @@ export async function PublicHomePage() {
       <HomeHero />
       <HomeQuickAccessSection />
       <HomeHubSection tools={tools} />
-      <HomeArticlesSection articles={articles} />
+      <LatestArticlesSection articles={articles} />
       <HomeNewsSection items={news} />
       <HomePathsSection roadmaps={roadmaps} />
       <HomeNewsletterSection />
