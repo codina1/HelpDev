@@ -31,7 +31,7 @@ const STAT_ICON: Record<(typeof STATS)[number]["tone"], string> = {
 export function HeroSection() {
   return (
     <section
-      className="home-hero relative overflow-hidden bg-[#050816]"
+      className="home-hero relative bg-[#050816]"
       aria-labelledby="home-hero-title"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
