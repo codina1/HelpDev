@@ -36,8 +36,10 @@ describe("homepage quick access", () => {
     expect(html).toContain("text-[#A855F7]");
     expect(html).toContain("mt-3 flex h-6 w-6");
     expect(html).toContain("pb-5");
-    expect(html).toContain("group-hover:translate-y-1");
-    expect(html).toContain('width="24"');
+    expect(html).toContain("group-hover:-translate-x-1");
+    expect(html).toContain('width="22"');
+    expect(html).toContain("M19 12H5");
+    expect(html).toContain("M12 19l-7-7 7-7");
     expect(html).not.toContain("مسیرهای اصلی HelpDev");
 
     for (const item of QUICK_ACCESS_ITEMS) {

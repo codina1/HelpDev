@@ -135,7 +135,7 @@ function QuickAccessCard({ item }: { item: QuickAccessItem }) {
       </p>
 
       <span
-        className="relative z-10 mt-3 flex h-6 w-6 shrink-0 items-center justify-center text-[#A855F7] transition duration-300 group-hover:translate-y-1"
+        className="relative z-10 mt-3 flex h-6 w-6 shrink-0 items-center justify-center text-[#A855F7] transition duration-300 group-hover:-translate-x-1"
         aria-hidden
       >
         <ArrowIcon />
@@ -146,8 +146,19 @@ function QuickAccessCard({ item }: { item: QuickAccessItem }) {
 
 function ArrowIcon() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden>
-      <path d="M12 5v14M12 19l-5-5M12 19l5-5" />
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M19 12H5" />
+      <path d="M12 19l-7-7 7-7" />
     </svg>
   );
 }
