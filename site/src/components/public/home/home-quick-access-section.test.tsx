@@ -23,7 +23,8 @@ describe("homepage quick access", () => {
     expect(html).toContain("hover:-translate-y-2");
     expect(html).toContain("hover:shadow-[0_0_35px_rgba(124,58,237,0.25)]");
     expect(html).toContain("group-hover:scale-110");
-    expect(html).toContain("h-16 w-16");
+    expect(html).toContain("sm:h-16 sm:w-16");
+    expect(html).toContain("آخرین اخبار دنیای توسعه");
     expect(html).toContain("linear-gradient(145deg, #111827, #080d1c)");
     expect(html).toContain("text-[#A855F7]");
     expect(html).toContain("absolute bottom-5 left-1/2");
