@@ -15,9 +15,10 @@ describe("homepage quick access", () => {
     expect(html).toContain("sm:grid-cols-3");
     expect(html).toContain("grid-cols-2");
     expect(html).toContain("gap-4");
-    expect(html).toContain("h-[180px]");
+    expect(html).toContain("min-h-[220px]");
     expect(html).toContain("w-full");
     expect(html).not.toContain("lg:w-[220px]");
+    expect(html).not.toContain("h-[180px]");
     expect(html).toContain("rounded-[22px]");
     expect(html).toContain("hover:-translate-y-2");
     expect(html).toContain("hover:shadow-[0_0_35px_rgba(124,58,237,0.25)]");

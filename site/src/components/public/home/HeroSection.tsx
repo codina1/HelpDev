@@ -39,12 +39,12 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_10%_80%,rgba(37,99,235,0.14),transparent_50%)]" />
       </div>
 
-      <div className="relative mx-auto grid w-full max-w-[1280px] grid-cols-1 items-center gap-6 px-6 py-6 sm:gap-8 sm:px-5 sm:py-8 lg:grid-cols-2 lg:gap-8 lg:px-6 lg:py-10 min-[1440px]:h-[560px] min-[1440px]:gap-5 min-[1440px]:overflow-hidden min-[1440px]:px-8 min-[1440px]:py-0">
-        {/* Content — RTL right, inset from edge */}
-        <div className="home-hero-copy order-2 flex min-w-0 flex-col items-center text-center lg:order-1 lg:items-start lg:justify-center lg:pr-4 xl:pr-10 min-[1440px]:pr-[56px] lg:text-start">
+      <div className="relative mx-auto grid w-full max-w-[1280px] grid-cols-1 items-center gap-8 px-6 py-8 sm:gap-10 sm:px-5 lg:grid-cols-2 lg:gap-6 lg:px-6 lg:py-12 xl:gap-10 min-[1440px]:min-h-[560px] min-[1440px]:gap-8 min-[1440px]:px-8 min-[1440px]:py-10">
+        {/* Content — RTL right */}
+        <div className="home-hero-copy order-2 flex min-w-0 w-full flex-col items-center text-center lg:order-1 lg:max-w-none lg:items-start lg:justify-center lg:pe-2 lg:text-start">
           <h1
             id="home-hero-title"
-            className="w-full max-w-[520px] whitespace-normal text-[32px] font-extrabold leading-[1.2] tracking-tight sm:text-[42px] min-[1440px]:text-[52px]"
+            className="w-full max-w-[36rem] whitespace-normal text-[32px] font-extrabold leading-[1.2] tracking-tight sm:text-[42px] lg:text-[44px] min-[1440px]:text-[52px]"
           >
             <span className="block text-white">سیستم عامل رشد</span>
             <span className="mt-0.5 block bg-gradient-to-l from-[#7C3AED] to-[#2563EB] bg-clip-text text-transparent">
@@ -52,12 +52,12 @@ export function HeroSection() {
             </span>
           </h1>
 
-          <div className="mt-2.5 w-full max-w-[420px] space-y-1 text-[13px] leading-7 text-[#94A3B8] sm:text-[14px]">
+          <div className="mt-3 w-full max-w-[28rem] space-y-1 text-[13px] leading-7 text-[#94A3B8] sm:text-[14px] lg:max-w-[26rem]">
             <p className="font-medium text-[#CBD5E1]">یاد بگیر، ابزار بساز و سریع‌تر توسعه بده.</p>
             <p>HelpDev مجموعه‌ای از آموزش‌ها، ابزارها، Prompt ها و اخبار دنیای توسعه است.</p>
           </div>
 
-          <div className="mt-4 flex w-full max-w-[400px] flex-col gap-2.5 sm:flex-row sm:justify-center lg:justify-start">
+          <div className="mt-5 flex w-full max-w-[28rem] flex-col gap-2.5 sm:flex-row sm:justify-center lg:justify-start">
             <Link
               href="/learning"
               className="focus-ring inline-flex h-11 items-center justify-center rounded-[14px] bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] px-5 text-[13px] font-bold text-white no-underline shadow-[0_0_24px_rgba(124,58,237,0.38)] transition hover:brightness-110"
@@ -77,7 +77,7 @@ export function HeroSection() {
             aria-label="جستجوی HelpDev"
             action="/search"
             method="get"
-            className="mt-3 w-full max-w-[400px]"
+            className="mt-4 w-full max-w-[28rem]"
           >
             <label className="sr-only" htmlFor="home-hero-search">
               جستجو
@@ -100,7 +100,7 @@ export function HeroSection() {
           </form>
 
           <ul
-            className="mt-2 flex w-full max-w-[400px] flex-wrap items-center justify-center gap-1.5 lg:justify-start"
+            className="mt-3 flex w-full max-w-[28rem] flex-wrap items-center justify-center gap-1.5 lg:justify-start"
             aria-label="موضوعات پرطرفدار"
           >
             {TOPIC_CHIPS.map((topic) => (
@@ -116,7 +116,7 @@ export function HeroSection() {
           </ul>
 
           <dl
-            className="mt-5 flex w-full max-w-[520px] flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:gap-x-9 lg:justify-start"
+            className="mt-6 grid w-full max-w-[36rem] grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4 lg:justify-items-start"
             aria-label="آمار پلتفرم"
           >
             {STATS.map((stat) => (
@@ -126,7 +126,7 @@ export function HeroSection() {
                 </span>
                 <div className="text-start">
                   <dt className="sr-only">{stat.label}</dt>
-                  <dd className="text-2xl font-extrabold leading-none tracking-tight text-white">
+                  <dd className="text-xl font-extrabold leading-none tracking-tight text-white sm:text-2xl">
                     {stat.value}
                   </dd>
                   <p className="mt-1.5 text-[11px] font-medium leading-none text-[#94A3B8]">{stat.label}</p>
@@ -136,8 +136,8 @@ export function HeroSection() {
           </dl>
         </div>
 
-        {/* Illustration — fluid width by breakpoint */}
-        <div className="relative order-1 flex w-full items-center justify-center lg:order-2 lg:justify-self-center">
+        {/* Illustration — fills left column */}
+        <div className="relative order-1 flex w-full min-w-0 items-center justify-center lg:order-2">
           <HomeHeroWorkspace />
         </div>
       </div>

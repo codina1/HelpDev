@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 export function HomeHeroWorkspace() {
   return (
     <div
-      className="home-hero-workspace relative mx-auto aspect-[13/10] w-full max-w-[320px] sm:max-w-[450px] lg:max-w-[min(100%,520px)] min-[1440px]:max-w-[600px]"
+      className="home-hero-workspace relative mx-auto aspect-[13/10] w-full max-w-[320px] sm:max-w-[450px] lg:max-w-[min(100%,560px)] min-[1440px]:max-w-[620px]"
       role="img"
       aria-label="فضای کار توسعه‌دهنده با لپ‌تاپ و کارت‌های شناور AI، Prompt، Code و Tools"
     >

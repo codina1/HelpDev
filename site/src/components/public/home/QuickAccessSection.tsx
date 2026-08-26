@@ -89,7 +89,7 @@ function QuickAccessCard({ item }: { item: QuickAccessItem }) {
   return (
     <Link
       href={item.href}
-      className="group focus-ring relative flex h-[180px] w-full flex-col overflow-hidden rounded-[22px] border border-white/[0.08] px-5 pb-[68px] pt-5 no-underline transition duration-300 hover:-translate-y-2 hover:border-[rgba(124,58,237,0.55)] hover:shadow-[0_0_35px_rgba(124,58,237,0.25)]"
+      className="group focus-ring relative flex min-h-[220px] w-full flex-col items-center overflow-hidden rounded-[22px] border border-white/[0.08] px-4 pb-14 pt-5 no-underline transition duration-300 hover:-translate-y-2 hover:border-[rgba(124,58,237,0.55)] hover:shadow-[0_0_35px_rgba(124,58,237,0.25)]"
       style={{
         backgroundImage: "linear-gradient(145deg, #111827, #080d1c)",
       }}
@@ -105,7 +105,7 @@ function QuickAccessCard({ item }: { item: QuickAccessItem }) {
 
       <span
         className={[
-          "relative mx-auto flex h-16 w-16 shrink-0 items-center justify-center transition duration-300 group-hover:scale-110",
+          "relative mx-auto flex h-14 w-14 shrink-0 items-center justify-center transition duration-300 group-hover:scale-110 sm:h-16 sm:w-16",
           ICON_GLOW[item.tone],
         ].join(" ")}
         aria-hidden
@@ -113,15 +113,15 @@ function QuickAccessCard({ item }: { item: QuickAccessItem }) {
         <Icon3D tone={item.tone} />
       </span>
 
-      <h3 className="relative mt-3 text-center text-[18px] font-bold leading-snug text-white">
+      <h3 className="relative mt-3 text-center text-[16px] font-bold leading-snug text-white sm:text-[18px]">
         {item.title}
       </h3>
-      <p className="relative mt-1 line-clamp-2 text-center text-[13px] leading-5 text-[#94A3B8]">
+      <p className="relative mt-1.5 line-clamp-2 min-h-[2.5rem] px-1 text-center text-[12px] leading-5 text-[#94A3B8] sm:text-[13px]">
         {item.description}
       </p>
 
       <span
-        className="absolute bottom-5 left-1/2 flex h-6 w-6 -translate-x-1/2 items-center justify-center text-[#A855F7] transition duration-300 group-hover:translate-x-[-50%] group-hover:translate-y-1"
+        className="absolute bottom-5 left-1/2 z-10 flex h-6 w-6 -translate-x-1/2 items-center justify-center text-[#A855F7] transition duration-300 group-hover:translate-x-[-50%] group-hover:translate-y-1"
         aria-hidden
       >
         <ArrowIcon />

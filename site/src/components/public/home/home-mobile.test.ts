@@ -21,7 +21,7 @@ describe("homepage mobile responsive rules", () => {
 
   it("keeps hero stacking and a fluid workspace", () => {
     expect(hero).toContain("lg:grid-cols-2");
-    expect(hero).toContain("min-[1440px]:h-[560px]");
+    expect(hero).toContain("min-[1440px]:min-h-[560px]");
     expect(hero).toContain("HomeHeroWorkspace");
     expect(hero).toContain("order-1");
     expect(workspace).toContain("home-hero-float");
