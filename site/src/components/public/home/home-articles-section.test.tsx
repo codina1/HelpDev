@@ -26,7 +26,8 @@ describe("homepage latest articles", () => {
     expect(html).toContain("/home/cover-");
     expect(html).toContain("همه مقالات");
     expect(html).toContain("/articles");
-    expect(html).toContain("lg:grid-cols-5");
+    expect(html).toContain("min-[1440px]:grid-cols-5");
+    expect(html).toContain("sm:grid-cols-3");
     for (const item of buildHomeArticles([])) {
       expect(html).toContain(item.title);
       expect(html).toContain(item.excerpt);

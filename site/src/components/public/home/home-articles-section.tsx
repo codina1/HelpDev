@@ -145,7 +145,7 @@ export function HomeArticlesSection({ articles = [] }: HomeArticlesSectionProps)
         </Link>
       </div>
 
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3 min-[1440px]:grid-cols-5 min-[1440px]:gap-4">
         {items.map((item) => (
           <HomeArticleCard key={item.id} item={item} />
         ))}

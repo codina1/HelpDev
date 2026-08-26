@@ -12,11 +12,12 @@ describe("homepage quick access", () => {
     expect(html).toContain("دسترسی سریع");
     expect(html).toContain("text-[28px]");
     expect(html).toContain("lg:grid-cols-5");
-    expect(html).toContain("md:grid-cols-3");
+    expect(html).toContain("sm:grid-cols-3");
     expect(html).toContain("grid-cols-2");
     expect(html).toContain("gap-4");
     expect(html).toContain("h-[180px]");
-    expect(html).toContain("lg:w-[220px]");
+    expect(html).toContain("w-full");
+    expect(html).not.toContain("lg:w-[220px]");
     expect(html).toContain("rounded-[22px]");
     expect(html).toContain("hover:-translate-y-2");
     expect(html).toContain("hover:shadow-[0_0_35px_rgba(124,58,237,0.25)]");

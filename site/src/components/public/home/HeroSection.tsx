@@ -39,12 +39,12 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_40%_at_10%_80%,rgba(37,99,235,0.14),transparent_50%)]" />
       </div>
 
-      <div className="relative mx-auto grid w-full max-w-[1280px] grid-cols-1 items-center gap-4 px-4 py-5 sm:px-6 lg:h-[560px] lg:max-h-[560px] lg:grid-cols-2 lg:gap-5 lg:overflow-hidden lg:px-8 lg:py-0">
+      <div className="relative mx-auto grid w-full max-w-[1280px] grid-cols-1 items-center gap-6 px-6 py-6 sm:gap-8 sm:px-5 sm:py-8 lg:grid-cols-2 lg:gap-8 lg:px-6 lg:py-10 min-[1440px]:h-[560px] min-[1440px]:gap-5 min-[1440px]:overflow-hidden min-[1440px]:px-8 min-[1440px]:py-0">
         {/* Content — RTL right, inset from edge */}
-        <div className="home-hero-copy order-2 flex min-w-0 flex-col items-center text-center lg:order-1 lg:items-start lg:justify-center lg:pr-[56px] lg:text-start">
+        <div className="home-hero-copy order-2 flex min-w-0 flex-col items-center text-center lg:order-1 lg:items-start lg:justify-center lg:pr-4 xl:pr-10 min-[1440px]:pr-[56px] lg:text-start">
           <h1
             id="home-hero-title"
-            className="max-w-[520px] whitespace-normal text-[34px] font-extrabold leading-[1.2] tracking-tight sm:text-[42px] lg:text-[52px]"
+            className="w-full max-w-[520px] whitespace-normal text-[32px] font-extrabold leading-[1.2] tracking-tight sm:text-[42px] min-[1440px]:text-[52px]"
           >
             <span className="block text-white">سیستم عامل رشد</span>
             <span className="mt-0.5 block bg-gradient-to-l from-[#7C3AED] to-[#2563EB] bg-clip-text text-transparent">
@@ -77,7 +77,7 @@ export function HeroSection() {
             aria-label="جستجوی HelpDev"
             action="/search"
             method="get"
-            className="mt-3 w-full max-w-[400px] lg:w-[400px]"
+            className="mt-3 w-full max-w-[400px]"
           >
             <label className="sr-only" htmlFor="home-hero-search">
               جستجو
@@ -100,7 +100,7 @@ export function HeroSection() {
           </form>
 
           <ul
-            className="mt-2 flex max-w-[400px] flex-wrap items-center justify-center gap-1.5 lg:justify-start"
+            className="mt-2 flex w-full max-w-[400px] flex-wrap items-center justify-center gap-1.5 lg:justify-start"
             aria-label="موضوعات پرطرفدار"
           >
             {TOPIC_CHIPS.map((topic) => (
@@ -116,7 +116,7 @@ export function HeroSection() {
           </ul>
 
           <dl
-            className="mt-5 flex w-full max-w-[520px] flex-wrap items-center justify-center gap-x-9 gap-y-3 lg:justify-start"
+            className="mt-5 flex w-full max-w-[520px] flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:gap-x-9 lg:justify-start"
             aria-label="آمار پلتفرم"
           >
             {STATS.map((stat) => (
@@ -136,8 +136,8 @@ export function HeroSection() {
           </dl>
         </div>
 
-        {/* Illustration — RTL left, vertically centered */}
-        <div className="relative order-1 flex items-center justify-center lg:order-2 lg:h-[500px] lg:w-[650px] lg:max-w-none lg:justify-self-center">
+        {/* Illustration — fluid width by breakpoint */}
+        <div className="relative order-1 flex w-full items-center justify-center lg:order-2 lg:justify-self-center">
           <HomeHeroWorkspace />
         </div>
       </div>

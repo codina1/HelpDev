@@ -5,7 +5,7 @@ import { HomeHero } from "@/components/public/home/home-hero";
 import { HomeHeroWorkspace } from "@/components/public/home/home-hero-workspace";
 
 describe("homepage hero", () => {
-  it("renders compact platform hero with search chips and freestanding stats", () => {
+  it("renders fluid responsive hero with search chips and freestanding stats", () => {
     const html = renderToStaticMarkup(<HeroSection />);
     expect(html).toContain("سیستم عامل رشد");
     expect(html).toContain("توسعه‌دهندگان در عصر AI");
@@ -13,20 +13,21 @@ describe("homepage hero", () => {
     expect(html).toContain("یاد بگیر، ابزار بساز و سریع‌تر توسعه بده");
     expect(html).toContain("شروع مسیر");
     expect(html).toContain("کاوش HelpDev");
-    expect(html).toContain("lg:h-[560px]");
-    expect(html).toContain("lg:max-h-[560px]");
+    expect(html).toContain("min-[1440px]:h-[560px]");
     expect(html).toContain("max-w-[1280px]");
-    expect(html).toContain("lg:text-[52px]");
+    expect(html).toContain("lg:grid-cols-2");
+    expect(html).toContain("text-[32px]");
+    expect(html).toContain("sm:text-[42px]");
+    expect(html).toContain("min-[1440px]:text-[52px]");
     expect(html).toContain("max-w-[520px]");
-    expect(html).toContain("lg:w-[400px]");
+    expect(html).toContain("max-w-[400px]");
     expect(html).toContain("h-[50px]");
-    expect(html).toContain("lg:pr-[56px]");
     expect(html).toContain("text-2xl");
     expect(html).toContain("mt-5");
     expect(html).toContain("هر چیزی که می‌خواهی جستجو کن");
     expect(html).toContain("مقاله آموزشی");
     expect(html).toContain("+1200");
-    expect(html).not.toContain("sm:bg-[#0B1224]/70");
+    expect(html).not.toContain("lg:w-[650px]");
   });
 
   it("keeps HomeHero as a thin alias of HeroSection", () => {
@@ -43,15 +44,16 @@ describe("homepage hero", () => {
     expect(html).toContain("lg:order-2");
   });
 
-  it("renders a larger 3D workspace with corner floating cards", () => {
+  it("renders a fluid 3D workspace with corner floating cards", () => {
     const html = renderToStaticMarkup(<HomeHeroWorkspace />);
     expect(html).toContain("AI Assistant");
     expect(html).toContain("Cursor");
     expect(html).toContain("JSON · JWT · Regex");
     expect(html).toContain("CODE");
     expect(html).toContain("home-hero-float");
-    expect(html).toContain("lg:h-[500px]");
-    expect(html).toContain("lg:w-[650px]");
+    expect(html).toContain("max-w-[320px]");
+    expect(html).toContain("sm:max-w-[450px]");
+    expect(html).toContain("min-[1440px]:max-w-[600px]");
     expect(html).toContain("rounded-[18px]");
     expect(html).toContain("bg-[rgba(15,23,42,0.8)]");
     expect(html).toContain("left-0 top-[2%]");

@@ -6,12 +6,13 @@ type PublicContainerProps = {
 };
 
 const SIZE = {
-  default: "max-w-none",
+  default: "max-w-[1280px]",
   narrow: "max-w-3xl",
-  wide: "max-w-none",
+  wide: "max-w-[1280px]",
   full: "max-w-none",
 } as const;
 
+/** Shared page shell — 1280 max · pad 24 / tablet 20 / desktop 32. */
 export function PublicContainer({
   children,
   className = "",
@@ -19,7 +20,13 @@ export function PublicContainer({
   size = "default",
 }: PublicContainerProps) {
   return (
-    <Tag className={["mx-auto w-full min-w-0 px-4 sm:px-6 lg:px-8", SIZE[size], className].join(" ")}>
+    <Tag
+      className={[
+        "mx-auto w-full min-w-0 px-6 sm:px-5 lg:px-6 min-[1440px]:px-8",
+        SIZE[size],
+        className,
+      ].join(" ")}
+    >
       {children}
     </Tag>
   );

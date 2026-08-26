@@ -68,7 +68,7 @@ export function PublicHeader() {
 
           {/* Center: sparse nav */}
           <nav
-            className="pub-navbar-nav hidden items-center gap-1 xl:gap-2 lg:flex"
+            className="pub-navbar-nav hidden items-center gap-0.5 sm:flex lg:gap-1 xl:gap-2"
             aria-label="ناوبری اصلی"
           >
             {HEADER_NAV.map((item) => {
@@ -78,7 +78,7 @@ export function PublicHeader() {
                   key={item.href}
                   href={item.href}
                   className={[
-                    "pub-navbar-link focus-ring relative px-2.5 py-1.5 text-[12px] font-medium tracking-wide no-underline transition-colors xl:px-3",
+                    "pub-navbar-link focus-ring relative px-1.5 py-1.5 text-[11px] font-medium tracking-wide no-underline transition-colors lg:px-2.5 lg:text-[12px] xl:px-3",
                     active ? "text-white" : "text-[#94A3B8] hover:text-white",
                   ].join(" ")}
                   aria-current={active ? "page" : undefined}
@@ -86,7 +86,7 @@ export function PublicHeader() {
                   {item.label}
                   {active ? (
                     <span
-                      className="pointer-events-none absolute inset-x-1.5 -bottom-0.5 h-px rounded-full bg-[#7C3AED] shadow-[0_0_10px_3px_rgba(124,58,237,0.65)]"
+                      className="pointer-events-none absolute inset-x-1 -bottom-0.5 h-px rounded-full bg-[#7C3AED] shadow-[0_0_10px_3px_rgba(124,58,237,0.65)] lg:inset-x-1.5"
                       aria-hidden
                     />
                   ) : null}
@@ -143,7 +143,7 @@ export function PublicHeader() {
             )}
 
             <IconButton
-              className="lg:hidden"
+              className="sm:hidden"
               label={menuOpen ? "بستن منو" : "باز کردن منو"}
               pressed={menuOpen}
               onClick={() => setMenuOpen((open) => !open)}
@@ -154,7 +154,7 @@ export function PublicHeader() {
         </PublicContainer>
 
         {menuOpen ? (
-          <div className="border-t border-white/[0.08] bg-[#050816]/95 backdrop-blur-xl lg:hidden">
+          <div className="border-t border-white/[0.08] bg-[#050816]/95 backdrop-blur-xl sm:hidden">
             <nav
               className="mx-auto flex w-full max-w-[var(--home-container-wide)] flex-col gap-0.5 px-4 py-3"
               aria-label="ناوبری موبایل"

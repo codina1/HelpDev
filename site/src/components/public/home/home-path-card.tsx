@@ -34,7 +34,7 @@ function formatLearners(value: number): string {
 /** Horizontal learning-path card — visual, title, copy, learner count. */
 export function HomePathCard({ item }: HomePathCardProps) {
   return (
-    <li className="home-path-item">
+    <li className="home-path-item min-w-0">
       <Link href={item.href} className={`home-path-card home-path-card-${item.visual} focus-ring`}>
         <div className="home-path-visual">
           <img src={coverForHomePath(item.visual)} alt="" className="home-path-image" />

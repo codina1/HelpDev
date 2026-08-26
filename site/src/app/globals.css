@@ -2050,10 +2050,15 @@ body {
   scrollbar-color: color-mix(in srgb, var(--home-purple) 40%, transparent) transparent;
 }
 
-.home-path-item,
-.home-article-item {
+.home-paths-scroller .home-path-item,
+.home-articles-scroller .home-article-item {
   flex: 0 0 min(17.75rem, 78vw);
   scroll-snap-align: start;
+}
+
+.home-path-item,
+.home-article-item {
+  min-width: 0;
 }
 
 @media (min-width: 1200px) {
@@ -2974,11 +2979,11 @@ body {
   text-shadow: 0 0 18px rgba(124, 58, 237, 0.45);
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 640px) {
   .pub-navbar-inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    gap: 1rem;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
+    gap: 0.5rem;
   }
 
   .pub-navbar-brand {
@@ -2991,6 +2996,13 @@ body {
 
   .pub-navbar-actions {
     justify-self: end;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pub-navbar-inner {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 1rem;
   }
 }
 

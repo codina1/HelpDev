@@ -47,7 +47,7 @@ export function HomeHubSection({ tools = [] }: HomeHubSectionProps) {
         <h2 id="home-hub-heading" className="sr-only">
           ابزارها و Prompt Lab
         </h2>
-        <div className="grid gap-4 lg:grid-cols-2 lg:gap-5">
+        <div className="grid gap-4 md:grid-cols-2 lg:gap-5">
           {/* Right in RTL */}
           <section
             aria-labelledby="home-toolbox-heading"
@@ -64,7 +64,7 @@ export function HomeHubSection({ tools = [] }: HomeHubSectionProps) {
                 همه ابزارها
               </Link>
             </div>
-            <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 min-[1440px]:grid-cols-3">
               {toolItems.map((tool) => (
                 <li key={tool.id}>
                   <Link

@@ -99,7 +99,7 @@ export function HomePathsSection({ roadmaps = [] }: HomePathsSectionProps) {
         </Link>
       </div>
 
-      <ul className="home-paths-scroller">
+      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 min-[1440px]:grid-cols-5">
         {items.map((item) => (
           <HomePathCard key={item.id} item={item} />
         ))}

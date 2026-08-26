@@ -19,18 +19,20 @@ describe("homepage mobile responsive rules", () => {
     expect(css).toContain(".pub-footer-grid");
   });
 
-  it("keeps hero stacking and a responsive workspace", () => {
+  it("keeps hero stacking and a fluid workspace", () => {
     expect(hero).toContain("lg:grid-cols-2");
-    expect(hero).toContain("lg:h-[560px]");
+    expect(hero).toContain("min-[1440px]:h-[560px]");
     expect(hero).toContain("HomeHeroWorkspace");
     expect(hero).toContain("order-1");
     expect(workspace).toContain("home-hero-float");
+    expect(workspace).toContain("max-w-[320px]");
   });
 
-  it("keeps 64px header mobile chrome", () => {
+  it("keeps 64px header with tablet full menu and mobile hamburger", () => {
     expect(header).toContain("h-[64px]");
     expect(header).toContain("pub-navbar-search");
-    expect(header).toContain("lg:hidden");
+    expect(header).toContain("sm:flex");
+    expect(header).toContain("sm:hidden");
     expect(header).toContain("rounded-xl");
   });
 });

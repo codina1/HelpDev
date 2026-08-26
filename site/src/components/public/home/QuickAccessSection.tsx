@@ -65,7 +65,7 @@ export function QuickAccessSection() {
       className="home-quick-access relative pt-20 pb-8 sm:pb-9 lg:pb-10"
       aria-labelledby="quick-access-heading"
     >
-      <PublicContainer size="wide" className="max-w-[1280px]">
+      <PublicContainer size="wide">
         <h2
           id="quick-access-heading"
           className="mb-7 text-start text-[24px] font-extrabold tracking-tight text-white sm:mb-8 sm:text-[28px]"
@@ -73,9 +73,9 @@ export function QuickAccessSection() {
           دسترسی سریع
         </h2>
 
-        <ul className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
+        <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {QUICK_ACCESS_ITEMS.map((item) => (
-            <li key={item.id} className="flex min-w-0 justify-center">
+            <li key={item.id} className="min-w-0">
               <QuickAccessCard item={item} />
             </li>
           ))}
@@ -89,7 +89,7 @@ function QuickAccessCard({ item }: { item: QuickAccessItem }) {
   return (
     <Link
       href={item.href}
-      className="group focus-ring relative flex h-[180px] w-full max-w-[220px] flex-col overflow-hidden rounded-[22px] border border-white/[0.08] px-5 pb-[68px] pt-5 no-underline transition duration-300 hover:-translate-y-2 hover:border-[rgba(124,58,237,0.55)] hover:shadow-[0_0_35px_rgba(124,58,237,0.25)] lg:w-[220px]"
+      className="group focus-ring relative flex h-[180px] w-full flex-col overflow-hidden rounded-[22px] border border-white/[0.08] px-5 pb-[68px] pt-5 no-underline transition duration-300 hover:-translate-y-2 hover:border-[rgba(124,58,237,0.55)] hover:shadow-[0_0_35px_rgba(124,58,237,0.25)]"
       style={{
         backgroundImage: "linear-gradient(145deg, #111827, #080d1c)",
       }}
