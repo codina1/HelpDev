@@ -100,7 +100,7 @@ export function HomeHubSection({ tools = [] }: HomeHubSectionProps) {
               aria-hidden
             />
             <img
-              src="/home/icon-architect.png"
+              src="/home/icon-prompt-lab.png"
               alt=""
               width={128}
               height={128}

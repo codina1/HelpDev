@@ -3,14 +3,14 @@ import { PublicContainer } from "@/components/ui/public/v2/public-container";
 import { PublicSection } from "@/components/ui/public/v2/public-section";
 
 export const HOME_CONTENT_CATEGORIES = [
-  { id: "ai", label: "AI Coding", href: "/search?q=AI%20Coding" },
-  { id: "dotnet", label: ".NET", href: "/search?q=.NET" },
-  { id: "frontend", label: "Frontend", href: "/search?q=Frontend" },
-  { id: "backend", label: "Backend", href: "/search?q=Backend" },
-  { id: "devops", label: "DevOps", href: "/search?q=DevOps" },
-  { id: "mobile", label: "Mobile", href: "/search?q=Mobile" },
-  { id: "database", label: "Database", href: "/search?q=Database" },
-  { id: "security", label: "Security", href: "/search?q=Security" },
+  { id: "ai", label: "AI Coding", href: "/search?q=AI%20Coding", icon: "/home/icon-ai.png" },
+  { id: "dotnet", label: ".NET", href: "/search?q=.NET", icon: "/home/icon-dotnet.png" },
+  { id: "frontend", label: "Frontend", href: "/search?q=Frontend", icon: "/home/icon-frontend.png" },
+  { id: "backend", label: "Backend", href: "/search?q=Backend", icon: "/home/icon-backend.png" },
+  { id: "devops", label: "DevOps", href: "/search?q=DevOps", icon: "/home/icon-devops.png" },
+  { id: "mobile", label: "Mobile", href: "/search?q=Mobile", icon: "/home/icon-mobile.png" },
+  { id: "database", label: "Database", href: "/search?q=Database", icon: "/home/icon-database.png" },
+  { id: "security", label: "Security", href: "/search?q=Security", icon: "/home/icon-security.png" },
 ] as const;
 
 /** Content category chips / cards grid. */
@@ -40,10 +40,17 @@ export function HomeCategoriesSection() {
                 className="focus-ring flex min-h-[88px] flex-col items-center justify-center gap-2 rounded-2xl border border-white/[0.08] bg-[#0B1224] px-3 py-4 text-center no-underline transition hover:-translate-y-1 hover:border-[rgba(124,58,237,0.4)] hover:shadow-[0_0_28px_rgba(124,58,237,0.2)]"
               >
                 <span
-                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-[rgba(124,58,237,0.16)] text-[#C4B5FD]"
+                  className="flex h-11 w-11 items-center justify-center drop-shadow-[0_8px_18px_rgba(124,58,237,0.35)]"
                   aria-hidden
                 >
-                  <CategoryIcon id={category.id} />
+                  <img
+                    src={category.icon}
+                    alt=""
+                    width={44}
+                    height={44}
+                    decoding="async"
+                    className="h-11 w-11 object-contain"
+                  />
                 </span>
                 <span className="text-[13px] font-bold text-white">{category.label}</span>
               </Link>
@@ -52,44 +59,5 @@ export function HomeCategoriesSection() {
         </ul>
       </PublicContainer>
     </PublicSection>
-  );
-}
-
-function CategoryIcon({ id }: { id: string }) {
-  const common = {
-    width: 18,
-    height: 18,
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.7,
-  } as const;
-
-  if (id === "ai") {
-    return (
-      <svg {...common} aria-hidden>
-        <path d="M12 3 13.8 8.2 19 10 13.8 11.8 12 17 10.2 11.8 5 10 10.2 8.2 12 3Z" />
-      </svg>
-    );
-  }
-  if (id === "frontend" || id === "mobile") {
-    return (
-      <svg {...common} aria-hidden>
-        <rect x="4" y="5" width="16" height="12" rx="2" />
-        <path d="M8 21h8" />
-      </svg>
-    );
-  }
-  if (id === "security") {
-    return (
-      <svg {...common} aria-hidden>
-        <path d="M12 3 19 6v5c0 5-3.2 8.2-7 9-3.8-.8-7-4-7-9V6l7-3Z" />
-      </svg>
-    );
-  }
-  return (
-    <svg {...common} aria-hidden>
-      <path d="M4 7h16M4 12h16M4 17h10" />
-    </svg>
   );
 }

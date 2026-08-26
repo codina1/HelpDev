@@ -41,6 +41,8 @@ describe("homepage platform sections", () => {
     expect(html).toContain("Prompt Lab");
     expect(html).toContain("/toolbox");
     expect(html).toContain("/prompt-lab");
+    expect(html).toContain("/home/icon-prompt-lab.png");
+    expect(html).toContain("/home/icon-jwt.png");
   });
 
   it("renders eight content categories", () => {
@@ -48,6 +50,7 @@ describe("homepage platform sections", () => {
     expect(HOME_CONTENT_CATEGORIES).toHaveLength(8);
     for (const category of HOME_CONTENT_CATEGORIES) {
       expect(html).toContain(category.label);
+      expect(html).toContain(category.icon);
     }
   });
 

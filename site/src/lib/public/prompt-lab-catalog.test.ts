@@ -27,7 +27,7 @@ describe("prompt lab catalog", () => {
           title: "RAG",
           slug: "rag-query-rewrite",
           description: "بازنویسی پرسش",
-          coverImage: "/home/cover-ai.svg",
+          coverImage: "/home/icon-ai.png",
           mediaType: "Text",
           category: { id: "c", name: "Coding", slug: "coding" },
           aiModel: { id: "m", name: "Gemini", slug: "gemini", provider: "Google" },
