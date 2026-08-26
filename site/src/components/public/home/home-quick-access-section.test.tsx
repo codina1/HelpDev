@@ -29,7 +29,7 @@ describe("homepage quick access", () => {
     expect(html).toContain("text-[#A855F7]");
     expect(html).toContain("absolute bottom-5 left-1/2");
     expect(html).toContain("h-6 w-6");
-    expect(html).toContain("pb-[68px]");
+    expect(html).toContain("pb-14");
     expect(html).toContain("group-hover:translate-y-1");
     expect(html).toContain('width="64"');
     expect(html).toContain('width="24"');
