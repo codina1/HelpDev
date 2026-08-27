@@ -1,19 +1,16 @@
 import type { NewsArticle } from "@/types";
+import { NEWS_IMAGE_BY_TAG } from "@/components/news/featured-news";
 
 type NewsArticleCardProps = {
   article: NewsArticle;
 };
 
-const NEWS_IMAGE_BY_TAG: Record<NewsArticle["tag"], string> = {
-  React: "/home/icon-frontend.png",
-  ".NET": "/home/icon-dotnet.png",
-  AI: "/home/icon-ai.png",
-  DevOps: "/home/icon-devops.png",
-};
-
 export function NewsArticleCard({ article }: NewsArticleCardProps) {
   return (
-    <article className="group flex h-full min-w-0 flex-col overflow-hidden rounded-[20px] border border-white/[0.08] bg-[#111827] shadow-[0_0_24px_rgba(2,6,23,0.22)] transition duration-500 ease-out hover:-translate-y-2 hover:border-[rgba(124,58,237,0.5)] hover:shadow-[0_18px_42px_rgba(2,6,23,0.5),0_0_34px_rgba(124,58,237,0.32)]">
+    <article
+      id={`news-${article.id}`}
+      className="group flex h-full min-w-0 flex-col overflow-hidden rounded-[20px] border border-white/[0.08] bg-[#111827] shadow-[0_0_24px_rgba(2,6,23,0.22)] transition duration-500 ease-out hover:-translate-y-2 hover:border-[rgba(124,58,237,0.5)] hover:shadow-[0_18px_42px_rgba(2,6,23,0.5),0_0_34px_rgba(124,58,237,0.32)]"
+    >
       <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-t-[20px] bg-[#080d1c]">
         <img
           src={NEWS_IMAGE_BY_TAG[article.tag]}
