@@ -46,14 +46,15 @@ export function PublicHeader() {
   return (
     <>
       <header
-        className="pub-navbar sticky top-0 z-50 border-b border-white/[0.08] bg-[#050816]/80 backdrop-blur-xl"
+        className="pub-navbar sticky top-0 z-50 border-b border-white/[0.08] bg-[#050816]/85 backdrop-blur-xl"
         style={{ minHeight: "var(--home-header-height)" }}
+        dir="rtl"
       >
         <PublicContainer size="wide" className="pub-navbar-inner h-[64px]">
-          {/* Right (RTL start): compact logo */}
+          {/* Start (right in RTL): logo */}
           <Link
             href="/"
-            className="pub-navbar-brand focus-ring group inline-flex min-w-0 items-center gap-2 no-underline"
+            className="pub-navbar-brand focus-ring group inline-flex shrink-0 items-center gap-2 no-underline"
           >
             <span
               className="pub-navbar-mark relative flex h-7 w-7 shrink-0 items-center justify-center text-[#A855F7] drop-shadow-[0_0_12px_rgba(168,85,247,0.55)]"
@@ -66,9 +67,9 @@ export function PublicHeader() {
             </span>
           </Link>
 
-          {/* Center: sparse nav */}
+          {/* Center: nav links */}
           <nav
-            className="pub-navbar-nav hidden items-center gap-0.5 sm:flex lg:gap-1 xl:gap-2"
+            className="pub-navbar-nav hidden items-center gap-1 sm:flex md:gap-1.5 lg:gap-2 xl:gap-3"
             aria-label="ناوبری اصلی"
           >
             {HEADER_NAV.map((item) => {
@@ -78,7 +79,7 @@ export function PublicHeader() {
                   key={item.href}
                   href={item.href}
                   className={[
-                    "pub-navbar-link focus-ring relative px-1.5 py-1.5 text-[11px] font-medium tracking-wide no-underline transition-colors lg:px-2.5 lg:text-[12px] xl:px-3",
+                    "pub-navbar-link focus-ring relative whitespace-nowrap px-2 py-1.5 text-[12px] font-medium tracking-wide no-underline transition-colors lg:px-2.5 lg:text-[13px]",
                     active ? "text-white" : "text-[#94A3B8] hover:text-white",
                   ].join(" ")}
                   aria-current={active ? "page" : undefined}
@@ -86,7 +87,7 @@ export function PublicHeader() {
                   {item.label}
                   {active ? (
                     <span
-                      className="pointer-events-none absolute inset-x-1 -bottom-0.5 h-px rounded-full bg-[#7C3AED] shadow-[0_0_10px_3px_rgba(124,58,237,0.65)] lg:inset-x-1.5"
+                      className="pointer-events-none absolute inset-x-1.5 -bottom-0.5 h-px rounded-full bg-[#7C3AED] shadow-[0_0_10px_3px_rgba(124,58,237,0.65)]"
                       aria-hidden
                     />
                   ) : null}
@@ -95,19 +96,21 @@ export function PublicHeader() {
             })}
           </nav>
 
-          {/* Left (RTL end): search box · theme · auth */}
-          <div className="pub-navbar-actions flex min-w-0 items-center justify-end gap-1.5 sm:gap-2">
+          {/* End (left in RTL): search · theme · login */}
+          <div className="pub-navbar-actions flex shrink-0 items-center gap-2 sm:gap-2.5">
             <button
               type="button"
               onClick={() => setPaletteOpen(true)}
-              className="pub-navbar-search focus-ring hidden h-9 min-w-[180px] max-w-[260px] flex-1 items-center gap-2 rounded-xl border border-white/[0.1] bg-[#0B1224]/90 px-3 text-start transition hover:border-[rgba(168,85,247,0.4)] hover:bg-[#111827] md:inline-flex lg:min-w-[220px]"
+              className="pub-navbar-search focus-ring hidden h-9 w-[200px] items-center gap-2 rounded-xl border border-white/[0.1] bg-[#0B1224]/90 px-3 text-start transition hover:border-[rgba(168,85,247,0.4)] hover:bg-[#111827] md:inline-flex lg:w-[220px]"
               aria-label="جستجو — Ctrl+K"
             >
-              <span className="text-[#94A3B8]">
+              <span className="shrink-0 text-[#94A3B8]">
                 <SearchIcon />
               </span>
-              <span className="truncate text-[12px] font-medium text-[#64748B]">جستجو کنید...</span>
-              <kbd className="ms-auto hidden rounded-md border border-white/[0.08] bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-semibold text-[#64748B] lg:inline">
+              <span className="min-w-0 flex-1 truncate text-[12px] font-medium text-[#64748B]">
+                جستجو کنید...
+              </span>
+              <kbd className="shrink-0 rounded-md border border-white/[0.08] bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-semibold text-[#64748B]">
                 ⌘K
               </kbd>
             </button>
@@ -125,7 +128,7 @@ export function PublicHeader() {
             </div>
 
             {isReady && user ? (
-              <div className="hidden items-center gap-1 md:flex">
+              <div className="hidden items-center gap-1.5 md:flex">
                 <Link
                   href="/dashboard"
                   className="focus-ring hidden rounded-md px-2 py-1.5 text-[11px] font-semibold text-[#94A3B8] no-underline transition hover:text-white lg:inline-flex"
@@ -134,7 +137,7 @@ export function PublicHeader() {
                 </Link>
                 <Link
                   href="/profile"
-                  className="focus-ring inline-flex h-7 w-7 items-center justify-center overflow-hidden rounded-full ring-1 ring-white/10"
+                  className="focus-ring inline-flex h-8 w-8 items-center justify-center overflow-hidden rounded-full ring-1 ring-white/10"
                   aria-label={getUserDisplayName(user)}
                 >
                   <UserAvatar user={user} />
@@ -151,7 +154,7 @@ export function PublicHeader() {
               <button
                 type="button"
                 onClick={() => setAuthOpen(true)}
-                className="pub-navbar-login focus-ring hidden h-9 items-center justify-center rounded-xl bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] px-4 text-[12px] font-semibold text-white shadow-[0_0_18px_rgba(124,58,237,0.35)] transition hover:brightness-110 sm:inline-flex"
+                className="pub-navbar-login focus-ring hidden h-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] px-4 text-[12px] font-semibold whitespace-nowrap text-white shadow-[0_0_18px_rgba(124,58,237,0.35)] transition hover:brightness-110 sm:inline-flex"
               >
                 ورود / ثبت‌نام
               </button>
