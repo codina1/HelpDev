@@ -10,41 +10,47 @@ type NewsCategoryFilterProps = {
   onSelect: (value: NewsCategoryId) => void;
 };
 
-const ICON_ACCENT: Record<string, string> = {
-  all: "#C4B5FD",
+/** Icon colors from reference (inactive state). */
+const ICON_COLOR: Record<string, string> = {
+  all: "#FFFFFF",
   ai: "#A78BFA",
-  code: "#60A5FA",
+  code: "#C4B5FD",
   dotnet: "#C084FC",
   frontend: "#22D3EE",
-  backend: "#A78BFA",
+  backend: "#818CF8",
   devops: "#38BDF8",
   tools: "#C084FC",
   security: "#67E8F9",
 };
 
-function CategoryIcon({ name, active }: { name: string; active: boolean }) {
-  const stroke = active ? "#FFFFFF" : ICON_ACCENT[name] ?? "#A78BFA";
-  const common = "h-[15px] w-[15px] shrink-0 sm:h-4 sm:w-4";
+function CategoryIcon({ name, color }: { name: string; color: string }) {
+  const s = color;
+  const cls = "h-4 w-4 shrink-0";
 
   switch (name) {
     case "ai":
       return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden>
           <path
-            d="M12 4.5c.9 0 1.7.5 2.1 1.3l.3.6h.8A3.3 3.3 0 0 1 18.5 9.7c0 .5-.1 1-.3 1.4.8.7 1.3 1.7 1.3 2.8A4 4 0 0 1 15.5 18h-1.1c-.5 1.3-1.7 2.2-3.1 2.2s-2.6-.9-3.1-2.2H7.1A4 4 0 0 1 3.2 13.9c0-1.1.5-2.1 1.3-2.8A3.3 3.3 0 0 1 4.2 9.7 3.3 3.3 0 0 1 7.5 6.4h.8l.3-.6A2.4 2.4 0 0 1 12 4.5Z"
-            stroke={stroke}
+            d="M9.5 8.2h5M9.5 15.8h5M8.2 12h7.6"
+            stroke={s}
             strokeWidth="1.6"
+            strokeLinecap="round"
+          />
+          <path
+            d="M12 3.8c1.1 0 2 .6 2.5 1.5A3.3 3.3 0 0 1 18.2 8.5c0 .5-.1 1-.3 1.4.8.7 1.3 1.7 1.3 2.8a4 4 0 0 1-4 4h-.7c-.5 1.2-1.6 2-2.9 2s-2.4-.8-2.9-2h-.7a4 4 0 0 1-4-4c0-1.1.5-2.1 1.3-2.8A3.2 3.2 0 0 1 5.5 8.5 3.3 3.3 0 0 1 9.5 5.3C10 4.4 10.9 3.8 12 3.8Z"
+            stroke={s}
+            strokeWidth="1.55"
             strokeLinejoin="round"
           />
-          <path d="M9.2 11.2h5.6M9.2 14.2h5.6" stroke={stroke} strokeWidth="1.6" strokeLinecap="round" />
         </svg>
       );
     case "code":
       return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden>
           <path
-            d="M9 7.5 4.5 12 9 16.5M15 7.5 19.5 12 15 16.5"
-            stroke={stroke}
+            d="M9 7.2 4.2 12 9 16.8M15 7.2 19.8 12 15 16.8"
+            stroke={s}
             strokeWidth="1.8"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -53,65 +59,65 @@ function CategoryIcon({ name, active }: { name: string; active: boolean }) {
       );
     case "dotnet":
       return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden>
           <path
-            d="M12 4.2 19.2 8v8L12 19.8 4.8 16V8L12 4.2Z"
-            stroke={stroke}
-            strokeWidth="1.6"
+            d="M12 3.8 20 8v8l-8 4.2L4 16V8l8-4.2Z"
+            stroke={s}
+            strokeWidth="1.55"
             strokeLinejoin="round"
           />
-          <circle cx="12" cy="12" r="2.1" fill={stroke} />
+          <path d="M12 12v8.2M12 12 20 8M12 12 4 8" stroke={s} strokeWidth="1.45" />
         </svg>
       );
     case "frontend":
       return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden>
-          <rect x="3.5" y="4.5" width="17" height="12.5" rx="2.2" stroke={stroke} strokeWidth="1.6" />
-          <path d="M3.5 8.5h17M8.5 20h7M12 17v3" stroke={stroke} strokeWidth="1.6" strokeLinecap="round" />
+        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden>
+          <rect x="3.2" y="4.2" width="17.6" height="12.8" rx="2" stroke={s} strokeWidth="1.55" />
+          <path d="M3.2 8.4h17.6M8.5 20h7M12 17v3" stroke={s} strokeWidth="1.55" strokeLinecap="round" />
         </svg>
       );
     case "backend":
       return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden>
-          <rect x="4" y="3.8" width="16" height="5" rx="1.6" stroke={stroke} strokeWidth="1.6" />
-          <rect x="4" y="9.5" width="16" height="5" rx="1.6" stroke={stroke} strokeWidth="1.6" />
-          <rect x="4" y="15.2" width="16" height="5" rx="1.6" stroke={stroke} strokeWidth="1.6" />
-          <circle cx="7.4" cy="6.3" r="0.85" fill={stroke} />
-          <circle cx="7.4" cy="12" r="0.85" fill={stroke} />
-          <circle cx="7.4" cy="17.7" r="0.85" fill={stroke} />
+        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden>
+          <rect x="3.8" y="3.5" width="16.4" height="5.1" rx="1.5" stroke={s} strokeWidth="1.55" />
+          <rect x="3.8" y="9.45" width="16.4" height="5.1" rx="1.5" stroke={s} strokeWidth="1.55" />
+          <rect x="3.8" y="15.4" width="16.4" height="5.1" rx="1.5" stroke={s} strokeWidth="1.55" />
+          <circle cx="7.2" cy="6.05" r="0.85" fill={s} />
+          <circle cx="7.2" cy="12" r="0.85" fill={s} />
+          <circle cx="7.2" cy="17.95" r="0.85" fill={s} />
         </svg>
       );
     case "devops":
       return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden>
           <path
-            d="M8.2 8.2c2-2.6 5.6-2.6 7.6 0 1.5 2 1.5 4.6 0 6.6-2 2.6-5.6 2.6-7.6 0-1.5-2-1.5-4.6 0-6.6Z"
-            stroke={stroke}
-            strokeWidth="1.7"
+            d="M8 8c2.1-2.7 5.9-2.7 8 0 1.6 2.1 1.6 4.9 0 7-2.1 2.7-5.9 2.7-8 0-1.6-2.1-1.6-4.9 0-7Z"
+            stroke={s}
+            strokeWidth="1.65"
             strokeLinejoin="round"
           />
           <path
-            d="M15.8 8.2c2-2.6 5.6-2.6 7.6 0 .2.3.4.6.5 1M8.2 15.8c-2 2.6-5.6 2.6-7.6 0A5.5 5.5 0 0 1 .7 14.8"
-            stroke={stroke}
-            strokeWidth="1.7"
+            d="M16 8c2.1-2.7 5.9-2.7 8 0 .2.3.4.6.5 1M8 16c-2.1 2.7-5.9 2.7-8 0A5.6 5.6 0 0 1 .5 15"
+            stroke={s}
+            strokeWidth="1.65"
             strokeLinecap="round"
           />
         </svg>
       );
     case "tools":
       return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden>
           <path
-            d="M14.2 5.2a3.6 3.6 0 0 0 4.2 4.1L14.8 13l-3.8-3.8 3.2-4ZM9.2 14.8 4.6 19.4"
-            stroke={stroke}
-            strokeWidth="1.7"
+            d="M14.4 4.8a3.7 3.7 0 0 0 4.4 4.3L15 13.1l-4-4 3.4-4.3ZM9.2 14.8 4.5 19.5"
+            stroke={s}
+            strokeWidth="1.65"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
-            d="M8.2 9.5 4.8 6.1a2.3 2.3 0 0 1 3.3-3.2L11.5 6.3"
-            stroke={stroke}
-            strokeWidth="1.7"
+            d="M8.3 9.6 4.7 6a2.4 2.4 0 0 1 3.4-3.4l3.6 3.6"
+            stroke={s}
+            strokeWidth="1.65"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -119,37 +125,47 @@ function CategoryIcon({ name, active }: { name: string; active: boolean }) {
       );
     case "security":
       return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden>
           <path
-            d="M12 3.2 19.2 6.2v5.4c0 4.4-3 7.7-7.2 9.2-4.2-1.5-7.2-4.8-7.2-9.2V6.2L12 3.2Z"
-            stroke={stroke}
-            strokeWidth="1.6"
+            d="M12 3 19.5 6.2v5.5c0 4.5-3.1 7.9-7.5 9.4-4.4-1.5-7.5-4.9-7.5-9.4V6.2L12 3Z"
+            stroke={s}
+            strokeWidth="1.55"
             strokeLinejoin="round"
           />
-          <path d="M9.8 12.1 11.4 13.7 14.6 10.2" stroke={stroke} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+          <path
+            d="M9.6 12.1 11.3 13.8 14.7 10.2"
+            stroke={s}
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       );
     default:
+      /* 2×2 grid — "همه" */
       return (
-        <svg className={common} viewBox="0 0 24 24" fill="none" aria-hidden>
-          <rect x="3.5" y="3.5" width="7" height="7" rx="1.6" stroke={stroke} strokeWidth="1.6" />
-          <rect x="13.5" y="3.5" width="7" height="7" rx="1.6" stroke={stroke} strokeWidth="1.6" />
-          <rect x="3.5" y="13.5" width="7" height="7" rx="1.6" stroke={stroke} strokeWidth="1.6" />
-          <rect x="13.5" y="13.5" width="7" height="7" rx="1.6" stroke={stroke} strokeWidth="1.6" />
+        <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden>
+          <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" stroke={s} strokeWidth="1.6" />
+          <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" stroke={s} strokeWidth="1.6" />
+          <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" stroke={s} strokeWidth="1.6" />
+          <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" stroke={s} strokeWidth="1.6" />
         </svg>
       );
   }
 }
 
-/** Category pills — matches reference: rounded-full, colored icons, purple active. */
+/**
+ * Category pills matching the reference strip:
+ * purple→blue active gradient, dark bordered inactive, colored icons left of label.
+ */
 export function NewsCategoryFilter({ active, onSelect }: NewsCategoryFilterProps) {
   return (
     <div
       className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      dir="rtl"
+      dir="ltr"
     >
       <div
-        className="flex w-max min-w-full flex-nowrap items-center justify-start gap-2 sm:gap-2.5"
+        className="flex w-max min-w-full flex-nowrap items-center gap-3"
         role="toolbar"
         aria-label="فیلتر دسته‌بندی اخبار"
       >
@@ -162,13 +178,16 @@ export function NewsCategoryFilter({ active, onSelect }: NewsCategoryFilterProps
               aria-pressed={isActive}
               onClick={() => onSelect(item.id)}
               className={[
-                "inline-flex h-10 shrink-0 items-center gap-2 rounded-full border px-3.5 text-[12px] font-semibold transition duration-200 sm:h-11 sm:px-4 sm:text-[13px]",
+                "inline-flex h-[42px] shrink-0 items-center gap-2 rounded-[12px] border px-4 text-[13px] font-semibold transition duration-200",
                 isActive
-                  ? "border-transparent bg-[#7C3AED] text-white shadow-[0_0_0_1px_rgba(168,85,247,0.35),0_0_22px_rgba(124,58,237,0.55)]"
-                  : "border-white/[0.12] bg-[#0B1224]/95 text-[#E2E8F0] hover:border-[rgba(168,85,247,0.45)] hover:bg-[rgba(124,58,237,0.1)] hover:text-white",
+                  ? "border-transparent bg-gradient-to-r from-[#7C3AED] to-[#3B82F6] text-white shadow-[0_0_20px_rgba(124,58,237,0.45)]"
+                  : "border-white/[0.14] bg-[#111827]/90 text-[#E5E7EB] hover:border-[rgba(168,85,247,0.4)] hover:bg-[#1E293B] hover:text-white",
               ].join(" ")}
             >
-              <CategoryIcon name={item.icon} active={isActive} />
+              <CategoryIcon
+                name={item.icon}
+                color={isActive ? "#FFFFFF" : ICON_COLOR[item.icon] ?? "#A78BFA"}
+              />
               <span>{item.label}</span>
             </button>
           );
