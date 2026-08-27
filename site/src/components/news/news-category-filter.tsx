@@ -11,7 +11,7 @@ type NewsCategoryFilterProps = {
 };
 
 function CategoryIcon({ name }: { name: string }) {
-  const common = "h-4 w-4 shrink-0";
+  const common = "h-[18px] w-[18px] shrink-0 sm:h-5 sm:w-5";
   switch (name) {
     case "ai":
       return (
@@ -132,14 +132,18 @@ function CategoryIcon({ name }: { name: string }) {
   }
 }
 
-/** Horizontal category pills under the news hero — matches reference. */
+/** Horizontal category pills under the news hero — taller, reference-matched. */
 export function NewsCategoryFilter({ active, onSelect }: NewsCategoryFilterProps) {
   return (
     <div
-      className="overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       dir="rtl"
     >
-      <div className="flex w-max min-w-full flex-nowrap justify-start gap-2.5 sm:gap-3" role="toolbar" aria-label="فیلتر دسته‌بندی اخبار">
+      <div
+        className="flex w-max min-w-full flex-nowrap items-center justify-start gap-2.5 py-1 sm:gap-3"
+        role="toolbar"
+        aria-label="فیلتر دسته‌بندی اخبار"
+      >
         {NEWS_CATEGORY_FILTERS.map((item) => {
           const isActive = active === item.id;
           return (
@@ -149,10 +153,10 @@ export function NewsCategoryFilter({ active, onSelect }: NewsCategoryFilterProps
               aria-pressed={isActive}
               onClick={() => onSelect(item.id)}
               className={[
-                "inline-flex shrink-0 items-center gap-2 rounded-xl border px-3.5 py-2.5 text-[12px] font-bold transition duration-300 sm:px-4 sm:text-[13px]",
+                "inline-flex h-11 shrink-0 items-center gap-2 rounded-2xl border px-4 text-[13px] font-bold transition duration-300 sm:h-12 sm:gap-2.5 sm:px-5 sm:text-[14px]",
                 isActive
-                  ? "border-transparent bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] text-white shadow-[0_0_22px_rgba(124,58,237,0.45)]"
-                  : "border-white/[0.1] bg-[#0F172A]/90 text-[#CBD5E1] hover:border-[rgba(168,85,247,0.4)] hover:bg-[rgba(124,58,237,0.12)] hover:text-white",
+                  ? "border-transparent bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] text-white shadow-[0_0_24px_rgba(124,58,237,0.5)]"
+                  : "border-white/[0.12] bg-[#0F172A]/95 text-[#E2E8F0] hover:border-[rgba(168,85,247,0.45)] hover:bg-[rgba(124,58,237,0.12)] hover:text-white",
               ].join(" ")}
             >
               <span className={isActive ? "text-white" : "text-[#A78BFA]"}>

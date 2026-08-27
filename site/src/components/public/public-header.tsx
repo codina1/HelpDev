@@ -95,10 +95,25 @@ export function PublicHeader() {
             })}
           </nav>
 
-          {/* Left (RTL end): search · theme · auth */}
-          <div className="pub-navbar-actions flex min-w-0 items-center justify-end gap-1">
+          {/* Left (RTL end): search box · theme · auth */}
+          <div className="pub-navbar-actions flex min-w-0 items-center justify-end gap-1.5 sm:gap-2">
+            <button
+              type="button"
+              onClick={() => setPaletteOpen(true)}
+              className="pub-navbar-search focus-ring hidden h-9 min-w-[180px] max-w-[260px] flex-1 items-center gap-2 rounded-xl border border-white/[0.1] bg-[#0B1224]/90 px-3 text-start transition hover:border-[rgba(168,85,247,0.4)] hover:bg-[#111827] md:inline-flex lg:min-w-[220px]"
+              aria-label="جستجو — Ctrl+K"
+            >
+              <span className="text-[#94A3B8]">
+                <SearchIcon />
+              </span>
+              <span className="truncate text-[12px] font-medium text-[#64748B]">جستجو کنید...</span>
+              <kbd className="ms-auto hidden rounded-md border border-white/[0.08] bg-white/[0.04] px-1.5 py-0.5 text-[10px] font-semibold text-[#64748B] lg:inline">
+                ⌘K
+              </kbd>
+            </button>
+
             <IconButton
-              className="pub-navbar-search"
+              className="pub-navbar-search md:hidden"
               label="جستجو — Ctrl+K"
               onClick={() => setPaletteOpen(true)}
             >
@@ -136,7 +151,7 @@ export function PublicHeader() {
               <button
                 type="button"
                 onClick={() => setAuthOpen(true)}
-                className="pub-navbar-login focus-ring hidden h-8 items-center justify-center rounded-xl bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] px-3.5 text-[12px] font-semibold text-white shadow-[0_0_18px_rgba(124,58,237,0.35)] transition hover:brightness-110 sm:inline-flex"
+                className="pub-navbar-login focus-ring hidden h-9 items-center justify-center rounded-xl bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] px-4 text-[12px] font-semibold text-white shadow-[0_0_18px_rgba(124,58,237,0.35)] transition hover:brightness-110 sm:inline-flex"
               >
                 ورود / ثبت‌نام
               </button>

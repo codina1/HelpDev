@@ -47,9 +47,10 @@ export function NewsList({ articles }: NewsListProps) {
   }
 
   return (
-    <section className="bg-[#050816] pb-12 pt-3 sm:pb-14 sm:pt-4" dir="rtl">
+    <section className="bg-[#050816] pb-12 pt-1 sm:pb-14 sm:pt-2" dir="rtl">
       <PublicContainer size="wide">
-        <div className="mb-6 sm:mb-7">
+        {/* Category nav — directly under hero */}
+        <div className="mb-7 sm:mb-8">
           <NewsCategoryFilter active={category} onSelect={selectCategory} />
         </div>
 
