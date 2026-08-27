@@ -39,7 +39,7 @@ export function HomeHubSection({ tools = [] }: HomeHubSectionProps) {
 
   return (
     <PublicSection
-      className="home-hub home-reveal"
+      className="home-hub home-reveal !py-4 sm:!py-5 lg:!py-6"
       bare
       aria-labelledby="home-hub-heading"
     >
@@ -105,7 +105,7 @@ export function HomeHubSection({ tools = [] }: HomeHubSectionProps) {
               width={128}
               height={128}
               decoding="async"
-              className="pointer-events-none absolute -end-2 bottom-2 h-28 w-28 object-contain opacity-90 drop-shadow-[0_12px_32px_rgba(37,99,235,0.45)] sm:h-32 sm:w-32"
+              className="pointer-events-none absolute end-8 bottom-2 h-28 w-28 object-contain opacity-90 drop-shadow-[0_12px_32px_rgba(37,99,235,0.45)] sm:end-10 sm:h-32 sm:w-32"
               aria-hidden
             />
             <div className="relative max-w-[85%]">

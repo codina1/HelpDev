@@ -119,7 +119,7 @@ export function LearningPathsSection({ roadmaps = [] }: LearningPathsSectionProp
 
   return (
     <section
-      className="home-learning-paths relative bg-[#050816] py-10 sm:py-12 lg:py-14"
+      className="home-learning-paths relative bg-[#050816] py-6 sm:py-7 lg:py-8"
       aria-labelledby="learning-paths-heading"
       dir="rtl"
     >

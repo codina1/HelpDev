@@ -56,7 +56,7 @@ export function HomeNewsSection({ items = [] }: HomeNewsSectionProps) {
 
   return (
     <PublicSection
-      className="home-news home-reveal"
+      className="home-news home-reveal !py-4 sm:!py-5 lg:!py-6"
       bare
       aria-labelledby="home-news-heading"
     >

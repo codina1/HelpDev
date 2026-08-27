@@ -69,7 +69,7 @@ const ICON_GLOW: Record<QuickAccessItem["tone"], string> = {
 export function QuickAccessSection() {
   return (
     <section
-      className="home-quick-access relative pt-10 pb-8 sm:pt-12 sm:pb-9 lg:pt-14 lg:pb-10"
+      className="home-quick-access relative pt-6 pb-5 sm:pt-7 sm:pb-6 lg:pt-8 lg:pb-7"
       aria-labelledby="quick-access-heading"
     >
       <PublicContainer size="wide">

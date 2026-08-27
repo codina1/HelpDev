@@ -10,7 +10,7 @@ export const NEWSLETTER_ICON_SRC = "/home/icon-newsletter.png";
 export function NewsletterSection() {
   return (
     <section
-      className="home-newsletter-banner relative bg-[#050816] py-8 sm:py-10 lg:py-12"
+      className="home-newsletter-banner relative bg-[#050816] py-5 sm:py-6 lg:py-7"
       aria-labelledby="newsletter-heading"
     >
       <PublicContainer size="wide">

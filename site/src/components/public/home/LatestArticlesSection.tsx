@@ -70,7 +70,7 @@ export function LatestArticlesSection({ articles = [] }: LatestArticlesSectionPr
 
   return (
     <section
-      className="home-latest-articles relative py-10 sm:py-12 lg:py-14"
+      className="home-latest-articles relative py-6 sm:py-7 lg:py-8"
       aria-labelledby="latest-articles-heading"
     >
       <PublicContainer size="wide">
