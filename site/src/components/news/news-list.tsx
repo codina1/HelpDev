@@ -39,8 +39,16 @@ export function NewsList({ articles }: NewsListProps) {
 
   return (
     <div className="space-y-6" dir="rtl">
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-7">
-        <main className="min-w-0">
+      <div
+        className="grid items-start gap-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-7"
+        dir="ltr"
+      >
+        <aside className="order-2 space-y-5 lg:order-1 lg:sticky lg:top-24" dir="rtl">
+          <PopularNewsSidebar articles={articles} />
+          <TagsSidebar tags={FILTERS} activeTag={filter} onTagSelect={selectFilter} />
+        </aside>
+
+        <main className="order-1 min-w-0 lg:order-2" dir="rtl">
           <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
             <div>
               <p className="text-[12px] font-bold tracking-wide text-[#A78BFA]">تازه‌ترین مطالب</p>
@@ -76,10 +84,6 @@ export function NewsList({ articles }: NewsListProps) {
           )}
         </main>
 
-        <aside className="order-2 space-y-5 lg:sticky lg:top-24">
-          <PopularNewsSidebar articles={articles} />
-          <TagsSidebar tags={FILTERS} activeTag={filter} onTagSelect={selectFilter} />
-        </aside>
       </div>
     </div>
   );

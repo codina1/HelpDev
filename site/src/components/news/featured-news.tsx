@@ -17,8 +17,9 @@ export function FeaturedNews({ article }: FeaturedNewsProps) {
     <article
       id={`news-${article.id}`}
       className="group grid min-w-0 overflow-hidden rounded-[20px] border border-white/[0.08] bg-[#111827] shadow-[0_0_30px_rgba(2,6,23,0.25)] transition duration-500 ease-out hover:-translate-y-2 hover:border-[rgba(124,58,237,0.5)] hover:shadow-[0_18px_46px_rgba(2,6,23,0.55),0_0_36px_rgba(124,58,237,0.32)] md:grid-cols-2"
+      dir="ltr"
     >
-      <div className="relative aspect-video min-h-0 overflow-hidden bg-[#080d1c] md:aspect-auto md:min-h-[300px]">
+      <div className="relative aspect-video min-h-0 overflow-hidden bg-[#080d1c] md:aspect-auto md:min-h-[330px]">
         <img
           src={NEWS_IMAGE_BY_TAG[article.tag]}
           alt=""
@@ -36,7 +37,7 @@ export function FeaturedNews({ article }: FeaturedNewsProps) {
         </span>
       </div>
 
-      <div className="flex flex-col justify-center p-5 sm:p-7 lg:p-8">
+      <div className="flex flex-col justify-center p-5 text-right sm:p-7 lg:p-8" dir="rtl">
         <p className="mb-3 text-[12px] font-bold tracking-wide text-[#A78BFA]">خبر ویژه</p>
         <h2 className="text-[22px] font-extrabold leading-9 text-white sm:text-[26px]">
           {article.title}
