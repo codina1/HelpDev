@@ -1,24 +1,23 @@
-import type { NewsArticle, NewsTag } from "@/types";
+import type { NewsArticle } from "@/types";
 
-export const NEWS_TAGS: NewsTag[] = ["React", ".NET", "AI", "DevOps"];
+export const NEWS_TAGS = ["React", ".NET", "AI", "DevOps"] as const;
 
-/** Display-only cloud tags used in the sidebar (filter by keyword when possible). */
 export const NEWS_CLOUD_TAGS = [
-  "همه",
   "AI",
   "Cursor",
   "Claude",
+  "MCP",
+  "OpenAI",
+  "NET",
   "NextJS",
-  "React",
-  ".NET",
   "DevOps",
   "Docker",
-  "MCP",
+  "GitHub",
+  "Copilot",
 ] as const;
 
-export type NewsCloudTag = (typeof NEWS_CLOUD_TAGS)[number];
+export type NewsCloudTag = (typeof NEWS_CLOUD_TAGS)[number] | "همه";
 
-/** Category pills under the hero — order matches RTL reference (همه first). */
 export type NewsCategoryId =
   | "همه"
   | "AI"
@@ -46,140 +45,131 @@ export const NEWS_CATEGORY_FILTERS: readonly {
   { id: "Security", label: "Security", icon: "security" },
 ];
 
+/** Reference screenshot articles — Persian copy + extracted covers. */
 export const NEWS_ARTICLES: NewsArticle[] = [
   {
     id: "1",
-    title: "React 19 Compiler moves closer to stable",
-    tag: "React",
+    title: "معرفی Cursor 1.0؛ نسل جدید AI IDE برای توسعه‌دهندگان",
+    tag: "AI",
+    categoryLabel: "AI",
     summary:
-      "Automatic memoization lands in more production apps, with clearer guidance on when to keep manual optimizations.",
-    time: "1h ago",
-    image: "/home/icon-frontend.png",
+      "Cursor با قابلیت‌های پیشرفته کدنویسی هوشمند، تجربه توسعه را متحول کرده و سرعت کار تیم‌ها را چند برابر می‌کند.",
+    time: "۲ ساعت پیش",
+    image: "/news/cover-cursor.png",
     readTime: "۵ دقیقه مطالعه",
-    views: "۱۲.۴K بازدید",
+    views: "۱۲.۴K",
   },
   {
     id: "2",
-    title: ".NET 10 preview focuses on cloud-native APIs",
-    tag: ".NET",
+    title: "Claude چیست؟ همه چیز درباره Terminal Agent جدید Anthropic",
+    tag: "AI",
+    categoryLabel: "AI",
     summary:
-      "Faster minimal APIs, improved OpenAPI generation, and leaner container images for ASP.NET Core services.",
-    time: "2h ago",
-    image: "/home/icon-dotnet.png",
-    readTime: "۶ دقیقه مطالعه",
-    views: "۹.۸K بازدید",
+      "نگاهی کامل به قابلیت‌های Claude Code و اینکه چطور می‌تواند جایگزین دستیار کدنویسی فعلی شما شود.",
+    time: "۴ ساعت پیش",
+    image: "/news/cover-claude.png",
+    readTime: "۷ دقیقه مطالعه",
+    views: "۹.۸K",
   },
   {
     id: "3",
-    title: "AI coding agents get better at multi-file refactors",
-    tag: "AI",
+    title: "استاندارد جدید MCP؛ اتصال مدل‌ها به ابزارها آسان‌تر شد",
+    tag: "DevOps",
+    categoryLabel: "Tools",
     summary:
-      "New evaluation suites show stronger results on repository-wide changes, not just single-function edits.",
-    time: "3h ago",
-    image: "/home/icon-ai.png",
-    readTime: "۷ دقیقه مطالعه",
-    views: "۱۸.۲K بازدید",
+      "Model Context Protocol روشی یکپارچه برای اتصال LLMها به ابزارهای توسعه و داده‌های پروژه معرفی می‌کند.",
+    time: "۶ ساعت پیش",
+    image: "/news/cover-mcp.png",
+    readTime: "۶ دقیقه مطالعه",
+    views: "۷.۲K",
   },
   {
     id: "4",
-    title: "Kubernetes 1.33 tightens supply-chain defaults",
-    tag: "DevOps",
+    title: "GitHub Copilot Workspace؛ محیط توسعه هوشمند جدید",
+    tag: "AI",
+    categoryLabel: "Tools",
     summary:
-      "Signed artifacts and stricter admission policies become easier to enable without custom controllers.",
-    time: "5h ago",
-    image: "/home/icon-devops.png",
+      "Workspace مسیر جدیدی برای برنامه‌ریزی، پیاده‌سازی و بازبینی کد با کمک Copilot ارائه می‌دهد.",
+    time: "۸ ساعت پیش",
+    image: "/news/cover-copilot.png",
     readTime: "۵ دقیقه مطالعه",
-    views: "۸.۱K بازدید",
+    views: "۵.۷K",
   },
   {
     id: "5",
-    title: "Server Components patterns that survive scale",
-    tag: "React",
+    title: ".NET 9 منتشر شد؛ مرور کامل ویژگی‌ها و بهبودهای عملکردی",
+    tag: ".NET",
+    categoryLabel: ".NET",
     summary:
-      "Teams share caching boundaries, streaming layouts, and data-loading rules that hold up under real traffic.",
-    time: "Yesterday",
-    image: "/home/icon-code.png",
+      "نسخه جدید .NET با بهینه‌سازی‌های runtime، APIهای تازه و تجربه بهتر برای اپلیکیشن‌های ابری همراه است.",
+    time: "۱۰ ساعت پیش",
+    image: "/news/cover-dotnet.png",
     readTime: "۸ دقیقه مطالعه",
-    views: "۱۱.۰K بازدید",
+    views: "۴.۳K",
   },
   {
     id: "6",
-    title: "C# 14 proposals aim at everyday productivity",
-    tag: ".NET",
+    title: "React 19 معرفی شد؛ تمام تغییرات مهم که باید بدانید",
+    tag: "React",
+    categoryLabel: "Frontend",
     summary:
-      "Smaller language improvements target null handling, collection expressions, and clearer diagnostics.",
-    time: "Yesterday",
-    image: "/home/icon-backend.png",
-    readTime: "۴ دقیقه مطالعه",
-    views: "۷.۶K بازدید",
+      "از Actions تا بهبودهای Server Components؛ خلاصه‌ای از مهم‌ترین تغییرات React 19 برای تیم‌های فرانت‌اند.",
+    time: "۱۲ ساعت پیش",
+    image: "/news/cover-react.png",
+    readTime: "۵ دقیقه مطالعه",
+    views: "۶.۱K",
   },
   {
     id: "7",
-    title: "Prompt evaluation becomes standard CI practice",
-    tag: "AI",
-    summary:
-      "Engineering teams treat prompt regressions like unit tests, with fixtures and score thresholds in pipelines.",
-    time: "Yesterday",
-    image: "/home/icon-prompt.png",
-    readTime: "۶ دقیقه مطالعه",
-    views: "۱۵.۳K بازدید",
-  },
-  {
-    id: "8",
-    title: "Platform teams standardize on OpenTelemetry",
+    title: "DevOps در ۲۰۲۴: بهترین ابزارها و روش‌های پیاده‌سازی",
     tag: "DevOps",
+    categoryLabel: "DevOps",
     summary:
-      "Traces, metrics, and logs converge on one collector path across services written in different languages.",
-    time: "2d ago",
-    image: "/home/icon-scan.png",
-    readTime: "۵ دقیقه مطالعه",
-    views: "۶.۹K بازدید",
-  },
-  {
-    id: "9",
-    title: "React Native’s New Architecture adoption accelerates",
-    tag: "React",
-    summary:
-      "Fabric and TurboModules become the default path for new apps, with migration guides for legacy modules.",
-    time: "2d ago",
-    image: "/home/icon-mobile.png",
-    readTime: "۷ دقیقه مطالعه",
-    views: "۱۰.۵K بازدید",
-  },
-  {
-    id: "10",
-    title: "Blazor United simplifies full-stack .NET UI",
-    tag: ".NET",
-    summary:
-      "A single project model blends server and client rendering, reducing ceremony for internal business apps.",
-    time: "3d ago",
-    image: "/home/icon-architect.png",
+      "مرور ابزارها و الگوهای رایج CI/CD، observability و امنیت زنجیره تأمین در تیم‌های مدرن.",
+    time: "۱ روز پیش",
+    image: "/news/cover-devops.png",
     readTime: "۶ دقیقه مطالعه",
-    views: "۵.۴K بازدید",
-  },
-  {
-    id: "11",
-    title: "Local LLMs get practical for private codebases",
-    tag: "AI",
-    summary:
-      "Smaller open models and better tooling make on-device assistants viable for teams with strict data policies.",
-    time: "3d ago",
-    image: "/home/icon-security.png",
-    readTime: "۹ دقیقه مطالعه",
-    views: "۱۳.۷K بازدید",
-  },
-  {
-    id: "12",
-    title: "GitHub Actions cost controls get more granular",
-    tag: "DevOps",
-    summary:
-      "Per-workflow budgets and idle runner limits help teams cut CI spend without slowing critical pipelines.",
-    time: "4d ago",
-    image: "/home/icon-tools.png",
-    readTime: "۴ دقیقه مطالعه",
-    views: "۴.۸K بازدید",
+    views: "۳.۹K",
   },
 ];
+
+export const NEWS_POPULAR = [
+  {
+    id: "1",
+    title: "Cursor 1.0",
+    summary: "تحولی بزرگ در AI Coding",
+    views: "۱۲.۴K",
+    image: "/news/cover-cursor.png",
+  },
+  {
+    id: "2",
+    title: "Claude چیست؟",
+    summary: "Terminal Agent جدید Anthropic",
+    views: "۹.۸K",
+    image: "/news/cover-claude.png",
+  },
+  {
+    id: "3",
+    title: "استاندارد جدید MCP",
+    summary: "اتصال مدل‌ها به ابزارها",
+    views: "۷.۲K",
+    image: "/news/cover-mcp.png",
+  },
+  {
+    id: "4",
+    title: "GitHub Copilot Workspace",
+    summary: "محیط توسعه هوشمند جدید",
+    views: "۵.۷K",
+    image: "/news/cover-copilot.png",
+  },
+  {
+    id: "5",
+    title: ".NET 9 منتشر شد",
+    summary: "ویژگی‌ها و تغییرات جدید",
+    views: "۴.۳K",
+    image: "/news/cover-dotnet.png",
+  },
+] as const;
 
 function matchesCategory(article: NewsArticle, category: NewsCategoryId): boolean {
   if (category === "همه") return true;
@@ -188,32 +178,19 @@ function matchesCategory(article: NewsArticle, category: NewsCategoryId): boolea
     case "AI":
       return article.tag === "AI";
     case "Programming":
-      return article.tag === "React" || hay.includes("compiler") || hay.includes("c#");
+      return article.tag === "React" || hay.includes("cursor") || hay.includes("کدنویسی");
     case ".NET":
       return article.tag === ".NET";
     case "Frontend":
-      return article.tag === "React" || hay.includes("blazor") || hay.includes("ui");
+      return article.tag === "React" || hay.includes("react");
     case "Backend":
-      return article.tag === ".NET" || hay.includes("api") || hay.includes("server");
+      return article.tag === ".NET" || hay.includes("api");
     case "DevOps":
-      return article.tag === "DevOps";
+      return article.tag === "DevOps" || hay.includes("mcp");
     case "Tools":
-      return (
-        hay.includes("tool") ||
-        hay.includes("github actions") ||
-        hay.includes("opentelemetry") ||
-        hay.includes("prompt") ||
-        article.image.includes("tools") ||
-        article.image.includes("prompt")
-      );
+      return hay.includes("copilot") || hay.includes("workspace") || hay.includes("ابزار");
     case "Security":
-      return (
-        hay.includes("security") ||
-        hay.includes("supply-chain") ||
-        hay.includes("private") ||
-        hay.includes("signed") ||
-        article.image.includes("security")
-      );
+      return hay.includes("امنیت") || hay.includes("security");
     default:
       return true;
   }
@@ -229,18 +206,12 @@ export function filterNewsArticles(
     const key = cloudTag.toLowerCase();
     next = next.filter((article) => {
       const hay = `${article.title} ${article.summary} ${article.tag}`.toLowerCase();
-      if (key === "nextjs") return hay.includes("react") || hay.includes("server component");
-      if (key === "docker") return hay.includes("kubernetes") || hay.includes("container") || hay.includes("devops");
-      if (key === "cursor" || key === "claude" || key === "mcp") {
-        return hay.includes("ai") || hay.includes("prompt") || hay.includes("llm") || hay.includes("agent");
-      }
-      return hay.includes(key);
+      return hay.includes(key) || article.tag.toLowerCase().includes(key);
     });
   }
   return next;
 }
 
-/** Short view label for popular list (e.g. ۱۲.۴K). */
 export function formatNewsViewsShort(views: string): string {
   return views.replace(/\s*بازدید\s*$/u, "").trim();
 }

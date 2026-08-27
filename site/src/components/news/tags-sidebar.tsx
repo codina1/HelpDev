@@ -1,5 +1,4 @@
-import type { NewsCloudTag } from "@/data/news-articles";
-import { NEWS_CLOUD_TAGS } from "@/data/news-articles";
+import { NEWS_CLOUD_TAGS, type NewsCloudTag } from "@/data/news-articles";
 
 type TagsSidebarProps = {
   activeTag: NewsCloudTag;
@@ -20,23 +19,19 @@ function TagIcon({ className }: { className?: string }) {
   );
 }
 
-/** Tag cloud sidebar matching reference styling. */
 export function TagsSidebar({ activeTag, onTagSelect }: TagsSidebarProps) {
   return (
     <section
-      className="rounded-[18px] border border-white/[0.08] bg-[#0F172A]/95 p-4 shadow-[0_8px_28px_rgba(2,6,23,0.32)] backdrop-blur-xl sm:p-5"
+      className="rounded-[16px] border border-white/[0.08] bg-[#0F172A] p-4 shadow-[0_8px_28px_rgba(2,6,23,0.3)]"
       aria-labelledby="news-tags-heading"
       dir="rtl"
     >
-      <h2
-        id="news-tags-heading"
-        className="flex items-center gap-2 text-[16px] font-extrabold text-white sm:text-[17px]"
-      >
-        <TagIcon className="h-[18px] w-[18px] text-[#A78BFA]" />
+      <h2 id="news-tags-heading" className="flex items-center gap-2 text-[15px] font-extrabold text-white">
+        <TagIcon className="h-4 w-4 text-[#A78BFA]" />
         تگ‌ها
       </h2>
-      <div className="mt-4 grid grid-cols-2 gap-2">
-        {NEWS_CLOUD_TAGS.filter((tag) => tag !== "همه").map((tag) => {
+      <div className="mt-4 flex flex-wrap gap-2">
+        {NEWS_CLOUD_TAGS.map((tag) => {
           const isActive = activeTag === tag;
           return (
             <button
@@ -45,10 +40,10 @@ export function TagsSidebar({ activeTag, onTagSelect }: TagsSidebarProps) {
               onClick={() => onTagSelect(isActive ? "همه" : tag)}
               aria-pressed={isActive}
               className={[
-                "rounded-xl border px-2.5 py-2 text-[12px] font-semibold transition duration-300",
+                "rounded-lg border px-2.5 py-1.5 text-[11px] font-semibold transition",
                 isActive
-                  ? "border-[rgba(168,85,247,0.5)] bg-[rgba(124,58,237,0.22)] text-[#E9D5FF] shadow-[0_0_18px_rgba(124,58,237,0.18)]"
-                  : "border-white/[0.08] bg-[#111827]/70 text-[#94A3B8] hover:border-[rgba(168,85,247,0.35)] hover:bg-[rgba(124,58,237,0.12)] hover:text-white",
+                  ? "border-[rgba(168,85,247,0.5)] bg-[rgba(124,58,237,0.22)] text-[#E9D5FF]"
+                  : "border-white/[0.08] bg-[#111827] text-[#94A3B8] hover:border-[rgba(168,85,247,0.35)] hover:text-white",
               ].join(" ")}
             >
               #{tag}

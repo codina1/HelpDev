@@ -23,6 +23,7 @@ export type NewsArticle = {
   id: string;
   title: string;
   tag: NewsTag;
+  categoryLabel?: string;
   summary: string;
   time: string;
   image: string;
