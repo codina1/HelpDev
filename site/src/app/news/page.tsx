@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/layout";
+import { NewsHero } from "@/components/news/news-hero";
 import { NewsList } from "@/components/news/news-list";
 import { NEWS_ARTICLES } from "@/data/news-articles";
 
@@ -10,10 +10,7 @@ export const metadata: Metadata = {
 export default function NewsPage() {
   return (
     <>
-      <PageHeader
-        title="اخبار"
-        description="تازه‌ترین خبرهای دنیای برنامه‌نویسی در React، دات‌نت، هوش مصنوعی و DevOps."
-      />
+      <NewsHero />
       <NewsList articles={NEWS_ARTICLES} />
     </>
   );
