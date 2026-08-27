@@ -4,15 +4,38 @@ type NewsArticleCardProps = {
   article: NewsArticle;
 };
 
+const NEWS_IMAGE_BY_TAG: Record<NewsArticle["tag"], string> = {
+  React: "/home/icon-frontend.png",
+  ".NET": "/home/icon-dotnet.png",
+  AI: "/home/icon-ai.png",
+  DevOps: "/home/icon-devops.png",
+};
+
 export function NewsArticleCard({ article }: NewsArticleCardProps) {
   return (
-    <article className="ui-card p-5 sm:p-6">
-      <div className="mb-3 flex flex-wrap items-center gap-2.5">
-        <span className="ui-badge">{article.tag}</span>
-        <time className="ui-meta">{article.time}</time>
+    <article className="group flex h-full min-w-0 flex-col overflow-hidden rounded-[20px] border border-white/[0.08] bg-[#111827] shadow-[0_0_24px_rgba(2,6,23,0.22)] transition duration-300 hover:-translate-y-2 hover:border-[rgba(124,58,237,0.45)] hover:shadow-[0_18px_42px_rgba(2,6,23,0.5),0_0_32px_rgba(124,58,237,0.3)]">
+      <div className="relative h-[220px] w-full shrink-0 overflow-hidden rounded-t-[20px] bg-[#080d1c]">
+        <img
+          src={NEWS_IMAGE_BY_TAG[article.tag]}
+          alt=""
+          width={640}
+          height={440}
+          decoding="async"
+          className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.04]"
+        />
+        <span
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#111827] via-transparent to-transparent"
+          aria-hidden
+        />
+        <span className="absolute end-3 top-3 rounded-full border border-[rgba(168,85,247,0.4)] bg-[rgba(11,18,36,0.78)] px-3 py-1 text-[11px] font-bold text-[#E9D5FF] backdrop-blur-md">
+          {article.tag}
+        </span>
       </div>
-      <h2 className="ui-heading text-base">{article.title}</h2>
-      <p className="ui-body mt-2">{article.summary}</p>
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <h2 className="text-[17px] font-extrabold leading-7 text-white">{article.title}</h2>
+        <p className="mt-2 line-clamp-3 text-[13px] leading-7 text-[#94A3B8]">{article.summary}</p>
+        <time className="mt-auto pt-5 text-[12px] font-semibold text-[#64748B]">{article.time}</time>
+      </div>
     </article>
   );
 }
