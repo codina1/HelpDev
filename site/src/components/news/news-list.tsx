@@ -46,15 +46,16 @@ export function NewsList({ articles }: NewsListProps) {
   }
 
   return (
-    <section className="bg-[#050816] pb-10 pt-2 sm:pb-12 sm:pt-3" dir="rtl">
+    <section className="bg-[#050816] pb-12 pt-3 sm:pb-14 sm:pt-4" dir="rtl">
       <PublicContainer size="wide">
-        <div className="mb-5 sm:mb-6">
+        <div className="mb-6 sm:mb-7">
           <NewsCategoryFilter active={category} onSelect={selectCategory} />
         </div>
 
-        <div className="grid items-start gap-5 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-7 xl:gap-8">
+        {/* Main content (right in RTL) + fixed left sidebar column */}
+        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-8">
           <div className="order-1 min-w-0">
-            <div className="mb-4 flex flex-wrap items-end justify-between gap-3 sm:mb-5">
+            <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
               <div>
                 <p className="text-[12px] font-bold tracking-wide text-[#A78BFA]">تازه‌ترین مطالب</p>
                 <p className="mt-1 text-[12px] font-medium text-[#64748B] sm:text-[13px]">
@@ -67,10 +68,10 @@ export function NewsList({ articles }: NewsListProps) {
 
             {pageItems.length > 0 ? (
               <>
-                <div className="space-y-4 sm:space-y-5">
+                <div className="space-y-5 sm:space-y-6">
                   <FeaturedNews article={pageItems[0]} />
                   {pageItems.length > 1 ? (
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                       {pageItems.slice(1).map((article) => (
                         <NewsArticleCard key={article.id} article={article} />
                       ))}
@@ -90,7 +91,7 @@ export function NewsList({ articles }: NewsListProps) {
             )}
           </div>
 
-          <aside className="order-2 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:sticky lg:top-24 lg:grid-cols-1 lg:gap-5">
+          <aside className="order-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:sticky lg:top-24 lg:grid-cols-1 lg:gap-5">
             <PopularNewsSidebar articles={articles} />
             <TagsSidebar activeTag={cloudTag} onTagSelect={selectCloudTag} />
           </aside>

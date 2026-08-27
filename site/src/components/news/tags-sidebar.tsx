@@ -10,13 +10,13 @@ type TagsSidebarProps = {
 export function TagsSidebar({ activeTag, onTagSelect }: TagsSidebarProps) {
   return (
     <section
-      className="rounded-[18px] border border-white/[0.08] bg-[#111827]/80 p-4 backdrop-blur-xl sm:rounded-[20px] sm:p-5"
+      className="rounded-[20px] border border-white/[0.08] bg-[#111827]/90 p-5 shadow-[0_8px_28px_rgba(2,6,23,0.28)] backdrop-blur-xl"
       aria-labelledby="news-tags-heading"
     >
       <h2 id="news-tags-heading" className="text-[17px] font-extrabold text-white">
         تگ‌ها
       </h2>
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-5 flex flex-wrap gap-2">
         {NEWS_CLOUD_TAGS.map((tag) => {
           const isActive = activeTag === tag;
           return (
