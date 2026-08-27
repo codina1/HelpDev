@@ -17,6 +17,8 @@ export function AppShell({ children }: AppShellProps) {
     pathname?.startsWith("/profile") || pathname?.startsWith("/admin");
   const isHome = pathname === "/";
   const isArticles = pathname?.startsWith("/articles");
+  const isNews = pathname?.startsWith("/news");
+  const usesFullBleedMain = isHome || isArticles || isNews;
 
   return (
     <AuthProvider>
@@ -25,8 +27,8 @@ export function AppShell({ children }: AppShellProps) {
       ) : (
         <div className="page-ambient pub-page pub-bottom-nav-spacer flex min-h-dvh flex-col text-foreground">
           <Header />
-          {isHome || isArticles ? (
-            <main className="min-w-0 flex-1">{children}</main>
+          {usesFullBleedMain ? (
+            <main className="min-w-0 flex-1 overflow-x-clip">{children}</main>
           ) : (
             <Main>{children}</Main>
           )}

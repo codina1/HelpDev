@@ -9,7 +9,7 @@ type PopularNewsSidebarProps = {
 export function PopularNewsSidebar({ articles }: PopularNewsSidebarProps) {
   return (
     <section
-      className="rounded-[20px] border border-white/[0.08] bg-[#111827]/80 p-5 backdrop-blur-xl"
+      className="rounded-[18px] border border-white/[0.08] bg-[#111827]/80 p-4 backdrop-blur-xl sm:rounded-[20px] sm:p-5"
       aria-labelledby="popular-news-heading"
     >
       <h2 id="popular-news-heading" className="text-[17px] font-extrabold text-white">

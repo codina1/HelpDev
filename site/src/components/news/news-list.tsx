@@ -5,6 +5,7 @@ import { FeaturedNews } from "@/components/news/featured-news";
 import { NewsArticleCard } from "@/components/news/news-article-card";
 import { PopularNewsSidebar } from "@/components/news/popular-news-sidebar";
 import { TagsSidebar } from "@/components/news/tags-sidebar";
+import { PublicContainer } from "@/components/ui/public/v2/public-container";
 import { NEWS_TAGS } from "@/data/news-articles";
 import type { NewsArticle, NewsTag } from "@/types";
 
@@ -38,54 +39,56 @@ export function NewsList({ articles }: NewsListProps) {
   }
 
   return (
-    <div className="space-y-6" dir="rtl">
-      <div
-        className="grid items-start gap-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-7"
-        dir="ltr"
-      >
-        <aside className="order-2 space-y-5 lg:order-1 lg:sticky lg:top-24" dir="rtl">
-          <PopularNewsSidebar articles={articles} />
-          <TagsSidebar tags={FILTERS} activeTag={filter} onTagSelect={selectFilter} />
-        </aside>
-
-        <main className="order-1 min-w-0 lg:order-2" dir="rtl">
-          <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <p className="text-[12px] font-bold tracking-wide text-[#A78BFA]">تازه‌ترین مطالب</p>
-              <p className="ui-meta mt-1">
-                {visible.length} مطلب
-                {filter !== "همه" ? ` در ${filter}` : ""}
-              </p>
+    <section className="bg-[#050816] pb-10 pt-2 sm:pb-12 sm:pt-3" dir="rtl">
+      <PublicContainer size="wide">
+        <div
+          className="grid items-start gap-5 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-7 xl:gap-8"
+        >
+          {/* Main content — first in DOM for RTL so it sits on the right on desktop */}
+          <div className="order-1 min-w-0">
+            <div className="mb-4 flex flex-wrap items-end justify-between gap-3 sm:mb-5">
+              <div>
+                <p className="text-[12px] font-bold tracking-wide text-[#A78BFA]">تازه‌ترین مطالب</p>
+                <p className="mt-1 text-[12px] font-medium text-[#64748B] sm:text-[13px]">
+                  {visible.length} مطلب
+                  {filter !== "همه" ? ` در ${filter}` : ""}
+                </p>
+              </div>
             </div>
+
+            {pageItems.length > 0 ? (
+              <>
+                <div className="space-y-4 sm:space-y-5">
+                  <FeaturedNews article={pageItems[0]} />
+                  {pageItems.length > 1 ? (
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
+                      {pageItems.slice(1).map((article) => (
+                        <NewsArticleCard key={article.id} article={article} />
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+                <NewsPagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                />
+              </>
+            ) : (
+              <div className="rounded-[20px] border border-dashed border-white/[0.12] bg-[#111827]/60 px-4 py-12 text-center">
+                <p className="text-[14px] text-[#94A3B8]">مطلبی برای این فیلتر پیدا نشد.</p>
+              </div>
+            )}
           </div>
 
-          {pageItems.length > 0 ? (
-            <>
-              <div className="space-y-5">
-                <FeaturedNews article={pageItems[0]} />
-                {pageItems.length > 1 ? (
-                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                    {pageItems.slice(1).map((article) => (
-                      <NewsArticleCard key={article.id} article={article} />
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-              <NewsPagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setPage}
-              />
-            </>
-          ) : (
-            <div className="ui-panel border-dashed px-4 py-12 text-center">
-              <p className="ui-body">مطلبی برای این فیلتر پیدا نشد.</p>
-            </div>
-          )}
-        </main>
-
-      </div>
-    </div>
+          {/* Sidebar — below content on mobile/tablet, left column on desktop (RTL) */}
+          <aside className="order-2 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:sticky lg:top-24 lg:grid-cols-1 lg:gap-5">
+            <PopularNewsSidebar articles={articles} />
+            <TagsSidebar tags={FILTERS} activeTag={filter} onTagSelect={selectFilter} />
+          </aside>
+        </div>
+      </PublicContainer>
+    </section>
   );
 }
 
@@ -99,17 +102,20 @@ function NewsPagination({ currentPage, totalPages, onPageChange }: NewsPaginatio
   if (totalPages <= 1) return null;
 
   return (
-    <nav className="flex items-center justify-center gap-2 pt-5" aria-label="صفحه‌بندی اخبار">
+    <nav
+      className="flex flex-wrap items-center justify-center gap-1.5 pt-5 sm:gap-2 sm:pt-6"
+      aria-label="صفحه‌بندی اخبار"
+    >
       <button
         type="button"
-        className="ui-chip px-3 py-1.5 disabled:cursor-not-allowed disabled:opacity-40"
+        className="rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 py-1.5 text-[12px] font-semibold text-[#94A3B8] transition hover:border-[rgba(168,85,247,0.35)] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:px-3"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         aria-label="صفحه قبلی"
       >
         قبلی
       </button>
-      <div className="flex items-center gap-1.5" role="list">
+      <div className="flex max-w-full flex-wrap items-center justify-center gap-1 sm:gap-1.5" role="list">
         {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
           <button
             key={page}
@@ -118,8 +124,10 @@ function NewsPagination({ currentPage, totalPages, onPageChange }: NewsPaginatio
             aria-current={page === currentPage ? "page" : undefined}
             onClick={() => onPageChange(page)}
             className={[
-              "ui-chip min-w-9 px-2.5 py-1.5",
-              page === currentPage ? "ui-chip-active" : "",
+              "min-w-8 rounded-lg border px-2 py-1.5 text-[12px] font-semibold transition sm:min-w-9 sm:px-2.5",
+              page === currentPage
+                ? "border-[rgba(168,85,247,0.5)] bg-[rgba(124,58,237,0.28)] text-white shadow-[0_0_16px_rgba(124,58,237,0.2)]"
+                : "border-white/[0.08] bg-white/[0.03] text-[#94A3B8] hover:border-[rgba(168,85,247,0.35)] hover:text-white",
             ].join(" ")}
           >
             {page}
@@ -128,7 +136,7 @@ function NewsPagination({ currentPage, totalPages, onPageChange }: NewsPaginatio
       </div>
       <button
         type="button"
-        className="ui-chip px-3 py-1.5 disabled:cursor-not-allowed disabled:opacity-40"
+        className="rounded-lg border border-white/[0.08] bg-white/[0.03] px-2.5 py-1.5 text-[12px] font-semibold text-[#94A3B8] transition hover:border-[rgba(168,85,247,0.35)] hover:text-white disabled:cursor-not-allowed disabled:opacity-40 sm:px-3"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
         aria-label="صفحه بعدی"
