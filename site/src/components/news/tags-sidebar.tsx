@@ -1,13 +1,13 @@
-import type { NewsTag } from "@/types";
+import type { NewsCloudTag } from "@/data/news-articles";
+import { NEWS_CLOUD_TAGS } from "@/data/news-articles";
 
 type TagsSidebarProps = {
-  tags: readonly ("همه" | NewsTag)[];
-  activeTag: "همه" | NewsTag;
-  onTagSelect: (tag: "همه" | NewsTag) => void;
+  activeTag: NewsCloudTag;
+  onTagSelect: (tag: NewsCloudTag) => void;
 };
 
-/** Tag cloud sidebar that keeps the existing news filtering behavior. */
-export function TagsSidebar({ tags, activeTag, onTagSelect }: TagsSidebarProps) {
+/** Rich tag cloud sidebar for secondary filtering. */
+export function TagsSidebar({ activeTag, onTagSelect }: TagsSidebarProps) {
   return (
     <section
       className="rounded-[18px] border border-white/[0.08] bg-[#111827]/80 p-4 backdrop-blur-xl sm:rounded-[20px] sm:p-5"
@@ -17,7 +17,7 @@ export function TagsSidebar({ tags, activeTag, onTagSelect }: TagsSidebarProps) 
         تگ‌ها
       </h2>
       <div className="mt-4 flex flex-wrap gap-2">
-        {tags.map((tag) => {
+        {NEWS_CLOUD_TAGS.map((tag) => {
           const isActive = activeTag === tag;
           return (
             <button

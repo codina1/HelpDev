@@ -3,29 +3,31 @@
 import { useMemo, useState } from "react";
 import { FeaturedNews } from "@/components/news/featured-news";
 import { NewsArticleCard } from "@/components/news/news-article-card";
+import { NewsCategoryFilter } from "@/components/news/news-category-filter";
 import { PopularNewsSidebar } from "@/components/news/popular-news-sidebar";
 import { TagsSidebar } from "@/components/news/tags-sidebar";
 import { PublicContainer } from "@/components/ui/public/v2/public-container";
-import { NEWS_TAGS } from "@/data/news-articles";
+import {
+  filterNewsArticles,
+  type NewsCloudTag,
+} from "@/data/news-articles";
 import type { NewsArticle, NewsTag } from "@/types";
 
 type NewsListProps = {
   articles: NewsArticle[];
 };
 
-type FilterValue = "همه" | NewsTag;
-
-const FILTERS: FilterValue[] = ["همه", ...NEWS_TAGS];
 const PAGE_SIZE = 7;
 
 export function NewsList({ articles }: NewsListProps) {
-  const [filter, setFilter] = useState<FilterValue>("همه");
+  const [category, setCategory] = useState<"همه" | NewsTag>("همه");
+  const [cloudTag, setCloudTag] = useState<NewsCloudTag>("همه");
   const [page, setPage] = useState(1);
 
-  const visible = useMemo(() => {
-    if (filter === "همه") return articles;
-    return articles.filter((article) => article.tag === filter);
-  }, [articles, filter]);
+  const visible = useMemo(
+    () => filterNewsArticles(articles, category, cloudTag),
+    [articles, category, cloudTag],
+  );
   const totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
   const pageItems = useMemo(
@@ -33,25 +35,32 @@ export function NewsList({ articles }: NewsListProps) {
     [currentPage, visible],
   );
 
-  function selectFilter(value: FilterValue) {
-    setFilter(value);
+  function selectCategory(value: "همه" | NewsTag) {
+    setCategory(value);
+    setPage(1);
+  }
+
+  function selectCloudTag(value: NewsCloudTag) {
+    setCloudTag(value);
     setPage(1);
   }
 
   return (
     <section className="bg-[#050816] pb-10 pt-2 sm:pb-12 sm:pt-3" dir="rtl">
       <PublicContainer size="wide">
-        <div
-          className="grid items-start gap-5 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-7 xl:gap-8"
-        >
-          {/* Main content — first in DOM for RTL so it sits on the right on desktop */}
+        <div className="mb-5 sm:mb-6">
+          <NewsCategoryFilter active={category} onSelect={selectCategory} />
+        </div>
+
+        <div className="grid items-start gap-5 sm:gap-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-7 xl:gap-8">
           <div className="order-1 min-w-0">
             <div className="mb-4 flex flex-wrap items-end justify-between gap-3 sm:mb-5">
               <div>
                 <p className="text-[12px] font-bold tracking-wide text-[#A78BFA]">تازه‌ترین مطالب</p>
                 <p className="mt-1 text-[12px] font-medium text-[#64748B] sm:text-[13px]">
                   {visible.length} مطلب
-                  {filter !== "همه" ? ` در ${filter}` : ""}
+                  {category !== "همه" ? ` در ${category}` : ""}
+                  {cloudTag !== "همه" ? ` · #${cloudTag}` : ""}
                 </p>
               </div>
             </div>
@@ -61,7 +70,7 @@ export function NewsList({ articles }: NewsListProps) {
                 <div className="space-y-4 sm:space-y-5">
                   <FeaturedNews article={pageItems[0]} />
                   {pageItems.length > 1 ? (
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
                       {pageItems.slice(1).map((article) => (
                         <NewsArticleCard key={article.id} article={article} />
                       ))}
@@ -81,10 +90,9 @@ export function NewsList({ articles }: NewsListProps) {
             )}
           </div>
 
-          {/* Sidebar — below content on mobile/tablet, left column on desktop (RTL) */}
           <aside className="order-2 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:sticky lg:top-24 lg:grid-cols-1 lg:gap-5">
             <PopularNewsSidebar articles={articles} />
-            <TagsSidebar tags={FILTERS} activeTag={filter} onTagSelect={selectFilter} />
+            <TagsSidebar activeTag={cloudTag} onTagSelect={selectCloudTag} />
           </aside>
         </div>
       </PublicContainer>

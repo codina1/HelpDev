@@ -25,6 +25,9 @@ export type NewsArticle = {
   tag: NewsTag;
   summary: string;
   time: string;
+  image: string;
+  readTime: string;
+  views: string;
 };
 
 export type RoadmapStep = {
