@@ -9,9 +9,10 @@ import { TagsSidebar } from "@/components/news/tags-sidebar";
 import { PublicContainer } from "@/components/ui/public/v2/public-container";
 import {
   filterNewsArticles,
+  type NewsCategoryId,
   type NewsCloudTag,
 } from "@/data/news-articles";
-import type { NewsArticle, NewsTag } from "@/types";
+import type { NewsArticle } from "@/types";
 
 type NewsListProps = {
   articles: NewsArticle[];
@@ -20,7 +21,7 @@ type NewsListProps = {
 const PAGE_SIZE = 7;
 
 export function NewsList({ articles }: NewsListProps) {
-  const [category, setCategory] = useState<"همه" | NewsTag>("همه");
+  const [category, setCategory] = useState<NewsCategoryId>("همه");
   const [cloudTag, setCloudTag] = useState<NewsCloudTag>("همه");
   const [page, setPage] = useState(1);
 
@@ -35,7 +36,7 @@ export function NewsList({ articles }: NewsListProps) {
     [currentPage, visible],
   );
 
-  function selectCategory(value: "همه" | NewsTag) {
+  function selectCategory(value: NewsCategoryId) {
     setCategory(value);
     setPage(1);
   }

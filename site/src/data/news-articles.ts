@@ -18,16 +18,32 @@ export const NEWS_CLOUD_TAGS = [
 
 export type NewsCloudTag = (typeof NEWS_CLOUD_TAGS)[number];
 
+/** Category pills under the hero — order matches RTL reference (همه first). */
+export type NewsCategoryId =
+  | "همه"
+  | "AI"
+  | "Programming"
+  | ".NET"
+  | "Frontend"
+  | "Backend"
+  | "DevOps"
+  | "Tools"
+  | "Security";
+
 export const NEWS_CATEGORY_FILTERS: readonly {
-  id: "همه" | NewsTag;
+  id: NewsCategoryId;
   label: string;
   icon: string;
 }[] = [
   { id: "همه", label: "همه", icon: "all" },
   { id: "AI", label: "AI", icon: "ai" },
-  { id: "React", label: "Programming", icon: "code" },
+  { id: "Programming", label: "Programming", icon: "code" },
   { id: ".NET", label: ".NET", icon: "dotnet" },
+  { id: "Frontend", label: "Frontend", icon: "frontend" },
+  { id: "Backend", label: "Backend", icon: "backend" },
   { id: "DevOps", label: "DevOps", icon: "devops" },
+  { id: "Tools", label: "Tools", icon: "tools" },
+  { id: "Security", label: "Security", icon: "security" },
 ];
 
 export const NEWS_ARTICLES: NewsArticle[] = [
@@ -165,15 +181,50 @@ export const NEWS_ARTICLES: NewsArticle[] = [
   },
 ];
 
+function matchesCategory(article: NewsArticle, category: NewsCategoryId): boolean {
+  if (category === "همه") return true;
+  const hay = `${article.title} ${article.summary} ${article.tag}`.toLowerCase();
+  switch (category) {
+    case "AI":
+      return article.tag === "AI";
+    case "Programming":
+      return article.tag === "React" || hay.includes("compiler") || hay.includes("c#");
+    case ".NET":
+      return article.tag === ".NET";
+    case "Frontend":
+      return article.tag === "React" || hay.includes("blazor") || hay.includes("ui");
+    case "Backend":
+      return article.tag === ".NET" || hay.includes("api") || hay.includes("server");
+    case "DevOps":
+      return article.tag === "DevOps";
+    case "Tools":
+      return (
+        hay.includes("tool") ||
+        hay.includes("github actions") ||
+        hay.includes("opentelemetry") ||
+        hay.includes("prompt") ||
+        article.image.includes("tools") ||
+        article.image.includes("prompt")
+      );
+    case "Security":
+      return (
+        hay.includes("security") ||
+        hay.includes("supply-chain") ||
+        hay.includes("private") ||
+        hay.includes("signed") ||
+        article.image.includes("security")
+      );
+    default:
+      return true;
+  }
+}
+
 export function filterNewsArticles(
   articles: NewsArticle[],
-  category: "همه" | NewsTag,
+  category: NewsCategoryId,
   cloudTag: NewsCloudTag,
 ): NewsArticle[] {
-  let next = articles;
-  if (category !== "همه") {
-    next = next.filter((article) => article.tag === category);
-  }
+  let next = articles.filter((article) => matchesCategory(article, category));
   if (cloudTag !== "همه") {
     const key = cloudTag.toLowerCase();
     next = next.filter((article) => {
@@ -187,4 +238,9 @@ export function filterNewsArticles(
     });
   }
   return next;
+}
+
+/** Short view label for popular list (e.g. ۱۲.۴K). */
+export function formatNewsViewsShort(views: string): string {
+  return views.replace(/\s*بازدید\s*$/u, "").trim();
 }
