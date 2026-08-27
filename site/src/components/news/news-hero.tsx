@@ -9,7 +9,7 @@ export const NEWS_HERO_IMAGE_SRC = "/home/icon-news.png";
 export function NewsHero() {
   return (
     <section
-      className="relative overflow-hidden bg-[#050816] py-6 sm:py-8 lg:py-10"
+      className="relative overflow-hidden bg-[#050816] py-5 sm:py-6 lg:h-[360px] lg:py-5"
       aria-labelledby="news-hero-heading"
       dir="rtl"
     >
@@ -22,8 +22,8 @@ export function NewsHero() {
         aria-hidden
       />
 
-      <PublicContainer size="wide">
-        <div className="relative overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#0B1224]/75 px-6 py-8 shadow-[0_0_45px_rgba(124,58,237,0.16)] backdrop-blur-xl sm:px-10 sm:py-10 lg:px-14 lg:py-12">
+      <PublicContainer size="full">
+        <div className="relative h-full overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#0B1224]/75 px-6 py-7 shadow-[0_0_45px_rgba(124,58,237,0.16)] backdrop-blur-xl sm:px-10 sm:py-8 lg:px-12 lg:py-0">
           <div
             className="pointer-events-none absolute -start-24 -top-28 h-72 w-72 rounded-full bg-[rgba(124,58,237,0.16)] blur-3xl"
             aria-hidden
@@ -33,11 +33,11 @@ export function NewsHero() {
             aria-hidden
           />
 
-          <div className="relative grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
-            <div className="order-1 flex min-h-48 items-center justify-center sm:min-h-60 lg:min-h-64">
-              <div className="relative flex h-48 w-full max-w-[360px] items-center justify-center sm:h-60 lg:h-64">
+          <div className="relative grid h-full items-center gap-6 lg:grid-cols-2 lg:gap-8">
+            <div className="order-1 flex min-h-48 items-center justify-center sm:min-h-60 lg:min-h-0">
+              <div className="relative flex h-48 w-full max-w-[360px] items-center justify-center sm:h-60 lg:h-[332px] lg:max-w-[460px]">
                 <span
-                  className="pointer-events-none absolute inset-[15%] rounded-full bg-[rgba(124,58,237,0.24)] blur-3xl"
+                  className="pointer-events-none absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.32),rgba(37,99,235,0.14)_42%,transparent_72%)] blur-2xl"
                   aria-hidden
                 />
                 <img
@@ -51,24 +51,24 @@ export function NewsHero() {
               </div>
             </div>
 
-            <div className="order-2 max-w-xl text-start">
-              <p className="mb-3 text-[13px] font-bold tracking-wide text-[#A78BFA]">اخبار</p>
+            <div className="order-2 max-w-xl text-start lg:-translate-x-4">
+              <p className="mb-2 text-[13px] font-bold tracking-wide text-[#A78BFA]">اخبار</p>
               <h1
                 id="news-hero-heading"
-                className="text-[2rem] font-extrabold leading-[1.35] tracking-tight text-white sm:text-[2.55rem] lg:text-[3rem]"
+                className="text-[2rem] font-extrabold leading-[1.3] tracking-tight text-white sm:text-[2.7rem] lg:text-[3.25rem]"
               >
                 آخرین{" "}
                 <span className="bg-gradient-to-l from-[#A855F7] via-[#8B5CF6] to-[#3B82F6] bg-clip-text text-transparent">
                   اخبار فناوری
                 </span>
               </h1>
-              <p className="mt-4 max-w-lg text-[14px] leading-8 text-[#94A3B8] sm:text-[15px]">
+              <p className="mt-3 max-w-lg text-[14px] leading-7 text-[#94A3B8] sm:text-[15px]">
                 جدیدترین اتفاقات دنیای برنامه‌نویسی،
                 <br />
                 هوش مصنوعی و ابزارهای توسعه را در HelpDev بخوانید.
               </p>
               <span
-                className="mt-6 block h-px w-24 bg-gradient-to-l from-[#A855F7] to-transparent"
+                className="mt-4 block h-px w-24 bg-gradient-to-l from-[#A855F7] to-transparent"
                 aria-hidden
               />
             </div>
