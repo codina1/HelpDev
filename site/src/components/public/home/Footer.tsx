@@ -18,7 +18,7 @@ const PRODUCT_LINKS = [
 ] as const;
 
 const RESOURCE_LINKS = [
-  { href: "/learning", label: "یادگیری" },
+  { href: "/courses", label: "یادگیری" },
   { href: "/toolbox", label: "ابزارها" },
   { href: "/news", label: "اخبار" },
   { href: "/search", label: "جستجو" },

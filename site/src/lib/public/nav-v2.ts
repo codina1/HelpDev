@@ -6,7 +6,7 @@ import type { NavItem } from "@/lib/constants";
  */
 export const PUBLIC_PRODUCTS_NAV: NavItem[] = [
   { href: "/articles", label: "مقالات" },
-  { href: "/learning", label: "یادگیری" },
+  { href: "/courses", label: "یادگیری" },
   { href: "/roadmap", label: "Roadmap" },
   { href: "/prompt-lab", label: "Prompt Lab" },
   { href: "/toolbox", label: "ابزارها" },
@@ -16,7 +16,7 @@ export const PUBLIC_PRODUCTS_NAV: NavItem[] = [
 export const PUBLIC_BOTTOM_NAV = [
   { href: "/", label: "خانه", icon: "home" as const },
   { href: "/search", label: "جستجو", icon: "search" as const },
-  { href: "/learning", label: "یادگیری", icon: "learn" as const },
+  { href: "/courses", label: "یادگیری", icon: "learn" as const },
   { href: "/profile", label: "پروفایل", icon: "profile" as const },
 ] as const;
 

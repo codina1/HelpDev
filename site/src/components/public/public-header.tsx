@@ -40,7 +40,7 @@ export function PublicHeader() {
 
   function isActive(href: string) {
     if (href === "/") return pathname === "/";
-    if (href === "/learning" && pathname.startsWith("/courses")) return true;
+    if (href === "/courses" && pathname.startsWith("/learning")) return true;
     return pathname === href || pathname.startsWith(`${href}/`);
   }
 
