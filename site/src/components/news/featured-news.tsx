@@ -61,7 +61,7 @@ export function FeaturedNews({ article }: FeaturedNewsProps) {
           <BookmarkIcon className="h-4 w-4" />
         </button>
 
-        <span className="inline-flex w-fit items-center rounded-lg bg-[#7C3AED] px-2.5 py-1 text-[11px] font-bold text-white">
+        <span className="inline-flex w-fit self-end items-center rounded-lg bg-[#7C3AED] px-2.5 py-1 text-[11px] font-bold text-white">
           {article.categoryLabel ?? article.tag}
         </span>
 
