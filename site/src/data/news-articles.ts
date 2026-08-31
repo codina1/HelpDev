@@ -1,4 +1,4 @@
-import type { NewsArticle } from "@/types";
+﻿import type { NewsArticle } from "@/types";
 
 export const NEWS_TAGS = ["React", ".NET", "AI", "DevOps"] as const;
 
@@ -49,86 +49,79 @@ export const NEWS_CATEGORY_FILTERS: readonly {
 export const NEWS_ARTICLES: NewsArticle[] = [
   {
     id: "1",
-    title: "معرفی Cursor 1.0؛ نسل جدید AI IDE برای توسعه‌دهندگان",
+    title: "معرفی Cursor 1.0؛ نسل جدید AI IDE",
     tag: "AI",
     categoryLabel: "AI",
-    summary:
-      "Cursor با قابلیت‌های پیشرفته کدنویسی هوشمند، تجربه توسعه را متحول کرده و سرعت کار تیم‌ها را چند برابر می‌کند.",
+    summary: "کدنویسی هوشمند با سرعتی چند برابر برای تیم‌های توسعه.",
     time: "۲ ساعت پیش",
     image: "/news/cover-cursor.png",
-    readTime: "۵ دقیقه مطالعه",
+    readTime: "۵ دقیقه",
     views: "۱۲.۴K",
   },
   {
     id: "2",
-    title: "Claude چیست؟ همه چیز درباره Terminal Agent جدید Anthropic",
+    title: "Claude چیست؟ نگاهی به Terminal Agent",
     tag: "AI",
     categoryLabel: "AI",
-    summary:
-      "نگاهی کامل به قابلیت‌های Claude Code و اینکه چطور می‌تواند جایگزین دستیار کدنویسی فعلی شما شود.",
+    summary: "جایگزین تازه‌ای برای دستیار کدنویسی فعلی شما.",
     time: "۴ ساعت پیش",
     image: "/news/cover-claude.png",
-    readTime: "۷ دقیقه مطالعه",
+    readTime: "۷ دقیقه",
     views: "۹.۸K",
   },
   {
     id: "3",
-    title: "استاندارد جدید MCP؛ اتصال مدل‌ها به ابزارها آسان‌تر شد",
+    title: "استاندارد MCP؛ اتصال مدل‌ها به ابزارها",
     tag: "DevOps",
     categoryLabel: "Tools",
-    summary:
-      "Model Context Protocol روشی یکپارچه برای اتصال LLMها به ابزارهای توسعه و داده‌های پروژه معرفی می‌کند.",
+    summary: "روشی یکپارچه برای وصل‌کردن LLMها به ابزارهای توسعه.",
     time: "۶ ساعت پیش",
     image: "/news/cover-mcp.png",
-    readTime: "۶ دقیقه مطالعه",
+    readTime: "۶ دقیقه",
     views: "۷.۲K",
   },
   {
     id: "4",
-    title: "GitHub Copilot Workspace؛ محیط توسعه هوشمند جدید",
+    title: "GitHub Copilot Workspace معرفی شد",
     tag: "AI",
     categoryLabel: "Tools",
-    summary:
-      "Workspace مسیر جدیدی برای برنامه‌ریزی، پیاده‌سازی و بازبینی کد با کمک Copilot ارائه می‌دهد.",
+    summary: "برنامه‌ریزی، پیاده‌سازی و بازبینی کد با کمک Copilot.",
     time: "۸ ساعت پیش",
     image: "/news/cover-copilot.png",
-    readTime: "۵ دقیقه مطالعه",
+    readTime: "۵ دقیقه",
     views: "۵.۷K",
   },
   {
     id: "5",
-    title: ".NET 9 منتشر شد؛ مرور کامل ویژگی‌ها و بهبودهای عملکردی",
+    title: ".NET 9 منتشر شد؛ ویژگی‌ها و بهبودها",
     tag: ".NET",
     categoryLabel: ".NET",
-    summary:
-      "نسخه جدید .NET با بهینه‌سازی‌های runtime، APIهای تازه و تجربه بهتر برای اپلیکیشن‌های ابری همراه است.",
+    summary: "بهینه‌سازی runtime و APIهای تازه برای اپ‌های ابری.",
     time: "۱۰ ساعت پیش",
     image: "/news/cover-dotnet.png",
-    readTime: "۸ دقیقه مطالعه",
+    readTime: "۸ دقیقه",
     views: "۴.۳K",
   },
   {
     id: "6",
-    title: "React 19 معرفی شد؛ تمام تغییرات مهم که باید بدانید",
+    title: "React 19 معرفی شد؛ تغییرات مهم",
     tag: "React",
     categoryLabel: "Frontend",
-    summary:
-      "از Actions تا بهبودهای Server Components؛ خلاصه‌ای از مهم‌ترین تغییرات React 19 برای تیم‌های فرانت‌اند.",
+    summary: "از Actions تا بهبودهای Server Components.",
     time: "۱۲ ساعت پیش",
     image: "/news/cover-react.png",
-    readTime: "۵ دقیقه مطالعه",
+    readTime: "۵ دقیقه",
     views: "۶.۱K",
   },
   {
     id: "7",
-    title: "DevOps در ۲۰۲۴: بهترین ابزارها و روش‌های پیاده‌سازی",
+    title: "DevOps در ۲۰۲۴؛ بهترین ابزارها",
     tag: "DevOps",
     categoryLabel: "DevOps",
-    summary:
-      "مرور ابزارها و الگوهای رایج CI/CD، observability و امنیت زنجیره تأمین در تیم‌های مدرن.",
+    summary: "الگوهای رایج CI/CD، observability و امنیت زنجیره تأمین.",
     time: "۱ روز پیش",
     image: "/news/cover-devops.png",
-    readTime: "۶ دقیقه مطالعه",
+    readTime: "۶ دقیقه",
     views: "۳.۹K",
   },
 ];

@@ -41,21 +41,21 @@ export function NewsArticleCard({ article }: NewsArticleCardProps) {
           {article.categoryLabel ?? article.tag}
         </span>
       </div>
-      <div className="flex flex-1 flex-col gap-2 p-4 sm:p-5">
-        <h2 className="line-clamp-2 text-[15px] font-extrabold leading-7 text-white sm:text-[16px]">
+      <div className="flex flex-1 flex-col gap-1.5 p-4">
+        <h2 className="line-clamp-2 text-[14px] font-extrabold leading-6 text-white">
           {article.title}
         </h2>
-        <p className="line-clamp-2 text-[12px] leading-6 text-[#94A3B8] sm:text-[13px]">
+        <p className="line-clamp-2 text-[11.5px] leading-5 text-[#94A3B8]">
           {article.summary}
         </p>
-        <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-2 text-[11px] font-semibold text-[#64748B] sm:text-[12px]">
-          <span className="inline-flex items-center gap-1.5">
-            <ClockIcon className="h-3.5 w-3.5 text-[#7C3AED]" />
-            {article.time}
+        <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/[0.06] pt-2.5 text-[11px] font-semibold text-[#64748B]">
+          <span className="inline-flex min-w-0 items-center gap-1.5 whitespace-nowrap">
+            <ClockIcon className="h-3.5 w-3.5 shrink-0 text-[#7C3AED]" />
+            <bdi className="truncate">{article.time}</bdi>
           </span>
-          <span className="inline-flex items-center gap-1.5">
-            <BookIcon className="h-3.5 w-3.5 text-[#7C3AED]" />
-            {article.readTime}
+          <span className="inline-flex min-w-0 items-center gap-1.5 whitespace-nowrap">
+            <BookIcon className="h-3.5 w-3.5 shrink-0 text-[#7C3AED]" />
+            <bdi className="truncate">{article.readTime}</bdi>
           </span>
         </div>
       </div>

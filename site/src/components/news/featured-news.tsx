@@ -65,20 +65,20 @@ export function FeaturedNews({ article }: FeaturedNewsProps) {
           {article.categoryLabel ?? article.tag}
         </span>
 
-        <h2 className="pe-10 text-[20px] font-extrabold leading-8 text-white sm:text-[22px] md:text-[24px]">
+        <h2 className="line-clamp-2 pe-10 text-[18px] font-extrabold leading-7 text-white sm:text-[20px]">
           {article.title}
         </h2>
-        <p className="line-clamp-2 text-[13px] leading-6 text-[#94A3B8] sm:line-clamp-3 sm:text-[14px] sm:leading-7">
+        <p className="line-clamp-2 text-[12.5px] leading-6 text-[#94A3B8]">
           {article.summary}
         </p>
-        <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-2 text-[12px] font-semibold text-[#64748B]">
-          <span className="inline-flex items-center gap-1.5">
-            <ClockIcon className="h-3.5 w-3.5 text-[#7C3AED]" />
-            {article.time}
+        <div className="mt-1 flex items-center gap-5 text-[12px] font-semibold text-[#64748B]">
+          <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+            <ClockIcon className="h-3.5 w-3.5 shrink-0 text-[#7C3AED]" />
+            <bdi>{article.time}</bdi>
           </span>
-          <span className="inline-flex items-center gap-1.5">
-            <BookIcon className="h-3.5 w-3.5 text-[#7C3AED]" />
-            {article.readTime}
+          <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+            <BookIcon className="h-3.5 w-3.5 shrink-0 text-[#7C3AED]" />
+            <bdi>{article.readTime}</bdi>
           </span>
         </div>
       </div>
