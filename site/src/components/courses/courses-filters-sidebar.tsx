@@ -59,7 +59,7 @@ function OptionRow({
   name: string;
 }) {
   return (
-    <label className="flex cursor-pointer items-center gap-2.5 py-1.5 text-[12px] text-[#CBD5E1] transition hover:text-white">
+    <label className="flex cursor-pointer items-center gap-2.5 py-2 text-[13px] text-[#CBD5E1] transition hover:text-white">
       <input
         type="radio"
         name={name}
@@ -69,7 +69,7 @@ function OptionRow({
       />
       <span
         className={[
-          "flex h-[15px] w-[15px] shrink-0 items-center justify-center rounded-full border transition",
+          "flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition",
           checked ? "border-[#7C3AED] bg-[#7C3AED]/15" : "border-white/[0.18] bg-transparent",
         ].join(" ")}
         aria-hidden
@@ -85,12 +85,12 @@ function OptionRow({
 export function CoursesFiltersSidebar({ value, onChange, onReset }: Props) {
   return (
     <div
-      className="rounded-[16px] border border-white/[0.07] bg-[#0B1120] p-4 shadow-[0_6px_20px_rgba(2,6,23,0.28)]"
+      className="rounded-[16px] border border-white/[0.07] bg-[#0B1120] p-5 shadow-[0_6px_20px_rgba(2,6,23,0.28)]"
       dir="rtl"
     >
-      <h2 className="text-[13px] font-extrabold text-white">جستجو در دوره‌ها</h2>
+      <h2 className="text-[14.5px] font-extrabold text-white">جستجو در دوره‌ها</h2>
 
-      <div className="relative mt-3">
+      <div className="relative mt-3.5">
         <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-[#64748B]">
           <SearchIcon className="h-4 w-4" />
         </span>
@@ -100,12 +100,12 @@ export function CoursesFiltersSidebar({ value, onChange, onReset }: Props) {
           onChange={(event) => onChange({ ...value, query: event.target.value })}
           placeholder="جستجو در عنوان دوره..."
           aria-label="جستجو در عنوان دوره"
-          className="h-10 w-full rounded-xl border border-white/[0.09] bg-[#0F1626] pe-3 ps-9 text-[12px] text-white outline-none transition placeholder:text-[#64748B] focus:border-[rgba(168,85,247,0.45)]"
+          className="h-11 w-full rounded-xl border border-white/[0.09] bg-[#0F1626] pe-3.5 ps-10 text-[13px] text-white outline-none transition placeholder:text-[#64748B] focus:border-[rgba(168,85,247,0.45)]"
         />
       </div>
 
-      <div className="mt-5">
-        <h3 className="text-[12.5px] font-bold text-white">سطح دوره</h3>
+      <div className="mt-6">
+        <h3 className="text-[13.5px] font-bold text-white">سطح دوره</h3>
         <div className="mt-2">
           {COURSE_LEVEL_FILTERS.map((item) => (
             <OptionRow
@@ -119,8 +119,8 @@ export function CoursesFiltersSidebar({ value, onChange, onReset }: Props) {
         </div>
       </div>
 
-      <div className="mt-5">
-        <h3 className="text-[12.5px] font-bold text-white">نوع دوره</h3>
+      <div className="mt-6">
+        <h3 className="text-[13.5px] font-bold text-white">نوع دوره</h3>
         <div className="mt-2">
           {COURSE_PRICE_FILTERS.map((item) => (
             <OptionRow
@@ -134,8 +134,8 @@ export function CoursesFiltersSidebar({ value, onChange, onReset }: Props) {
         </div>
       </div>
 
-      <div className="mt-5">
-        <h3 className="text-[12.5px] font-bold text-white">مدت زمان</h3>
+      <div className="mt-6">
+        <h3 className="text-[13.5px] font-bold text-white">مدت زمان</h3>
         <input
           type="range"
           min={0}
@@ -147,7 +147,7 @@ export function CoursesFiltersSidebar({ value, onChange, onReset }: Props) {
           className="courses-range mt-3 w-full"
           style={{ "--range-fill": `${(value.maxHours / COURSES_MAX_HOURS) * 100}%` } as React.CSSProperties}
         />
-        <div className="mt-2 flex items-center justify-between text-[10.5px] font-semibold text-[#64748B]">
+        <div className="mt-2.5 flex items-center justify-between text-[11.5px] font-semibold text-[#64748B]">
           <span>+۴۵۰ ساعت</span>
           <span>۰ ساعت</span>
         </div>
@@ -156,7 +156,7 @@ export function CoursesFiltersSidebar({ value, onChange, onReset }: Props) {
       <button
         type="button"
         onClick={onReset}
-        className="mt-5 inline-flex h-10 w-full items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-[#0F1626] text-[12px] font-bold text-[#CBD5E1] transition hover:border-[rgba(168,85,247,0.4)] hover:text-white"
+        className="mt-6 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-[#0F1626] text-[13px] font-bold text-[#CBD5E1] transition hover:border-[rgba(168,85,247,0.4)] hover:text-white"
       >
         <ResetIcon className="h-4 w-4 text-[#A78BFA]" />
         پاک کردن فیلترها

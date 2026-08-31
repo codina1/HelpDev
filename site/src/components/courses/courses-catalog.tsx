@@ -91,9 +91,9 @@ export function CoursesCatalog({ courses }: CoursesCatalogProps) {
   }
 
   return (
-    <section id="courses-grid" className="bg-[#030712] pb-12 pt-1" dir="rtl">
+    <section id="courses-grid" className="bg-[#030712] pb-7 pt-2" dir="rtl">
       <CoursesContainer>
-        <div className="mb-6">
+        <div className="mb-7">
           <CoursesCategoryBar
             active={category}
             onSelect={(value) => {
@@ -103,7 +103,7 @@ export function CoursesCatalog({ courses }: CoursesCatalogProps) {
           />
         </div>
 
-        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_230px] lg:gap-7">
+        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-8">
           <div className="order-1 lg:order-2">
             <button
               type="button"
@@ -128,20 +128,20 @@ export function CoursesCatalog({ courses }: CoursesCatalogProps) {
 
           <div className="order-2 min-w-0 lg:order-1">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-[12.5px] font-semibold text-[#94A3B8]">
+              <p className="text-[13.5px] font-semibold text-[#94A3B8]">
                 تعداد دوره‌ها:{" "}
                 <span className="bg-gradient-to-l from-[#C084FC] to-[#3B82F6] bg-clip-text font-extrabold text-transparent">
                   {toPersianDigits(totalLabel)} دوره
                 </span>
               </p>
 
-              <label className="inline-flex items-center gap-2 text-[12px] text-[#64748B]">
+              <label className="inline-flex items-center gap-2 text-[13px] text-[#64748B]">
                 مرتب‌سازی:
                 <select
                   value={sort}
                   onChange={(event) => setSort(event.target.value as SortId)}
                   aria-label="مرتب‌سازی دوره‌ها"
-                  className="h-9 rounded-lg border border-white/[0.1] bg-[#0F1626] px-2.5 text-[12px] font-semibold text-[#E5E7EB] outline-none transition focus:border-[rgba(168,85,247,0.45)]"
+                  className="h-10 rounded-lg border border-white/[0.1] bg-[#0F1626] px-3 text-[13px] font-semibold text-[#E5E7EB] outline-none transition focus:border-[rgba(168,85,247,0.45)]"
                 >
                   {SORT_OPTIONS.map((option) => (
                     <option key={option.id} value={option.id}>
@@ -153,7 +153,7 @@ export function CoursesCatalog({ courses }: CoursesCatalogProps) {
             </div>
 
             {visible.length > 0 ? (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
                 {visible.map((course) => (
                   <CourseCard key={course.id} course={course} />
                 ))}
@@ -189,7 +189,7 @@ function CoursesPagination({
 
   return (
     <nav
-      className="flex flex-wrap items-center justify-center gap-1.5 pt-8"
+      className="flex flex-wrap items-center justify-center gap-1.5 pt-7"
       aria-label="صفحه‌بندی دوره‌ها"
       dir="ltr"
     >

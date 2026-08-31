@@ -24,7 +24,7 @@ const ICON_COLOR: Record<string, string> = {
 
 function CategoryIcon({ name, color }: { name: string; color: string }) {
   const s = color;
-  const cls = "h-4 w-4 shrink-0";
+  const cls = "h-[17px] w-[17px] shrink-0";
 
   switch (name) {
     case "code":
@@ -107,7 +107,7 @@ export function CoursesCategoryBar({ active, onSelect }: CoursesCategoryBarProps
       dir="rtl"
     >
       <div
-        className="flex w-max min-w-full flex-nowrap items-center justify-start gap-2.5"
+        className="flex w-max min-w-full flex-nowrap items-center justify-start gap-3"
         role="toolbar"
         aria-label="فیلتر دسته‌بندی دوره‌ها"
       >
@@ -120,7 +120,7 @@ export function CoursesCategoryBar({ active, onSelect }: CoursesCategoryBarProps
               aria-pressed={isActive}
               onClick={() => onSelect(item.id)}
               className={[
-                "inline-flex h-[40px] shrink-0 items-center gap-2 rounded-[12px] border px-4 text-[13px] font-semibold transition duration-200",
+                "inline-flex h-[46px] shrink-0 items-center gap-2.5 rounded-[14px] border px-5 text-[14px] font-semibold transition duration-200",
                 isActive
                   ? "border-transparent bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] text-white shadow-[0_0_16px_rgba(124,58,237,0.35)]"
                   : "border-white/[0.1] bg-[#0F1626]/90 text-[#E5E7EB] hover:border-[rgba(168,85,247,0.4)] hover:bg-[#151E33] hover:text-white",
