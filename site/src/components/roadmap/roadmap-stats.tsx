@@ -38,14 +38,14 @@ function StatIcon({ name, className }: { name: string; className?: string }) {
 /** Four stat cells split by hairline dividers (reference bar). */
 export function RoadmapStats() {
   return (
-    <section className="bg-[#030713] pb-2 pt-3" dir="rtl" aria-label="آمار مسیرهای یادگیری">
+    <section className="bg-[#030713] pb-6 pt-2" dir="rtl" aria-label="آمار مسیرهای یادگیری">
       <RoadmapContainer>
         <div className="grid grid-cols-2 overflow-hidden rounded-[16px] border border-white/[0.07] bg-[#080D1E] md:grid-cols-4">
           {ROADMAP_STATS.map((stat, index) => (
             <div
               key={stat.id}
               className={[
-                "flex items-center justify-center gap-4 px-5 py-5",
+                "flex items-center justify-center gap-5 px-6 py-5 md:h-[80px] md:py-0",
                 index > 0 ? "border-white/[0.06] md:border-e" : "",
                 index === 1 ? "border-s border-white/[0.06] md:border-s-0" : "",
                 index > 1 ? "border-t border-white/[0.06] md:border-t-0" : "",
@@ -59,10 +59,10 @@ export function RoadmapStats() {
                 <p className="mt-2 text-[12px] font-semibold text-[#94A3B8]">{stat.label}</p>
               </div>
               <span
-                className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-[rgba(124,58,237,0.28)] bg-[rgba(124,58,237,0.12)] text-[#A78BFA] shadow-[0_0_16px_rgba(124,58,237,0.18)]"
+                className="inline-flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-xl border border-[rgba(124,58,237,0.28)] bg-[rgba(124,58,237,0.12)] text-[#A78BFA] shadow-[0_0_16px_rgba(124,58,237,0.18)]"
                 aria-hidden
               >
-                <StatIcon name={stat.icon} className="h-6 w-6" />
+                <StatIcon name={stat.icon} className="h-7 w-7" />
               </span>
             </div>
           ))}

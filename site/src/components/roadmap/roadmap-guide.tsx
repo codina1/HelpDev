@@ -15,14 +15,14 @@ function BookIcon({ className }: { className?: string }) {
 /** Guide card: map illustration left, copy and CTA right (RTL). */
 export function RoadmapGuide() {
   return (
-    <section id="roadmap-guide" className="bg-[#030713] pb-10 pt-2" dir="rtl" aria-labelledby="roadmap-guide-heading">
-      <RoadmapContainer>
-        <div className="relative overflow-hidden rounded-[18px] border border-white/[0.07] bg-gradient-to-l from-[#0C1226] via-[#090E20] to-[#0E0A20]">
+    <section id="roadmap-guide" className="bg-[#030713] pb-16 pt-4" dir="rtl" aria-labelledby="roadmap-guide-heading">
+      <RoadmapContainer className="md:max-w-[880px]">
+        <div className="relative overflow-hidden rounded-[16px] border border-white/[0.07] bg-gradient-to-l from-[#0C1226] via-[#090E20] to-[#0E0A20]">
           <div
             className="pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-[radial-gradient(ellipse_at_left,rgba(124,58,237,0.14),transparent_70%)]"
             aria-hidden
           />
-          <div className="relative grid items-center gap-6 px-6 py-7 sm:px-8 md:grid-cols-[280px_minmax(0,1fr)] md:gap-10 md:px-10">
+          <div className="relative grid items-center gap-6 px-6 py-7 sm:px-8 md:h-[145px] md:grid-cols-[240px_minmax(0,1fr)] md:gap-8 md:px-8 md:py-0">
             <div className="flex items-center justify-center">
               <img
                 src={ROADMAP_GUIDE_IMAGE_SRC}
@@ -31,7 +31,7 @@ export function RoadmapGuide() {
                 height={150}
                 loading="lazy"
                 decoding="async"
-                className="h-auto w-full max-w-[260px] object-contain drop-shadow-[0_14px_34px_rgba(99,102,241,0.35)]"
+                className="h-auto w-full max-w-[230px] object-contain drop-shadow-[0_14px_34px_rgba(99,102,241,0.35)] md:max-h-[125px]"
               />
             </div>
 
@@ -39,10 +39,10 @@ export function RoadmapGuide() {
               <h2 id="roadmap-guide-heading" className="text-[17px] font-extrabold text-white sm:text-[19px]">
                 چطور از Roadmap استفاده کنم؟
               </h2>
-              <p className="mt-3 text-[13px] leading-7 text-[#94A3B8] sm:text-[13.5px]">
+              <p className="mt-2 text-[13px] leading-6 text-[#94A3B8] sm:text-[13.5px]">
                 مسیر مناسب خود را انتخاب کنید و گام به گام پیش بروید. با تکمیل هر مرحله، مهارت‌های خود را بسنجید و به مرحله بعدی بروید.
               </p>
-              <div className="mt-5 flex justify-center md:justify-start">
+              <div className="mt-3 flex justify-center md:justify-start">
                 <Link
                   href="/articles"
                   className="focus-ring inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-white/[0.1] bg-[#0F1626] px-5 text-[13px] font-bold text-[#E5E7EB] no-underline transition hover:border-[rgba(168,85,247,0.4)] hover:text-white"

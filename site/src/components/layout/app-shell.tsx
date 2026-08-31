@@ -18,7 +18,8 @@ export function AppShell({ children }: AppShellProps) {
   const isHome = pathname === "/";
   const isArticles = pathname?.startsWith("/articles");
   const isNews = pathname?.startsWith("/news");
-  const usesFullBleedMain = isHome || isArticles || isNews;
+  const isRoadmap = pathname?.startsWith("/roadmap");
+  const usesFullBleedMain = isHome || isArticles || isNews || isRoadmap;
 
   return (
     <AuthProvider>

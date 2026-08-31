@@ -1,4 +1,7 @@
-/** Page shell for the roadmap page — matches the courses catalog width. */
+/**
+ * Page shell for the roadmap page.
+ * Reference layout: content spans `calc(100% - 48px)` up to ~1136px on desktop.
+ */
 export function RoadmapContainer({
   children,
   className = "",
@@ -7,7 +10,12 @@ export function RoadmapContainer({
   className?: string;
 }) {
   return (
-    <div className={["mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8", className].join(" ")}>
+    <div
+      className={[
+        "mx-auto w-[calc(100%-32px)] max-w-[1136px] md:w-[calc(100%-48px)]",
+        className,
+      ].join(" ")}
+    >
       {children}
     </div>
   );

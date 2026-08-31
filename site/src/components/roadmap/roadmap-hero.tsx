@@ -27,7 +27,7 @@ function HelpIcon({ className }: { className?: string }) {
 /** Hero: text right (RTL) / neon roadmap illustration left. */
 export function RoadmapHero() {
   return (
-    <section className="relative overflow-hidden bg-[#030713] pb-3 pt-5" aria-labelledby="roadmap-hero-heading">
+    <section className="relative overflow-hidden bg-[#030713] pb-6 pt-6 md:pt-8" aria-labelledby="roadmap-hero-heading">
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_70%_at_22%_40%,rgba(124,58,237,0.16),transparent_70%)]"
         aria-hidden
@@ -38,13 +38,13 @@ export function RoadmapHero() {
       />
 
       <RoadmapContainer>
-        <div className="relative overflow-hidden rounded-[18px] border border-white/[0.07] bg-gradient-to-bl from-[#0C1226] via-[#080D1E] to-[#0F0A22]">
+        <div className="relative overflow-hidden rounded-[16px] border border-white/[0.07] bg-gradient-to-bl from-[#0C1226] via-[#080D1E] to-[#0F0A22]">
           <div
             className="pointer-events-none absolute inset-x-[10%] bottom-0 h-20 bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.18),transparent_70%)] blur-xl"
             aria-hidden
           />
           <div
-            className="relative grid min-h-[250px] items-center gap-6 px-6 py-9 sm:px-8 md:h-[290px] md:min-h-[290px] md:grid-cols-2 md:gap-10 md:px-12 md:py-0 lg:px-16"
+            className="relative grid min-h-[250px] items-center gap-6 px-6 py-9 sm:px-8 md:h-[265px] md:min-h-[265px] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-8 md:px-10 md:py-0 lg:px-12"
             dir="ltr"
           >
             <div className="order-2 max-w-[600px] text-center md:order-1 md:text-left" dir="rtl">
@@ -53,7 +53,7 @@ export function RoadmapHero() {
               </p>
               <h1
                 id="roadmap-hero-heading"
-                className="mt-2.5 whitespace-nowrap text-[26px] font-extrabold leading-[1.32] tracking-tight text-white sm:whitespace-normal sm:text-[32px] md:text-[36px] lg:text-[40px]"
+                className="mt-2 text-[28px] font-extrabold leading-[1.5] tracking-tight text-white sm:text-[34px] md:text-[38px] lg:text-[42px]"
               >
                 مسیر یادگیری{" "}
                 <span className="bg-gradient-to-l from-[#60A5FA] via-[#A855F7] to-[#C084FC] bg-clip-text text-transparent">
@@ -83,7 +83,7 @@ export function RoadmapHero() {
             </div>
 
             <div className="order-1 flex items-center justify-center md:order-2 md:justify-end">
-              <div className="relative flex h-[180px] w-full max-w-[340px] items-center justify-center sm:h-[220px] sm:max-w-[440px] md:h-[270px] md:max-w-[560px]">
+              <div className="relative flex h-[190px] w-full max-w-[360px] items-center justify-center sm:h-[230px] sm:max-w-[460px] md:h-[250px] md:max-w-none">
                 <span
                   className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(99,102,241,0.3),rgba(59,130,246,0.12)_52%,transparent_74%)] blur-2xl"
                   aria-hidden

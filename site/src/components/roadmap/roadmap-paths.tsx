@@ -175,13 +175,13 @@ export function RoadmapPaths() {
   }, [stages]);
 
   return (
-    <section id="roadmap-paths" className="bg-[#030713] pb-8 pt-6" dir="rtl">
+    <section id="roadmap-paths" className="bg-[#030713] pb-10 pt-4" dir="rtl">
       <RoadmapContainer>
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-[18px] font-extrabold text-white sm:text-[20px]">مسیرهای یادگیری</h2>
 
           <div className="max-w-full overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex w-max flex-nowrap items-center gap-2.5" role="toolbar" aria-label="فیلتر مسیرها">
+            <div className="flex w-max flex-nowrap items-center gap-[10px]" role="toolbar" aria-label="فیلتر مسیرها">
               {ROADMAP_PATH_FILTERS.map((item) => {
                 const isActive = track === item.id;
                 return (
@@ -191,7 +191,7 @@ export function RoadmapPaths() {
                     aria-pressed={isActive}
                     onClick={() => setTrack(item.id)}
                     className={[
-                      "inline-flex h-[38px] shrink-0 items-center gap-2 rounded-full border px-4 text-[12.5px] font-semibold transition duration-200",
+                      "inline-flex h-10 shrink-0 items-center gap-2 rounded-full border px-[18px] text-[13px] font-semibold transition duration-200",
                       isActive
                         ? "border-transparent bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] text-white shadow-[0_0_14px_rgba(124,58,237,0.32)]"
                         : "border-white/[0.1] bg-[#0F1626]/90 text-[#E5E7EB] hover:border-[rgba(168,85,247,0.4)] hover:text-white",
@@ -211,10 +211,10 @@ export function RoadmapPaths() {
 
         {stages.length > 0 ? (
           <>
-            <div className="relative hidden pb-4 lg:block" aria-hidden>
+            <div className="relative hidden pb-5 lg:block" aria-hidden>
               <span className="absolute inset-x-0 top-[9px] h-px bg-gradient-to-l from-transparent via-white/[0.12] to-transparent" />
               <div
-                className="relative grid gap-5"
+                className="relative grid gap-3"
                 style={{ gridTemplateColumns: `repeat(${stages.length}, minmax(0, 1fr))` }}
               >
                 {stages.map((stage) => {
@@ -235,13 +235,13 @@ export function RoadmapPaths() {
               </div>
             </div>
 
-            <div className={["grid grid-cols-1 gap-5 sm:grid-cols-2", LG_COLUMNS[stages.length] ?? "lg:grid-cols-6"].join(" ")}>
+            <div className={["grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-3", LG_COLUMNS[stages.length] ?? "lg:grid-cols-6"].join(" ")}>
               {stages.map((stage) => (
                 <StageCard key={stage.id} stage={stage} active={stage.id === activeStep} />
               ))}
             </div>
 
-            <div className="mt-8 flex justify-center">
+            <div className="mt-6 flex justify-center">
               <Link
                 href="#roadmap-guide"
                 className="focus-ring inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-[rgba(168,85,247,0.45)] bg-[rgba(124,58,237,0.08)] px-6 text-[13px] font-bold text-[#E9D5FF] no-underline shadow-[0_0_16px_rgba(124,58,237,0.18)] transition hover:bg-[rgba(124,58,237,0.16)] hover:text-white"
@@ -265,43 +265,46 @@ function StageCard({ stage, active }: { stage: RoadmapStage; active: boolean }) 
   return (
     <article
       className={[
-        "flex h-full min-w-0 flex-col items-center rounded-[16px] border p-5 text-center transition duration-200",
+        "flex h-full min-w-0 flex-col items-center rounded-[16px] border p-4 text-center transition duration-200 lg:min-h-[290px]",
         active
           ? "border-[rgba(168,85,247,0.45)] bg-[#0D1020] shadow-[0_0_22px_rgba(124,58,237,0.16)]"
           : "border-white/[0.07] bg-[#080D1E] hover:border-[rgba(168,85,247,0.28)]",
       ].join(" ")}
     >
-      <span
-        className={[
-          "inline-flex h-14 w-14 items-center justify-center rounded-2xl border",
-          active
-            ? "border-[rgba(168,85,247,0.4)] bg-[rgba(124,58,237,0.14)] text-[#C084FC]"
-            : "border-white/[0.08] bg-white/[0.03] text-[#A78BFA]",
-        ].join(" ")}
-        aria-hidden
-      >
-        <StageIcon name={stage.icon} className="h-7 w-7" />
+      <span className="relative mt-1 inline-flex h-16 w-16 items-center justify-center" aria-hidden>
+        <span
+          className={[
+            "absolute inset-0 rounded-full blur-[10px]",
+            active
+              ? "bg-[radial-gradient(circle,rgba(168,85,247,0.38),transparent_70%)]"
+              : "bg-[radial-gradient(circle,rgba(124,58,237,0.18),transparent_70%)]",
+          ].join(" ")}
+        />
+        <StageIcon
+          name={stage.icon}
+          className={["relative h-9 w-9", active ? "text-[#C084FC]" : "text-[#A78BFA]"].join(" ")}
+        />
       </span>
 
-      <span className="mt-4 inline-flex items-center rounded-md border border-white/[0.08] bg-white/[0.04] px-2.5 py-[3px] text-[10.5px] font-bold text-[#CBD5E1]">
+      <span className="mt-3 inline-flex items-center rounded-md border border-white/[0.08] bg-white/[0.04] px-2.5 py-[3px] text-[11px] font-bold text-[#CBD5E1]">
         {stage.stepLabel}
       </span>
 
-      <h3 className="mt-3 text-[14px] font-extrabold leading-6 text-white">{stage.title}</h3>
-      <p className="mt-1.5 text-[11.5px] leading-5 text-[#8B98AC]">{stage.description}</p>
+      <h3 className="mt-3 text-[15px] font-extrabold leading-6 text-white">{stage.title}</h3>
+      <p className="mt-2 text-[12.5px] leading-[1.75] text-[#8B98AC]">{stage.description}</p>
 
       <div className="mt-auto w-full pt-4">
-        <div className="flex items-center justify-end text-[10.5px] font-bold text-[#94A3B8]">
+        <div className="flex items-center justify-end text-[11px] font-bold text-[#94A3B8]">
           <span>{stage.progress}%</span>
         </div>
-        <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-white/[0.07]">
+        <div className="mt-1.5 h-[5px] w-full overflow-hidden rounded-full bg-[#101A2E]">
           <span
             className="block h-full rounded-full bg-gradient-to-l from-[#7C3AED] to-[#A855F7]"
             style={{ width: `${stage.progress}%` }}
           />
         </div>
 
-        <div className="mt-3 flex items-center justify-between gap-2 border-t border-white/[0.06] pt-3 text-[10.5px] font-semibold text-[#64748B]">
+        <div className="mt-3 flex items-center justify-between gap-2 border-t border-white/[0.06] pt-3 text-[11px] font-semibold text-[#64748B]">
           <span className="inline-flex items-center gap-1 whitespace-nowrap">
             <ClockIcon className="h-3.5 w-3.5 shrink-0 text-[#7C3AED]" />
             <bdi>{stage.duration}</bdi>
