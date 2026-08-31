@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/layout";
+import { CoursesHero } from "@/components/courses/courses-hero";
 import { CoursesGrid } from "@/components/courses/courses-grid";
 import { COURSES } from "@/data/courses";
 
@@ -10,10 +10,7 @@ export const metadata: Metadata = {
 export default function CoursesPage() {
   return (
     <>
-      <PageHeader
-        title="دوره‌ها"
-        description="دوره‌های منتخب در فرانت‌اند، بک‌اند، هوش مصنوعی و DevOps."
-      />
+      <CoursesHero />
       <CoursesGrid courses={COURSES} />
     </>
   );
