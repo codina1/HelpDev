@@ -14,6 +14,15 @@ function FlameIcon({ className }: { className?: string }) {
   );
 }
 
+function ClockIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M12 8v4.2l2.5 1.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function EyeIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -23,57 +32,69 @@ function EyeIcon({ className }: { className?: string }) {
   );
 }
 
-/** Popular list — rank + content + thumbnail (RTL reference). */
+/** Popular list — compact rows: thumbnail · content · rank (RTL reference). */
 export function PopularNewsSidebar() {
   return (
     <section
-      className="rounded-[16px] border border-white/[0.08] bg-[#0F172A] p-4 shadow-[0_8px_28px_rgba(2,6,23,0.3)]"
+      className="rounded-[16px] border border-white/[0.07] bg-[#0B1120] p-3.5 shadow-[0_6px_20px_rgba(2,6,23,0.28)]"
       aria-labelledby="popular-news-heading"
       dir="rtl"
     >
-      <h2 id="popular-news-heading" className="flex items-center gap-2 text-[15px] font-extrabold text-white">
-        <FlameIcon className="h-4 w-4 text-[#F97316]" />
+      <h2
+        id="popular-news-heading"
+        className="flex items-center gap-2 px-1 text-[14px] font-extrabold text-white"
+      >
+        <FlameIcon className="h-4 w-4 shrink-0 text-[#F97316]" />
         محبوب‌ترین اخبار
       </h2>
 
-      <ol className="mt-4 space-y-2.5">
+      <ol className="mt-3.5 space-y-1">
         {NEWS_POPULAR.map((item, index) => (
           <li key={item.id}>
             <Link
               href={`#news-${item.id}`}
-              className="group flex items-center gap-2.5 rounded-xl border border-white/[0.06] bg-[#111827]/80 p-2 no-underline transition hover:border-[rgba(168,85,247,0.35)]"
+              className="group flex items-center gap-2.5 rounded-xl border border-transparent p-1.5 no-underline transition hover:border-white/[0.08] hover:bg-white/[0.03]"
             >
-              <span
-                className={[
-                  "flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[12px] font-extrabold",
-                  index < 2
-                    ? "bg-[#7C3AED] text-white shadow-[0_0_12px_rgba(124,58,237,0.45)]"
-                    : "border border-white/[0.1] bg-[#1E293B] text-[#CBD5E1]",
-                ].join(" ")}
-              >
-                {index + 1}
-              </span>
-
-              <span className="min-w-0 flex-1">
-                <span className="line-clamp-1 text-[12px] font-extrabold text-white group-hover:text-[#E9D5FF]">
-                  {item.title}
-                </span>
-                <span className="mt-0.5 line-clamp-1 text-[10px] text-[#94A3B8]">{item.summary}</span>
-                <span className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold text-[#64748B]">
-                  <EyeIcon className="h-3 w-3 text-[#A78BFA]" />
-                  {item.views}
-                </span>
-              </span>
-
-              <span className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-white/[0.08] bg-[#080d1c]">
+              <span className="order-3 h-[52px] w-[52px] shrink-0 overflow-hidden rounded-[10px] border border-white/[0.07] bg-[#080d1c]">
                 <img
                   src={item.image}
                   alt=""
-                  width={44}
-                  height={44}
+                  width={52}
+                  height={52}
+                  loading="lazy"
                   decoding="async"
                   className="h-full w-full object-cover"
                 />
+              </span>
+
+              <span className="order-2 min-w-0 flex-1">
+                <span className="line-clamp-2 text-[13px] font-bold leading-5 text-white transition group-hover:text-[#C4B5FD]">
+                  {item.title}
+                </span>
+                <span className="mt-0.5 line-clamp-1 text-[10.5px] leading-4 text-[#8B98AC]">
+                  {item.summary}
+                </span>
+                <span className="mt-1 flex items-center gap-2.5 text-[10px] font-semibold text-[#64748B]">
+                  <span className="inline-flex items-center gap-1 whitespace-nowrap">
+                    <ClockIcon className="h-3 w-3 shrink-0 text-[#7C3AED]" />
+                    <bdi>{item.time}</bdi>
+                  </span>
+                  <span className="inline-flex items-center gap-1 whitespace-nowrap">
+                    <EyeIcon className="h-3 w-3 shrink-0 text-[#A78BFA]" />
+                    <bdi>{item.views}</bdi>
+                  </span>
+                </span>
+              </span>
+
+              <span
+                className={[
+                  "order-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[12px] font-extrabold",
+                  index < 2
+                    ? "bg-gradient-to-br from-[#7C3AED] to-[#3B82F6] text-white shadow-[0_0_10px_rgba(124,58,237,0.3)]"
+                    : "border border-white/[0.09] bg-[#131C31] text-[#94A3B8]",
+                ].join(" ")}
+              >
+                {index + 1}
               </span>
             </Link>
           </li>
