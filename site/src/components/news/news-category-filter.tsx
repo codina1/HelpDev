@@ -162,10 +162,10 @@ export function NewsCategoryFilter({ active, onSelect }: NewsCategoryFilterProps
   return (
     <div
       className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      dir="ltr"
+      dir="rtl"
     >
       <div
-        className="flex w-max min-w-full flex-nowrap items-center gap-3"
+        className="flex w-max min-w-full flex-nowrap items-center justify-start gap-3"
         role="toolbar"
         aria-label="فیلتر دسته‌بندی اخبار"
       >

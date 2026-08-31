@@ -44,6 +44,8 @@ export function FeaturedNews({ article }: FeaturedNewsProps) {
           alt=""
           width={560}
           height={280}
+          loading="eager"
+          fetchPriority="high"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-center transition duration-500 group-hover:scale-[1.03]"
         />
