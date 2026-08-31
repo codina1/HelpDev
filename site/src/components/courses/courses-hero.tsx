@@ -43,7 +43,7 @@ export function CoursesHero() {
             aria-hidden
           />
           <div
-            className="relative grid min-h-[260px] items-center gap-6 px-6 py-8 sm:px-8 md:h-[330px] md:min-h-[330px] md:grid-cols-2 md:gap-8 md:px-10 md:py-0 lg:px-12"
+            className="relative grid min-h-[250px] items-center gap-6 px-6 py-8 sm:px-8 md:h-[270px] md:min-h-[270px] md:grid-cols-2 md:gap-8 md:px-10 md:py-0 lg:px-12"
             dir="ltr"
           >
             <div className="order-2 max-w-xl text-center md:order-1 md:text-left" dir="rtl">
@@ -82,7 +82,7 @@ export function CoursesHero() {
             </div>
 
             <div className="order-1 flex items-center justify-center md:order-2 md:justify-end">
-              <div className="relative flex h-[170px] w-full max-w-[330px] items-center justify-center sm:h-[210px] sm:max-w-[420px] md:h-[285px] md:max-w-[500px]">
+              <div className="relative flex h-[170px] w-full max-w-[330px] items-center justify-center sm:h-[200px] sm:max-w-[420px] md:h-[240px] md:max-w-[470px]">
                 <span
                   className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.35),rgba(59,130,246,0.12)_52%,transparent_74%)] blur-2xl"
                   aria-hidden

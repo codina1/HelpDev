@@ -3692,3 +3692,40 @@ html:not(.dark) .home-hero-node-label {
   }
 }
 
+
+/* Courses catalog — duration range slider */
+.courses-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to left,
+    #7c3aed 0%,
+    #a855f7 var(--range-fill, 100%),
+    rgba(255, 255, 255, 0.08) var(--range-fill, 100%),
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  outline: none;
+  cursor: pointer;
+}
+
+.courses-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 3px solid #7c3aed;
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.45);
+}
+
+.courses-range::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 3px solid #7c3aed;
+  box-shadow: 0 0 8px rgba(124, 58, 237, 0.45);
+}

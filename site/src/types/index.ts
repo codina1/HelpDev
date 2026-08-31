@@ -44,17 +44,35 @@ export type ToolItem = {
   content: string;
 };
 
-export type CourseCategory = "Frontend" | "Backend" | "AI" | "DevOps";
+export type CourseCategory =
+  | "Programming"
+  | "Frontend"
+  | "Backend"
+  | "DevOps"
+  | "AI"
+  | "Tools"
+  | "Database"
+  | "Mobile";
 
 export type CourseLevel = "Beginner" | "Intermediate" | "Advanced";
 
 export type Course = {
   id: string;
   title: string;
+  description: string;
   level: CourseLevel;
+  levelLabel: string;
   platform: string;
   rating: number;
   category: CourseCategory;
+  categories: CourseCategory[];
+  image: string;
+  /** Persian duration label, e.g. «۱۲ ساعت». */
+  duration: string;
+  durationHours: number;
+  /** 0 means free. */
+  price: number;
+  isNew?: boolean;
 };
 
 export type SearchTab = "news" | "roadmap" | "tools" | "courses";
