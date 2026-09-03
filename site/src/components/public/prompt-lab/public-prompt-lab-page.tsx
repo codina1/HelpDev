@@ -8,7 +8,7 @@ import { PromptLabHero } from "@/components/prompt-lab/prompt-lab-hero";
  */
 export function PublicPromptLabPage() {
   return (
-    <div className="bg-[#070b18] pb-[60px] text-[#E5E7EB]">
+    <div className="bg-[#070b18] pb-8 text-[#E5E7EB]">
       <PromptLabHero />
       <PromptLabCatalog />
     </div>

@@ -23,8 +23,7 @@ function toFa(value: number): string {
 }
 
 /**
- * Prompt Lab marketplace catalog — category pills · sidebar · 4-col grid · pagination.
- * Uses reference sample prompts so the library always renders like the screenshot.
+ * Prompt Lab catalog — pills · left sidebar (260px) · 4×12 card grid · pagination.
  */
 export function PromptLabCatalog() {
   const [quickFilter, setQuickFilter] = useState<PromptLabQuickFilterId>("all");
@@ -75,7 +74,7 @@ export function PromptLabCatalog() {
   const totalLabel = isPristine ? PROMPT_LAB_DISPLAY_TOTAL : visible.length;
 
   return (
-    <section id="prompt-lab-catalog" className="bg-[#070b18] pb-4 pt-0" dir="rtl">
+    <section id="prompt-lab-catalog" className="bg-[#070b18] pb-2 pt-0" dir="rtl">
       <PromptLabContainer>
         <div className="mb-6">
           <PromptLabCategoryBar
@@ -97,8 +96,12 @@ export function PromptLabCatalog() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
-          <div className={mobileFiltersOpen ? "block" : "hidden lg:block"}>
+        {/* LTR row so sidebar sits on the visual LEFT, grid on the RIGHT */}
+        <div
+          className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_minmax(0,1fr)]"
+          dir="ltr"
+        >
+          <div className={mobileFiltersOpen ? "block" : "hidden lg:block"} dir="rtl">
             <PromptLabFiltersSidebar
               value={filters}
               onChange={(next) => {
@@ -108,7 +111,7 @@ export function PromptLabCatalog() {
             />
           </div>
 
-          <div className="min-w-0">
+          <div className="min-w-0" dir="rtl">
             <div className="mb-4 flex flex-wrap items-end justify-between gap-2">
               <div>
                 <h2 className="text-[18px] font-extrabold text-white sm:text-[20px]">همه پرامپت‌ها</h2>
@@ -127,7 +130,7 @@ export function PromptLabCatalog() {
               </p>
             ) : (
               <>
-                <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                   {pageItems.map((item) => (
                     <li key={item.id}>
                       <PromptLabCard item={item} />

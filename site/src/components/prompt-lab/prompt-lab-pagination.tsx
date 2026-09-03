@@ -24,7 +24,7 @@ export function PromptLabPagination({ page, totalPages, onPageChange }: PromptLa
   const pages = pageWindow(page, totalPages);
 
   return (
-    <nav className="mt-8 flex items-center justify-center gap-2" aria-label="صفحه‌بندی پرامپت‌ها">
+    <nav className="mt-6 flex items-center justify-center gap-2" aria-label="صفحه‌بندی پرامپت‌ها">
       <button
         type="button"
         disabled={page <= 1}

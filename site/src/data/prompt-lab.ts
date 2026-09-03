@@ -89,7 +89,7 @@ export const PROMPT_LAB_SORT_OPTIONS: readonly { id: PromptLabSortId; label: str
   { id: "views", label: "پربازدیدترین" },
 ] as const;
 
-export const PROMPT_LAB_PAGE_SIZE = 8;
+export const PROMPT_LAB_PAGE_SIZE = 12;
 export const PROMPT_LAB_DISPLAY_TOTAL = 234;
 
 /** Reference marketplace sample prompts — always visible on the public page. */
@@ -261,5 +261,61 @@ export const PROMPT_LAB_SAMPLE_PROMPTS: readonly PromptLabCardItem[] = [
     viewCount: 4650,
     featured: false,
     publishedAt: "2026-08-17T11:15:00.000Z",
+  },
+  {
+    id: "pl-sample-13",
+    slug: "linux-server-hardening",
+    title: "سخت‌سازی سرور لینوکس",
+    description: "چک‌لیست فایروال، SSH، به‌روزرسانی و مانیتورینگ برای سرور production.",
+    coverImage: "/home/icon-linux.png",
+    aiModel: "Claude",
+    category: "DevOps",
+    categorySlug: "devops",
+    copyCount: 156,
+    viewCount: 2780,
+    featured: false,
+    publishedAt: "2026-08-16T10:00:00.000Z",
+  },
+  {
+    id: "pl-sample-14",
+    slug: "jwt-auth-flow",
+    title: "جریان احراز هویت JWT",
+    description: "طراحی login، refresh token و محافظت از routeهای حساس.",
+    coverImage: "/home/icon-jwt.png",
+    aiModel: "ChatGPT",
+    category: "Code",
+    categorySlug: "code",
+    copyCount: 221,
+    viewCount: 3910,
+    featured: false,
+    publishedAt: "2026-08-15T12:00:00.000Z",
+  },
+  {
+    id: "pl-sample-15",
+    slug: "brand-visual-system",
+    title: "سیستم بصری برند",
+    description: "تولید پالت رنگ، تایپوگرافی و قوانین فاصله‌گذاری برای محصول دیجیتال.",
+    coverImage: "/home/icon-brand.png",
+    aiModel: "Gemini",
+    category: "Design",
+    categorySlug: "design",
+    copyCount: 98,
+    viewCount: 1640,
+    featured: false,
+    publishedAt: "2026-08-14T09:00:00.000Z",
+  },
+  {
+    id: "pl-sample-16",
+    slug: "newsletter-ai-digest",
+    title: "خبرنامه هوش مصنوعی",
+    description: "خلاصه هفتگی اخبار AI با لحن حرفه‌ای و ساختار اسکین‌پذیر.",
+    coverImage: "/home/icon-newsletter.png",
+    aiModel: "ChatGPT",
+    category: "Content",
+    categorySlug: "content",
+    copyCount: 87,
+    viewCount: 1420,
+    featured: false,
+    publishedAt: "2026-08-13T15:00:00.000Z",
   },
 ];

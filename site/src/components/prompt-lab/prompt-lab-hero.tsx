@@ -29,30 +29,21 @@ function FlaskIcon({ className }: { className?: string }) {
   );
 }
 
-/** Compact reference hero: 260px · flask illustration · two CTAs. */
+/** Reference hero: 280px · flask 420px without black square. */
 export function PromptLabHero() {
   return (
     <section
-      className="relative overflow-hidden bg-[#070b18] pb-6 pt-5 md:pt-6"
+      className="relative overflow-hidden bg-[#070b18] pb-6 pt-5"
       aria-labelledby="prompt-lab-hero-title"
     >
-      <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_70%_at_22%_40%,rgba(124,58,237,0.14),transparent_70%)]"
-        aria-hidden
-      />
-
       <PromptLabContainer>
-        <div className="relative overflow-hidden rounded-[20px] border border-[rgba(139,92,246,0.2)] bg-[#070b18]">
+        <div className="relative overflow-hidden rounded-[20px] border border-[rgba(139,92,246,0.2)] bg-[linear-gradient(135deg,#070b18,#111433)]">
           <div
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,#070b18_0%,#111433_100%)]"
+            className="pointer-events-none absolute inset-x-[12%] bottom-0 h-16 bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.18),transparent_70%)] blur-xl"
             aria-hidden
           />
           <div
-            className="pointer-events-none absolute inset-x-[12%] bottom-0 h-16 bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.2),transparent_70%)] blur-xl"
-            aria-hidden
-          />
-          <div
-            className="relative grid min-h-[240px] items-center gap-5 px-6 py-7 sm:px-8 md:h-[260px] md:min-h-[260px] md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] md:gap-6 md:px-10 md:py-0 lg:px-12"
+            className="relative grid min-h-[260px] items-center gap-4 px-6 py-6 sm:px-8 md:h-[280px] md:min-h-[280px] md:grid-cols-[minmax(0,1fr)_420px] md:gap-6 md:px-10 md:py-0 lg:px-12"
             dir="ltr"
           >
             <div className="order-2 max-w-[500px] text-center md:order-1 md:text-left" dir="rtl">
@@ -88,20 +79,20 @@ export function PromptLabHero() {
             </div>
 
             <div className="order-1 flex items-center justify-center md:order-2 md:justify-end">
-              <div className="relative flex h-[170px] w-full max-w-[280px] items-center justify-center sm:h-[200px] sm:max-w-[320px] md:h-[220px] md:max-w-[360px]">
+              <div className="relative flex h-[200px] w-full max-w-[320px] items-center justify-center md:h-[250px] md:w-[420px] md:max-w-[420px]">
                 <span
-                  className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(168,85,247,0.32),rgba(59,130,246,0.1)_52%,transparent_74%)] blur-2xl"
+                  className="pointer-events-none absolute inset-[12%] rounded-full bg-[radial-gradient(circle,rgba(168,85,247,0.28),transparent_70%)] blur-2xl"
                   aria-hidden
                 />
                 <img
                   src={PROMPT_LAB_HERO_IMAGE_SRC}
                   alt=""
-                  width={360}
-                  height={360}
+                  width={420}
+                  height={420}
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
-                  className="relative h-full w-full object-contain drop-shadow-[0_16px_40px_rgba(124,58,237,0.45)]"
+                  className="relative h-full w-full object-contain object-center mix-blend-screen drop-shadow-[0_16px_40px_rgba(124,58,237,0.4)]"
                 />
               </div>
             </div>

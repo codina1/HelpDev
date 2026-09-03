@@ -42,13 +42,13 @@ function formatViews(value: number): string {
   return NUMBER_FA.format(value);
 }
 
-/** Catalog prompt card — badge · bookmark · neon cover · title · meta. */
+/** Catalog prompt card — Badge · Icon 90px · Title · Description · Model · Views. */
 export function PromptLabCard({ item }: PromptLabCardProps) {
   const [saved, setSaved] = useState(false);
 
   return (
     <article
-      className="group flex h-full min-h-[270px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827] shadow-[0_4px_16px_rgba(2,6,23,0.25)] transition duration-300 hover:-translate-y-1 hover:border-[rgba(168,85,247,0.45)] hover:shadow-[0_0_30px_rgba(124,58,237,0.25)]"
+      className="group flex h-[280px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827] shadow-[0_4px_16px_rgba(2,6,23,0.25)] transition duration-300 hover:-translate-y-1 hover:border-[rgba(168,85,247,0.45)] hover:shadow-[0_0_30px_rgba(124,58,237,0.25)]"
       dir="rtl"
     >
       <div className="flex items-center justify-between gap-2 px-3.5 pt-3.5">
@@ -75,29 +75,29 @@ export function PromptLabCard({ item }: PromptLabCardProps) {
 
       <Link
         href={publicPromptLabDetailPath(item.slug)}
-        className="flex min-w-0 flex-1 flex-col text-inherit no-underline"
+        className="flex min-h-0 min-w-0 flex-1 flex-col text-inherit no-underline"
       >
-        <div className="relative mx-auto flex h-[100px] w-full max-w-[160px] items-center justify-center">
+        <div className="relative mx-auto flex h-[90px] w-[90px] shrink-0 items-center justify-center">
           <span
-            className="pointer-events-none absolute inset-2 rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.28),transparent_70%)] blur-md"
+            className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.28),transparent_70%)] blur-md"
             aria-hidden
           />
           <img
             src={item.coverImage}
             alt=""
-            width={160}
-            height={100}
+            width={90}
+            height={90}
             loading="lazy"
             decoding="async"
-            className="relative h-full w-full object-contain drop-shadow-[0_10px_24px_rgba(99,102,241,0.35)]"
+            className="relative h-[90px] w-[90px] object-contain drop-shadow-[0_10px_24px_rgba(99,102,241,0.35)]"
           />
         </div>
 
-        <div className="flex min-w-0 flex-1 flex-col gap-1.5 px-3.5 pb-3.5 pt-1">
+        <div className="flex min-w-0 flex-1 flex-col gap-1 px-3.5 pb-3.5 pt-2">
           <h3 className="line-clamp-2 text-[15px] font-bold leading-6 text-white">{item.title}</h3>
           <p className="line-clamp-2 text-[12px] leading-[1.8] text-[#94A3B8]">{item.description}</p>
 
-          <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/[0.06] pt-3 text-[11.5px] font-semibold">
+          <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/[0.06] pt-2.5 text-[11.5px] font-semibold">
             <span className="truncate text-[#A5B4FC]">{item.aiModel}</span>
             <span className="inline-flex shrink-0 items-center gap-1 text-[#64748B]">
               <ViewIcon className="h-3.5 w-3.5 text-[#7C3AED]" />
@@ -113,11 +113,11 @@ export function PromptLabCard({ item }: PromptLabCardProps) {
 export function PromptLabCardSkeleton() {
   return (
     <article
-      className="flex min-h-[270px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827] p-3.5"
+      className="flex h-[280px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827] p-3.5"
       aria-hidden
     >
       <div className="mb-3 h-5 w-16 animate-pulse rounded-md bg-white/[0.06]" />
-      <div className="mx-auto mb-3 h-[100px] w-[100px] animate-pulse rounded-full bg-white/[0.05]" />
+      <div className="mx-auto mb-3 h-[90px] w-[90px] animate-pulse rounded-full bg-white/[0.05]" />
       <div className="mb-2 h-4 w-[80%] animate-pulse rounded bg-white/[0.06]" />
       <div className="mb-2 h-3 w-full animate-pulse rounded bg-white/[0.05]" />
       <div className="h-3 w-[60%] animate-pulse rounded bg-white/[0.05]" />
