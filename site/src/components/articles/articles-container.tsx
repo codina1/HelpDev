@@ -9,7 +9,7 @@ export function ArticlesContainer({
   return (
     <div
       className={[
-        "mx-auto w-[calc(100%-32px)] max-w-[1200px] md:w-[calc(100%-48px)]",
+        "mx-auto w-[calc(100%-32px)] max-w-[1200px] md:w-[calc(100%-64px)]",
         className,
       ].join(" ")}
     >

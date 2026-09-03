@@ -28,12 +28,7 @@ function CategoryIcon({ name, color }: { name: string; color: string }) {
       return (
         <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden>
           <circle cx="12" cy="12" r="3.2" stroke={color} strokeWidth="1.6" />
-          <path
-            d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3M6.2 6.2l2.1 2.1M15.7 15.7l2.1 2.1M17.8 6.2l-2.1 2.1M8.3 15.7l-2.1 2.1"
-            stroke={color}
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          />
+          <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3M6.2 6.2l2.1 2.1M15.7 15.7l2.1 2.1M17.8 6.2l-2.1 2.1M8.3 15.7l-2.1 2.1" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
         </svg>
       );
     case "programming":
@@ -102,7 +97,7 @@ function CategoryIcon({ name, color }: { name: string; color: string }) {
   }
 }
 
-/** Horizontal scrollable category pills under the articles hero. */
+/** Horizontal scrollable premium category pills — 48px / rounded-2xl. */
 export function ArticleCategoryChipBar({ active, onSelect }: CategoryChipBarProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
 
@@ -138,10 +133,10 @@ export function ArticleCategoryChipBar({ active, onSelect }: CategoryChipBarProp
               aria-pressed={isActive}
               onClick={() => onSelect(item.id)}
               className={[
-                "inline-flex h-11 shrink-0 items-center gap-2.5 rounded-[14px] border px-5 text-[13px] font-semibold transition duration-200",
+                "inline-flex h-12 shrink-0 items-center gap-2.5 rounded-2xl border px-6 text-[13.5px] font-semibold transition duration-200",
                 isActive
-                  ? "border-transparent bg-gradient-to-l from-[#7C3AED] via-[#6D28D9] to-[#4F46E5] text-white shadow-[0_0_22px_rgba(124,58,237,0.55)]"
-                  : "border-white/10 bg-[#0F1626]/90 text-[#E5E7EB] hover:border-[rgba(168,85,247,0.4)] hover:text-white",
+                  ? "border-transparent bg-gradient-to-l from-[#7C3AED] via-[#6D28D9] to-[#4F46E5] text-white shadow-[0_0_26px_rgba(124,58,237,0.6)]"
+                  : "border-white/10 bg-[#0F1626]/90 text-[#E5E7EB] backdrop-blur-sm hover:border-[rgba(168,85,247,0.4)] hover:text-white",
               ].join(" ")}
             >
               <span>{item.label}</span>

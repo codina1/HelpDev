@@ -4,11 +4,7 @@ import type { MarketplaceArticle } from "@/data/articles";
 function EyeIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
+      <path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12Z" stroke="currentColor" strokeWidth="1.6" />
       <circle cx="12" cy="12" r="2.6" stroke="currentColor" strokeWidth="1.6" />
     </svg>
   );
@@ -36,61 +32,63 @@ type FeaturedArticleProps = {
   article: MarketplaceArticle;
 };
 
-/** Large horizontal featured article card. */
+/** Large horizontal featured article card — 55% content / 45% image. */
 export function FeaturedArticle({ article }: FeaturedArticleProps) {
   return (
     <article
-      className="group relative overflow-hidden rounded-[18px] border border-[rgba(139,92,246,0.22)] bg-[linear-gradient(135deg,rgba(17,24,39,0.95),rgba(15,23,42,0.88))] shadow-[0_0_40px_rgba(124,58,237,0.12)] backdrop-blur-xl"
+      className="group relative overflow-hidden rounded-[20px] border border-[rgba(139,92,246,0.22)] bg-[linear-gradient(135deg,rgba(17,24,39,0.96),rgba(15,23,42,0.9))] shadow-[0_0_50px_rgba(124,58,237,0.14)] backdrop-blur-xl"
       dir="rtl"
     >
-      <div className="grid items-stretch md:grid-cols-[minmax(0,1.15fr)_minmax(220px,0.85fr)]">
-        <div className="flex flex-col justify-center p-5 sm:p-7 md:p-8">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center rounded-lg border border-[#7C3AED]/40 bg-[#7C3AED]/20 px-2.5 py-1 text-[11px] font-bold text-[#E9D5FF]">
-              مقاله ویژه
+      <div className="grid items-stretch md:grid-cols-[minmax(0,1.22fr)_minmax(220px,0.78fr)]">
+        {/* Content — 55% */}
+        <div className="flex flex-col justify-center p-6 sm:p-8 md:p-10">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="inline-flex items-center rounded-xl border border-[#7C3AED]/40 bg-[#7C3AED]/20 px-3 py-1.5 text-[11.5px] font-bold text-[#E9D5FF]">
+              ⭐ مقاله ویژه
             </span>
-            <span className="inline-flex items-center rounded-lg border border-[#3B82F6]/35 bg-[#3B82F6]/15 px-2.5 py-1 text-[11px] font-bold text-[#BFDBFE]">
+            <span className="inline-flex items-center rounded-xl border border-[#3B82F6]/35 bg-[#3B82F6]/15 px-3 py-1.5 text-[11.5px] font-bold text-[#BFDBFE]">
               {article.categoryLabel}
             </span>
           </div>
 
-          <h2 className="mt-3 text-[22px] font-extrabold leading-9 tracking-tight text-white sm:text-[26px]">
+          <h2 className="mt-4 text-[26px] font-extrabold leading-[1.35] tracking-tight text-white sm:text-[30px] md:text-[32px]">
             {article.title}
           </h2>
-          <p className="mt-2 max-w-[520px] text-[13.5px] leading-7 text-[#94A3B8] sm:text-[14px]">
+          <p className="mt-3 max-w-[540px] text-[14px] leading-[1.85] text-[#94A3B8] sm:text-[15px]">
             {article.description}
           </p>
 
-          <div className="mt-4 flex flex-wrap items-center gap-4 text-[12.5px] font-semibold text-[#94A3B8]">
-            <span className="inline-flex items-center gap-2">
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/[0.1] bg-gradient-to-br from-[#7C3AED]/45 to-[#3B82F6]/25 text-[10px] font-bold text-white">
+          <div className="mt-5 flex flex-wrap items-center gap-5 text-[13px] font-semibold text-[#94A3B8]">
+            <span className="inline-flex items-center gap-2.5">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/[0.1] bg-gradient-to-br from-[#7C3AED]/45 to-[#3B82F6]/25 text-[11px] font-bold text-white">
                 {article.authorInitials}
               </span>
               {article.author}
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <ClockIcon className="h-3.5 w-3.5" />
+              <ClockIcon className="h-4 w-4" />
               {article.readingMinutes.toLocaleString("fa-IR")} دقیقه مطالعه
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <EyeIcon className="h-3.5 w-3.5" />
+              <EyeIcon className="h-4 w-4" />
               {formatViews(article.views)} بازدید
             </span>
           </div>
 
-          <div className="mt-5">
+          <div className="mt-6">
             <Link
               href={`/articles/${article.slug}`}
-              className="focus-ring inline-flex h-11 items-center justify-center rounded-xl bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] px-5 text-[13.5px] font-bold text-white no-underline shadow-[0_0_18px_rgba(124,58,237,0.35)] transition hover:brightness-110"
+              className="focus-ring inline-flex h-12 items-center justify-center rounded-2xl bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] px-7 text-[14px] font-bold text-white no-underline shadow-[0_0_22px_rgba(124,58,237,0.4)] transition hover:brightness-110"
             >
               مطالعه مقاله
             </Link>
           </div>
         </div>
 
+        {/* Image — 45% */}
         <div
           className={[
-            "relative flex min-h-[200px] items-center justify-center overflow-hidden bg-gradient-to-br md:min-h-full",
+            "relative flex min-h-[220px] items-center justify-center overflow-hidden bg-gradient-to-br md:min-h-full",
             article.coverTone,
           ].join(" ")}
         >
@@ -101,11 +99,11 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
           <img
             src={article.coverImage}
             alt=""
-            width={180}
-            height={180}
+            width={200}
+            height={200}
             loading="eager"
             decoding="async"
-            className="relative h-[140px] w-[140px] object-contain drop-shadow-[0_16px_40px_rgba(15,23,42,0.55)] transition duration-300 group-hover:scale-105 sm:h-[160px] sm:w-[160px]"
+            className="relative h-[160px] w-[160px] object-contain drop-shadow-[0_20px_50px_rgba(15,23,42,0.6)] transition duration-300 group-hover:scale-105 sm:h-[180px] sm:w-[180px]"
           />
         </div>
       </div>

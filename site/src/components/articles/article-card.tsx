@@ -4,11 +4,7 @@ import type { MarketplaceArticle } from "@/data/articles";
 function EyeIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
+      <path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12Z" stroke="currentColor" strokeWidth="1.6" />
       <circle cx="12" cy="12" r="2.6" stroke="currentColor" strokeWidth="1.6" />
     </svg>
   );
@@ -48,19 +44,20 @@ type ArticleCardProps = {
   article: MarketplaceArticle;
 };
 
-/** Vertical glass article card — cover · badge · meta footer. */
+/** Premium glass article card — 300px height · cover 130px · neon hover. */
 export function ArticleCard({ article }: ArticleCardProps) {
   const badgeClass = BADGE_TONE[article.category] ?? BADGE_TONE.ai;
 
   return (
     <Link
       href={`/articles/${article.slug}`}
-      className="group flex h-full min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827]/90 no-underline shadow-[0_4px_16px_rgba(2,6,23,0.25)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-[rgba(168,85,247,0.45)] hover:shadow-[0_0_30px_rgba(124,58,237,0.25)]"
+      className="group flex h-[300px] min-w-0 flex-col overflow-hidden rounded-[18px] border border-white/[0.08] bg-[#111827]/90 no-underline shadow-[0_4px_20px_rgba(2,6,23,0.3)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-[rgba(168,85,247,0.5)] hover:shadow-[0_0_36px_rgba(124,58,237,0.28)]"
       dir="rtl"
     >
+      {/* Cover — 130px */}
       <div
         className={[
-          "relative flex h-[140px] items-center justify-center overflow-hidden bg-gradient-to-br",
+          "relative flex h-[130px] shrink-0 items-center justify-center overflow-hidden bg-gradient-to-br",
           article.coverTone,
         ].join(" ")}
       >
@@ -75,28 +72,29 @@ export function ArticleCard({ article }: ArticleCardProps) {
           height={120}
           loading="lazy"
           decoding="async"
-          className="relative h-[88px] w-[88px] object-contain drop-shadow-[0_10px_24px_rgba(15,23,42,0.55)] transition duration-300 group-hover:scale-105"
+          className="relative h-[90px] w-[90px] object-contain drop-shadow-[0_12px_28px_rgba(15,23,42,0.55)] transition duration-300 group-hover:scale-110"
         />
-      </div>
-
-      <div className="flex flex-1 flex-col p-4">
+        {/* Badge overlay */}
         <span
           className={[
-            "inline-flex w-fit items-center rounded-lg border px-2 py-0.5 text-[11px] font-bold",
+            "absolute right-3 top-3 inline-flex items-center rounded-lg border px-2 py-0.5 text-[10.5px] font-bold",
             badgeClass,
           ].join(" ")}
         >
           {article.categoryLabel}
         </span>
+      </div>
 
-        <h3 className="mt-2.5 line-clamp-2 text-[15px] font-bold leading-7 text-white transition group-hover:text-[#E9D5FF]">
+      {/* Content */}
+      <div className="flex flex-1 flex-col p-4">
+        <h3 className="line-clamp-2 text-[14.5px] font-bold leading-[1.65] text-white transition group-hover:text-[#E9D5FF]">
           {article.title}
         </h3>
-        <p className="mt-1.5 line-clamp-2 text-[12.5px] leading-[1.85] text-[#94A3B8]">
+        <p className="mt-1.5 line-clamp-2 text-[12px] leading-[1.85] text-[#94A3B8]">
           {article.description}
         </p>
 
-        <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/[0.06] pt-3 text-[11.5px] font-semibold text-[#94A3B8]">
+        <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/[0.06] pt-3 text-[11px] font-semibold text-[#94A3B8]">
           <span className="inline-flex items-center gap-3">
             <span className="inline-flex items-center gap-1">
               <EyeIcon className="h-3.5 w-3.5" />

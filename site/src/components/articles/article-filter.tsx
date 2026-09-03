@@ -41,7 +41,7 @@ function SearchIcon({ className }: { className?: string }) {
 function FilterGroup({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="border-t border-white/[0.07] pt-5">
-      <p className="mb-3 text-[12px] font-bold tracking-wide text-[#94A3B8]">{title}</p>
+      <p className="mb-3.5 text-[12.5px] font-bold tracking-wide text-[#94A3B8]">{title}</p>
       <div className="space-y-1">{children}</div>
     </section>
   );
@@ -61,7 +61,7 @@ function RadioRow({
   count?: number;
 }) {
   return (
-    <label className="flex cursor-pointer items-center justify-between gap-2 py-2 text-[13px] text-[#CBD5E1] transition hover:text-white">
+    <label className="flex cursor-pointer items-center justify-between gap-2 py-2.5 text-[13px] text-[#CBD5E1] transition hover:text-white">
       <span className="inline-flex items-center gap-3">
         <input type="radio" name={name} checked={checked} onChange={onSelect} className="sr-only" />
         <span
@@ -86,17 +86,18 @@ function RadioRow({
   );
 }
 
-/** Glass filter sidebar — search · topics · level · sort. */
+/** Glass filter sidebar — 280px — search · topics · level · sort. */
 export function ArticleFilter({ value, onChange }: Props) {
   return (
     <aside
-      className="rounded-[16px] border border-white/[0.08] bg-[#0f172a]/80 p-5 shadow-[0_8px_28px_rgba(2,6,23,0.35)] backdrop-blur-xl"
+      className="rounded-[18px] border border-white/[0.08] bg-[#0f172a]/80 p-6 shadow-[0_8px_32px_rgba(2,6,23,0.4)] backdrop-blur-xl"
       dir="rtl"
     >
-      <h2 className="text-[15px] font-extrabold text-white">فیلتر مقالات</h2>
+      <h2 className="text-[16px] font-extrabold text-white">فیلتر مقالات</h2>
 
-      <div className="mt-5">
-        <p className="mb-3 text-[12px] font-bold tracking-wide text-[#94A3B8]">جستجو</p>
+      {/* Search */}
+      <div className="mt-6">
+        <p className="mb-3 text-[12.5px] font-bold tracking-wide text-[#94A3B8]">جستجو در مقالات</p>
         <div className="relative">
           <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-[#64748B]">
             <SearchIcon className="h-4 w-4" />
@@ -111,11 +112,11 @@ export function ArticleFilter({ value, onChange }: Props) {
         </div>
       </div>
 
-      <div className="mt-6 space-y-6">
+      <div className="mt-7 space-y-7">
         <FilterGroup title="موضوعات">
           <RadioRow
             name="articles-topic"
-            label="همه"
+            label="همه موضوعات"
             checked={value.topic === "all"}
             onSelect={() => onChange({ ...value, topic: "all" })}
           />
@@ -144,19 +145,15 @@ export function ArticleFilter({ value, onChange }: Props) {
         </FilterGroup>
 
         <FilterGroup title="مرتب‌سازی">
-          <select
-            value={value.sort}
-            onChange={(event) =>
-              onChange({ ...value, sort: event.target.value as ArticleSortId })
-            }
-            className="h-11 w-full rounded-[12px] border border-white/[0.1] bg-[#070b18]/80 px-3 text-[13px] text-white outline-none transition focus:border-[rgba(168,85,247,0.45)] focus:shadow-[0_0_12px_rgba(124,58,237,0.18)]"
-          >
-            {ARTICLE_SORT_OPTIONS.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+          {ARTICLE_SORT_OPTIONS.map((item) => (
+            <RadioRow
+              key={item.id}
+              name="articles-sort"
+              label={item.label}
+              checked={value.sort === item.id}
+              onSelect={() => onChange({ ...value, sort: item.id })}
+            />
+          ))}
         </FilterGroup>
       </div>
     </aside>
