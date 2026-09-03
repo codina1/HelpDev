@@ -98,7 +98,7 @@ export function PromptLabCatalog() {
 
         {/* LTR row so sidebar sits on the visual LEFT, grid on the RIGHT */}
         <div
-          className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_minmax(0,1fr)]"
+          className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_minmax(0,1fr)]"
           dir="ltr"
         >
           <div className={mobileFiltersOpen ? "block" : "hidden lg:block"} dir="rtl">

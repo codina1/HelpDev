@@ -25,7 +25,7 @@ const ICON_COLOR: Record<string, string> = {
 };
 
 function FilterIcon({ name, color }: { name: string; color: string }) {
-  const cls = "h-4 w-4 shrink-0";
+  const cls = "h-5 w-5 shrink-0";
   switch (name) {
     case "chatgpt":
       return (
@@ -112,7 +112,7 @@ function FilterIcon({ name, color }: { name: string; color: string }) {
 export function PromptLabCategoryBar({ active, onSelect }: PromptLabCategoryBarProps) {
   return (
     <div className="max-w-full overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      <div className="flex w-max flex-nowrap items-center gap-2.5" role="toolbar" aria-label="فیلتر سریع پرامپت‌ها">
+      <div className="flex w-max flex-nowrap items-center gap-3" role="toolbar" aria-label="فیلتر سریع پرامپت‌ها">
         {PROMPT_LAB_QUICK_FILTERS.map((item) => {
           const isActive = active === item.id;
           return (
@@ -122,9 +122,9 @@ export function PromptLabCategoryBar({ active, onSelect }: PromptLabCategoryBarP
               aria-pressed={isActive}
               onClick={() => onSelect(item.id)}
               className={[
-                "inline-flex h-[42px] shrink-0 items-center gap-2 rounded-full border px-[18px] text-[13px] font-semibold transition duration-200",
+                "inline-flex h-11 shrink-0 items-center gap-2.5 rounded-[14px] border px-5 text-[13px] font-semibold transition duration-200",
                 isActive
-                  ? "border-transparent bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] text-white shadow-[0_0_14px_rgba(124,58,237,0.35)]"
+                  ? "border-transparent bg-gradient-to-l from-[#7C3AED] via-[#6D28D9] to-[#4F46E5] text-white shadow-[0_0_22px_rgba(124,58,237,0.55)]"
                   : "border-white/10 bg-[#0F1626]/90 text-[#E5E7EB] hover:border-[rgba(168,85,247,0.4)] hover:text-white",
               ].join(" ")}
             >

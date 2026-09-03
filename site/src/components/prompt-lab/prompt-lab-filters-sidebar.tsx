@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import {
   PROMPT_LAB_LEVELS,
   PROMPT_LAB_SIDEBAR_CATEGORIES,
@@ -51,13 +52,15 @@ function CheckRow({
   count?: number;
 }) {
   return (
-    <label className="flex cursor-pointer items-center justify-between gap-2 py-1.5 text-[13px] text-[#CBD5E1] transition hover:text-white">
-      <span className="inline-flex items-center gap-2.5">
+    <label className="flex cursor-pointer items-center justify-between gap-2 py-2 text-[13px] text-[#CBD5E1] transition hover:text-white">
+      <span className="inline-flex items-center gap-3">
         <input type="checkbox" checked={checked} onChange={onToggle} className="sr-only" />
         <span
           className={[
-            "flex h-4 w-4 shrink-0 items-center justify-center rounded-[4px] border transition",
-            checked ? "border-[#7C3AED] bg-[#7C3AED]" : "border-white/[0.18] bg-transparent",
+            "flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[5px] border transition",
+            checked
+              ? "border-[#7C3AED] bg-[#7C3AED] shadow-[0_0_10px_rgba(124,58,237,0.45)]"
+              : "border-white/[0.22] bg-white/[0.03]",
           ].join(" ")}
           aria-hidden
         >
@@ -70,9 +73,26 @@ function CheckRow({
         {label}
       </span>
       {count != null ? (
-        <span className="text-[11px] font-semibold text-[#64748B]">{count}</span>
+        <span className="rounded-md bg-white/[0.04] px-1.5 py-0.5 text-[11px] font-semibold text-[#64748B]">
+          {count}
+        </span>
       ) : null}
     </label>
+  );
+}
+
+function FilterGroup({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="border-t border-white/[0.07] pt-5">
+      <p className="mb-3 text-[12px] font-bold tracking-wide text-[#94A3B8]">{title}</p>
+      <div className="space-y-1">{children}</div>
+    </section>
   );
 }
 
@@ -80,17 +100,17 @@ function toggleInList(list: string[], id: string): string[] {
   return list.includes(id) ? list.filter((item) => item !== id) : [...list, id];
 }
 
-/** Dark filter card — search · categories · models · level · sort. */
+/** Dark glass filter card — search · categories · models · level · sort. */
 export function PromptLabFiltersSidebar({ value, onChange }: Props) {
   return (
     <aside
-      className="rounded-[16px] border border-white/[0.07] bg-[#0f172a] p-5 shadow-[0_6px_20px_rgba(2,6,23,0.28)]"
+      className="rounded-[16px] border border-white/[0.08] bg-[#0f172a]/80 p-5 shadow-[0_8px_28px_rgba(2,6,23,0.35)] backdrop-blur-xl"
       dir="rtl"
     >
-      <h2 className="text-[14.5px] font-extrabold text-white">فیلترها</h2>
+      <h2 className="text-[15px] font-extrabold text-white">فیلترها</h2>
 
-      <div className="mt-4">
-        <p className="mb-2 text-[12px] font-bold text-[#94A3B8]">جستجو</p>
+      <div className="mt-5">
+        <p className="mb-3 text-[12px] font-bold tracking-wide text-[#94A3B8]">جستجو</p>
         <div className="relative">
           <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-[#64748B]">
             <SearchIcon className="h-4 w-4" />
@@ -100,14 +120,13 @@ export function PromptLabFiltersSidebar({ value, onChange }: Props) {
             value={value.query}
             onChange={(event) => onChange({ ...value, query: event.target.value })}
             placeholder="جستجوی پرامپت…"
-            className="h-10 w-full rounded-[10px] border border-white/[0.1] bg-[#070b18] px-3 pl-10 text-[13px] text-white outline-none transition placeholder:text-[#64748B] focus:border-[rgba(168,85,247,0.45)]"
+            className="h-11 w-full rounded-[12px] border border-white/[0.1] bg-[#070b18]/80 px-3 pl-10 text-[13px] text-white outline-none transition placeholder:text-[#64748B] focus:border-[rgba(168,85,247,0.45)] focus:shadow-[0_0_12px_rgba(124,58,237,0.18)]"
           />
         </div>
       </div>
 
-      <div className="mt-5 border-t border-white/[0.06] pt-4">
-        <p className="mb-1.5 text-[12px] font-bold text-[#94A3B8]">دسته‌بندی‌ها</p>
-        <div className="space-y-0.5">
+      <div className="mt-6 space-y-6">
+        <FilterGroup title="دسته‌بندی‌ها">
           {PROMPT_LAB_SIDEBAR_CATEGORIES.map((item) => (
             <CheckRow
               key={item.id}
@@ -119,12 +138,9 @@ export function PromptLabFiltersSidebar({ value, onChange }: Props) {
               }
             />
           ))}
-        </div>
-      </div>
+        </FilterGroup>
 
-      <div className="mt-5 border-t border-white/[0.06] pt-4">
-        <p className="mb-1.5 text-[12px] font-bold text-[#94A3B8]">مدل هوش مصنوعی</p>
-        <div className="space-y-0.5">
+        <FilterGroup title="مدل هوش مصنوعی">
           {PROMPT_LAB_SIDEBAR_MODELS.map((item) => (
             <CheckRow
               key={item.id}
@@ -135,58 +151,55 @@ export function PromptLabFiltersSidebar({ value, onChange }: Props) {
               }
             />
           ))}
-        </div>
-      </div>
+        </FilterGroup>
 
-      <div className="mt-5 border-t border-white/[0.06] pt-4">
-        <p className="mb-1.5 text-[12px] font-bold text-[#94A3B8]">سطح</p>
-        <div className="space-y-0.5">
-          {PROMPT_LAB_LEVELS.map((item) => (
-            <label
-              key={item.id}
-              className="flex cursor-pointer items-center gap-2.5 py-1.5 text-[13px] text-[#CBD5E1] transition hover:text-white"
-            >
-              <input
-                type="radio"
-                name="prompt-lab-level"
-                checked={value.level === item.id}
-                onChange={() => onChange({ ...value, level: item.id })}
-                className="sr-only"
-              />
-              <span
-                className={[
-                  "flex h-4 w-4 shrink-0 items-center justify-center rounded-full border transition",
-                  value.level === item.id
-                    ? "border-[#7C3AED] bg-[#7C3AED]/15"
-                    : "border-white/[0.18] bg-transparent",
-                ].join(" ")}
-                aria-hidden
+        <FilterGroup title="سطح">
+          {PROMPT_LAB_LEVELS.map((item) => {
+            const checked = value.level === item.id;
+            return (
+              <label
+                key={item.id}
+                className="flex cursor-pointer items-center gap-3 py-2 text-[13px] text-[#CBD5E1] transition hover:text-white"
               >
-                {value.level === item.id ? (
-                  <span className="h-[7px] w-[7px] rounded-full bg-[#A855F7]" />
-                ) : null}
-              </span>
-              {item.label}
-            </label>
-          ))}
-        </div>
-      </div>
+                <input
+                  type="radio"
+                  name="prompt-lab-level"
+                  checked={checked}
+                  onChange={() => onChange({ ...value, level: item.id })}
+                  className="sr-only"
+                />
+                <span
+                  className={[
+                    "flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border transition",
+                    checked
+                      ? "border-[#7C3AED] bg-[#7C3AED]/20 shadow-[0_0_10px_rgba(124,58,237,0.4)]"
+                      : "border-white/[0.22] bg-white/[0.03]",
+                  ].join(" ")}
+                  aria-hidden
+                >
+                  {checked ? <span className="h-2 w-2 rounded-full bg-[#A855F7]" /> : null}
+                </span>
+                {item.label}
+              </label>
+            );
+          })}
+        </FilterGroup>
 
-      <div className="mt-5 border-t border-white/[0.06] pt-4">
-        <p className="mb-2 text-[12px] font-bold text-[#94A3B8]">مرتب‌سازی</p>
-        <select
-          value={value.sort}
-          onChange={(event) =>
-            onChange({ ...value, sort: event.target.value as PromptLabSortId })
-          }
-          className="h-10 w-full rounded-[10px] border border-white/[0.1] bg-[#070b18] px-3 text-[13px] text-white outline-none transition focus:border-[rgba(168,85,247,0.45)]"
-        >
-          {PROMPT_LAB_SORT_OPTIONS.map((option) => (
-            <option key={option.id} value={option.id}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <FilterGroup title="مرتب‌سازی">
+          <select
+            value={value.sort}
+            onChange={(event) =>
+              onChange({ ...value, sort: event.target.value as PromptLabSortId })
+            }
+            className="h-11 w-full rounded-[12px] border border-white/[0.1] bg-[#070b18]/80 px-3 text-[13px] text-white outline-none transition focus:border-[rgba(168,85,247,0.45)] focus:shadow-[0_0_12px_rgba(124,58,237,0.18)]"
+          >
+            {PROMPT_LAB_SORT_OPTIONS.map((option) => (
+              <option key={option.id} value={option.id}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </FilterGroup>
       </div>
     </aside>
   );

@@ -37,8 +37,8 @@ export const PROMPT_LAB_QUICK_FILTERS: readonly PromptLabQuickFilter[] = [
   { id: "code", label: "Code", icon: "code", category: "Code" },
   { id: "design", label: "طراحی", icon: "design", category: "Design" },
   { id: "devops", label: "DevOps", icon: "devops", category: "DevOps" },
-  { id: "content", label: "تولید محتوا", icon: "content", category: "Content" },
   { id: "data", label: "تولید داده", icon: "data", category: "Data" },
+  { id: "content", label: "تولید محتوا", icon: "content", category: "Content" },
   { id: "other", label: "دیگر", icon: "other", category: "Other" },
 ] as const;
 
@@ -53,8 +53,8 @@ export const PROMPT_LAB_SIDEBAR_CATEGORIES: readonly PromptLabSidebarCategory[] 
   { id: "code", label: "Code", slug: "Code", count: 68 },
   { id: "design", label: "طراحی", slug: "Design", count: 42 },
   { id: "devops", label: "DevOps", slug: "DevOps", count: 31 },
-  { id: "content", label: "تولید محتوا", slug: "Content", count: 28 },
   { id: "data", label: "تولید داده", slug: "Data", count: 19 },
+  { id: "content", label: "تولید محتوا", slug: "Content", count: 28 },
   { id: "other", label: "دیگر", slug: "Other", count: 12 },
 ] as const;
 

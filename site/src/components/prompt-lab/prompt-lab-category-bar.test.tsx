@@ -12,4 +12,20 @@ describe("prompt lab category bar", () => {
       expect(html).toContain(item.label);
     }
   });
+
+  it("keeps the reference category order", () => {
+    expect(PROMPT_LAB_QUICK_FILTERS.map((item) => item.id)).toEqual([
+      "all",
+      "chatgpt",
+      "claude",
+      "gemini",
+      "copilot",
+      "code",
+      "design",
+      "devops",
+      "data",
+      "content",
+      "other",
+    ]);
+  });
 });
