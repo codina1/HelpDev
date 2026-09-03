@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import {
   PROMPT_LAB_QUICK_FILTERS,
   type PromptLabQuickFilterId,
@@ -108,11 +109,32 @@ function FilterIcon({ name, color }: { name: string; color: string }) {
   }
 }
 
-/** Horizontal quick-filter pills under the hero. */
+/** Horizontal quick-filter pills under the hero — always scrolls inside the container. */
 export function PromptLabCategoryBar({ active, onSelect }: PromptLabCategoryBarProps) {
+  const scrollerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const node = scrollerRef.current;
+    if (!node) return;
+
+    function onWheel(event: WheelEvent) {
+      if (!node || event.deltaY === 0) return;
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      event.preventDefault();
+      node.scrollLeft += event.deltaY;
+    }
+
+    node.addEventListener("wheel", onWheel, { passive: false });
+    return () => node.removeEventListener("wheel", onWheel);
+  }, []);
+
   return (
-    <div className="max-w-full overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      <div className="flex w-max flex-nowrap items-center gap-3" role="toolbar" aria-label="فیلتر سریع پرامپت‌ها">
+    <div
+      ref={scrollerRef}
+      dir="rtl"
+      className="min-w-0 w-full overflow-x-auto overscroll-x-contain pb-2 [scrollbar-color:rgba(124,58,237,0.7)_rgba(15,22,38,0.9)] [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#7C3AED]/70 [&::-webkit-scrollbar-track]:bg-[#0F1626]"
+    >
+      <div className="flex w-max min-w-full flex-nowrap items-center gap-3" role="toolbar" aria-label="فیلتر سریع پرامپت‌ها">
         {PROMPT_LAB_QUICK_FILTERS.map((item) => {
           const isActive = active === item.id;
           return (

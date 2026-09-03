@@ -76,7 +76,7 @@ export function PromptLabCatalog() {
   return (
     <section id="prompt-lab-catalog" className="bg-[#070b18] pb-2 pt-0" dir="rtl">
       <PromptLabContainer>
-        <div className="mb-6">
+        <div className="mb-6 min-w-0">
           <PromptLabCategoryBar
             active={quickFilter}
             onSelect={(value) => {
