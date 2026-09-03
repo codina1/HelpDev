@@ -59,13 +59,19 @@
 
 .visual {
   position: relative;
-  height: 8.75rem;
+  height: 9.5rem;
   overflow: hidden;
+  border-radius: var(--home-radius-xl) var(--home-radius-xl) 0 0;
   background:
     radial-gradient(
       90% 80% at 82% 18%,
-      color-mix(in srgb, var(--prompt-card-accent) 34%, transparent),
+      color-mix(in srgb, var(--prompt-card-accent) 38%, transparent),
       transparent 62%
+    ),
+    radial-gradient(
+      70% 60% at 30% 70%,
+      color-mix(in srgb, var(--home-purple) 18%, transparent),
+      transparent 65%
     ),
     linear-gradient(
       155deg,
@@ -80,6 +86,8 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 10px 24px rgba(15, 23, 42, 0.5));
 }
 
 .shade {
@@ -87,8 +95,8 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    transparent 35%,
-    color-mix(in srgb, var(--home-bg) 55%, transparent)
+    transparent 40%,
+    color-mix(in srgb, var(--home-bg) 65%, transparent)
   );
 }
 

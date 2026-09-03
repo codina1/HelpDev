@@ -85,25 +85,36 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
           </div>
         </div>
 
-        {/* Image — 45% */}
+        {/* Image — 45% — fully integrated */}
         <div
           className={[
-            "relative flex min-h-[220px] items-center justify-center overflow-hidden bg-gradient-to-br md:min-h-full",
+            "relative min-h-[220px] overflow-hidden bg-gradient-to-br md:min-h-full",
             article.coverTone,
           ].join(" ")}
         >
+          {/* Ambient glow */}
           <span
             className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_60%_40%,rgba(59,130,246,0.35),transparent_60%)]"
             aria-hidden
           />
+          <span
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_40%_70%,rgba(124,58,237,0.25),transparent_55%)]"
+            aria-hidden
+          />
+          {/* Image fills container, blends black bg away */}
           <img
             src={article.coverImage}
             alt=""
-            width={200}
-            height={200}
+            width={440}
+            height={320}
             loading="eager"
             decoding="async"
-            className="relative h-[160px] w-[160px] object-contain drop-shadow-[0_20px_50px_rgba(15,23,42,0.6)] transition duration-300 group-hover:scale-105 sm:h-[180px] sm:w-[180px]"
+            className="absolute inset-0 h-full w-full object-cover mix-blend-screen drop-shadow-[0_20px_50px_rgba(15,23,42,0.6)] transition duration-300 group-hover:scale-[1.04]"
+          />
+          {/* Edge fade into content side */}
+          <span
+            className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[rgba(17,24,39,0.7)] to-transparent md:block hidden"
+            aria-hidden
           />
         </div>
       </div>

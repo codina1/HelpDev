@@ -127,11 +127,18 @@ type ToolCardProps = {
 export function ToolCard({ tool }: ToolCardProps) {
   return (
     <article
-      className="group relative flex h-[250px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827]/90 p-4 shadow-[0_4px_16px_rgba(2,6,23,0.25)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-[rgba(168,85,247,0.45)] hover:shadow-[0_0_30px_rgba(124,58,237,0.25)]"
+      className="group relative flex h-[270px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827]/90 p-4 pt-5 shadow-[0_4px_16px_rgba(2,6,23,0.25)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-[rgba(168,85,247,0.45)] hover:shadow-[0_0_30px_rgba(124,58,237,0.25)]"
       dir="rtl"
     >
-      <div className="mx-auto flex h-[72px] w-[72px] items-center justify-center rounded-2xl border border-white/[0.08] bg-[radial-gradient(circle_at_center,rgba(124,58,237,0.22),rgba(15,23,42,0.9)_70%)] shadow-[0_0_24px_rgba(124,58,237,0.2)]">
-        <ToolLogo name={tool.logo} />
+      {/* Logo area — larger with ambient glow */}
+      <div className="relative mx-auto flex h-[88px] w-[88px] items-center justify-center rounded-2xl border border-white/[0.08] bg-[radial-gradient(circle_at_center,rgba(124,58,237,0.22),rgba(15,23,42,0.9)_70%)] shadow-[0_0_28px_rgba(124,58,237,0.25)]">
+        <span
+          className="pointer-events-none absolute inset-[-20%] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.18),transparent_65%)] blur-xl"
+          aria-hidden
+        />
+        <span className="relative scale-[1.2]">
+          <ToolLogo name={tool.logo} />
+        </span>
       </div>
 
       <div className="mt-3 min-w-0 flex-1 text-center">

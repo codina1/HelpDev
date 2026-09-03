@@ -51,7 +51,12 @@ export function CourseCard({ course }: CourseCardProps) {
       className="group flex h-full min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.07] bg-[#0B1120] shadow-[0_4px_16px_rgba(2,6,23,0.25)] transition duration-200 hover:border-[rgba(168,85,247,0.3)]"
       dir="rtl"
     >
-      <div className="relative h-[140px] shrink-0 overflow-hidden bg-[#060914]">
+      <div className="relative h-[140px] shrink-0 overflow-hidden rounded-t-[16px] bg-gradient-to-br from-[#0f172a] to-[#070b18]">
+        {/* Ambient glow for dark images */}
+        <span
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_65%_35%,rgba(124,58,237,0.2),transparent_55%)]"
+          aria-hidden
+        />
         <img
           src={course.image}
           alt=""
@@ -59,7 +64,12 @@ export function CourseCard({ course }: CourseCardProps) {
           height={140}
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+          className="absolute inset-0 h-full w-full object-cover mix-blend-screen transition duration-500 group-hover:scale-[1.04]"
+        />
+        {/* Bottom fade into card body */}
+        <span
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[#0B1120] to-transparent"
+          aria-hidden
         />
         <span
           className={[

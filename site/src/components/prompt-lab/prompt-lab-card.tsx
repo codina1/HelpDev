@@ -77,19 +77,26 @@ export function PromptLabCard({ item }: PromptLabCardProps) {
         href={publicPromptLabDetailPath(item.slug)}
         className="flex min-h-0 min-w-0 flex-1 flex-col text-inherit no-underline"
       >
-        <div className="relative mx-auto flex h-[90px] w-[90px] shrink-0 items-center justify-center">
+        <div className="relative h-[110px] w-full shrink-0 overflow-hidden">
+          {/* Ambient purple glow */}
           <span
-            className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.28),transparent_70%)] blur-md"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,rgba(124,58,237,0.25),transparent_65%)]"
             aria-hidden
           />
+          {/* Image — fills area, blends black backgrounds with card */}
           <img
             src={item.coverImage}
             alt=""
-            width={90}
-            height={90}
+            width={280}
+            height={110}
             loading="lazy"
             decoding="async"
-            className="relative h-[90px] w-[90px] object-contain drop-shadow-[0_10px_24px_rgba(99,102,241,0.35)]"
+            className="absolute inset-0 h-full w-full object-cover mix-blend-screen drop-shadow-[0_10px_24px_rgba(99,102,241,0.35)]"
+          />
+          {/* Bottom fade into card body */}
+          <span
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[#111827] to-transparent"
+            aria-hidden
           />
         </div>
 

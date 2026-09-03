@@ -54,30 +54,37 @@ export function ArticleCard({ article }: ArticleCardProps) {
       className="group flex h-[300px] min-w-0 flex-col overflow-hidden rounded-[18px] border border-white/[0.08] bg-[#111827]/90 no-underline shadow-[0_4px_20px_rgba(2,6,23,0.3)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-[rgba(168,85,247,0.5)] hover:shadow-[0_0_36px_rgba(124,58,237,0.28)]"
       dir="rtl"
     >
-      {/* Cover — 130px */}
+      {/* Cover — 130px integrated image area */}
       <div
         className={[
-          "relative flex h-[130px] shrink-0 items-center justify-center overflow-hidden bg-gradient-to-br",
+          "relative h-[130px] shrink-0 overflow-hidden rounded-t-[18px] bg-gradient-to-br",
           article.coverTone,
         ].join(" ")}
       >
+        {/* Ambient glow */}
         <span
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(168,85,247,0.25),transparent_55%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(168,85,247,0.3),transparent_55%)]"
           aria-hidden
         />
+        {/* Image — fills area, blends with dark bg for black-bg assets */}
         <img
           src={article.coverImage}
           alt=""
-          width={120}
-          height={120}
+          width={360}
+          height={130}
           loading="lazy"
           decoding="async"
-          className="relative h-[90px] w-[90px] object-contain drop-shadow-[0_12px_28px_rgba(15,23,42,0.55)] transition duration-300 group-hover:scale-110"
+          className="absolute inset-0 h-full w-full object-cover mix-blend-screen drop-shadow-[0_12px_28px_rgba(15,23,42,0.55)] transition duration-300 group-hover:scale-[1.06]"
+        />
+        {/* Bottom fade into card body */}
+        <span
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#111827] to-transparent"
+          aria-hidden
         />
         {/* Badge overlay */}
         <span
           className={[
-            "absolute right-3 top-3 inline-flex items-center rounded-lg border px-2 py-0.5 text-[10.5px] font-bold",
+            "absolute right-3 top-3 z-[1] inline-flex items-center rounded-lg border px-2 py-0.5 text-[10.5px] font-bold backdrop-blur-sm",
             badgeClass,
           ].join(" ")}
         >
