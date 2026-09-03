@@ -48,7 +48,7 @@ export function PromptLabCard({ item }: PromptLabCardProps) {
 
   return (
     <article
-      className="group flex h-full min-h-[260px] min-w-0 flex-col overflow-hidden rounded-[14px] border border-white/[0.08] bg-[#111827] shadow-[0_4px_16px_rgba(2,6,23,0.25)] transition duration-300 hover:-translate-y-1 hover:border-[rgba(168,85,247,0.45)] hover:shadow-[0_0_30px_rgba(124,58,237,0.25)]"
+      className="group flex h-full min-h-[270px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827] shadow-[0_4px_16px_rgba(2,6,23,0.25)] transition duration-300 hover:-translate-y-1 hover:border-[rgba(168,85,247,0.45)] hover:shadow-[0_0_30px_rgba(124,58,237,0.25)]"
       dir="rtl"
     >
       <div className="flex items-center justify-between gap-2 px-3.5 pt-3.5">
@@ -113,7 +113,7 @@ export function PromptLabCard({ item }: PromptLabCardProps) {
 export function PromptLabCardSkeleton() {
   return (
     <article
-      className="flex min-h-[260px] min-w-0 flex-col overflow-hidden rounded-[14px] border border-white/[0.08] bg-[#111827] p-3.5"
+      className="flex min-h-[270px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827] p-3.5"
       aria-hidden
     >
       <div className="mb-3 h-5 w-16 animate-pulse rounded-md bg-white/[0.06]" />

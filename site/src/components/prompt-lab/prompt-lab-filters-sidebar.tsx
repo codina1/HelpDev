@@ -84,7 +84,7 @@ function toggleInList(list: string[], id: string): string[] {
 export function PromptLabFiltersSidebar({ value, onChange }: Props) {
   return (
     <aside
-      className="rounded-[16px] border border-white/[0.07] bg-[#0B1120] p-5 shadow-[0_6px_20px_rgba(2,6,23,0.28)]"
+      className="rounded-[16px] border border-white/[0.07] bg-[#0f172a] p-5 shadow-[0_6px_20px_rgba(2,6,23,0.28)]"
       dir="rtl"
     >
       <h2 className="text-[14.5px] font-extrabold text-white">فیلترها</h2>

@@ -13,17 +13,19 @@ describe("public prompt lab homepage", () => {
     expect(existsSync(join(process.cwd(), "src", "app", "prompt-lab", "page.tsx"))).toBe(true);
   });
 
-  it("renders hero and catalog shells", () => {
+  it("renders hero, filters, and sample prompt cards", () => {
     const html = renderToStaticMarkup(<PublicPromptLabPage />);
     expect(html).toContain("Prompt Lab");
     expect(html).toContain("آزمایشگاه پرامپت");
     expect(html).toContain("پرامپت جدید");
     expect(html).toContain("همه پرامپت‌ها");
     expect(html).toContain("فیلترها");
-    expect(html).toContain("aria-busy");
+    expect(html).toContain("تحلیل داده‌های CSV");
+    expect(html).toContain("نوشتن Dockerfile بهینه");
+    expect(html).toContain("تولید API با Node.js");
   });
 
-  it("loads the public catalog through the existing API client", () => {
+  it("keeps the public page free of admin imports", () => {
     const page = readFileSync(join(process.cwd(), "src/app/prompt-lab/page.tsx"), "utf8");
     const shell = readFileSync(
       join(process.cwd(), "src/components/public/prompt-lab/public-prompt-lab-page.tsx"),
@@ -35,8 +37,7 @@ describe("public prompt lab homepage", () => {
     );
     expect(page).toContain("PublicPromptLabPage");
     expect(shell).toContain("PromptLabCatalog");
-    expect(catalog).toContain("fetchPromptLabCatalog");
-    expect(catalog).not.toContain("PROMPT_LAB_PROMPTS");
+    expect(catalog).toContain("PROMPT_LAB_SAMPLE_PROMPTS");
     expect(shell).not.toContain("@/components/admin");
     expect(shell).not.toContain("@/components/public/home");
   });

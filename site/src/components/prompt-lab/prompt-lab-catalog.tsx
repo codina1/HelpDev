@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { PromptLabCard, PromptLabCardSkeleton } from "@/components/prompt-lab/prompt-lab-card";
+import { useMemo, useState } from "react";
+import { PromptLabCard } from "@/components/prompt-lab/prompt-lab-card";
 import { PromptLabCategoryBar } from "@/components/prompt-lab/prompt-lab-category-bar";
 import { PromptLabContainer } from "@/components/prompt-lab/prompt-lab-container";
 import {
@@ -12,38 +12,24 @@ import {
 import { PromptLabPagination } from "@/components/prompt-lab/prompt-lab-pagination";
 import {
   PROMPT_LAB_DISPLAY_TOTAL,
+  PROMPT_LAB_PAGE_SIZE,
   PROMPT_LAB_QUICK_FILTERS,
+  PROMPT_LAB_SAMPLE_PROMPTS,
   type PromptLabQuickFilterId,
 } from "@/data/prompt-lab";
-import { ApiClientError } from "@/lib/api/errors";
-import {
-  EMPTY_PROMPT_LAB_CATALOG_PAGE,
-  fetchPromptLabCatalog,
-  PROMPT_LAB_PAGE_SIZE,
-  type PromptLabCatalogPage,
-} from "@/lib/public/prompt-lab-catalog";
-
-function isCatalogAbort(error: unknown): boolean {
-  if (error instanceof ApiClientError && error.code === "request_aborted") return true;
-  if (error instanceof DOMException) return error.name === "AbortError";
-  return error instanceof Error && error.name === "AbortError";
-}
 
 function toFa(value: number): string {
   return value.toLocaleString("fa-IR");
 }
 
 /**
- * Prompt Lab catalog — category pills · sidebar filters · 4-col grid · pagination.
+ * Prompt Lab marketplace catalog — category pills · sidebar · 4-col grid · pagination.
+ * Uses reference sample prompts so the library always renders like the screenshot.
  */
 export function PromptLabCatalog() {
   const [quickFilter, setQuickFilter] = useState<PromptLabQuickFilterId>("all");
   const [filters, setFilters] = useState<PromptLabFiltersState>(DEFAULT_PROMPT_LAB_FILTERS);
-  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [catalog, setCatalog] = useState<PromptLabCatalogPage>(EMPTY_PROMPT_LAB_CATALOG_PAGE);
-  const [status, setStatus] = useState<"loading" | "error" | "ready">("loading");
-  const [reloadKey, setReloadKey] = useState(0);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const activeQuick = useMemo(
@@ -51,59 +37,47 @@ export function PromptLabCatalog() {
     [quickFilter],
   );
 
-  const categorySlug =
-    filters.categories[0] ?? activeQuick.category ?? null;
-  const aiModelSlug = filters.models[0] ?? activeQuick.aiModel ?? null;
-  const popular = filters.sort === "popular" || filters.sort === "views";
+  const visible = useMemo(() => {
+    const query = filters.query.trim().toLowerCase();
+    const next = PROMPT_LAB_SAMPLE_PROMPTS.filter((item) => {
+      if (activeQuick.category && item.category !== activeQuick.category) return false;
+      if (activeQuick.aiModel && item.aiModel !== activeQuick.aiModel) return false;
+      if (filters.categories.length > 0 && !filters.categories.includes(item.category)) return false;
+      if (filters.models.length > 0 && !filters.models.includes(item.aiModel)) return false;
+      if (
+        query &&
+        !`${item.title} ${item.description} ${item.category} ${item.aiModel}`.toLowerCase().includes(query)
+      ) {
+        return false;
+      }
+      return true;
+    });
 
-  useEffect(() => {
-    const next = filters.query.trim();
-    const timer = window.setTimeout(() => {
-      setDebouncedQuery((current) => {
-        if (current !== next) setPage(1);
-        return next;
-      });
-    }, 300);
-    return () => window.clearTimeout(timer);
-  }, [filters.query]);
+    switch (filters.sort) {
+      case "popular":
+        return next.slice().sort((a, b) => b.copyCount - a.copyCount);
+      case "views":
+        return next.slice().sort((a, b) => b.viewCount - a.viewCount);
+      default:
+        return next.slice().sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+    }
+  }, [activeQuick, filters]);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    setStatus("loading");
+  const totalPages = Math.max(1, Math.ceil(visible.length / PROMPT_LAB_PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const pageItems = visible.slice((safePage - 1) * PROMPT_LAB_PAGE_SIZE, safePage * PROMPT_LAB_PAGE_SIZE);
 
-    fetchPromptLabCatalog({
-      search: debouncedQuery,
-      category: categorySlug,
-      aiModel: aiModelSlug,
-      page,
-      pageSize: PROMPT_LAB_PAGE_SIZE,
-      popular,
-      signal: controller.signal,
-    })
-      .then((result) => {
-        setCatalog(result);
-        setStatus("ready");
-      })
-      .catch((error: unknown) => {
-        if (isCatalogAbort(error)) return;
-        setStatus("error");
-      });
-
-    return () => controller.abort();
-  }, [debouncedQuery, categorySlug, aiModelSlug, page, popular, reloadKey]);
-
-  const totalPages = Math.max(1, Math.ceil(catalog.total / Math.max(1, catalog.pageSize)));
   const isPristine =
     quickFilter === "all" &&
-    !debouncedQuery &&
+    !filters.query.trim() &&
     filters.categories.length === 0 &&
     filters.models.length === 0;
-  const totalLabel = isPristine ? PROMPT_LAB_DISPLAY_TOTAL : catalog.total;
+  const totalLabel = isPristine ? PROMPT_LAB_DISPLAY_TOTAL : visible.length;
 
   return (
-    <section id="prompt-lab-catalog" className="bg-[#070b18] pb-8 pt-2" dir="rtl">
+    <section id="prompt-lab-catalog" className="bg-[#070b18] pb-4 pt-0" dir="rtl">
       <PromptLabContainer>
-        <div className="mb-6 mt-0 md:mb-6">
+        <div className="mb-6">
           <PromptLabCategoryBar
             active={quickFilter}
             onSelect={(value) => {
@@ -123,7 +97,7 @@ export function PromptLabCatalog() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-5">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
           <div className={mobileFiltersOpen ? "block" : "hidden lg:block"}>
             <PromptLabFiltersSidebar
               value={filters}
@@ -144,47 +118,29 @@ export function PromptLabCatalog() {
               </div>
             </div>
 
-            {status === "loading" ? (
-              <ul className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4" aria-busy="true">
-                {Array.from({ length: PROMPT_LAB_PAGE_SIZE }, (_, index) => (
-                  <li key={`skeleton-${index}`}>
-                    <PromptLabCardSkeleton />
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-
-            {status === "error" ? (
-              <div className="rounded-[16px] border border-dashed border-white/[0.12] px-4 py-12 text-center" role="alert">
-                <p className="text-[13px] text-[#94A3B8]">بارگذاری پرامپت‌ها ناموفق بود.</p>
-                <button
-                  type="button"
-                  onClick={() => setReloadKey((value) => value + 1)}
-                  className="mt-4 inline-flex h-10 items-center rounded-xl border border-white/[0.1] bg-[#0F1626] px-4 text-[13px] font-bold text-white"
-                >
-                  تلاش مجدد
-                </button>
-              </div>
-            ) : null}
-
-            {status === "ready" && catalog.items.length === 0 ? (
-              <p className="rounded-[16px] border border-dashed border-white/[0.12] px-4 py-12 text-center text-[13px] text-[#94A3B8]" role="status">
+            {pageItems.length === 0 ? (
+              <p
+                className="rounded-[16px] border border-dashed border-white/[0.12] px-4 py-12 text-center text-[13px] text-[#94A3B8]"
+                role="status"
+              >
                 پرامپتی با این فیلتر پیدا نشد.
               </p>
-            ) : null}
-
-            {status === "ready" && catalog.items.length > 0 ? (
+            ) : (
               <>
-                <ul className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
-                  {catalog.items.map((item) => (
+                <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  {pageItems.map((item) => (
                     <li key={item.id}>
                       <PromptLabCard item={item} />
                     </li>
                   ))}
                 </ul>
-                <PromptLabPagination page={page} totalPages={totalPages} onPageChange={setPage} />
+                <PromptLabPagination
+                  page={safePage}
+                  totalPages={totalPages}
+                  onPageChange={setPage}
+                />
               </>
-            ) : null}
+            )}
           </div>
         </div>
       </PromptLabContainer>

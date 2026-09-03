@@ -1,5 +1,5 @@
 /**
- * Prompt Lab page shell — wide desktop content (~1180–1240px).
+ * Prompt Lab page shell — reference content width ~1200px.
  */
 export function PromptLabContainer({
   children,
@@ -11,7 +11,7 @@ export function PromptLabContainer({
   return (
     <div
       className={[
-        "mx-auto w-[calc(100%-32px)] max-w-[1220px] md:w-[calc(100%-48px)]",
+        "mx-auto w-[calc(100%-32px)] max-w-[1200px] md:w-[calc(100%-48px)]",
         className,
       ].join(" ")}
     >

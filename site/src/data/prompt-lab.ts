@@ -1,3 +1,5 @@
+import type { PromptLabCardItem } from "@/lib/public/prompt-lab-mock";
+
 export const PROMPT_LAB_HERO_IMAGE_SRC = "/prompt-lab/hero-flask.png";
 
 export const PROMPT_LAB_HERO_EYEBROW = "آزمایشگاه پرامپت";
@@ -22,24 +24,22 @@ export type PromptLabQuickFilter = {
   id: PromptLabQuickFilterId;
   label: string;
   icon: string;
-  /** Maps to API `category` when set. */
   category?: string;
-  /** Maps to API `aiModel` when set. */
   aiModel?: string;
 };
 
 export const PROMPT_LAB_QUICK_FILTERS: readonly PromptLabQuickFilter[] = [
   { id: "all", label: "همه", icon: "all" },
-  { id: "chatgpt", label: "ChatGPT", icon: "chatgpt", aiModel: "chatgpt" },
-  { id: "claude", label: "Claude", icon: "claude", aiModel: "claude" },
-  { id: "gemini", label: "Gemini", icon: "gemini", aiModel: "gemini" },
-  { id: "copilot", label: "Copilot", icon: "copilot", aiModel: "copilot" },
-  { id: "code", label: "Code", icon: "code", category: "coding" },
-  { id: "design", label: "طراحی", icon: "design", category: "design" },
-  { id: "devops", label: "DevOps", icon: "devops", category: "video" },
-  { id: "content", label: "تولید محتوا", icon: "content", category: "writing" },
-  { id: "data", label: "تولید داده", icon: "data", category: "education" },
-  { id: "other", label: "دیگر", icon: "other", category: "marketing" },
+  { id: "chatgpt", label: "ChatGPT", icon: "chatgpt", aiModel: "ChatGPT" },
+  { id: "claude", label: "Claude", icon: "claude", aiModel: "Claude" },
+  { id: "gemini", label: "Gemini", icon: "gemini", aiModel: "Gemini" },
+  { id: "copilot", label: "Copilot", icon: "copilot", aiModel: "Copilot" },
+  { id: "code", label: "Code", icon: "code", category: "Code" },
+  { id: "design", label: "طراحی", icon: "design", category: "Design" },
+  { id: "devops", label: "DevOps", icon: "devops", category: "DevOps" },
+  { id: "content", label: "تولید محتوا", icon: "content", category: "Content" },
+  { id: "data", label: "تولید داده", icon: "data", category: "Data" },
+  { id: "other", label: "دیگر", icon: "other", category: "Other" },
 ] as const;
 
 export type PromptLabSidebarCategory = {
@@ -50,12 +50,12 @@ export type PromptLabSidebarCategory = {
 };
 
 export const PROMPT_LAB_SIDEBAR_CATEGORIES: readonly PromptLabSidebarCategory[] = [
-  { id: "coding", label: "Code", slug: "coding", count: 68 },
-  { id: "design", label: "طراحی", slug: "design", count: 42 },
-  { id: "devops", label: "DevOps", slug: "video", count: 31 },
-  { id: "writing", label: "تولید محتوا", slug: "writing", count: 28 },
-  { id: "data", label: "تولید داده", slug: "education", count: 19 },
-  { id: "other", label: "دیگر", slug: "marketing", count: 12 },
+  { id: "code", label: "Code", slug: "Code", count: 68 },
+  { id: "design", label: "طراحی", slug: "Design", count: 42 },
+  { id: "devops", label: "DevOps", slug: "DevOps", count: 31 },
+  { id: "content", label: "تولید محتوا", slug: "Content", count: 28 },
+  { id: "data", label: "تولید داده", slug: "Data", count: 19 },
+  { id: "other", label: "دیگر", slug: "Other", count: 12 },
 ] as const;
 
 export type PromptLabSidebarModel = {
@@ -65,11 +65,11 @@ export type PromptLabSidebarModel = {
 };
 
 export const PROMPT_LAB_SIDEBAR_MODELS: readonly PromptLabSidebarModel[] = [
-  { id: "chatgpt", label: "ChatGPT", slug: "chatgpt" },
-  { id: "claude", label: "Claude", slug: "claude" },
-  { id: "gemini", label: "Gemini", slug: "gemini" },
-  { id: "copilot", label: "Copilot", slug: "copilot" },
-  { id: "midjourney", label: "Midjourney", slug: "midjourney" },
+  { id: "chatgpt", label: "ChatGPT", slug: "ChatGPT" },
+  { id: "claude", label: "Claude", slug: "Claude" },
+  { id: "gemini", label: "Gemini", slug: "Gemini" },
+  { id: "copilot", label: "Copilot", slug: "Copilot" },
+  { id: "midjourney", label: "Midjourney", slug: "Midjourney" },
 ] as const;
 
 export type PromptLabLevelId = "all" | "beginner" | "intermediate" | "advanced";
@@ -89,5 +89,177 @@ export const PROMPT_LAB_SORT_OPTIONS: readonly { id: PromptLabSortId; label: str
   { id: "views", label: "پربازدیدترین" },
 ] as const;
 
-/** Display total used on the catalog header when unfiltered (reference). */
+export const PROMPT_LAB_PAGE_SIZE = 8;
 export const PROMPT_LAB_DISPLAY_TOTAL = 234;
+
+/** Reference marketplace sample prompts — always visible on the public page. */
+export const PROMPT_LAB_SAMPLE_PROMPTS: readonly PromptLabCardItem[] = [
+  {
+    id: "pl-sample-1",
+    slug: "csv-data-analysis",
+    title: "تحلیل داده‌های CSV",
+    description: "پرامپت تحلیل، پاکسازی و استخراج بینش از فایل‌های CSV برای تیم داده.",
+    coverImage: "/home/icon-database.png",
+    aiModel: "Claude",
+    category: "Data",
+    categorySlug: "data",
+    copyCount: 214,
+    viewCount: 4820,
+    featured: true,
+    publishedAt: "2026-08-28T10:00:00.000Z",
+  },
+  {
+    id: "pl-sample-2",
+    slug: "optimized-dockerfile",
+    title: "نوشتن Dockerfile بهینه",
+    description: "ساخت Dockerfile چندمرحله‌ای سبک با کش لایه‌ها و امنیت پایه.",
+    coverImage: "/home/icon-devops.png",
+    aiModel: "ChatGPT",
+    category: "DevOps",
+    categorySlug: "devops",
+    copyCount: 361,
+    viewCount: 7100,
+    featured: true,
+    publishedAt: "2026-08-27T09:00:00.000Z",
+  },
+  {
+    id: "pl-sample-3",
+    slug: "modern-ui-design",
+    title: "طراحی رابط کاربری مدرن",
+    description: "تولید سیستم UI تیره با گرادیان بنفش/آبی و کامپوننت‌های شیشه‌ای.",
+    coverImage: "/home/icon-frontend.png",
+    aiModel: "Claude",
+    category: "Design",
+    categorySlug: "design",
+    copyCount: 198,
+    viewCount: 3560,
+    featured: true,
+    publishedAt: "2026-08-26T12:00:00.000Z",
+  },
+  {
+    id: "pl-sample-4",
+    slug: "nodejs-api-generator",
+    title: "تولید API با Node.js",
+    description: "طراحی REST API تمیز با Express، اعتبارسنجی و ساختار ماژولار.",
+    coverImage: "/home/icon-backend.png",
+    aiModel: "ChatGPT",
+    category: "Code",
+    categorySlug: "code",
+    copyCount: 452,
+    viewCount: 8920,
+    featured: true,
+    publishedAt: "2026-08-25T08:30:00.000Z",
+  },
+  {
+    id: "pl-sample-5",
+    slug: "advanced-react-component",
+    title: "کامپوننت React پیشرفته",
+    description: "ساخت کامپوننت reusable با hooks، state و الگوی composition.",
+    coverImage: "/home/icon-code.png",
+    aiModel: "Copilot",
+    category: "Code",
+    categorySlug: "code",
+    copyCount: 287,
+    viewCount: 5340,
+    featured: false,
+    publishedAt: "2026-08-24T15:00:00.000Z",
+  },
+  {
+    id: "pl-sample-6",
+    slug: "app-security-hardening",
+    title: "افزایش امنیت برنامه",
+    description: "چک‌لیست امنیتی برای احراز هویت، ورودی‌ها و محافظت از API.",
+    coverImage: "/home/icon-security.png",
+    aiModel: "ChatGPT",
+    category: "Code",
+    categorySlug: "code",
+    copyCount: 165,
+    viewCount: 2980,
+    featured: false,
+    publishedAt: "2026-08-23T11:20:00.000Z",
+  },
+  {
+    id: "pl-sample-7",
+    slug: "ai-prompt-architect",
+    title: "معماری پرامپت سیستمی",
+    description: "طراحی system prompt چندلایه برای دستیار توسعه و بازبینی کد.",
+    coverImage: "/home/icon-ai.png",
+    aiModel: "Gemini",
+    category: "Other",
+    categorySlug: "other",
+    copyCount: 143,
+    viewCount: 2410,
+    featured: false,
+    publishedAt: "2026-08-22T14:00:00.000Z",
+  },
+  {
+    id: "pl-sample-8",
+    slug: "content-release-brief",
+    title: "بریف انتشار محصول",
+    description: "تولید متن معرفی انتشار برای وبلاگ، خبرنامه و شبکه‌های اجتماعی.",
+    coverImage: "/home/icon-prompt-lab.png",
+    aiModel: "ChatGPT",
+    category: "Content",
+    categorySlug: "content",
+    copyCount: 119,
+    viewCount: 1870,
+    featured: false,
+    publishedAt: "2026-08-21T16:40:00.000Z",
+  },
+  {
+    id: "pl-sample-9",
+    slug: "sql-query-optimizer",
+    title: "بهینه‌سازی کوئری SQL",
+    description: "بازنویسی کوئری‌های کند با ایندکس، join و پلن اجرای شفاف.",
+    coverImage: "/home/icon-db.png",
+    aiModel: "Claude",
+    category: "Data",
+    categorySlug: "data",
+    copyCount: 176,
+    viewCount: 3120,
+    featured: false,
+    publishedAt: "2026-08-20T10:00:00.000Z",
+  },
+  {
+    id: "pl-sample-10",
+    slug: "ci-cd-pipeline",
+    title: "پایپ‌لاین CI/CD",
+    description: "طراحی workflow گیت‌هاب برای تست، بیلد و دیپلوی امن.",
+    coverImage: "/home/icon-devops.png",
+    aiModel: "Copilot",
+    category: "DevOps",
+    categorySlug: "devops",
+    copyCount: 203,
+    viewCount: 4010,
+    featured: false,
+    publishedAt: "2026-08-19T09:30:00.000Z",
+  },
+  {
+    id: "pl-sample-11",
+    slug: "mobile-ui-kit",
+    title: "کیت رابط موبایل",
+    description: "تولید کامپوننت‌های موبایل با حالت تاریک و فاصله‌گذاری استاندارد.",
+    coverImage: "/home/icon-mobile.png",
+    aiModel: "Gemini",
+    category: "Design",
+    categorySlug: "design",
+    copyCount: 132,
+    viewCount: 2210,
+    featured: false,
+    publishedAt: "2026-08-18T13:00:00.000Z",
+  },
+  {
+    id: "pl-sample-12",
+    slug: "dotnet-clean-architecture",
+    title: "معماری تمیز در .NET",
+    description: "ساختار لایه دامنه، اپلیکیشن و زیرساخت برای سرویس‌های سازمانی.",
+    coverImage: "/home/icon-dotnet.png",
+    aiModel: "ChatGPT",
+    category: "Code",
+    categorySlug: "code",
+    copyCount: 248,
+    viewCount: 4650,
+    featured: false,
+    publishedAt: "2026-08-17T11:15:00.000Z",
+  },
+];
