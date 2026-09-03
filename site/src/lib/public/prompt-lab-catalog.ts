@@ -22,6 +22,7 @@ export const EMPTY_PROMPT_LAB_CATALOG_PAGE: PromptLabCatalogPage = {
 export type PromptLabCatalogQuery = {
   search?: string;
   category?: string | null;
+  aiModel?: string | null;
   page?: number;
   pageSize?: number;
   popular?: boolean;
@@ -41,6 +42,7 @@ export function fetchPromptLabCatalog(query: PromptLabCatalogQuery = {}): Promis
   const filter: PublicPromptFilter = {
     search: query.search?.trim() || undefined,
     category: query.category?.trim() || undefined,
+    aiModel: query.aiModel?.trim() || undefined,
     popular: query.popular ? true : undefined,
     page: query.page ?? 1,
     pageSize: query.pageSize ?? PROMPT_LAB_PAGE_SIZE,

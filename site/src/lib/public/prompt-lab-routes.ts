@@ -3,7 +3,7 @@ export const PUBLIC_PROMPT_LAB_PATH = "/prompt-lab";
 
 export const PROMPT_LAB_HERO_TITLE = "Prompt Lab";
 export const PROMPT_LAB_HERO_SUBTITLE =
-  "مجموعه‌ای از پرامپت‌های حرفه‌ای و تست‌شده برای ساخت، طراحی و توسعه با هوش مصنوعی";
+  "مجموعه‌ای از بهترین پرامپت‌ها برای توسعه‌دهندگان، ابزارهای AI و ساخت محصول حرفه‌ای.";
 
 export function publicPromptLabDetailPath(slug: string): string {
   return `${PUBLIC_PROMPT_LAB_PATH}/${encodeURIComponent(slug)}`;
