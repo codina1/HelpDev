@@ -22,7 +22,7 @@ const ICON_COLOR: Record<string, string> = {
 };
 
 function CategoryIcon({ name, color }: { name: string; color: string }) {
-  const cls = "h-5 w-5 shrink-0";
+  const cls = "h-4 w-4 shrink-0";
   switch (name) {
     case "ai":
       return (
@@ -97,7 +97,7 @@ function CategoryIcon({ name, color }: { name: string; color: string }) {
   }
 }
 
-/** Horizontal scrollable premium category pills — 48px / rounded-2xl. */
+/** Compact category pills — one row on desktop · scroll only on small screens. */
 export function ArticleCategoryChipBar({ active, onSelect }: CategoryChipBarProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
 
@@ -107,6 +107,7 @@ export function ArticleCategoryChipBar({ active, onSelect }: CategoryChipBarProp
 
     function onWheel(event: WheelEvent) {
       if (!node || event.deltaY === 0) return;
+      if (node.scrollWidth <= node.clientWidth + 2) return;
       if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
       event.preventDefault();
       node.scrollLeft += event.deltaY;
@@ -121,9 +122,13 @@ export function ArticleCategoryChipBar({ active, onSelect }: CategoryChipBarProp
       id="articles-categories"
       ref={scrollerRef}
       dir="rtl"
-      className="min-w-0 w-full overflow-x-auto overscroll-x-contain pb-2 [scrollbar-color:rgba(124,58,237,0.7)_rgba(15,22,38,0.9)] [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#7C3AED]/70 [&::-webkit-scrollbar-track]:bg-[#0F1626]"
+      className="min-w-0 w-full overflow-x-auto overscroll-x-contain pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:overflow-x-visible"
     >
-      <div className="flex w-max min-w-full flex-nowrap items-center gap-3" role="toolbar" aria-label="دسته‌بندی مقالات">
+      <div
+        className="flex w-max min-w-full flex-nowrap items-center gap-2 lg:w-full lg:justify-between lg:gap-2"
+        role="toolbar"
+        aria-label="دسته‌بندی مقالات"
+      >
         {ARTICLE_CATEGORY_CHIPS.map((item) => {
           const isActive = active === item.id;
           return (
@@ -133,13 +138,13 @@ export function ArticleCategoryChipBar({ active, onSelect }: CategoryChipBarProp
               aria-pressed={isActive}
               onClick={() => onSelect(item.id)}
               className={[
-                "inline-flex h-12 shrink-0 items-center gap-2.5 rounded-2xl border px-6 text-[13.5px] font-semibold transition duration-200",
+                "inline-flex h-10 shrink-0 items-center gap-1.5 rounded-2xl border px-3.5 text-[12.5px] font-semibold transition duration-200 lg:flex-1 lg:justify-center lg:px-2 xl:px-3.5",
                 isActive
-                  ? "border-transparent bg-gradient-to-l from-[#7C3AED] via-[#6D28D9] to-[#4F46E5] text-white shadow-[0_0_26px_rgba(124,58,237,0.6)]"
+                  ? "border-transparent bg-gradient-to-l from-[#7C3AED] via-[#6D28D9] to-[#4F46E5] text-white shadow-[0_0_20px_rgba(124,58,237,0.5)]"
                   : "border-white/10 bg-[#0F1626]/90 text-[#E5E7EB] backdrop-blur-sm hover:border-[rgba(168,85,247,0.4)] hover:text-white",
               ].join(" ")}
             >
-              <span>{item.label}</span>
+              <span className="whitespace-nowrap">{item.label}</span>
               <CategoryIcon
                 name={item.icon}
                 color={isActive ? "#FFFFFF" : ICON_COLOR[item.icon] ?? "#A78BFA"}

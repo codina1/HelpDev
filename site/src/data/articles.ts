@@ -41,6 +41,7 @@ export type ArticleSidebarTopic = {
   count: number;
 };
 
+/** Main topics shown in the articles filter sidebar (matches reference). */
 export const ARTICLE_SIDEBAR_TOPICS: readonly ArticleSidebarTopic[] = [
   { id: "ai", label: "هوش مصنوعی", count: 125 },
   { id: "programming", label: "برنامه‌نویسی", count: 98 },
@@ -49,8 +50,6 @@ export const ARTICLE_SIDEBAR_TOPICS: readonly ArticleSidebarTopic[] = [
   { id: "backend", label: "Backend", count: 61 },
   { id: "devops", label: "DevOps", count: 43 },
   { id: "tools", label: "Tools", count: 37 },
-  { id: "architecture", label: "Architecture", count: 29 },
-  { id: "security", label: "Security", count: 22 },
 ] as const;
 
 export const ARTICLE_LEVELS: readonly { id: ArticleLevelId; label: string }[] = [

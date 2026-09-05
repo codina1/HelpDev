@@ -23,8 +23,7 @@ function toFa(value: number): string {
 }
 
 /**
- * Articles marketplace catalog — chips · sidebar 280px · featured · 4-col grid · pagination.
- * Generous 48-64px section spacing.
+ * Articles catalog — categories · sidebar 240px (RTL right) · featured · 4-col grid.
  */
 export function ArticlesCatalog() {
   const [quickCategory, setQuickCategory] = useState<ArticleCategoryId>("all");
@@ -93,10 +92,9 @@ export function ArticlesCatalog() {
   const totalLabel = isPristine ? ARTICLES_DISPLAY_TOTAL : visible.length;
 
   return (
-    <section id="articles-catalog" className="bg-[#070b18] pb-16 pt-0" dir="rtl">
+    <section id="articles-catalog" className="bg-[#070b18] pb-12 pt-0" dir="rtl">
       <ArticlesContainer>
-        {/* Category chips — 48px gap below hero */}
-        <div className="mb-12 min-w-0">
+        <div className="mb-8 min-w-0">
           <ArticleCategoryChipBar
             active={quickCategory}
             onSelect={(value) => {
@@ -106,61 +104,46 @@ export function ArticlesCatalog() {
           />
         </div>
 
-        {/* Mobile filter toggle */}
-        <div className="mb-5 flex items-center justify-between gap-3 lg:hidden">
+        <div className="mb-4 flex items-center justify-between gap-3 lg:hidden">
           <button
             type="button"
             onClick={() => setMobileFiltersOpen((open) => !open)}
-            className="inline-flex h-11 items-center gap-2 rounded-xl border border-white/[0.1] bg-[#0F1626] px-5 text-[13px] font-bold text-[#E5E7EB]"
+            className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/[0.1] bg-[#0F1626] px-4 text-[13px] font-bold text-[#E5E7EB]"
           >
             فیلترها
           </button>
-          <p className="text-[13px] font-semibold text-[#64748B]">{toFa(totalLabel)} مقاله</p>
+          <p className="text-[12.5px] font-semibold text-[#64748B]">{toFa(totalLabel)} مقاله</p>
         </div>
 
-        {/* 280px sidebar left · articles right */}
-        <div dir="ltr" className="grid grid-cols-1 gap-10 lg:grid-cols-[280px_minmax(0,1fr)]">
-          <div className={mobileFiltersOpen ? "block" : "hidden lg:block"} dir="rtl">
-            <div className="sticky top-6">
-              <ArticleFilter
-                value={filters}
-                onChange={(next) => {
-                  setFilters(next);
-                  setPage(1);
-                }}
-              />
-            </div>
+        {/* RTL: sidebar first → right · articles → left · gap 24px */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
+          <div className={mobileFiltersOpen ? "block" : "hidden lg:block"}>
+            <ArticleFilter
+              value={filters}
+              onChange={(next) => {
+                setFilters(next);
+                setPage(1);
+              }}
+            />
           </div>
 
-          <div className="min-w-0" dir="rtl">
-            {/* Section header */}
-            <div className="mb-6 hidden flex-wrap items-end justify-between gap-2 lg:flex">
-              <div>
-                <h2 className="text-[20px] font-extrabold text-white sm:text-[22px]">همه مقالات</h2>
-                <p className="mt-1.5 text-[13px] font-semibold text-[#64748B]">
-                  {toFa(totalLabel)} مقاله
-                </p>
-              </div>
-            </div>
-
+          <div className="min-w-0">
             {visible.length === 0 ? (
               <p
-                className="rounded-[18px] border border-dashed border-white/[0.12] px-4 py-16 text-center text-[14px] text-[#94A3B8]"
+                className="rounded-[16px] border border-dashed border-white/[0.12] px-4 py-12 text-center text-[13px] text-[#94A3B8]"
                 role="status"
               >
                 مقاله‌ای با این فیلتر پیدا نشد.
               </p>
             ) : (
               <>
-                {/* Featured card */}
                 {featured && safePage === 1 ? (
-                  <div className="mb-10">
+                  <div className="mb-5">
                     <FeaturedArticle article={featured} />
                   </div>
                 ) : null}
 
-                {/* 4 column grid */}
-                <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                   {pageItems.map((article, index) => (
                     <li key={`${article.id}-${safePage}-${index}`}>
                       <ArticleCard article={article} />
@@ -168,8 +151,7 @@ export function ArticlesCatalog() {
                   ))}
                 </ul>
 
-                {/* Pagination — 48px top margin */}
-                <div className="mt-12">
+                <div className="mt-7">
                   <ArticlesPagination page={safePage} totalPages={totalPages} onPageChange={setPage} />
                 </div>
               </>

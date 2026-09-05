@@ -1,4 +1,4 @@
-/** Articles marketplace page shell — ~1200px content width. */
+/** Articles page shell — ~90–94% viewport · ~40px side margins. */
 export function ArticlesContainer({
   children,
   className = "",
@@ -9,7 +9,7 @@ export function ArticlesContainer({
   return (
     <div
       className={[
-        "mx-auto w-[calc(100%-32px)] max-w-[1200px] md:w-[calc(100%-64px)]",
+        "mx-auto w-full max-w-[1480px] px-[36px] sm:px-[40px]",
         className,
       ].join(" ")}
     >
