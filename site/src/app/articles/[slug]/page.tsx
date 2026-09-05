@@ -6,6 +6,7 @@ import { PageErrorState } from "@/components/ui/page-error-state";
 import { resolveContentCoverUrl } from "@/lib/admin/content/content-mappers";
 import { getContentBySlug } from "@/lib/api/content";
 import { ApiClientError } from "@/lib/api/errors";
+import { resolveArticleExcerpt } from "@/data/article-detail";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -20,7 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const cover = resolveContentCoverUrl(article.coverImage);
     return {
       title: article.title,
-      description: article.body?.slice(0, 160) || article.title,
+      description: resolveArticleExcerpt(article),
       openGraph: cover
         ? {
             images: [{ url: cover }],
@@ -37,28 +38,13 @@ export default async function ArticleDetailPage({ params }: PageProps) {
 
   try {
     const article = await getContentBySlug(slug);
-    return (
-      <div>
-        <div className="mx-auto w-full max-w-[1200px] px-4 pt-6 sm:px-5 lg:px-6">
-          <nav aria-label="مسیر صفحه" className="text-[12px] text-[color:var(--pub-muted)]">
-            <Link href="/articles" className="focus-ring rounded hover:text-[color:var(--pub-ai-from)]">
-              مقالات
-            </Link>
-            <span className="mx-2" aria-hidden>
-              /
-            </span>
-            <span className="text-[color:var(--pub-fg)]">{article.title}</span>
-          </nav>
-        </div>
-        <ArticleDetailView article={article} />
-      </div>
-    );
+    return <ArticleDetailView article={article} />;
   } catch (error) {
     if (error instanceof ApiClientError && error.status === 404) {
       notFound();
     }
     return (
-      <div className="space-y-4">
+      <div className="space-y-4 bg-[#050816] px-4 py-8">
         <Link href="/articles" className="focus-ring text-[13px] text-violet-300">
           ← بازگشت به مقالات
         </Link>
