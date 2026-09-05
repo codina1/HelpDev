@@ -24,6 +24,7 @@ public sealed class ContentService : IContentService
     private readonly IContentSeoAnalyzer _seoAnalyzer;
     private readonly IContentRevisionService _revisionService;
     private readonly IContentWorkflowService _workflowService;
+    private readonly IAuthorProfileLookup _authorProfileLookup;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDateTimeProvider _clock;
     private readonly IAnalyticsEventIngestor _analyticsIngestor;
@@ -35,6 +36,7 @@ public sealed class ContentService : IContentService
         IContentSeoAnalyzer seoAnalyzer,
         IContentRevisionService revisionService,
         IContentWorkflowService workflowService,
+        IAuthorProfileLookup authorProfileLookup,
         IUnitOfWork unitOfWork,
         IDateTimeProvider clock,
         IAnalyticsEventIngestor analyticsIngestor,
@@ -45,6 +47,7 @@ public sealed class ContentService : IContentService
         _seoAnalyzer = seoAnalyzer;
         _revisionService = revisionService;
         _workflowService = workflowService;
+        _authorProfileLookup = authorProfileLookup;
         _unitOfWork = unitOfWork;
         _clock = clock;
         _analyticsIngestor = analyticsIngestor;
@@ -55,7 +58,17 @@ public sealed class ContentService : IContentService
         CancellationToken cancellationToken = default)
     {
         var items = await _contentRepository.GetPublishedAsync(cancellationToken);
-        return items.Select(MapToListItem).ToList();
+        var authors = await _authorProfileLookup.GetManyAsync(
+            items.Select(item => item.AuthorId),
+            cancellationToken);
+
+        return items
+            .Select(item =>
+            {
+                authors.TryGetValue(item.AuthorId, out var author);
+                return ContentDtoMapper.ToPublicListItem(item, author);
+            })
+            .ToList();
     }
 
     public async Task<ContentDetailDto> GetPublishedBySlugAsync(
@@ -75,7 +88,7 @@ public sealed class ContentService : IContentService
         }
 
         await TryIngestViewAsync(content, viewerUserId, cancellationToken);
-        return MapToDetail(content);
+        return await MapToDetailAsync(content, cancellationToken);
     }
 
     public async Task<ContentDetailDto> CreateAsync(
@@ -124,7 +137,7 @@ public sealed class ContentService : IContentService
             }
 
             await TryIngestCreatedAsync(content, cancellationToken);
-            return MapToDetail(content);
+            return await MapToDetailAsync(content, cancellationToken);
         }
         catch (DomainException ex)
         {
@@ -344,20 +357,13 @@ public sealed class ContentService : IContentService
     private static AdminContentDetailDto MapToAdminDetail(ContentEntity content) =>
         ContentDtoMapper.ToAdminDetail(content);
 
-    private static ContentListItemDto MapToListItem(ContentEntity content) =>
-        new(
-            content.Id,
-            content.Title,
-            content.Slug.Value,
-            content.Type.ToString(),
-            content.AuthorId,
-            content.Views,
-            content.Saves,
-            content.CreatedAt,
-            content.CoverImage);
-
-    private static ContentDetailDto MapToDetail(ContentEntity content) =>
-        ContentDtoMapper.ToPublicDetail(content);
+    private async Task<ContentDetailDto> MapToDetailAsync(
+        ContentEntity content,
+        CancellationToken cancellationToken)
+    {
+        var author = await _authorProfileLookup.GetAsync(content.AuthorId, cancellationToken);
+        return ContentDtoMapper.ToPublicDetail(content, author);
+    }
 
     private static CompiledEditorState? CompileEditorDocument(UpdateContentRequest request)
     {

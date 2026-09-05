@@ -10,6 +10,10 @@ export type ContentSummaryDto = {
   saves: number;
   createdAt: string;
   coverImage?: string | null;
+  authorId?: string;
+  authorName?: string | null;
+  authorRole?: string | null;
+  authorAvatarUrl?: string | null;
 };
 
 export type ContentDetailDto = ContentSummaryDto & {
@@ -19,6 +23,7 @@ export type ContentDetailDto = ContentSummaryDto & {
   contentFormat?: string | null;
   wordCount?: number | null;
   readingTimeMinutes?: number | null;
+  authorBio?: string | null;
 };
 
 export type CreateContentRequestDto = {

@@ -93,6 +93,17 @@ export function resolveMarketplaceMatch(slug: string): MarketplaceArticle | unde
 }
 
 export function resolveArticleAuthor(article: ContentDetailDto): ArticleDetailAuthor {
+  const apiName = article.authorName?.trim();
+  if (apiName) {
+    return {
+      name: apiName,
+      role: article.authorRole?.trim() || "نویسنده HelpDev",
+      bio: article.authorBio?.trim() || `مقالات و محتوای تخصصی از ${apiName}.`,
+      initials: initialsFromName(apiName),
+      avatarUrl: article.authorAvatarUrl?.trim() || undefined,
+    };
+  }
+
   const match = resolveMarketplaceMatch(article.slug);
   if (match) {
     return {
@@ -102,7 +113,15 @@ export function resolveArticleAuthor(article: ContentDetailDto): ArticleDetailAu
       initials: match.authorInitials,
     };
   }
+
   return DEFAULT_AUTHOR;
+}
+
+function initialsFromName(name: string): string {
+  const parts = name.replace(/[^\p{L}\p{N}\s]/gu, " ").trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "HD";
+  if (parts.length === 1) return parts[0].slice(0, 2);
+  return `${parts[0][0] ?? ""}${parts[1][0] ?? ""}`;
 }
 
 export function resolveArticleCategoryLabel(article: ContentDetailDto): string {

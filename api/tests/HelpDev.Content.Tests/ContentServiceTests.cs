@@ -498,11 +498,29 @@ public sealed class ContentServiceTests
             new ContentSeoAnalyzer(),
             revisions,
             workflow,
+            new FakeAuthorProfileLookup(),
             uow,
             new FixedClock(Now),
             new NoOpAnalyticsIngestor(),
             NullLogger<ContentService>.Instance);
         return (service, repo, uow, queries, revisions);
+    }
+
+    private sealed class FakeAuthorProfileLookup : IAuthorProfileLookup
+    {
+        public Task<AuthorPublicProfile?> GetAsync(Guid authorId, CancellationToken cancellationToken = default) =>
+            Task.FromResult<AuthorPublicProfile?>(
+                new AuthorPublicProfile("نویسنده تست", "Writer", "بیو تست", null));
+
+        public Task<IReadOnlyDictionary<Guid, AuthorPublicProfile>> GetManyAsync(
+            IEnumerable<Guid> authorIds,
+            CancellationToken cancellationToken = default)
+        {
+            var map = authorIds.Distinct().ToDictionary(
+                id => id,
+                _ => new AuthorPublicProfile("نویسنده تست", "Writer", "بیو تست", null));
+            return Task.FromResult<IReadOnlyDictionary<Guid, AuthorPublicProfile>>(map);
+        }
     }
 
     private sealed class FakeAdminContentQueries : IAdminContentQueries

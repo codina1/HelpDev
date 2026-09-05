@@ -65,6 +65,7 @@ export function mapPublishedContentToMarketplace(
   return articles.map((item, index) => {
     const { category, categoryLabel } = inferCategory(item.title, item.slug, item.type);
     const cover = resolveContentCoverUrl(item.coverImage);
+    const authorName = item.authorName?.trim() || "تیم HelpDev";
     return {
       id: item.id,
       slug: item.slug,
@@ -75,8 +76,8 @@ export function mapPublishedContentToMarketplace(
       level: "intermediate",
       coverImage: cover || "/news/cover-react.png",
       coverTone: COVER_TONES[index % COVER_TONES.length],
-      author: "تیم HelpDev",
-      authorInitials: initialsFromTitle(item.title),
+      author: authorName,
+      authorInitials: initialsFromTitle(authorName),
       readingMinutes: estimateMinutes(item.title),
       views: item.views ?? 0,
       publishedAt: item.createdAt,

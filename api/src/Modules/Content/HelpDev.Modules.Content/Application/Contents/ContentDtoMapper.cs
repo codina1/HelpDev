@@ -35,7 +35,9 @@ internal static class ContentDtoMapper
             content.ReadingTimeMinutes,
             content.LastAutosavedAtUtc);
 
-    public static ContentDetailDto ToPublicDetail(ContentEntity content) =>
+    public static ContentDetailDto ToPublicDetail(
+        ContentEntity content,
+        AuthorPublicProfile? author = null) =>
         new(
             content.Id,
             content.Title,
@@ -51,5 +53,26 @@ internal static class ContentDtoMapper
             content.ContentFormat,
             content.WordCount,
             content.ReadingTimeMinutes,
-            content.CoverImage);
+            content.CoverImage,
+            author?.DisplayName,
+            author?.Role,
+            author?.Bio,
+            author?.AvatarUrl);
+
+    public static ContentListItemDto ToPublicListItem(
+        ContentEntity content,
+        AuthorPublicProfile? author = null) =>
+        new(
+            content.Id,
+            content.Title,
+            content.Slug.Value,
+            content.Type.ToString(),
+            content.AuthorId,
+            content.Views,
+            content.Saves,
+            content.CreatedAt,
+            content.CoverImage,
+            author?.DisplayName,
+            author?.Role,
+            author?.AvatarUrl);
 }

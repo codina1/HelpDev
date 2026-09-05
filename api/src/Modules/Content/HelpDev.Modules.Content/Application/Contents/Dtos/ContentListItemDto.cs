@@ -9,4 +9,7 @@ public sealed record ContentListItemDto(
     int Views,
     int Saves,
     DateTime CreatedAt,
-    string? CoverImage = null);
+    string? CoverImage = null,
+    string? AuthorName = null,
+    string? AuthorRole = null,
+    string? AuthorAvatarUrl = null);

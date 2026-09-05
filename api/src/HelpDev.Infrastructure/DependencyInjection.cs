@@ -12,6 +12,7 @@ using HelpDev.Infrastructure.Seo;
 using HelpDev.Modules.Analytics.Application.ContentAnalytics;
 using HelpDev.Modules.Content.Application.AiWorkflow;
 using HelpDev.Modules.Learning.Application.Personalization;
+using HelpDev.Modules.Content.Application.Contents;
 using HelpDev.Modules.Content.Application.InternalLinks;
 using HelpDev.Modules.Administration.Application.Dashboard;
 using HelpDev.Modules.Administration.Application.Persistence;
@@ -64,6 +65,7 @@ public static class DependencyInjection
         services.AddScoped<IMediaDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<IContentSearchSource, ContentKnowledgeSource>();
+        services.AddScoped<IAuthorProfileLookup, AuthorProfileLookup>();
         services.AddScoped<IInternalLinkSuggestionService, InternalLinkSuggestionService>();
         services.AddScoped<IContentAnalyticsFactsSource, ContentAnalyticsFactsSource>();
         services.AddScoped<LearningKnowledgeSource>();

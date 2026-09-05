@@ -15,4 +15,8 @@ public sealed record ContentDetailDto(
     string? ContentFormat = null,
     int? WordCount = null,
     int? ReadingTimeMinutes = null,
-    string? CoverImage = null);
+    string? CoverImage = null,
+    string? AuthorName = null,
+    string? AuthorRole = null,
+    string? AuthorBio = null,
+    string? AuthorAvatarUrl = null);
