@@ -55,10 +55,11 @@
 
 .body :global(blockquote) {
   margin: 1.1rem 0;
-  padding: 0.85rem 1rem;
-  border-inline-end: 3px solid #8b5cf6;
-  border-radius: 12px;
-  background: rgba(139, 92, 246, 0.08);
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  border-radius: 16px;
+  background: rgba(139, 92, 246, 0.1);
+  box-shadow: 0 0 24px rgba(139, 92, 246, 0.18);
   color: #cbd5e1;
 }
 
@@ -182,10 +183,10 @@
   position: relative;
   margin: 1.15rem 0;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  background: #0b1224;
-  box-shadow: 0 0 24px rgba(2, 6, 23, 0.35);
+  border: 1px solid rgba(139, 92, 246, 0.22);
+  border-radius: 16px;
+  background: #070b18;
+  box-shadow: 0 0 28px rgba(2, 6, 23, 0.45);
 }
 
 .body :global(.hd-copy) {

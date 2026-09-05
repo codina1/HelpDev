@@ -31,19 +31,21 @@ describe("ArticleDetailView cover", () => {
     expect(html).toContain("تست");
     expect(html).toContain("در این مقاله");
     expect(html).toContain("درباره نویسنده");
+    expect(html).toContain("اطلاعات مقاله");
+    expect(html).toContain("اشتراک‌گذاری");
   });
 
-  it("falls back to the gradient placeholder when coverImage is missing", () => {
+  it("falls back to illustration art when coverImage is missing", () => {
     const html = renderToStaticMarkup(<ArticleDetailView article={baseArticle} />);
 
-    expect(html).toContain("bg-gradient-to-bl");
-    expect(html).toContain("aspect-[16/7]");
+    expect(html).toContain("Better Performance");
+    expect(html).toContain("lg:h-[320px]");
   });
 
   it("renders three-column shell classes for desktop", () => {
     const html = renderToStaticMarkup(<ArticleDetailView article={baseArticle} />);
-    expect(html).toContain("xl:grid-cols-[260px_minmax(0,1fr)_260px]");
-    expect(html).toContain("برچسب‌ها");
-    expect(html).toContain("ابزارهای مرتبط");
+    expect(html).toContain("xl:grid-cols-[280px_minmax(0,1fr)_280px]");
+    expect(html).toContain("اخبار مرتبط");
+    expect(html).toContain("هیچ خبر مهمی را از دست ندهید");
   });
 });

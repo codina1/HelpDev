@@ -1,5 +1,17 @@
 import { MARKETPLACE_ARTICLES, type MarketplaceArticle } from "@/data/articles";
 import type { ContentDetailDto } from "@/lib/api/content";
+import {
+  formatDateFa,
+  resolveContentCoverUrl,
+  shortAuthorId,
+} from "@/lib/admin/content/content-mappers";
+import { estimateReadingLabel } from "@/lib/public/display-meta";
+import {
+  extractTocFromBody,
+  extractTocFromHtml,
+  isBlockArticle,
+  type TocHeading,
+} from "@/lib/public/content-helpers";
 
 export type ArticleDetailAuthor = {
   name: string;
@@ -22,6 +34,8 @@ export type ArticleRelatedCourse = {
   description: string;
   href: string;
   coverTone: string;
+  image?: string;
+  durationLabel?: string;
 };
 
 export type ArticleRoadmapCta = {
@@ -29,6 +43,41 @@ export type ArticleRoadmapCta = {
   description: string;
   href: string;
   ctaLabel: string;
+};
+
+export type ArticleRelatedNewsItem = {
+  id: string;
+  title: string;
+  href: string;
+  image: string;
+  dateLabel: string;
+};
+
+export type ArticleDetailViewModel = {
+  id: string;
+  title: string;
+  slug: string;
+  category: string;
+  description: string;
+  coverImage: string | null;
+  contentHtml: string | null;
+  contentBody: string;
+  usesBlocks: boolean;
+  author: ArticleDetailAuthor;
+  displayAuthor: string;
+  tags: string[];
+  views: number;
+  viewsLabel: string;
+  readingTime: string;
+  publishedAtLabel: string;
+  isFeatured: boolean;
+  breadcrumb: { label: string; href?: string }[];
+  toc: TocHeading[];
+  relatedNews: ArticleRelatedNewsItem[];
+  relatedArticles: MarketplaceArticle[];
+  relatedCourse: ArticleRelatedCourse;
+  roadmap: ArticleRoadmapCta;
+  tools: readonly ArticleRelatedTool[];
 };
 
 const DEFAULT_AUTHOR: ArticleDetailAuthor = {
@@ -63,21 +112,23 @@ const RELATED_TOOLS: readonly ArticleRelatedTool[] = [
 ];
 
 const RELATED_COURSE: ArticleRelatedCourse = {
-  title: "دوره جامع React",
+  title: "مسیر یادگیری Frontend",
   description: "از مبانی تا Server Components و الگوهای حرفه‌ای",
-  href: "/courses",
+  href: "/courses/react-19",
   coverTone: "from-[#61DAFB]/35 to-[#7C3AED]/20",
+  image: "/courses/course-react.png",
+  durationLabel: "۱۲ ساعت",
 };
 
 const ROADMAP_CTA: ArticleRoadmapCta = {
-  title: "مسیر یادگیری Frontend Pro",
+  title: "Frontend Developer Roadmap",
   description: "نقشه راه ساخت اپلیکیشن‌های مدرن با React و Next.js",
   href: "/roadmap",
   ctaLabel: "مشاهده مسیر",
 };
 
 const CATEGORY_TAGS: Record<string, string[]> = {
-  frontend: ["React", "Frontend", "JavaScript", "Next.js", "Hooks", "UI"],
+  frontend: ["React", "JavaScript", "Frontend", "Web Development", "Server Components"],
   ai: ["AI", "LLM", "Prompt", "Tools"],
   backend: ["Backend", "API", "Node.js"],
   devops: ["DevOps", "CI/CD", "Docker"],
@@ -128,8 +179,8 @@ export function resolveArticleCategoryLabel(article: ContentDetailDto): string {
   const match = resolveMarketplaceMatch(article.slug);
   if (match) return match.categoryLabel;
   const type = article.type.toLowerCase();
-  if (type.includes("news")) return "News";
-  return "Article";
+  if (type.includes("news")) return "خبر";
+  return "فناوری‌های وب";
 }
 
 export function resolveArticleTags(article: ContentDetailDto): string[] {
@@ -155,7 +206,7 @@ export function resolveArticleExcerpt(article: ContentDetailDto): string {
     .replace(/[#>*_`~\-\[\]\(\)!]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-  if (plain.length > 140) return `${plain.slice(0, 140).trim()}…`;
+  if (plain.length > 160) return `${plain.slice(0, 160).trim()}…`;
   return plain || "بررسی تخصصی برای توسعه‌دهندگان و تیم‌های محصول.";
 }
 
@@ -173,6 +224,7 @@ export function resolveBreadcrumbTrail(article: ContentDetailDto): { label: stri
 
   return [
     { label: "خانه", href: "/" },
+    { label: "مقالات", href: "/articles" },
     { label: category, href: "/articles" },
     { label: topic, href: "/articles" },
     { label: article.title },
@@ -195,7 +247,60 @@ export function formatViewsShort(views: number): string {
   if (views >= 1000) {
     const value = views / 1000;
     const rounded = value >= 10 ? Math.round(value) : Math.round(value * 10) / 10;
-    return `${rounded.toLocaleString("fa-IR")}k`;
+    return `${rounded.toLocaleString("fa-IR")}K`;
   }
   return views.toLocaleString("fa-IR");
+}
+
+function toRelatedNews(items: MarketplaceArticle[]): ArticleRelatedNewsItem[] {
+  return items.slice(0, 3).map((item) => ({
+    id: item.id,
+    title: item.title,
+    href: `/articles/${item.slug}`,
+    image: item.coverImage || "/home/cover-architecture.svg",
+    dateLabel: formatDateFa(item.publishedAt) || "—",
+  }));
+}
+
+/** Build UI-ready view-model for the premium article detail page. */
+export function buildArticleDetailViewModel(article: ContentDetailDto): ArticleDetailViewModel {
+  const usesBlocks = isBlockArticle(article.contentFormat, article.contentHtml);
+  const toc = usesBlocks
+    ? extractTocFromHtml(article.contentHtml ?? "")
+    : extractTocFromBody(article.body ?? "");
+
+  const readingMinutes = article.readingTimeMinutes;
+  const readingTime = readingMinutes
+    ? `${readingMinutes.toLocaleString("fa-IR")} دقیقه مطالعه`
+    : estimateReadingLabel(article.title);
+
+  const author = resolveArticleAuthor(article);
+  const related = resolveRelatedArticles(article.slug, 6);
+
+  return {
+    id: article.id,
+    title: article.title,
+    slug: article.slug,
+    category: resolveArticleCategoryLabel(article),
+    description: resolveArticleExcerpt(article),
+    coverImage: resolveContentCoverUrl(article.coverImage) || null,
+    contentHtml: article.contentHtml ?? null,
+    contentBody: article.body ?? "",
+    usesBlocks,
+    author,
+    displayAuthor: author.name || shortAuthorId(article.authorId),
+    tags: resolveArticleTags(article),
+    views: article.views,
+    viewsLabel: formatViewsShort(article.views),
+    readingTime,
+    publishedAtLabel: formatDateFa(article.createdAt) || "—",
+    isFeatured: (article.views ?? 0) >= 500 || Boolean(resolveMarketplaceMatch(article.slug)?.featured),
+    breadcrumb: resolveBreadcrumbTrail(article),
+    toc,
+    relatedNews: toRelatedNews(related),
+    relatedArticles: related.slice(0, 3),
+    relatedCourse: getArticleRelatedCourse(),
+    roadmap: getArticleRoadmapCta(),
+    tools: getArticleRelatedTools(),
+  };
 }
