@@ -32,7 +32,7 @@ describe("public prompt lab detail page", () => {
     );
   });
 
-  it("renders hero, description, viewer, sidebar, similar, and author", () => {
+  it("renders premium detail sections from API detail", () => {
     const detail = toPromptLabDetail(SAMPLE);
     const html = renderToStaticMarkup(
       <PublicPromptLabDetailPage detail={detail} related={[]} similar={[]} />,
@@ -40,16 +40,15 @@ describe("public prompt lab detail page", () => {
     expect(html).toContain(detail.title);
     expect(html).toContain(detail.category);
     expect(html).toContain(detail.aiModel);
-    expect(html).toContain(detail.author.name);
-    expect(html).toContain("شرح پرامپت");
-    expect(html).toContain("متن پرامپت");
-    expect(html).toContain('aria-label="کپی پرامپت"');
-    expect(html).toContain("پرامپت‌های مرتبط");
-    expect(html).toContain("برچسب‌ها");
+    expect(html).toContain("کپی پرامپت");
+    expect(html).toContain("متن کامل پرامپت");
+    expect(html).toContain("نحوه استفاده از این پرامپت");
+    expect(html).toContain("نمونه ورودی و خروجی");
+    expect(html).toContain("نسخه‌ها و تاریخچه تغییرات");
+    expect(html).toContain("اطلاعات کلی");
     expect(html).toContain("پرامپت‌های مشابه");
-    expect(html).toContain("درباره نویسنده");
+    expect(html).toContain("مقالات مرتبط");
     expect(html).toContain(detail.coverImage);
-    expect(html).toContain('dir="rtl"');
   });
 
   it("renders a recoverable error state", () => {
