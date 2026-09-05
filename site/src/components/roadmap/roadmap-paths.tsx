@@ -243,10 +243,10 @@ export function RoadmapPaths() {
 
             <div className="mt-6 flex justify-center">
               <Link
-                href="#roadmap-guide"
+                href="/roadmap/react-developer"
                 className="focus-ring inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-[rgba(168,85,247,0.45)] bg-[rgba(124,58,237,0.08)] px-6 text-[13px] font-bold text-[#E9D5FF] no-underline shadow-[0_0_16px_rgba(124,58,237,0.18)] transition hover:bg-[rgba(124,58,237,0.16)] hover:text-white"
               >
-                مشاهده جزئیات همه مسیرها
+                مشاهده جزئیات نقشه راه React
                 <ArrowIcon className="h-4 w-4 shrink-0" />
               </Link>
             </div>
@@ -262,13 +262,16 @@ export function RoadmapPaths() {
 }
 
 function StageCard({ stage, active }: { stage: RoadmapStage; active: boolean }) {
-  return (
+  const detailHref = stage.id === "frontend" ? "/roadmap/react-developer" : undefined;
+
+  const card = (
     <article
       className={[
         "flex h-full min-w-0 flex-col items-center rounded-[16px] border p-4 text-center transition duration-200 lg:min-h-[290px]",
         active
           ? "border-[rgba(168,85,247,0.45)] bg-[#0D1020] shadow-[0_0_22px_rgba(124,58,237,0.16)]"
           : "border-white/[0.07] bg-[#080D1E] hover:border-[rgba(168,85,247,0.28)]",
+        detailHref ? "cursor-pointer" : "",
       ].join(" ")}
     >
       <span className="relative mt-1 inline-flex h-16 w-16 items-center justify-center" aria-hidden>
@@ -316,5 +319,12 @@ function StageCard({ stage, active }: { stage: RoadmapStage; active: boolean }) 
         </div>
       </div>
     </article>
+  );
+
+  if (!detailHref) return card;
+  return (
+    <Link href={detailHref} className="block h-full no-underline">
+      {card}
+    </Link>
   );
 }

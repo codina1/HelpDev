@@ -45,7 +45,7 @@ export function RoadmapExperienceV2({ items }: Props) {
               <RoadmapCardPro
                 key={item.id}
                 title={item.title}
-                href={`/roadmap?slug=${encodeURIComponent(item.slug)}`}
+                href={`/roadmap/${encodeURIComponent(item.slug)}`}
                 level={roadmapLevelLabel(index)}
                 nodes={[...FRONTEND_PATH_DEMO.nodes]}
               />

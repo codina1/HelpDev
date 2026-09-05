@@ -104,7 +104,7 @@ function resolveHref(item: LearningPathItem, roadmaps: PublishedPath[]): string 
     const title = roadmap.title.toLowerCase();
     return keys.some((key) => title.includes(key));
   });
-  return hit ? `/roadmap?slug=${encodeURIComponent(hit.slug)}` : item.href;
+  return hit ? `/roadmap/${encodeURIComponent(hit.slug)}` : item.href;
 }
 
 /**

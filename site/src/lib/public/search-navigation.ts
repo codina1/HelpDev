@@ -19,7 +19,7 @@ export function hrefForSearchResult(item: SearchResultItemDto): string {
     return slug ? `/articles/${encodeURIComponent(slug)}` : "/articles";
   }
   if (type === "roadmap" || type === "roadmapstep") {
-    return slug ? `/roadmap?slug=${encodeURIComponent(slug)}` : "/roadmap";
+    return slug ? `/roadmap/${encodeURIComponent(slug)}` : "/roadmap";
   }
   if (type === "tool") {
     return slug ? `/tools/${encodeURIComponent(slug)}` : "/toolbox";

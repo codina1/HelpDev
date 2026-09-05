@@ -53,7 +53,7 @@ describe("homepage learning paths", () => {
         roadmaps={[{ title: "Frontend Engineer Path", slug: "frontend-path" }]}
       />,
     );
-    expect(html).toContain("/roadmap?slug=frontend-path");
+    expect(html).toContain("/roadmap/frontend-path");
   });
 
   it("keeps HomePathsSection as a thin alias", () => {

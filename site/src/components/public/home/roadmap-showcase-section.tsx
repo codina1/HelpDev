@@ -41,7 +41,7 @@ export function RoadmapShowcaseSection({ items }: RoadmapShowcaseSectionProps) {
             <RoadmapCard
               key={item.id}
               title={item.title}
-              href={`/roadmap?slug=${encodeURIComponent(item.slug)}`}
+              href={`/roadmap/${encodeURIComponent(item.slug)}`}
               summary={null}
             />
           ))}

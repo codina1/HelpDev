@@ -19,7 +19,7 @@ export function publicHrefForContent(item: Pick<ContentSummaryDto, "type" | "slu
   const t = item.type.toLowerCase();
   if (t === "tool") return `/tools/${encodeURIComponent(item.slug)}`;
   if (t === "roadmap" || t === "roadmapstep") {
-    return `/roadmap?slug=${encodeURIComponent(item.slug)}`;
+    return `/roadmap/${encodeURIComponent(item.slug)}`;
   }
   if (t === "course") return `/courses?slug=${encodeURIComponent(item.slug)}`;
   if (t === "prompt") return `/prompt-lab?slug=${encodeURIComponent(item.slug)}`;
