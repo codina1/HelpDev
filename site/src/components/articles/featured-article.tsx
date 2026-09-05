@@ -32,61 +32,20 @@ type FeaturedArticleProps = {
   article: MarketplaceArticle;
 };
 
-/** Horizontal featured card — ~205px · text 55% · image 45%. */
+/** Featured card — 205px · image LEFT 44% · text RIGHT · no clipped CTA. */
 export function FeaturedArticle({ article }: FeaturedArticleProps) {
   return (
     <article
       className="group relative overflow-hidden rounded-[16px] border border-[rgba(139,92,246,0.22)] bg-[linear-gradient(135deg,rgba(17,24,39,0.96),rgba(15,23,42,0.9))] shadow-[0_0_36px_rgba(124,58,237,0.12)] backdrop-blur-xl"
-      dir="rtl"
     >
-      <div className="grid h-auto items-stretch md:h-[205px] md:grid-cols-[minmax(0,1.22fr)_minmax(0,0.78fr)]">
-        <div className="flex min-w-0 flex-col justify-center px-5 py-4 sm:px-6 md:py-0 md:ps-7 md:pe-5">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center rounded-lg border border-[#7C3AED]/40 bg-[#7C3AED]/20 px-2 py-1 text-[10.5px] font-bold text-[#E9D5FF]">
-              ⭐ مقاله ویژه
-            </span>
-            <span className="inline-flex items-center rounded-lg border border-[#3B82F6]/35 bg-[#3B82F6]/15 px-2 py-1 text-[10.5px] font-bold text-[#BFDBFE]">
-              {article.categoryLabel}
-            </span>
-          </div>
-
-          <h2 className="mt-2 line-clamp-2 text-[20px] font-extrabold leading-[1.35] tracking-tight text-white sm:text-[24px] md:text-[26px]">
-            {article.title}
-          </h2>
-          <p className="mt-1.5 line-clamp-2 max-w-[520px] text-[12.5px] leading-6 text-[#94A3B8] sm:text-[13px]">
-            {article.description}
-          </p>
-
-          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-[12px] font-semibold text-[#94A3B8]">
-            <span className="inline-flex items-center gap-2">
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/[0.1] bg-gradient-to-br from-[#7C3AED]/45 to-[#3B82F6]/25 text-[10px] font-bold text-white">
-                {article.authorInitials}
-              </span>
-              {article.author}
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <ClockIcon className="h-3.5 w-3.5" />
-              {article.readingMinutes.toLocaleString("fa-IR")} دقیقه مطالعه
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <EyeIcon className="h-3.5 w-3.5" />
-              {formatViews(article.views)} بازدید
-            </span>
-          </div>
-
-          <div className="mt-3">
-            <Link
-              href={`/articles/${article.slug}`}
-              className="focus-ring inline-flex h-9 items-center justify-center rounded-xl bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] px-4 text-[12.5px] font-bold text-white no-underline shadow-[0_0_16px_rgba(124,58,237,0.35)] transition hover:brightness-110"
-            >
-              مطالعه مقاله
-            </Link>
-          </div>
-        </div>
-
+      {/* LTR: image left · text right */}
+      <div
+        className="grid h-auto items-stretch md:h-[205px] md:grid-cols-[44%_minmax(0,1fr)]"
+        dir="ltr"
+      >
         <div
           className={[
-            "relative min-h-[160px] overflow-hidden bg-gradient-to-br md:min-h-0",
+            "relative min-h-[140px] overflow-hidden bg-gradient-to-br md:min-h-0",
             article.coverTone,
           ].join(" ")}
         >
@@ -104,9 +63,53 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
             className="absolute inset-0 h-full w-full object-cover mix-blend-screen transition duration-300 group-hover:scale-[1.03]"
           />
           <span
-            className="pointer-events-none absolute inset-y-0 right-0 hidden w-10 bg-gradient-to-l from-[rgba(17,24,39,0.65)] to-transparent md:block"
+            className="pointer-events-none absolute inset-y-0 left-auto right-0 hidden w-8 bg-gradient-to-l from-[rgba(17,24,39,0.55)] to-transparent md:block"
             aria-hidden
           />
+        </div>
+
+        <div className="flex min-w-0 flex-col justify-center px-4 py-3.5 sm:px-5 md:py-3 md:ps-5 md:pe-5" dir="rtl">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="inline-flex items-center rounded-lg border border-[#7C3AED]/40 bg-[#7C3AED]/20 px-2 py-0.5 text-[10px] font-bold text-[#E9D5FF]">
+              ⭐ مقاله ویژه
+            </span>
+            <span className="inline-flex items-center rounded-lg border border-[#3B82F6]/35 bg-[#3B82F6]/15 px-2 py-0.5 text-[10px] font-bold text-[#BFDBFE]">
+              {article.categoryLabel}
+            </span>
+          </div>
+
+          <h2 className="mt-1.5 line-clamp-2 text-[18px] font-extrabold leading-[1.3] tracking-tight text-white sm:text-[22px] md:text-[24px]">
+            {article.title}
+          </h2>
+          <p className="mt-1 line-clamp-2 text-[12px] leading-5 text-[#94A3B8] sm:text-[12.5px] sm:leading-6">
+            {article.description}
+          </p>
+
+          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11.5px] font-semibold text-[#94A3B8]">
+            <span className="inline-flex items-center gap-1.5">
+              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-white/[0.1] bg-gradient-to-br from-[#7C3AED]/45 to-[#3B82F6]/25 text-[9px] font-bold text-white">
+                {article.authorInitials}
+              </span>
+              {article.author}
+            </span>
+            <span className="inline-flex items-center gap-1">
+              <ClockIcon className="h-3.5 w-3.5" />
+              {article.readingMinutes.toLocaleString("fa-IR")} دقیقه مطالعه
+            </span>
+            <span className="inline-flex items-center gap-1">
+              <EyeIcon className="h-3.5 w-3.5" />
+              {formatViews(article.views)} بازدید
+            </span>
+          </div>
+
+          <div className="mt-2.5">
+            <Link
+              href={`/articles/${article.slug}`}
+              className="focus-ring inline-flex h-8 items-center justify-center rounded-xl bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] px-3.5 text-[12px] font-bold text-white no-underline shadow-[0_0_14px_rgba(124,58,237,0.35)] transition hover:brightness-110"
+            >
+              مطالعه مقاله
+            </Link>
+          </div>
         </div>
       </div>
     </article>

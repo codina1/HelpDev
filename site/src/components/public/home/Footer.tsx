@@ -54,16 +54,20 @@ const SOCIAL_LINKS = [
 ] as const;
 
 /**
- * Site Footer — Design Reference columns, brand slot, social icon slots.
+ * Site Footer — brand LEFT · link columns to the right (visual LTR columns).
  */
 export function Footer() {
   const year = new Date().getFullYear().toLocaleString("fa-IR", { useGrouping: false });
 
   return (
-    <footer className="home-footer border-t border-white/[0.08] bg-[#050816]" dir="rtl">
-      <PublicContainer size="wide" className="py-7 sm:py-8">
-        <div className="grid gap-7 lg:grid-cols-[1.2fr_repeat(4,minmax(0,1fr))] lg:gap-6">
-          <div className="max-w-sm text-start">
+    <footer className="home-footer border-t border-white/[0.08] bg-[#050816]">
+      <PublicContainer size="wide" className="py-6 sm:py-7">
+        {/* Visual: brand left · columns right */}
+        <div
+          dir="ltr"
+          className="grid gap-6 lg:grid-cols-[1.15fr_repeat(4,minmax(0,1fr))] lg:gap-5"
+        >
+          <div className="max-w-sm text-start" dir="rtl">
             <Link href="/" className="focus-ring inline-flex items-center gap-2.5 no-underline">
               <span className="flex h-8 w-8 items-center justify-center" aria-hidden>
                 <img
@@ -77,11 +81,11 @@ export function Footer() {
               </span>
               <span className="text-[15px] font-semibold tracking-tight text-white">{SITE.name}</span>
             </Link>
-            <p className="mt-2.5 text-[13px] leading-6 text-[#94A3B8]">{SITE.description}</p>
-            <div className="mt-4 flex items-center gap-2">
+            <p className="mt-2 text-[12.5px] leading-6 text-[#94A3B8]">{SITE.description}</p>
+            <div className="mt-3.5 flex items-center gap-2">
               {SOCIAL_LINKS.map((social) => {
                 const className =
-                  "focus-ring inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-white/[0.08] bg-[#0B1224] transition hover:border-[rgba(124,58,237,0.45)] hover:shadow-[0_0_18px_rgba(124,58,237,0.25)]";
+                  "focus-ring inline-flex h-8 w-8 items-center justify-center rounded-[10px] border border-white/[0.08] bg-[#0B1224] transition hover:border-[rgba(124,58,237,0.45)] hover:shadow-[0_0_18px_rgba(124,58,237,0.25)]";
                 const icon = (
                   <img
                     src={social.iconSrc}
@@ -121,7 +125,10 @@ export function Footer() {
           <FooterColumn title="جامعه" links={COMMUNITY_LINKS} />
         </div>
 
-        <div className="mt-6 flex flex-col gap-3 border-t border-white/[0.08] pt-5 sm:flex-row sm:items-center sm:justify-between">
+        <div
+          dir="rtl"
+          className="mt-5 flex flex-col gap-3 border-t border-white/[0.08] pt-4 sm:flex-row sm:items-center sm:justify-between"
+        >
           <p className="text-[12px] text-[#64748B]">
             © {year} {SITE.name}. تمامی حقوق محفوظ است.
           </p>
@@ -147,9 +154,9 @@ function FooterColumn({
   links: readonly { href: string; label: string; external?: boolean }[];
 }) {
   return (
-    <div className="text-start">
+    <div className="text-start" dir="rtl">
       <p className="text-[12px] font-bold tracking-wide text-white">{title}</p>
-      <ul className="mt-3 space-y-2">
+      <ul className="mt-2.5 space-y-1.5">
         {links.map((link) => (
           <li key={`${title}-${link.href}-${link.label}`}>
             {link.external || link.href.startsWith("http") ? (
@@ -157,14 +164,14 @@ function FooterColumn({
                 href={link.href}
                 target="_blank"
                 rel="noreferrer"
-                className="focus-ring text-[13px] text-[#94A3B8] no-underline transition hover:text-white"
+                className="focus-ring text-[12.5px] text-[#94A3B8] no-underline transition hover:text-white"
               >
                 {link.label}
               </a>
             ) : (
               <Link
                 href={link.href}
-                className="focus-ring text-[13px] text-[#94A3B8] no-underline transition hover:text-white"
+                className="focus-ring text-[12.5px] text-[#94A3B8] no-underline transition hover:text-white"
               >
                 {link.label}
               </Link>

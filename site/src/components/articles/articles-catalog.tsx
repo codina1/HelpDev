@@ -23,7 +23,7 @@ function toFa(value: number): string {
 }
 
 /**
- * Articles catalog — categories · sidebar 240px (RTL right) · featured · 4-col grid.
+ * Articles catalog — sidebar LEFT · articles RIGHT · dense spacing.
  */
 export function ArticlesCatalog() {
   const [quickCategory, setQuickCategory] = useState<ArticleCategoryId>("all");
@@ -92,9 +92,10 @@ export function ArticlesCatalog() {
   const totalLabel = isPristine ? ARTICLES_DISPLAY_TOTAL : visible.length;
 
   return (
-    <section id="articles-catalog" className="bg-[#070b18] pb-12 pt-0" dir="rtl">
+    <section id="articles-catalog" className="bg-[#070b18] pb-8 pt-0" dir="rtl">
       <ArticlesContainer>
-        <div className="mb-8 min-w-0">
+        {/* Categories → featured ~24px */}
+        <div className="mb-6 min-w-0">
           <ArticleCategoryChipBar
             active={quickCategory}
             onSelect={(value) => {
@@ -115,9 +116,9 @@ export function ArticlesCatalog() {
           <p className="text-[12.5px] font-semibold text-[#64748B]">{toFa(totalLabel)} مقاله</p>
         </div>
 
-        {/* RTL: sidebar first → right · articles → left · gap 24px */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
-          <div className={mobileFiltersOpen ? "block" : "hidden lg:block"}>
+        {/* Visual: sidebar LEFT · articles RIGHT (explicit LTR columns) */}
+        <div dir="ltr" className="grid grid-cols-1 gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
+          <div className={mobileFiltersOpen ? "block" : "hidden lg:block"} dir="rtl">
             <ArticleFilter
               value={filters}
               onChange={(next) => {
@@ -127,7 +128,7 @@ export function ArticlesCatalog() {
             />
           </div>
 
-          <div className="min-w-0">
+          <div className="min-w-0" dir="rtl">
             {visible.length === 0 ? (
               <p
                 className="rounded-[16px] border border-dashed border-white/[0.12] px-4 py-12 text-center text-[13px] text-[#94A3B8]"
@@ -138,12 +139,12 @@ export function ArticlesCatalog() {
             ) : (
               <>
                 {featured && safePage === 1 ? (
-                  <div className="mb-5">
+                  <div className="mb-3.5">
                     <FeaturedArticle article={featured} />
                   </div>
                 ) : null}
 
-                <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <ul className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
                   {pageItems.map((article, index) => (
                     <li key={`${article.id}-${safePage}-${index}`}>
                       <ArticleCard article={article} />
@@ -151,7 +152,7 @@ export function ArticlesCatalog() {
                   ))}
                 </ul>
 
-                <div className="mt-7">
+                <div className="mt-6">
                   <ArticlesPagination page={safePage} totalPages={totalPages} onPageChange={setPage} />
                 </div>
               </>

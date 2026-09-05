@@ -44,19 +44,19 @@ type ArticleCardProps = {
   article: MarketplaceArticle;
 };
 
-/** Compact article card — ~260px · cover ~42% · 4-col friendly. */
+/** Dense article card — ~176px · cover ~90px · compact meta row. */
 export function ArticleCard({ article }: ArticleCardProps) {
   const badgeClass = BADGE_TONE[article.category] ?? BADGE_TONE.ai;
 
   return (
     <Link
       href={`/articles/${article.slug}`}
-      className="group flex h-[260px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827]/90 no-underline shadow-[0_4px_16px_rgba(2,6,23,0.28)] backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-[rgba(168,85,247,0.5)] hover:shadow-[0_0_28px_rgba(124,58,237,0.26)]"
+      className="group flex h-[176px] min-w-0 flex-col overflow-hidden rounded-[14px] border border-white/[0.08] bg-[#111827]/90 no-underline shadow-[0_4px_14px_rgba(2,6,23,0.28)] backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-[rgba(168,85,247,0.5)] hover:shadow-[0_0_24px_rgba(124,58,237,0.24)]"
       dir="rtl"
     >
       <div
         className={[
-          "relative h-[110px] shrink-0 overflow-hidden bg-gradient-to-br",
+          "relative h-[90px] shrink-0 overflow-hidden bg-gradient-to-br",
           article.coverTone,
         ].join(" ")}
       >
@@ -68,18 +68,18 @@ export function ArticleCard({ article }: ArticleCardProps) {
           src={article.coverImage}
           alt=""
           width={320}
-          height={110}
+          height={90}
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 h-full w-full object-cover mix-blend-screen transition duration-300 group-hover:scale-[1.05]"
+          className="absolute inset-0 h-full w-full object-cover mix-blend-screen transition duration-300 group-hover:scale-[1.04]"
         />
         <span
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[#111827] to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-6 bg-gradient-to-t from-[#111827] to-transparent"
           aria-hidden
         />
         <span
           className={[
-            "absolute right-2.5 top-2.5 z-[1] inline-flex items-center rounded-md border px-1.5 py-0.5 text-[10px] font-bold backdrop-blur-sm",
+            "absolute right-2 top-2 z-[1] inline-flex items-center rounded-md border px-1.5 py-0.5 text-[9.5px] font-bold backdrop-blur-sm",
             badgeClass,
           ].join(" ")}
         >
@@ -87,27 +87,27 @@ export function ArticleCard({ article }: ArticleCardProps) {
         </span>
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col px-3 pb-3 pt-2.5">
-        <h3 className="line-clamp-2 text-[13.5px] font-bold leading-[1.55] text-white transition group-hover:text-[#E9D5FF]">
+      <div className="flex min-h-0 flex-1 flex-col px-2.5 pb-2 pt-1.5">
+        <h3 className="line-clamp-2 text-[12.5px] font-bold leading-[1.45] text-white transition group-hover:text-[#E9D5FF]">
           {article.title}
         </h3>
-        <p className="mt-1 line-clamp-2 text-[11.5px] leading-[1.7] text-[#94A3B8]">
+        <p className="mt-0.5 line-clamp-2 text-[10.5px] leading-[1.55] text-[#94A3B8]">
           {article.description}
         </p>
 
-        <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/[0.06] pt-2.5 text-[10.5px] font-semibold text-[#94A3B8]">
-          <span className="inline-flex items-center gap-2.5">
-            <span className="inline-flex items-center gap-1">
+        <div className="mt-auto flex items-center justify-between gap-1.5 border-t border-white/[0.06] pt-1.5 text-[10px] font-semibold text-[#94A3B8]">
+          <span className="inline-flex items-center gap-2">
+            <span className="inline-flex items-center gap-0.5">
               <EyeIcon className="h-3 w-3" />
               {formatViews(article.views)}
             </span>
-            <span className="inline-flex items-center gap-1">
+            <span className="inline-flex items-center gap-0.5">
               <ClockIcon className="h-3 w-3" />
               {article.readingMinutes.toLocaleString("fa-IR")} دقیقه
             </span>
           </span>
           <span
-            className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-white/[0.1] bg-gradient-to-br from-[#7C3AED]/40 to-[#3B82F6]/20 text-[9px] font-bold text-white"
+            className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-white/[0.1] bg-gradient-to-br from-[#7C3AED]/40 to-[#3B82F6]/20 text-[8px] font-bold text-white"
             title={article.author}
           >
             {article.authorInitials}
