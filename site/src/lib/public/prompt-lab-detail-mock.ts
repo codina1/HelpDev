@@ -1,5 +1,6 @@
 import { isPromptLabCategorySlug, type PromptLabCategorySlug } from "@/lib/public/prompt-lab-covers";
 import { PROMPT_LAB_PROMPTS, type PromptLabCardItem } from "@/lib/public/prompt-lab-mock";
+import { PROMPT_LAB_SAMPLE_PROMPTS } from "@/data/prompt-lab";
 
 export type PromptLabMediaType = "Text" | "Image" | "Audio" | "Video";
 
@@ -51,6 +52,28 @@ const AUTHOR_BY_CATEGORY: Record<PromptLabCategorySlug, PromptLabAuthor> = {
   writing: PROMPT_LAB_AUTHORS.kaveh,
   marketing: PROMPT_LAB_AUTHORS.kaveh,
 };
+
+/** Map UI/sample category slugs onto the canonical Prompt Lab taxonomy. */
+function normalizeCategorySlug(value: string): PromptLabCategorySlug {
+  if (isPromptLabCategorySlug(value)) return value;
+  const key = value.trim().toLowerCase();
+  if (key === "code" || key === "devops" || key === "data") return "coding";
+  if (key === "content") return "writing";
+  if (key === "design") return "design";
+  if (key === "other") return "education";
+  return "writing";
+}
+
+function localPromptCatalog(): readonly PromptLabCardItem[] {
+  const seen = new Set<string>();
+  const items: PromptLabCardItem[] = [];
+  for (const item of [...PROMPT_LAB_SAMPLE_PROMPTS, ...PROMPT_LAB_PROMPTS]) {
+    if (seen.has(item.slug)) continue;
+    seen.add(item.slug);
+    items.push(item);
+  }
+  return items;
+}
 
 const TAGS_BY_SLUG: Record<string, readonly string[]> = {
   "system-boundary-review": ["معماری", "ماژول", "قرارداد دامنه"],
@@ -220,6 +243,18 @@ RTL. Dark premium. Subtle glow on hover.
 
 Card
 {{card}}`,
+  "advanced-react-component": `You are a senior React developer and UI/UX expert.
+
+Create a reusable React component based on these requirements:
+
+- Use TypeScript
+- Use Tailwind CSS
+- Follow best practices
+- Make responsive components
+- Prefer accessible, composition-friendly APIs
+
+Requirements
+{{requirements}}`,
 };
 
 function mediaTypeFor(categorySlug: PromptLabCategorySlug): PromptLabMediaType {
@@ -240,9 +275,10 @@ function contentFor(item: PromptLabCardItem): string {
 }
 
 export function toPromptLabDetail(item: PromptLabCardItem): PromptLabDetail {
-  const categorySlug = isPromptLabCategorySlug(item.categorySlug) ? item.categorySlug : "writing";
+  const categorySlug = normalizeCategorySlug(item.categorySlug);
   return {
     ...item,
+    categorySlug,
     author: AUTHOR_BY_CATEGORY[categorySlug],
     content: contentFor(item),
     tags: tagsFor(item),
@@ -250,19 +286,20 @@ export function toPromptLabDetail(item: PromptLabCardItem): PromptLabDetail {
   };
 }
 
-/** Local detail catalog — no API. */
+/** Local detail catalog — covers listing samples + legacy library mocks. */
 export function getPromptLabDetail(slug: string): PromptLabDetail | null {
-  const item = PROMPT_LAB_PROMPTS.find((prompt) => prompt.slug === slug);
+  const item = localPromptCatalog().find((prompt) => prompt.slug === slug);
   return item ? toPromptLabDetail(item) : null;
 }
 
 export function relatedPromptLabPrompts(slug: string, limit = 3): PromptLabCardItem[] {
-  const current = PROMPT_LAB_PROMPTS.find((prompt) => prompt.slug === slug);
+  const catalog = localPromptCatalog();
+  const current = catalog.find((prompt) => prompt.slug === slug);
   if (!current) return [];
-  const sameCategory = PROMPT_LAB_PROMPTS.filter(
+  const sameCategory = catalog.filter(
     (prompt) => prompt.slug !== slug && prompt.categorySlug === current.categorySlug,
   );
-  const rest = PROMPT_LAB_PROMPTS.filter(
+  const rest = catalog.filter(
     (prompt) => prompt.slug !== slug && prompt.categorySlug !== current.categorySlug,
   );
   return [...sameCategory, ...rest].slice(0, limit);
@@ -271,8 +308,10 @@ export function relatedPromptLabPrompts(slug: string, limit = 3): PromptLabCardI
 export function similarPromptLabPrompts(slug: string, limit = 4): PromptLabCardItem[] {
   const current = getPromptLabDetail(slug);
   if (!current) return [];
+  const catalog = localPromptCatalog();
   const currentTags = new Set(current.tags);
-  return PROMPT_LAB_PROMPTS.filter((prompt) => prompt.slug !== slug)
+  return catalog
+    .filter((prompt) => prompt.slug !== slug)
     .slice()
     .sort((a, b) => {
       const detailA = toPromptLabDetail(a);

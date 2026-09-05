@@ -57,11 +57,11 @@ describe("public prompt lab detail page", () => {
     expect(html).toContain("بازگشت به Prompt Lab");
   });
 
-  it("loads prompt details through the existing API client", () => {
+  it("loads prompt details through the API with mock fallback", () => {
     const page = readFileSync(join(process.cwd(), "src/app/prompt-lab/[slug]/page.tsx"), "utf8");
     expect(page).toContain("getPromptBySlug");
     expect(page).toContain("fetchPromptLabCatalog");
-    expect(page).not.toContain("getPromptLabDetail");
+    expect(page).toContain("getPromptLabDetail");
     expect(page).not.toContain("@/components/admin");
   });
 });
