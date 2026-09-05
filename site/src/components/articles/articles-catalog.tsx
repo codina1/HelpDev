@@ -12,18 +12,21 @@ import { ArticleCategoryChipBar } from "@/components/articles/category-chip";
 import { FeaturedArticle } from "@/components/articles/featured-article";
 import { ArticlesPagination } from "@/components/articles/pagination";
 import {
-  ARTICLES_DISPLAY_TOTAL,
   ARTICLES_PAGE_SIZE,
-  MARKETPLACE_ARTICLES,
   type ArticleCategoryId,
+  type MarketplaceArticle,
 } from "@/data/articles";
 
 function toFa(value: number): string {
   return value.toLocaleString("fa-IR");
 }
 
-/** Catalog — sidebar LEFT · articles RIGHT · tight vertical rhythm. */
-export function ArticlesCatalog() {
+type ArticlesCatalogProps = {
+  articles: MarketplaceArticle[];
+};
+
+/** Catalog — sidebar LEFT · articles RIGHT · fed by published API articles. */
+export function ArticlesCatalog({ articles }: ArticlesCatalogProps) {
   const [quickCategory, setQuickCategory] = useState<ArticleCategoryId>("all");
   const [filters, setFilters] = useState<ArticlesFiltersState>(DEFAULT_ARTICLES_FILTERS);
   const [page, setPage] = useState(1);
@@ -31,7 +34,7 @@ export function ArticlesCatalog() {
 
   const visible = useMemo(() => {
     const query = filters.query.trim().toLowerCase();
-    const next = MARKETPLACE_ARTICLES.filter((article) => {
+    const next = articles.filter((article) => {
       if (quickCategory !== "all" && article.category !== quickCategory) return false;
       if (filters.topic !== "all" && article.category !== filters.topic) return false;
       if (filters.level !== "all" && article.level !== filters.level) return false;
@@ -54,7 +57,7 @@ export function ArticlesCatalog() {
       default:
         return next.slice().sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
     }
-  }, [filters, quickCategory]);
+  }, [articles, filters, quickCategory]);
 
   const featured = useMemo(() => {
     return visible.find((item) => item.featured) ?? visible[0] ?? null;
@@ -65,29 +68,13 @@ export function ArticlesCatalog() {
     return visible.filter((item) => item.id !== featured.id);
   }, [featured, visible]);
 
-  const isPristine =
-    quickCategory === "all" &&
-    !filters.query.trim() &&
-    filters.topic === "all" &&
-    filters.level === "all";
-
-  const totalPages = isPristine
-    ? Math.max(20, Math.ceil(ARTICLES_DISPLAY_TOTAL / ARTICLES_PAGE_SIZE))
-    : Math.max(1, Math.ceil(gridSource.length / ARTICLES_PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(Math.max(gridSource.length, 1) / ARTICLES_PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
 
   const pageItems = useMemo(() => {
     if (gridSource.length === 0) return [];
-    if (!isPristine) {
-      return gridSource.slice((safePage - 1) * ARTICLES_PAGE_SIZE, safePage * ARTICLES_PAGE_SIZE);
-    }
-    const start = (safePage - 1) * ARTICLES_PAGE_SIZE;
-    return Array.from({ length: ARTICLES_PAGE_SIZE }, (_, index) => {
-      return gridSource[(start + index) % gridSource.length];
-    });
-  }, [gridSource, isPristine, safePage]);
-
-  const totalLabel = isPristine ? ARTICLES_DISPLAY_TOTAL : visible.length;
+    return gridSource.slice((safePage - 1) * ARTICLES_PAGE_SIZE, safePage * ARTICLES_PAGE_SIZE);
+  }, [gridSource, safePage]);
 
   return (
     <section id="articles-catalog" className="bg-[#070b18] pb-4 pt-0" dir="rtl">
@@ -99,6 +86,7 @@ export function ArticlesCatalog() {
               setQuickCategory(value);
               setPage(1);
             }}
+            totalCount={articles.length}
           />
         </div>
 
@@ -110,7 +98,7 @@ export function ArticlesCatalog() {
           >
             فیلترها
           </button>
-          <p className="text-[12px] font-semibold text-[#64748B]">{toFa(totalLabel)} مقاله</p>
+          <p className="text-[12px] font-semibold text-[#64748B]">{toFa(visible.length)} مقاله</p>
         </div>
 
         <div
@@ -124,11 +112,19 @@ export function ArticlesCatalog() {
                 setFilters(next);
                 setPage(1);
               }}
+              articles={articles}
             />
           </div>
 
           <div className="min-w-0" dir="rtl">
-            {visible.length === 0 ? (
+            {articles.length === 0 ? (
+              <p
+                className="rounded-[14px] border border-dashed border-white/[0.12] px-4 py-10 text-center text-[13px] text-[#94A3B8]"
+                role="status"
+              >
+                هنوز مقاله‌ای منتشر نشده است.
+              </p>
+            ) : visible.length === 0 ? (
               <p
                 className="rounded-[14px] border border-dashed border-white/[0.12] px-4 py-10 text-center text-[13px] text-[#94A3B8]"
                 role="status"
@@ -143,13 +139,15 @@ export function ArticlesCatalog() {
                   </div>
                 ) : null}
 
-                <ul className="grid auto-rows-fr grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
-                  {pageItems.map((article, index) => (
-                    <li key={`${article.id}-${safePage}-${index}`} className="min-w-0">
-                      <ArticleCard article={article} />
-                    </li>
-                  ))}
-                </ul>
+                {pageItems.length > 0 ? (
+                  <ul className="grid auto-rows-fr grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
+                    {pageItems.map((article) => (
+                      <li key={article.id} className="min-w-0">
+                        <ArticleCard article={article} />
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
 
                 <div className="mt-4 flex justify-center">
                   <ArticlesPagination page={safePage} totalPages={totalPages} onPageChange={setPage} />

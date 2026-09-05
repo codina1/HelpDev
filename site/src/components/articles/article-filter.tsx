@@ -8,6 +8,7 @@ import {
   type ArticleCategoryId,
   type ArticleLevelId,
   type ArticleSortId,
+  type MarketplaceArticle,
 } from "@/data/articles";
 
 export type ArticlesFiltersState = {
@@ -27,6 +28,7 @@ export const DEFAULT_ARTICLES_FILTERS: ArticlesFiltersState = {
 type Props = {
   value: ArticlesFiltersState;
   onChange: (next: ArticlesFiltersState) => void;
+  articles?: MarketplaceArticle[];
 };
 
 function SearchIcon({ className }: { className?: string }) {
@@ -87,7 +89,12 @@ function RadioRow({
 }
 
 /** Dense filter sidebar — content-height only. */
-export function ArticleFilter({ value, onChange }: Props) {
+export function ArticleFilter({ value, onChange, articles = [] }: Props) {
+  const topicCounts = ARTICLE_SIDEBAR_TOPICS.map((item) => ({
+    ...item,
+    count: articles.filter((article) => article.category === item.id).length,
+  }));
+
   return (
     <aside
       className="h-fit rounded-[14px] border border-white/[0.08] bg-[#0f172a]/80 p-2.5 shadow-[0_8px_28px_rgba(2,6,23,0.35)] backdrop-blur-xl"
@@ -111,7 +118,7 @@ export function ArticleFilter({ value, onChange }: Props) {
 
       <div className="mt-2 space-y-2">
         <FilterGroup title="موضوعات">
-          {ARTICLE_SIDEBAR_TOPICS.map((item) => (
+          {topicCounts.map((item) => (
             <RadioRow
               key={item.id}
               name="articles-topic"

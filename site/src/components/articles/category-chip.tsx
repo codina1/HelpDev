@@ -6,6 +6,8 @@ import { ARTICLE_CATEGORY_CHIPS, type ArticleCategoryId } from "@/data/articles"
 type CategoryChipBarProps = {
   active: ArticleCategoryId;
   onSelect: (value: ArticleCategoryId) => void;
+  /** Real published count for the «همه» chip. */
+  totalCount?: number;
 };
 
 const ICON_COLOR: Record<string, string> = {
@@ -98,7 +100,7 @@ function CategoryIcon({ name, color }: { name: string; color: string }) {
 }
 
 /** Compact category pills — one row on desktop · scroll only on small screens. */
-export function ArticleCategoryChipBar({ active, onSelect }: CategoryChipBarProps) {
+export function ArticleCategoryChipBar({ active, onSelect, totalCount }: CategoryChipBarProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -131,6 +133,10 @@ export function ArticleCategoryChipBar({ active, onSelect }: CategoryChipBarProp
       >
         {ARTICLE_CATEGORY_CHIPS.map((item) => {
           const isActive = active === item.id;
+          const label =
+            item.id === "all" && totalCount != null
+              ? `${item.label} ${totalCount.toLocaleString("fa-IR")}`
+              : item.label;
           return (
             <button
               key={item.id}
@@ -144,7 +150,7 @@ export function ArticleCategoryChipBar({ active, onSelect }: CategoryChipBarProp
                   : "border-white/10 bg-[#0F1626]/90 text-[#E5E7EB] backdrop-blur-sm hover:border-[rgba(168,85,247,0.4)] hover:text-white",
               ].join(" ")}
             >
-              <span className="whitespace-nowrap">{item.label}</span>
+              <span className="whitespace-nowrap">{label}</span>
               <CategoryIcon
                 name={item.icon}
                 color={isActive ? "#FFFFFF" : ICON_COLOR[item.icon] ?? "#A78BFA"}
