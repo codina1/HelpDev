@@ -21,8 +21,9 @@ export function AppShell({ children }: AppShellProps) {
   const isRoadmap = pathname?.startsWith("/roadmap");
   const isPromptLab = pathname?.startsWith("/prompt-lab");
   const isToolbox = pathname?.startsWith("/toolbox") || pathname?.startsWith("/tools");
+  const isCourses = pathname?.startsWith("/courses");
   const usesFullBleedMain =
-    isHome || isArticles || isNews || isRoadmap || isPromptLab || isToolbox;
+    isHome || isArticles || isNews || isRoadmap || isPromptLab || isToolbox || isCourses;
 
   return (
     <AuthProvider>
