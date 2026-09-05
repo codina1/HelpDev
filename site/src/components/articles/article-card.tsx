@@ -44,19 +44,22 @@ type ArticleCardProps = {
   article: MarketplaceArticle;
 };
 
-/** Dense article card — ~176px · cover ~90px · compact meta row. */
+/**
+ * Article card — flex column · equal-height via grid · NO fixed card height
+ * (fixed height was clipping row-2 text).
+ */
 export function ArticleCard({ article }: ArticleCardProps) {
   const badgeClass = BADGE_TONE[article.category] ?? BADGE_TONE.ai;
 
   return (
     <Link
       href={`/articles/${article.slug}`}
-      className="group flex h-[176px] min-w-0 flex-col overflow-hidden rounded-[14px] border border-white/[0.08] bg-[#111827]/90 no-underline shadow-[0_4px_14px_rgba(2,6,23,0.28)] backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-[rgba(168,85,247,0.5)] hover:shadow-[0_0_24px_rgba(124,58,237,0.24)]"
+      className="group flex h-full min-h-0 min-w-0 flex-col rounded-[14px] border border-white/[0.08] bg-[#111827]/90 no-underline shadow-[0_4px_14px_rgba(2,6,23,0.28)] backdrop-blur-sm transition duration-300 hover:-translate-y-0.5 hover:border-[rgba(168,85,247,0.5)] hover:shadow-[0_0_24px_rgba(124,58,237,0.24)]"
       dir="rtl"
     >
       <div
         className={[
-          "relative h-[90px] shrink-0 overflow-hidden bg-gradient-to-br",
+          "relative aspect-[16/9] w-full shrink-0 overflow-hidden rounded-t-[14px] bg-gradient-to-br",
           article.coverTone,
         ].join(" ")}
       >
@@ -68,7 +71,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
           src={article.coverImage}
           alt=""
           width={320}
-          height={90}
+          height={180}
           loading="lazy"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover mix-blend-screen transition duration-300 group-hover:scale-[1.04]"
@@ -87,11 +90,11 @@ export function ArticleCard({ article }: ArticleCardProps) {
         </span>
       </div>
 
-      <div className="flex min-h-0 flex-1 flex-col px-2.5 pb-2 pt-1.5">
+      <div className="flex min-h-0 flex-1 flex-col gap-0.5 px-2.5 pb-2.5 pt-1.5">
         <h3 className="line-clamp-2 text-[12.5px] font-bold leading-[1.45] text-white transition group-hover:text-[#E9D5FF]">
           {article.title}
         </h3>
-        <p className="mt-0.5 line-clamp-2 text-[10.5px] leading-[1.55] text-[#94A3B8]">
+        <p className="line-clamp-2 text-[10.5px] leading-[1.55] text-[#94A3B8]">
           {article.description}
         </p>
 
@@ -107,7 +110,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
             </span>
           </span>
           <span
-            className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-white/[0.1] bg-gradient-to-br from-[#7C3AED]/40 to-[#3B82F6]/20 text-[8px] font-bold text-white"
+            className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-white/[0.1] bg-gradient-to-br from-[#7C3AED]/40 to-[#3B82F6]/20 text-[8px] font-bold text-white"
             title={article.author}
           >
             {article.authorInitials}

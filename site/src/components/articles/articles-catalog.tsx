@@ -22,9 +22,7 @@ function toFa(value: number): string {
   return value.toLocaleString("fa-IR");
 }
 
-/**
- * Articles catalog — sidebar LEFT · articles RIGHT · dense spacing.
- */
+/** Catalog — sidebar LEFT · articles RIGHT · tight vertical rhythm. */
 export function ArticlesCatalog() {
   const [quickCategory, setQuickCategory] = useState<ArticleCategoryId>("all");
   const [filters, setFilters] = useState<ArticlesFiltersState>(DEFAULT_ARTICLES_FILTERS);
@@ -92,10 +90,9 @@ export function ArticlesCatalog() {
   const totalLabel = isPristine ? ARTICLES_DISPLAY_TOTAL : visible.length;
 
   return (
-    <section id="articles-catalog" className="bg-[#070b18] pb-8 pt-0" dir="rtl">
+    <section id="articles-catalog" className="bg-[#070b18] pb-4 pt-0" dir="rtl">
       <ArticlesContainer>
-        {/* Categories → featured ~24px */}
-        <div className="mb-6 min-w-0">
+        <div className="mb-4 min-w-0">
           <ArticleCategoryChipBar
             active={quickCategory}
             onSelect={(value) => {
@@ -105,19 +102,21 @@ export function ArticlesCatalog() {
           />
         </div>
 
-        <div className="mb-4 flex items-center justify-between gap-3 lg:hidden">
+        <div className="mb-3 flex items-center justify-between gap-3 lg:hidden">
           <button
             type="button"
             onClick={() => setMobileFiltersOpen((open) => !open)}
-            className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/[0.1] bg-[#0F1626] px-4 text-[13px] font-bold text-[#E5E7EB]"
+            className="inline-flex h-9 items-center gap-2 rounded-xl border border-white/[0.1] bg-[#0F1626] px-4 text-[12.5px] font-bold text-[#E5E7EB]"
           >
             فیلترها
           </button>
-          <p className="text-[12.5px] font-semibold text-[#64748B]">{toFa(totalLabel)} مقاله</p>
+          <p className="text-[12px] font-semibold text-[#64748B]">{toFa(totalLabel)} مقاله</p>
         </div>
 
-        {/* Visual: sidebar LEFT · articles RIGHT (explicit LTR columns) */}
-        <div dir="ltr" className="grid grid-cols-1 gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
+        <div
+          dir="ltr"
+          className="grid grid-cols-1 items-start gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-6"
+        >
           <div className={mobileFiltersOpen ? "block" : "hidden lg:block"} dir="rtl">
             <ArticleFilter
               value={filters}
@@ -131,7 +130,7 @@ export function ArticlesCatalog() {
           <div className="min-w-0" dir="rtl">
             {visible.length === 0 ? (
               <p
-                className="rounded-[16px] border border-dashed border-white/[0.12] px-4 py-12 text-center text-[13px] text-[#94A3B8]"
+                className="rounded-[14px] border border-dashed border-white/[0.12] px-4 py-10 text-center text-[13px] text-[#94A3B8]"
                 role="status"
               >
                 مقاله‌ای با این فیلتر پیدا نشد.
@@ -139,20 +138,20 @@ export function ArticlesCatalog() {
             ) : (
               <>
                 {featured && safePage === 1 ? (
-                  <div className="mb-3.5">
+                  <div className="mb-3">
                     <FeaturedArticle article={featured} />
                   </div>
                 ) : null}
 
-                <ul className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
+                <ul className="grid auto-rows-fr grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
                   {pageItems.map((article, index) => (
-                    <li key={`${article.id}-${safePage}-${index}`}>
+                    <li key={`${article.id}-${safePage}-${index}`} className="min-w-0">
                       <ArticleCard article={article} />
                     </li>
                   ))}
                 </ul>
 
-                <div className="mt-6">
+                <div className="mt-4 flex justify-center">
                   <ArticlesPagination page={safePage} totalPages={totalPages} onPageChange={setPage} />
                 </div>
               </>

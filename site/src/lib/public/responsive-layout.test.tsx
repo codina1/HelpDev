@@ -24,7 +24,8 @@ describe("Sprint 50C — responsive layout contracts", () => {
     expect(galaxy).toContain("w-full");
 
     const container = renderToStaticMarkup(<PublicContainer size="wide">x</PublicContainer>);
-    expect(container).toContain("px-4");
+    expect(container).toContain("px-9");
     expect(container).toContain("w-full");
+    expect(container).toContain("max-w-[1400px]");
   });
 });

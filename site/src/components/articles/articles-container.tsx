@@ -1,4 +1,6 @@
-/** Articles page shell — ~90–94% viewport · ~40px side margins. */
+import { PublicContainer } from "@/components/ui/public/v2/public-container";
+
+/** Shared articles shell — same width as header / footer (PublicContainer wide). */
 export function ArticlesContainer({
   children,
   className = "",
@@ -7,13 +9,8 @@ export function ArticlesContainer({
   className?: string;
 }) {
   return (
-    <div
-      className={[
-        "mx-auto w-full max-w-[1480px] px-[36px] sm:px-[40px]",
-        className,
-      ].join(" ")}
-    >
+    <PublicContainer size="wide" className={className}>
       {children}
-    </div>
+    </PublicContainer>
   );
 }

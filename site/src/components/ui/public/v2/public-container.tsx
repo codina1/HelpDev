@@ -6,13 +6,13 @@ type PublicContainerProps = {
 };
 
 const SIZE = {
-  default: "max-w-[1280px]",
+  default: "max-w-[1400px]",
   narrow: "max-w-3xl",
-  wide: "max-w-[1280px]",
+  wide: "max-w-[1400px]",
   full: "max-w-none",
 } as const;
 
-/** Shared page shell — 1280 max · pad 24 / tablet 20 / desktop 32. */
+/** Shared page shell — ~1400 max · ~40px side padding (≈94% on common desktops). */
 export function PublicContainer({
   children,
   className = "",
@@ -22,7 +22,7 @@ export function PublicContainer({
   return (
     <Tag
       className={[
-        "mx-auto w-full min-w-0 px-6 sm:px-5 lg:px-6 min-[1440px]:px-8",
+        "mx-auto w-full min-w-0 px-9 sm:px-10",
         SIZE[size],
         className,
       ].join(" ")}

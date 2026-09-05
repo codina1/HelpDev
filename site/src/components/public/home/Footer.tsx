@@ -61,11 +61,11 @@ export function Footer() {
 
   return (
     <footer className="home-footer border-t border-white/[0.08] bg-[#050816]">
-      <PublicContainer size="wide" className="py-6 sm:py-7">
+      <PublicContainer size="wide" className="py-4 sm:py-5">
         {/* Visual: brand left · columns right */}
         <div
           dir="ltr"
-          className="grid gap-6 lg:grid-cols-[1.15fr_repeat(4,minmax(0,1fr))] lg:gap-5"
+          className="grid gap-5 lg:grid-cols-[1.15fr_repeat(4,minmax(0,1fr))] lg:gap-4"
         >
           <div className="max-w-sm text-start" dir="rtl">
             <Link href="/" className="focus-ring inline-flex items-center gap-2.5 no-underline">
@@ -127,7 +127,7 @@ export function Footer() {
 
         <div
           dir="rtl"
-          className="mt-5 flex flex-col gap-3 border-t border-white/[0.08] pt-4 sm:flex-row sm:items-center sm:justify-between"
+          className="mt-4 flex flex-col gap-2.5 border-t border-white/[0.08] pt-3.5 sm:flex-row sm:items-center sm:justify-between"
         >
           <p className="text-[12px] text-[#64748B]">
             © {year} {SITE.name}. تمامی حقوق محفوظ است.

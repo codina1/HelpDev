@@ -22,32 +22,32 @@ function GridIcon({ className }: { className?: string }) {
   );
 }
 
-/** Articles hero — 232px · text left · book right · no clipped content. */
+/** Hero — 232px · 50/50 · text left · large book right · px ~80. */
 export function ArticlesHero() {
   return (
     <section
-      className="relative bg-[#070b18] pb-5 pt-5"
+      className="relative bg-[#070b18] pb-4 pt-3"
       aria-labelledby="articles-hero-title"
     >
       <ArticlesContainer>
-        <div className="relative rounded-[20px] border border-[rgba(139,92,246,0.22)] bg-[linear-gradient(135deg,#070b18_0%,#111433_55%,#0c1029_100%)] shadow-[0_0_48px_rgba(124,58,237,0.12)]">
+        <div className="relative overflow-visible rounded-[18px] border border-[rgba(139,92,246,0.22)] bg-[linear-gradient(135deg,#070b18_0%,#111433_55%,#0c1029_100%)] shadow-[0_0_48px_rgba(124,58,237,0.12)]">
           <div
-            className="pointer-events-none absolute inset-x-[10%] bottom-0 h-14 bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.2),transparent_70%)] blur-2xl"
+            className="pointer-events-none absolute inset-x-[8%] bottom-0 h-16 bg-[radial-gradient(ellipse_at_center,rgba(124,58,237,0.22),transparent_70%)] blur-2xl"
             aria-hidden
           />
 
-          {/* LTR grid: text LEFT · image RIGHT (~50%) */}
           <div
-            className="relative grid items-center gap-4 px-6 py-4 sm:px-8 md:h-[232px] md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-5 md:overflow-visible md:px-10 md:py-0 lg:px-12"
+            className="relative grid items-center gap-2 overflow-visible px-5 py-3.5 sm:px-8 md:h-[232px] md:grid-cols-2 md:gap-4 md:px-[72px] md:py-0 lg:px-20"
             dir="ltr"
           >
-            <div className="min-w-0 py-1 text-left md:flex md:flex-col md:justify-center" dir="rtl">
-              <p className="text-[11.5px] font-bold tracking-[0.05em] text-[#A78BFA]">
+            {/* Text — visual LEFT */}
+            <div className="min-w-0 md:flex md:h-full md:flex-col md:justify-center md:pe-2" dir="rtl">
+              <p className="text-[11.5px] font-bold tracking-[0.04em] text-[#A78BFA]">
                 مرکز دانش توسعه‌دهندگان
               </p>
               <h1
                 id="articles-hero-title"
-                className="mt-1 text-[24px] font-extrabold leading-[1.28] tracking-tight text-white sm:text-[28px] md:text-[32px] lg:text-[34px]"
+                className="mt-1 text-[25px] font-extrabold leading-[1.28] tracking-tight text-white sm:text-[29px] md:text-[32px]"
               >
                 مقالات{" "}
                 <span className="bg-gradient-to-l from-[#9b45ff] to-[#5b8cff] bg-clip-text text-transparent">
@@ -55,7 +55,7 @@ export function ArticlesHero() {
                 </span>{" "}
                 توسعه نرم‌افزار
               </h1>
-              <p className="mt-1.5 max-w-[500px] text-[12.5px] leading-6 text-[#94A3B8] sm:text-[13.5px]">
+              <p className="mt-1.5 max-w-[460px] text-[12.5px] leading-[1.65] text-[#94A3B8] md:text-[13px] md:leading-[1.65]">
                 آخرین آموزش‌ها، بررسی ابزارها و تحلیل تکنولوژی‌های روز برنامه‌نویسی، هوش مصنوعی و
                 توسعه نرم‌افزار
               </p>
@@ -78,20 +78,21 @@ export function ArticlesHero() {
               </div>
             </div>
 
-            <div className="relative flex h-[150px] items-center justify-center md:h-[200px] md:justify-end">
+            {/* Book — visual RIGHT · ~1.8× prior scale · no clip frame */}
+            <div className="relative flex h-[176px] items-center justify-center overflow-visible md:h-full md:min-h-[220px]">
               <span
-                className="pointer-events-none absolute inset-[8%] rounded-full bg-[radial-gradient(circle,rgba(168,85,247,0.3),transparent_65%)] blur-3xl"
+                className="pointer-events-none absolute inset-[-8%] rounded-full bg-[radial-gradient(circle,rgba(168,85,247,0.4),transparent_68%)] blur-3xl"
                 aria-hidden
               />
               <img
                 src={ARTICLES_HERO_IMAGE_SRC}
                 alt=""
-                width={480}
-                height={240}
+                width={640}
+                height={320}
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
-                className="relative h-full w-full max-h-[200px] object-contain object-center mix-blend-screen drop-shadow-[0_14px_36px_rgba(124,58,237,0.4)]"
+                className="relative h-[108%] w-[108%] max-w-none object-contain object-center mix-blend-screen drop-shadow-[0_16px_40px_rgba(124,58,237,0.45)] md:h-[118%] md:w-[118%]"
               />
             </div>
           </div>
