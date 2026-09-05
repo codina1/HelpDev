@@ -4,6 +4,7 @@ node_modules/
 coverage/
 out/
 .vercel/
+.tmp/
 *.log
 *.tsbuildinfo
 .env
