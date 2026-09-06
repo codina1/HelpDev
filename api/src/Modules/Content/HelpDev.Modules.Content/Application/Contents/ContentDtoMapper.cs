@@ -74,5 +74,6 @@ internal static class ContentDtoMapper
             content.CoverImage,
             author?.DisplayName,
             author?.Role,
-            author?.AvatarUrl);
+            author?.AvatarUrl,
+            string.IsNullOrWhiteSpace(content.Excerpt) ? null : content.Excerpt);
 }

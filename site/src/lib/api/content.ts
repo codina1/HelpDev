@@ -14,6 +14,8 @@ export type ContentSummaryDto = {
   authorName?: string | null;
   authorRole?: string | null;
   authorAvatarUrl?: string | null;
+  /** Public list excerpt when provided by API. */
+  excerpt?: string | null;
 };
 
 export type ContentDetailDto = ContentSummaryDto & {

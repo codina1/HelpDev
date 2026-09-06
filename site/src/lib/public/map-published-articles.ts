@@ -56,6 +56,28 @@ function estimateMinutes(title: string): number {
   return Math.max(3, Math.min(18, Math.ceil(title.trim().length / 10)));
 }
 
+/** Prefer API excerpt; otherwise a short fallback from available list fields (never invent body text). */
+export function resolveMarketplaceDescription(item: Pick<ContentSummaryDto, "title" | "excerpt" | "slug">): string {
+  const excerpt = item.excerpt?.trim();
+  if (excerpt) return excerpt;
+
+  const title = item.title?.trim();
+  if (title) return `نگاهی کوتاه به «${title}» در HelpDev.`;
+
+  const slug = item.slug?.trim();
+  if (slug) return `مقاله «${slug}»`;
+
+  return "مقاله منتشرشده در HelpDev.";
+}
+
+export function resolveMarketplaceTitle(item: Pick<ContentSummaryDto, "title" | "slug">): string {
+  const title = item.title?.trim();
+  if (title) return title;
+  const slug = item.slug?.trim();
+  if (slug) return slug;
+  return "بدون عنوان";
+}
+
 /** Map published API content into marketplace card shape (UI-only enrichment). */
 export function mapPublishedContentToMarketplace(
   items: ContentSummaryDto[],
@@ -63,14 +85,15 @@ export function mapPublishedContentToMarketplace(
   const articles = items.filter((item) => isArticleType(item.type));
 
   return articles.map((item, index) => {
-    const { category, categoryLabel } = inferCategory(item.title, item.slug, item.type);
+    const title = resolveMarketplaceTitle(item);
+    const { category, categoryLabel } = inferCategory(title, item.slug, item.type);
     const cover = resolveContentCoverUrl(item.coverImage);
     const authorName = item.authorName?.trim() || "تیم HelpDev";
     return {
       id: item.id,
       slug: item.slug,
-      title: item.title,
-      description: `مطالعه مقاله «${item.title}» در HelpDev.`,
+      title,
+      description: resolveMarketplaceDescription(item),
       category,
       categoryLabel,
       level: "intermediate",
@@ -78,7 +101,7 @@ export function mapPublishedContentToMarketplace(
       coverTone: COVER_TONES[index % COVER_TONES.length],
       author: authorName,
       authorInitials: initialsFromTitle(authorName),
-      readingMinutes: estimateMinutes(item.title),
+      readingMinutes: estimateMinutes(title),
       views: item.views ?? 0,
       publishedAt: item.createdAt,
       featured: index === 0,

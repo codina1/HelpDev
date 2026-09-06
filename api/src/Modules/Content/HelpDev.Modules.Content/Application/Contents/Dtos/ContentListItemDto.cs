@@ -12,4 +12,5 @@ public sealed record ContentListItemDto(
     string? CoverImage = null,
     string? AuthorName = null,
     string? AuthorRole = null,
-    string? AuthorAvatarUrl = null);
+    string? AuthorAvatarUrl = null,
+    string? Excerpt = null);

@@ -34,5 +34,24 @@ describe("mapPublishedContentToMarketplace", () => {
     expect(mapped[0].title).toBe("تست React");
     expect(mapped[0].category).toBe("frontend");
     expect(mapped[0].views).toBe(12);
+    expect(mapped[0].description).toContain("تست React");
+  });
+
+  it("maps excerpt into description when API provides it", () => {
+    const items: ContentSummaryDto[] = [
+      {
+        id: "1",
+        title: "Cursor IDE",
+        slug: "cursor-ide",
+        type: "Article",
+        status: "Published",
+        views: 100,
+        saves: 0,
+        createdAt: "2026-08-24T00:00:00Z",
+        excerpt: "بررسی نسل جدید IDE با کمک هوش مصنوعی",
+      },
+    ];
+    const mapped = mapPublishedContentToMarketplace(items);
+    expect(mapped[0]?.description).toBe("بررسی نسل جدید IDE با کمک هوش مصنوعی");
   });
 });
