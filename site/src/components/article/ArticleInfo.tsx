@@ -5,9 +5,10 @@ type ArticleInfoProps = {
     ArticleDetailViewModel,
     "category" | "publishedAtLabel" | "readingTime" | "viewsLabel" | "displayAuthor"
   >;
+  hub?: "news" | "articles";
 };
 
-export function ArticleInfo({ model }: ArticleInfoProps) {
+export function ArticleInfo({ model, hub = "articles" }: ArticleInfoProps) {
   const rows = [
     { label: "دسته‌بندی", value: model.category },
     { label: "تاریخ انتشار", value: model.publishedAtLabel },
@@ -18,7 +19,9 @@ export function ArticleInfo({ model }: ArticleInfoProps) {
 
   return (
     <aside className="rounded-2xl border border-[rgba(139,92,246,0.2)] bg-[#10182D]/95 p-4 shadow-[0_0_28px_rgba(139,92,246,0.1)] backdrop-blur-xl">
-      <h2 className="text-[13px] font-extrabold text-white">اطلاعات مقاله</h2>
+      <h2 className="text-[13px] font-extrabold text-white">
+        {hub === "news" ? "اطلاعات خبر" : "اطلاعات مقاله"}
+      </h2>
       <dl className="mt-3 space-y-2.5">
         {rows.map((row) => (
           <div key={row.label} className="flex items-center justify-between gap-3 text-[12.5px]">

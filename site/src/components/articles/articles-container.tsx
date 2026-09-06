@@ -1,6 +1,7 @@
-import { PublicContainer } from "@/components/ui/public/v2/public-container";
-
-/** Shared articles shell — same width as header / footer (PublicContainer wide). */
+/**
+ * Shared articles / news detail shell.
+ * ~95vw with 1400px cap — aligned with Roadmap / header visual width.
+ */
 export function ArticlesContainer({
   children,
   className = "",
@@ -9,8 +10,8 @@ export function ArticlesContainer({
   className?: string;
 }) {
   return (
-    <PublicContainer size="wide" className={className}>
+    <div className={["mx-auto w-[95%] max-w-[1400px] min-w-0", className].join(" ")}>
       {children}
-    </PublicContainer>
+    </div>
   );
 }

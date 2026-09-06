@@ -1,4 +1,5 @@
 import { MARKETPLACE_ARTICLES, type MarketplaceArticle } from "@/data/articles";
+import { NEWS_ARTICLES, getNewsArticleBySlug, parseNewsViews } from "@/data/news-articles";
 import type { ContentDetailDto } from "@/lib/api/content";
 import {
   formatDateFa,
@@ -53,10 +54,20 @@ export type ArticleRelatedNewsItem = {
   dateLabel: string;
 };
 
+export type ArticleRelatedCard = {
+  id: string;
+  title: string;
+  href: string;
+  image: string;
+  viewsLabel: string;
+  readingTime: string;
+};
+
 export type ArticleDetailViewModel = {
   id: string;
   title: string;
   slug: string;
+  hub: "news" | "articles";
   category: string;
   description: string;
   coverImage: string | null;
@@ -71,10 +82,12 @@ export type ArticleDetailViewModel = {
   readingTime: string;
   publishedAtLabel: string;
   isFeatured: boolean;
+  isHot: boolean;
   breadcrumb: { label: string; href?: string }[];
   toc: TocHeading[];
   relatedNews: ArticleRelatedNewsItem[];
   relatedArticles: MarketplaceArticle[];
+  relatedCards: ArticleRelatedCard[];
   relatedCourse: ArticleRelatedCourse;
   roadmap: ArticleRoadmapCta;
   tools: readonly ArticleRelatedTool[];
@@ -176,6 +189,8 @@ function initialsFromName(name: string): string {
 }
 
 export function resolveArticleCategoryLabel(article: ContentDetailDto): string {
+  const news = getNewsArticleBySlug(article.slug);
+  if (news?.categoryLabel) return news.categoryLabel;
   const match = resolveMarketplaceMatch(article.slug);
   if (match) return match.categoryLabel;
   const type = article.type.toLowerCase();
@@ -184,6 +199,15 @@ export function resolveArticleCategoryLabel(article: ContentDetailDto): string {
 }
 
 export function resolveArticleTags(article: ContentDetailDto): string[] {
+  const news = getNewsArticleBySlug(article.slug);
+  if (news) {
+    const fromTitle = article.title
+      .split(/[\s،,?\-_/]+/)
+      .map((part) => part.trim())
+      .filter((part) => /^[A-Za-z0-9.]+$/.test(part) && part.length > 1)
+      .slice(0, 3);
+    return Array.from(new Set([news.tag, ...fromTitle, "AI", "Tools"].filter(Boolean))).slice(0, 8);
+  }
   const match = resolveMarketplaceMatch(article.slug);
   const base = CATEGORY_TAGS[match?.category ?? "frontend"] ?? CATEGORY_TAGS.frontend;
   const fromTitle = article.title
@@ -199,6 +223,8 @@ export function resolveRelatedArticles(currentSlug: string, limit = 3): Marketpl
 }
 
 export function resolveArticleExcerpt(article: ContentDetailDto): string {
+  const news = getNewsArticleBySlug(article.slug);
+  if (news?.summary) return news.summary;
   const match = resolveMarketplaceMatch(article.slug);
   if (match?.description) return match.description;
   const plain = (article.body ?? "")
@@ -230,7 +256,7 @@ export function resolveBreadcrumbTrail(article: ContentDetailDto): { label: stri
     { label: "خانه", href: "/" },
     { label: hubLabel, href: hubHref },
     { label: category, href: hubHref },
-    { label: topic, href: hubHref },
+    ...(isNews ? [] : [{ label: topic, href: hubHref }]),
     { label: article.title },
   ];
 }
@@ -256,17 +282,59 @@ export function formatViewsShort(views: number): string {
   return views.toLocaleString("fa-IR");
 }
 
-function toRelatedNews(items: MarketplaceArticle[], hub: "articles" | "news" = "articles"): ArticleRelatedNewsItem[] {
+function toRelatedNewsFromArticles(
+  items: MarketplaceArticle[],
+  hub: "articles" | "news" = "articles",
+): ArticleRelatedNewsItem[] {
   return items.slice(0, 3).map((item) => ({
     id: item.id,
     title: item.title,
     href: `/${hub}/${item.slug}`,
-    image: item.coverImage || "/home/cover-architecture.svg",
+    image: resolveContentCoverUrl(item.coverImage) || "/home/cover-architecture.svg",
     dateLabel: formatDateFa(item.publishedAt) || "—",
   }));
 }
 
-/** Build UI-ready view-model for the premium article detail page. */
+function toRelatedNewsFromCatalog(currentSlug: string): ArticleRelatedNewsItem[] {
+  return NEWS_ARTICLES.filter((item) => item.slug !== currentSlug)
+    .slice(0, 3)
+    .map((item) => ({
+      id: item.id,
+      title: item.title,
+      href: `/news/${item.slug}`,
+      image: item.image,
+      dateLabel: item.time,
+    }));
+}
+
+function toRelatedCards(
+  hub: "news" | "articles",
+  currentSlug: string,
+  articles: MarketplaceArticle[],
+): ArticleRelatedCard[] {
+  if (hub === "news") {
+    return NEWS_ARTICLES.filter((item) => item.slug !== currentSlug)
+      .slice(0, 3)
+      .map((item) => ({
+        id: item.id,
+        title: item.title,
+        href: `/news/${item.slug}`,
+        image: item.image,
+        viewsLabel: item.views,
+        readingTime: item.readTime,
+      }));
+  }
+  return articles.slice(0, 3).map((item) => ({
+    id: item.id,
+    title: item.title,
+    href: `/articles/${item.slug}`,
+    image: resolveContentCoverUrl(item.coverImage) || "/home/cover-architecture.svg",
+    viewsLabel: formatViewsShort(item.views),
+    readingTime: `${item.readingMinutes.toLocaleString("fa-IR")} دقیقه`,
+  }));
+}
+
+/** Build UI-ready view-model for the premium article / news detail page. */
 export function buildArticleDetailViewModel(article: ContentDetailDto): ArticleDetailViewModel {
   const usesBlocks = isBlockArticle(article.contentFormat, article.contentHtml);
   const toc = usesBlocks
@@ -281,11 +349,13 @@ export function buildArticleDetailViewModel(article: ContentDetailDto): ArticleD
   const author = resolveArticleAuthor(article);
   const related = resolveRelatedArticles(article.slug, 6);
   const hub = article.type.toLowerCase() === "news" ? "news" : "articles";
+  const newsCatalog = getNewsArticleBySlug(article.slug);
 
   return {
     id: article.id,
     title: article.title,
     slug: article.slug,
+    hub,
     category: resolveArticleCategoryLabel(article),
     description: resolveArticleExcerpt(article),
     coverImage: resolveContentCoverUrl(article.coverImage) || null,
@@ -296,14 +366,20 @@ export function buildArticleDetailViewModel(article: ContentDetailDto): ArticleD
     displayAuthor: author.name || shortAuthorId(article.authorId),
     tags: resolveArticleTags(article),
     views: article.views,
-    viewsLabel: formatViewsShort(article.views),
+    viewsLabel: article.views > 0 ? formatViewsShort(article.views) : newsCatalog?.views || "۰",
     readingTime,
-    publishedAtLabel: formatDateFa(article.createdAt) || "—",
+    publishedAtLabel: formatDateFa(article.createdAt) || newsCatalog?.time || "—",
     isFeatured: (article.views ?? 0) >= 500 || Boolean(resolveMarketplaceMatch(article.slug)?.featured),
+    isHot:
+      hub === "news" &&
+      ((article.views ?? 0) >= 8000 ||
+        (newsCatalog ? parseNewsViews(newsCatalog.views) >= 8000 : false)),
     breadcrumb: resolveBreadcrumbTrail(article),
     toc,
-    relatedNews: toRelatedNews(related, hub),
+    relatedNews:
+      hub === "news" ? toRelatedNewsFromCatalog(article.slug) : toRelatedNewsFromArticles(related, hub),
     relatedArticles: related.slice(0, 3),
+    relatedCards: toRelatedCards(hub, article.slug, related),
     relatedCourse: getArticleRelatedCourse(),
     roadmap: getArticleRoadmapCta(),
     tools: getArticleRelatedTools(),

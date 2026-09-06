@@ -158,6 +158,69 @@ export function getNewsArticleBySlug(slug: string): NewsArticle | null {
   return NEWS_ARTICLES.find((item) => item.slug.toLowerCase() === normalized) ?? null;
 }
 
+/** Full markdown body for catalog news detail fallback (no CMS placeholder copy). */
+export function getNewsDetailBody(item: NewsArticle): string {
+  if (item.slug === "claude-terminal-agent") {
+    return `## Claude Terminal Agent چیست؟
+
+${item.summary} Claude Terminal Agent یک دستیار کدنویسی مبتنی بر مدل‌های Anthropic است که مستقیماً داخل ترمینال اجرا می‌شود و می‌تواند فایل‌ها را بخواند، دستور اجرا کند و تغییرات را پیشنهاد دهد.
+
+## چرا برای توسعه‌دهندگان مهم است؟
+
+برخلاف چت‌بات‌های جدا از محیط توسعه، این Agent در همان مسیری کار می‌کند که روزانه کد می‌نویسید. همین نزدیکی به فایل‌ها، گیت و اسکریپت‌ها باعث می‌شود چرخهٔ «سوال → اجرا → بازبینی» کوتاه‌تر شود.
+
+> نکته مهم: قبل از اجرای دستورهای پیشنهادی Agent روی پروژهٔ اصلی، حتماً در یک شاخه یا محیط آزمایشی تست کنید.
+
+## شروع سریع
+
+\`\`\`bash
+# نمونه تعامل در ترمینال
+claude "خلاصهٔ ساختار پروژه را بگو و تست‌های واحد را پیشنهاد بده"
+\`\`\`
+
+## نکات امنیتی و عملی
+
+- دسترسی Agent به فایل‌های حساس (.env و کلیدها) را محدود کنید.
+- خروجی را مثل کد یک همکار بررسی کنید؛ به‌صورت خودکار merge نکنید.
+- برای کارهای تکراری، پرامپت‌های کوتاه و مشخص بنویسید.
+
+## جمع‌بندی
+
+Claude Terminal Agent گزینهٔ جدی برای تیم‌هایی است که می‌خواهند دستیار AI را داخل جریان ترمینال نگه دارند. اگر همین حالا از Cursor یا Copilot استفاده می‌کنید، مقایسهٔ سرعت و کیفیت خروجی در یک تسک واقعی بهترین معیار تصمیم است.
+`;
+  }
+
+  return `## ${item.title}
+
+${item.summary}
+
+## جزئیات خبر
+
+این خبر در دستهٔ **${item.categoryLabel ?? item.tag}** منتشر شده و برای توسعه‌دهندگان HelpDev گردآوری شده است. در ادامه مهم‌ترین نکات و تأثیر آن روی جریان کار روزمره را مرور می‌کنیم.
+
+> نکته مهم: برای به‌روز ماندن، خبرنامه هفتگی HelpDev را فعال کنید تا خلاصهٔ همین مطالب را در ایمیل بگیرید.
+
+## آنچه باید بدانید
+
+- موضوع اصلی: ${item.tag}
+- زمان تقریبی مطالعه: ${item.readTime}
+- منبع پوشش: تیم تحریریه HelpDev
+
+## گام بعدی
+
+اگر این خبر به مسیر یادگیری شما مربوط است، بخش مطالب مرتبط و نقشه راه سایت را برای ادامه مطالعه پیشنهاد می‌کنیم.
+`;
+}
+
+export function parseNewsViews(viewsLabel: string): number {
+  const ascii = viewsLabel.replace(/[۰-۹]/g, (digit) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)));
+  const normalized = ascii.replace(/[^\d.]/g, "");
+  const value = Number.parseFloat(normalized);
+  if (!Number.isFinite(value)) return 0;
+  if (/k/i.test(ascii)) return Math.round(value * 1000);
+  return Math.round(value);
+}
+
 export function buildPopularFromArticles(articles: NewsArticle[]): PopularNewsItem[] {
   return articles.slice(0, 5).map((item) => ({
     id: item.id,

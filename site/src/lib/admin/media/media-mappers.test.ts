@@ -24,6 +24,11 @@ describe("resolveMediaUrl", () => {
   it("returns an empty string for an empty input", () => {
     expect(resolveMediaUrl("")).toBe("");
   });
+
+  it("keeps Next.js public/ asset paths site-relative", () => {
+    expect(resolveMediaUrl("/news/cover-claude.png")).toBe("/news/cover-claude.png");
+    expect(resolveMediaUrl("/home/icon-brand.png")).toBe("/home/icon-brand.png");
+  });
 });
 
 describe("formatFileSize", () => {

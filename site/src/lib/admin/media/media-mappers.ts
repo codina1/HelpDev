@@ -10,19 +10,27 @@ import type {
 } from "@/lib/admin/media/media-types";
 
 /**
- * Resolves a relative media URL (e.g. `/media/2026/07/{guid}.jpg`) against the
+ * Resolves uploaded media URLs (e.g. `/media/2026/07/{guid}.jpg`) against the
  * API **origin** — not the versioned `/api/v1` base — since static media files
- * are served from the API host root, not under the API prefix. Already-absolute
- * URLs (and data URLs, defensively) are returned unchanged.
+ * are served from the API host root, not under the API prefix.
+ *
+ * Site `public/` assets (`/news/...`, `/home/...`, `/roadmap/...`, etc.) stay
+ * site-relative so Next.js can serve them from the frontend host.
+ * Already-absolute URLs (and data URLs) are returned unchanged.
  */
 export function resolveMediaUrl(publicUrl: string): string {
   if (!publicUrl) return "";
   if (/^https?:\/\//i.test(publicUrl) || publicUrl.startsWith("data:")) {
     return publicUrl;
   }
+  // Frontend static assets under Next.js `public/` — do not prefix API origin.
+  if (publicUrl.startsWith("/") && !publicUrl.startsWith("/media/")) {
+    return publicUrl;
+  }
   try {
     const origin = new URL(API_BASE_URL).origin;
-    return new URL(publicUrl, origin).toString();
+    const path = publicUrl.startsWith("/") ? publicUrl : `/${publicUrl}`;
+    return new URL(path, origin).toString();
   } catch {
     return publicUrl;
   }
