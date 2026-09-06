@@ -51,8 +51,8 @@ type FeaturedArticleProps = {
 };
 
 /**
- * Featured article card — text LEFT (~55%) · cover RIGHT (~45%).
- * Whole card is one Link to the article detail page.
+ * Featured article card — cover RIGHT (~45%) · text LEFT (~55%).
+ * Fixed desktop height; CTA pinned bottom-left via mt-auto + self-end (RTL).
  */
 export function FeaturedArticle({ article }: FeaturedArticleProps) {
   const title = article.title?.trim() || "بدون عنوان";
@@ -61,19 +61,46 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
   return (
     <Link
       href={`/articles/${article.slug}`}
-      className="group relative block w-full cursor-pointer overflow-hidden rounded-[16px] border border-[rgba(139,92,246,0.28)] bg-[linear-gradient(135deg,rgba(17,24,39,0.98),rgba(11,18,36,0.94))] no-underline shadow-[0_0_40px_rgba(124,58,237,0.14)] transition duration-200 hover:-translate-y-1 hover:border-[rgba(167,139,250,0.55)] hover:shadow-[0_0_48px_rgba(124,58,237,0.28)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8B5CF6]"
+      className="group relative block w-full min-w-0 cursor-pointer overflow-hidden rounded-[16px] border border-[rgba(139,92,246,0.28)] bg-[linear-gradient(135deg,rgba(17,24,39,0.98),rgba(11,18,36,0.94))] no-underline shadow-[0_0_40px_rgba(124,58,237,0.14)] transition duration-200 hover:-translate-y-1 hover:border-[rgba(167,139,250,0.55)] hover:shadow-[0_0_48px_rgba(124,58,237,0.28)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8B5CF6]"
       aria-label={`مطالعه مقاله ${title}`}
     >
+      {/*
+        RTL flex-row: first child = visual RIGHT (image), second = visual LEFT (text).
+        Fixed height on desktop so short copy does not collapse the card.
+      */}
       <article
-        className="grid w-full items-stretch md:h-[260px] md:grid-cols-[minmax(0,55%)_minmax(0,45%)]"
-        dir="ltr"
+        className="flex w-full min-w-0 flex-col md:h-[232px] md:flex-row"
+        dir="rtl"
       >
-        {/* Text — visual LEFT */}
+        {/* Image — ~45% · full-bleed cover */}
         <div
-          className="relative z-[1] flex min-h-0 min-w-0 flex-col px-7 py-7 sm:px-8 sm:py-8 md:h-full"
-          dir="rtl"
+          className={[
+            "relative h-[200px] w-full shrink-0 overflow-hidden bg-gradient-to-br md:h-full md:w-[45%]",
+            article.coverTone,
+          ].join(" ")}
         >
-          <div className="flex flex-wrap items-center gap-2">
+          <span
+            className="pointer-events-none absolute -inset-6 bg-[radial-gradient(circle_at_60%_45%,rgba(139,92,246,0.35),transparent_62%)] blur-2xl"
+            aria-hidden
+          />
+          <img
+            src={article.coverImage}
+            alt=""
+            width={640}
+            height={232}
+            loading="eager"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-[1.03]"
+          />
+          <span
+            className="pointer-events-none absolute inset-y-0 end-0 w-14 bg-gradient-to-l from-[#0B1224]/70 via-[#0B1224]/25 to-transparent md:w-16"
+            aria-hidden
+          />
+        </div>
+
+        {/* Text — ~55% · full column height · no max-width */}
+        <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col p-6 sm:p-7 md:h-full md:w-[55%]">
+          <div className="flex w-full flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-lg border border-[#A78BFA]/50 bg-gradient-to-l from-[#7C3AED]/45 to-[#6D28D9]/35 px-2.5 py-1 text-[11px] font-extrabold text-white shadow-[0_0_16px_rgba(124,58,237,0.35)]">
               <span aria-hidden className="text-[12px] leading-none text-[#FDE68A]">
                 ★
@@ -93,56 +120,28 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
             {summary}
           </p>
 
-          <div className="mt-auto flex w-full flex-col gap-3.5 pt-4">
-            <div className="flex w-full flex-wrap items-center gap-x-4 gap-y-2 text-[12px] font-semibold text-[#94A3B8]">
-              <span className="inline-flex min-w-0 items-center gap-2">
-                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/[0.12] bg-gradient-to-br from-[#7C3AED]/50 to-[#3B82F6]/30 text-[10px] font-bold text-white">
-                  {article.authorInitials}
-                </span>
-                <span className="truncate">{article.author}</span>
+          <div className="mt-3 flex w-full flex-wrap items-center gap-x-4 gap-y-2 text-[12px] font-semibold text-[#94A3B8]">
+            <span className="inline-flex min-w-0 items-center gap-2">
+              <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/[0.12] bg-gradient-to-br from-[#7C3AED]/50 to-[#3B82F6]/30 text-[10px] font-bold text-white">
+                {article.authorInitials}
               </span>
-              <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                <ClockIcon className="h-3.5 w-3.5 shrink-0 text-[#A78BFA]" />
-                {article.readingMinutes.toLocaleString("fa-IR")} دقیقه مطالعه
-              </span>
-              <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
-                <EyeIcon className="h-3.5 w-3.5 shrink-0 text-[#A78BFA]" />
-                {formatViews(article.views)} بازدید
-              </span>
-            </div>
-
-            {/* dir=rtl → self-end pins CTA to visual left */}
-            <span className="inline-flex h-10 w-fit self-end items-center gap-2 rounded-xl bg-gradient-to-l from-[#8B5CF6] to-[#6D28D9] px-4 text-[13px] font-bold text-white shadow-[0_0_18px_rgba(124,58,237,0.4)] transition duration-200 group-hover:brightness-110">
-              مطالعه مقاله
-              <ArrowIcon className="h-4 w-4 shrink-0" />
+              <span className="truncate">{article.author}</span>
+            </span>
+            <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+              <ClockIcon className="h-3.5 w-3.5 shrink-0 text-[#A78BFA]" />
+              {article.readingMinutes.toLocaleString("fa-IR")} دقیقه مطالعه
+            </span>
+            <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+              <EyeIcon className="h-3.5 w-3.5 shrink-0 text-[#A78BFA]" />
+              {formatViews(article.views)} بازدید
             </span>
           </div>
-        </div>
 
-        {/* Image — visual RIGHT */}
-        <div
-          className={[
-            "relative order-first h-[200px] w-full overflow-hidden bg-gradient-to-br md:order-none md:h-full",
-            article.coverTone,
-          ].join(" ")}
-        >
-          <span
-            className="pointer-events-none absolute -inset-6 bg-[radial-gradient(circle_at_60%_45%,rgba(139,92,246,0.35),transparent_62%)] blur-2xl"
-            aria-hidden
-          />
-          <img
-            src={article.coverImage}
-            alt=""
-            width={640}
-            height={260}
-            loading="eager"
-            decoding="async"
-            className="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-[1.03]"
-          />
-          <span
-            className="pointer-events-none absolute inset-y-0 start-0 w-16 bg-gradient-to-r from-[#0B1224] via-[#0B1224]/55 to-transparent md:w-20"
-            aria-hidden
-          />
+          {/* RTL: self-end → visual left; mt-auto pins to card bottom */}
+          <span className="mt-auto inline-flex h-10 w-fit shrink-0 self-end items-center gap-2 rounded-xl bg-gradient-to-l from-[#8B5CF6] to-[#6D28D9] px-4 text-[13px] font-bold text-white shadow-[0_0_18px_rgba(124,58,237,0.4)] transition duration-200 group-hover:brightness-110">
+            مطالعه مقاله
+            <ArrowIcon className="h-4 w-4 shrink-0" />
+          </span>
         </div>
       </article>
     </Link>
