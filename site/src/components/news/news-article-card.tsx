@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { publicNewsPath } from "@/lib/public/map-published-news";
 import type { NewsArticle } from "@/types";
 
 type NewsArticleCardProps = {
@@ -23,42 +25,43 @@ function BookIcon({ className }: { className?: string }) {
 }
 
 export function NewsArticleCard({ article }: NewsArticleCardProps) {
+  const href = publicNewsPath(article.slug);
+
   return (
-    <article
+    <Link
+      href={href}
       id={`news-${article.id}`}
-      className="group flex h-full min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827] shadow-[0_8px_28px_rgba(2,6,23,0.3)] transition duration-300 hover:-translate-y-1 hover:border-[rgba(124,58,237,0.45)]"
+      className="group flex h-full min-w-0 cursor-pointer flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827] no-underline shadow-[0_8px_28px_rgba(2,6,23,0.3)] transition duration-300 hover:-translate-y-1 hover:border-[rgba(124,58,237,0.45)] hover:shadow-[0_0_24px_rgba(124,58,237,0.16)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8B5CF6]"
     >
-      <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-[#080d1c]">
-        <img
-          src={article.image}
-          alt=""
-          width={400}
-          height={250}
-          decoding="async"
-          className="absolute inset-0 h-full w-full object-cover object-center transition duration-500 group-hover:scale-[1.04]"
-        />
-        <span className="absolute end-3 top-3 rounded-lg bg-[#7C3AED] px-2.5 py-1 text-[11px] font-bold text-white">
-          {article.categoryLabel ?? article.tag}
-        </span>
-      </div>
-      <div className="flex flex-1 flex-col gap-1.5 p-4">
-        <h2 className="line-clamp-2 text-[14px] font-extrabold leading-6 text-white">
-          {article.title}
-        </h2>
-        <p className="line-clamp-2 text-[11.5px] leading-5 text-[#94A3B8]">
-          {article.summary}
-        </p>
-        <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/[0.06] pt-2.5 text-[11px] font-semibold text-[#64748B]">
-          <span className="inline-flex min-w-0 items-center gap-1.5 whitespace-nowrap">
-            <ClockIcon className="h-3.5 w-3.5 shrink-0 text-[#7C3AED]" />
-            <bdi className="truncate">{article.time}</bdi>
-          </span>
-          <span className="inline-flex min-w-0 items-center gap-1.5 whitespace-nowrap">
-            <BookIcon className="h-3.5 w-3.5 shrink-0 text-[#7C3AED]" />
-            <bdi className="truncate">{article.readTime}</bdi>
+      <article className="flex h-full min-w-0 flex-col">
+        <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-[#080d1c]">
+          <img
+            src={article.image}
+            alt=""
+            width={400}
+            height={250}
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover object-center transition duration-500 group-hover:scale-[1.04]"
+          />
+          <span className="absolute end-3 top-3 rounded-lg bg-[#7C3AED] px-2.5 py-1 text-[11px] font-bold text-white">
+            {article.categoryLabel ?? article.tag}
           </span>
         </div>
-      </div>
-    </article>
+        <div className="flex flex-1 flex-col gap-1.5 p-4">
+          <h2 className="line-clamp-2 text-[14px] font-extrabold leading-6 text-white">{article.title}</h2>
+          <p className="line-clamp-2 text-[11.5px] leading-5 text-[#94A3B8]">{article.summary}</p>
+          <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/[0.06] pt-2.5 text-[11px] font-semibold text-[#64748B]">
+            <span className="inline-flex min-w-0 items-center gap-1.5 whitespace-nowrap">
+              <ClockIcon className="h-3.5 w-3.5 shrink-0 text-[#7C3AED]" />
+              <bdi className="truncate">{article.time}</bdi>
+            </span>
+            <span className="inline-flex min-w-0 items-center gap-1.5 whitespace-nowrap">
+              <BookIcon className="h-3.5 w-3.5 shrink-0 text-[#7C3AED]" />
+              <bdi className="truncate">{article.readTime}</bdi>
+            </span>
+          </div>
+        </div>
+      </article>
+    </Link>
   );
 }

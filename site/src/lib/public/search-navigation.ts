@@ -12,7 +12,10 @@ export function hrefForSearchResult(item: SearchResultItemDto): string {
   const type = (item.type ?? item.sourceType ?? "").toLowerCase();
   const slug = item.slug?.trim();
 
-  if (type === "article" || type === "news") {
+  if (type === "news") {
+    return slug ? `/news/${encodeURIComponent(slug)}` : "/news";
+  }
+  if (type === "article") {
     return slug ? `/articles/${encodeURIComponent(slug)}` : "/articles";
   }
   if (type === "content") {

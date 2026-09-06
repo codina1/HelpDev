@@ -8,6 +8,7 @@ import { NewsContainer } from "@/components/news/news-container";
 import { PopularNewsSidebar } from "@/components/news/popular-news-sidebar";
 import { TagsSidebar } from "@/components/news/tags-sidebar";
 import {
+  buildPopularFromArticles,
   filterNewsArticles,
   type NewsCategoryId,
   type NewsCloudTag,
@@ -35,6 +36,8 @@ export function NewsList({ articles }: NewsListProps) {
     () => visible.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE),
     [currentPage, visible],
   );
+
+  const popular = useMemo(() => buildPopularFromArticles(articles), [articles]);
 
   return (
     <section className="bg-[#050816] pb-12 pt-2" dir="rtl">
@@ -78,7 +81,7 @@ export function NewsList({ articles }: NewsListProps) {
           </div>
 
           <aside className="order-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:sticky lg:top-24 lg:grid-cols-1">
-            <PopularNewsSidebar />
+            <PopularNewsSidebar items={popular} />
             <TagsSidebar
               activeTag={cloudTag}
               onTagSelect={(value) => {

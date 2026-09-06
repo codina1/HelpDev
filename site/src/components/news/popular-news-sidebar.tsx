@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { NEWS_POPULAR } from "@/data/news-articles";
+import { NEWS_POPULAR, type PopularNewsItem } from "@/data/news-articles";
+import { publicNewsPath } from "@/lib/public/map-published-news";
 
 function FlameIcon({ className }: { className?: string }) {
   return (
@@ -32,8 +33,12 @@ function EyeIcon({ className }: { className?: string }) {
   );
 }
 
-/** Popular list — compact rows: thumbnail · content · rank (RTL reference). */
-export function PopularNewsSidebar() {
+type PopularNewsSidebarProps = {
+  items?: PopularNewsItem[];
+};
+
+/** Popular list — compact rows link to `/news/{slug}`. */
+export function PopularNewsSidebar({ items = NEWS_POPULAR }: PopularNewsSidebarProps) {
   return (
     <section
       className="rounded-[16px] border border-white/[0.07] bg-[#0B1120] p-3.5 shadow-[0_6px_20px_rgba(2,6,23,0.28)]"
@@ -49,11 +54,11 @@ export function PopularNewsSidebar() {
       </h2>
 
       <ol className="mt-3.5 space-y-1">
-        {NEWS_POPULAR.map((item, index) => (
+        {items.map((item, index) => (
           <li key={item.id}>
             <Link
-              href={`#news-${item.id}`}
-              className="group flex items-center gap-2.5 rounded-xl border border-transparent p-1.5 no-underline transition hover:border-white/[0.08] hover:bg-white/[0.03]"
+              href={publicNewsPath(item.slug)}
+              className="group flex cursor-pointer items-center gap-2.5 rounded-xl border border-transparent p-1.5 no-underline transition hover:border-white/[0.08] hover:bg-white/[0.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8B5CF6]"
             >
               <span className="order-3 h-[52px] w-[52px] shrink-0 overflow-hidden rounded-[10px] border border-white/[0.07] bg-[#080d1c]">
                 <img

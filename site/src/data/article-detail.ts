@@ -222,11 +222,15 @@ export function resolveBreadcrumbTrail(article: ContentDetailDto): { label: stri
           ? ".NET"
           : category;
 
+  const isNews = article.type.toLowerCase() === "news";
+  const hubHref = isNews ? "/news" : "/articles";
+  const hubLabel = isNews ? "اخبار" : "مقالات";
+
   return [
     { label: "خانه", href: "/" },
-    { label: "مقالات", href: "/articles" },
-    { label: category, href: "/articles" },
-    { label: topic, href: "/articles" },
+    { label: hubLabel, href: hubHref },
+    { label: category, href: hubHref },
+    { label: topic, href: hubHref },
     { label: article.title },
   ];
 }
@@ -252,11 +256,11 @@ export function formatViewsShort(views: number): string {
   return views.toLocaleString("fa-IR");
 }
 
-function toRelatedNews(items: MarketplaceArticle[]): ArticleRelatedNewsItem[] {
+function toRelatedNews(items: MarketplaceArticle[], hub: "articles" | "news" = "articles"): ArticleRelatedNewsItem[] {
   return items.slice(0, 3).map((item) => ({
     id: item.id,
     title: item.title,
-    href: `/articles/${item.slug}`,
+    href: `/${hub}/${item.slug}`,
     image: item.coverImage || "/home/cover-architecture.svg",
     dateLabel: formatDateFa(item.publishedAt) || "—",
   }));
@@ -276,6 +280,7 @@ export function buildArticleDetailViewModel(article: ContentDetailDto): ArticleD
 
   const author = resolveArticleAuthor(article);
   const related = resolveRelatedArticles(article.slug, 6);
+  const hub = article.type.toLowerCase() === "news" ? "news" : "articles";
 
   return {
     id: article.id,
@@ -297,7 +302,7 @@ export function buildArticleDetailViewModel(article: ContentDetailDto): ArticleD
     isFeatured: (article.views ?? 0) >= 500 || Boolean(resolveMarketplaceMatch(article.slug)?.featured),
     breadcrumb: resolveBreadcrumbTrail(article),
     toc,
-    relatedNews: toRelatedNews(related),
+    relatedNews: toRelatedNews(related, hub),
     relatedArticles: related.slice(0, 3),
     relatedCourse: getArticleRelatedCourse(),
     roadmap: getArticleRoadmapCta(),

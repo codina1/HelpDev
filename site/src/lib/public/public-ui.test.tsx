@@ -61,6 +61,7 @@ describe("Sprint 50 — public design system", () => {
 describe("Sprint 50 — public helpers", () => {
   it("maps content hrefs and extracts TOC", () => {
     expect(publicHrefForContent({ type: "Article", slug: "hello" })).toBe("/articles/hello");
+    expect(publicHrefForContent({ type: "News", slug: "breaking" })).toBe("/news/breaking");
     expect(publicHrefForContent({ type: "Tool", slug: "jq" })).toBe("/tools/jq");
     expect(publicHrefForContent({ type: "Roadmap", slug: "fe" })).toContain("/roadmap");
 

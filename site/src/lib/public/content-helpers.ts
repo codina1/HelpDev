@@ -23,6 +23,7 @@ export function publicHrefForContent(item: Pick<ContentSummaryDto, "type" | "slu
   }
   if (t === "course") return `/courses?slug=${encodeURIComponent(item.slug)}`;
   if (t === "prompt") return `/prompt-lab?slug=${encodeURIComponent(item.slug)}`;
+  if (t === "news") return `/news/${encodeURIComponent(item.slug)}`;
   return `/articles/${encodeURIComponent(item.slug)}`;
 }
 

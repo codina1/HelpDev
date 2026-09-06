@@ -21,6 +21,7 @@ export type NewsTag = "React" | ".NET" | "AI" | "DevOps";
 
 export type NewsArticle = {
   id: string;
+  slug: string;
   title: string;
   tag: NewsTag;
   categoryLabel?: string;

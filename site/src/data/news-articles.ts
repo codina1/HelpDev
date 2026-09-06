@@ -45,10 +45,11 @@ export const NEWS_CATEGORY_FILTERS: readonly {
   { id: "Security", label: "Security", icon: "security" },
 ];
 
-/** Reference screenshot articles — Persian copy + extracted covers. */
+/** Catalog fallback when News API content is empty — real slugs for detail routes. */
 export const NEWS_ARTICLES: NewsArticle[] = [
   {
     id: "1",
+    slug: "cursor-1-ai-ide",
     title: "معرفی Cursor 1.0؛ نسل جدید AI IDE",
     tag: "AI",
     categoryLabel: "AI",
@@ -60,6 +61,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
   },
   {
     id: "2",
+    slug: "claude-terminal-agent",
     title: "Claude چیست؟ نگاهی به Terminal Agent",
     tag: "AI",
     categoryLabel: "AI",
@@ -71,6 +73,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
   },
   {
     id: "3",
+    slug: "mcp-standard-tools",
     title: "استاندارد MCP؛ اتصال مدل‌ها به ابزارها",
     tag: "DevOps",
     categoryLabel: "Tools",
@@ -82,6 +85,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
   },
   {
     id: "4",
+    slug: "github-copilot-workspace",
     title: "GitHub Copilot Workspace معرفی شد",
     tag: "AI",
     categoryLabel: "Tools",
@@ -93,6 +97,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
   },
   {
     id: "5",
+    slug: "dotnet-9-release",
     title: ".NET 9 منتشر شد؛ ویژگی‌ها و بهبودها",
     tag: ".NET",
     categoryLabel: ".NET",
@@ -104,6 +109,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
   },
   {
     id: "6",
+    slug: "react-19-release",
     title: "React 19 معرفی شد؛ تغییرات مهم",
     tag: "React",
     categoryLabel: "Frontend",
@@ -115,6 +121,7 @@ export const NEWS_ARTICLES: NewsArticle[] = [
   },
   {
     id: "7",
+    slug: "devops-2024-tools",
     title: "DevOps در ۲۰۲۴؛ بهترین ابزارها",
     tag: "DevOps",
     categoryLabel: "DevOps",
@@ -126,48 +133,42 @@ export const NEWS_ARTICLES: NewsArticle[] = [
   },
 ];
 
-export const NEWS_POPULAR = [
-  {
-    id: "1",
-    title: "Cursor 1.0",
-    summary: "تحولی بزرگ در AI Coding",
-    time: "۲ ساعت پیش",
-    views: "۱۲.۴K",
-    image: "/news/cover-cursor.png",
-  },
-  {
-    id: "2",
-    title: "Claude چیست؟",
-    summary: "Terminal Agent جدید Anthropic",
-    time: "۴ ساعت پیش",
-    views: "۹.۸K",
-    image: "/news/cover-claude.png",
-  },
-  {
-    id: "3",
-    title: "استاندارد جدید MCP",
-    summary: "اتصال مدل‌ها به ابزارها",
-    time: "۶ ساعت پیش",
-    views: "۷.۲K",
-    image: "/news/cover-mcp.png",
-  },
-  {
-    id: "4",
-    title: "GitHub Copilot Workspace",
-    summary: "محیط توسعه هوشمند جدید",
-    time: "۸ ساعت پیش",
-    views: "۵.۷K",
-    image: "/news/cover-copilot.png",
-  },
-  {
-    id: "5",
-    title: ".NET 9 منتشر شد",
-    summary: "ویژگی‌ها و تغییرات جدید",
-    time: "۱۰ ساعت پیش",
-    views: "۴.۳K",
-    image: "/news/cover-dotnet.png",
-  },
-] as const;
+export type PopularNewsItem = {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  time: string;
+  views: string;
+  image: string;
+};
+
+export const NEWS_POPULAR: PopularNewsItem[] = NEWS_ARTICLES.slice(0, 5).map((item) => ({
+  id: item.id,
+  slug: item.slug,
+  title: item.title.includes("؛") ? item.title.split("؛")[0]! : item.title,
+  summary: item.summary,
+  time: item.time,
+  views: item.views,
+  image: item.image,
+}));
+
+export function getNewsArticleBySlug(slug: string): NewsArticle | null {
+  const normalized = slug.trim().toLowerCase();
+  return NEWS_ARTICLES.find((item) => item.slug.toLowerCase() === normalized) ?? null;
+}
+
+export function buildPopularFromArticles(articles: NewsArticle[]): PopularNewsItem[] {
+  return articles.slice(0, 5).map((item) => ({
+    id: item.id,
+    slug: item.slug,
+    title: item.title.length > 42 ? `${item.title.slice(0, 40)}…` : item.title,
+    summary: item.summary,
+    time: item.time,
+    views: item.views,
+    image: item.image,
+  }));
+}
 
 function matchesCategory(article: NewsArticle, category: NewsCategoryId): boolean {
   if (category === "همه") return true;
@@ -180,18 +181,24 @@ function matchesCategory(article: NewsArticle, category: NewsCategoryId): boolea
     case ".NET":
       return article.tag === ".NET";
     case "Frontend":
-      return article.tag === "React" || hay.includes("react");
+      return article.tag === "React" || (article.categoryLabel ?? "").includes("Frontend");
     case "Backend":
-      return article.tag === ".NET" || hay.includes("api");
+      return hay.includes("backend") || hay.includes("api");
     case "DevOps":
-      return article.tag === "DevOps" || hay.includes("mcp");
+      return article.tag === "DevOps";
     case "Tools":
-      return hay.includes("copilot") || hay.includes("workspace") || hay.includes("ابزار");
+      return (article.categoryLabel ?? "") === "Tools" || hay.includes("copilot") || hay.includes("mcp");
     case "Security":
-      return hay.includes("امنیت") || hay.includes("security");
+      return hay.includes("security") || hay.includes("امنیت");
     default:
       return true;
   }
+}
+
+function matchesCloudTag(article: NewsArticle, tag: NewsCloudTag): boolean {
+  if (tag === "همه") return true;
+  const hay = `${article.title} ${article.summary} ${article.tag} ${article.slug}`.toLowerCase();
+  return hay.includes(tag.toLowerCase());
 }
 
 export function filterNewsArticles(
@@ -199,17 +206,7 @@ export function filterNewsArticles(
   category: NewsCategoryId,
   cloudTag: NewsCloudTag,
 ): NewsArticle[] {
-  let next = articles.filter((article) => matchesCategory(article, category));
-  if (cloudTag !== "همه") {
-    const key = cloudTag.toLowerCase();
-    next = next.filter((article) => {
-      const hay = `${article.title} ${article.summary} ${article.tag}`.toLowerCase();
-      return hay.includes(key) || article.tag.toLowerCase().includes(key);
-    });
-  }
-  return next;
-}
-
-export function formatNewsViewsShort(views: string): string {
-  return views.replace(/\s*بازدید\s*$/u, "").trim();
+  return articles.filter(
+    (article) => matchesCategory(article, category) && matchesCloudTag(article, cloudTag),
+  );
 }
