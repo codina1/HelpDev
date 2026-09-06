@@ -41,6 +41,7 @@ describe("FeaturedArticle layout", () => {
     expect(html).toContain("mt-auto");
     expect(html).toContain("object-cover object-center");
     expect(html).toContain("from-[#8B5CF6]");
+    expect(html).toContain("self-end");
     expect(html).not.toContain("md:h-[230px]");
     expect(html).not.toContain("md:h-[188px]");
     expect(html).not.toContain("border-s border-white/[0.14]");

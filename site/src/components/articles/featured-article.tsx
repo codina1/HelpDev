@@ -111,7 +111,8 @@ export function FeaturedArticle({ article }: FeaturedArticleProps) {
               </span>
             </div>
 
-            <span className="inline-flex h-10 w-fit items-center gap-2 rounded-xl bg-gradient-to-l from-[#8B5CF6] to-[#6D28D9] px-4 text-[13px] font-bold text-white shadow-[0_0_18px_rgba(124,58,237,0.4)] transition duration-200 group-hover:brightness-110">
+            {/* dir=rtl → self-end pins CTA to visual left */}
+            <span className="inline-flex h-10 w-fit self-end items-center gap-2 rounded-xl bg-gradient-to-l from-[#8B5CF6] to-[#6D28D9] px-4 text-[13px] font-bold text-white shadow-[0_0_18px_rgba(124,58,237,0.4)] transition duration-200 group-hover:brightness-110">
               مطالعه مقاله
               <ArrowIcon className="h-4 w-4 shrink-0" />
             </span>
