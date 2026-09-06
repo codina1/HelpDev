@@ -11,14 +11,16 @@ import {
   type RoadmapStage,
 } from "@/data/roadmap-paths";
 
-/** Static class map so Tailwind keeps the column utilities in the build. */
-const LG_COLUMNS: Record<number, string> = {
-  1: "lg:grid-cols-1",
-  2: "lg:grid-cols-2",
-  3: "lg:grid-cols-3",
-  4: "lg:grid-cols-4",
-  5: "lg:grid-cols-5",
-  6: "lg:grid-cols-6",
+/** Static class map so Tailwind keeps the column utilities in the build.
+ * Six-up desktop starts at 900px so the 935px reference viewport matches.
+ * Use ! to beat md:grid-cols-3 when both media queries match. */
+const DESKTOP_COLUMNS: Record<number, string> = {
+  1: "min-[900px]:!grid-cols-1",
+  2: "min-[900px]:!grid-cols-2",
+  3: "min-[900px]:!grid-cols-3",
+  4: "min-[900px]:!grid-cols-4",
+  5: "min-[900px]:!grid-cols-5",
+  6: "min-[900px]:!grid-cols-6",
 };
 
 const FILTER_ICON_COLOR: Record<string, string> = {
@@ -32,7 +34,7 @@ const FILTER_ICON_COLOR: Record<string, string> = {
 };
 
 function FilterIcon({ name, color }: { name: string; color: string }) {
-  const cls = "h-4 w-4 shrink-0";
+  const cls = "h-3.5 w-3.5 shrink-0";
   switch (name) {
     case "frontend":
       return (
@@ -53,8 +55,18 @@ function FilterIcon({ name, color }: { name: string; color: string }) {
     case "devops":
       return (
         <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M8.4 8.6c1.8-2.3 5-2.3 6.8 0 1.4 1.8 1.4 4.2 0 6-1.8 2.3-5 2.3-6.8 0-1.4-1.8-1.4-4.2 0-6Z" stroke={color} strokeWidth="1.6" strokeLinejoin="round" />
-          <path d="M15.2 8.6c1.5-1.9 4-1.9 5.2.2M8.8 15.4c-1.5 1.9-4 1.9-5.2-.2" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+          <path
+            d="M8.4 8.6c1.8-2.3 5-2.3 6.8 0 1.4 1.8 1.4 4.2 0 6-1.8 2.3-5 2.3-6.8 0-1.4-1.8-1.4-4.2 0-6Z"
+            stroke={color}
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M15.2 8.6c1.5-1.9 4-1.9 5.2.2M8.8 15.4c-1.5 1.9-4 1.9-5.2-.2"
+            stroke={color}
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          />
         </svg>
       );
     case "mobile":
@@ -68,7 +80,12 @@ function FilterIcon({ name, color }: { name: string; color: string }) {
       return (
         <svg className={cls} viewBox="0 0 24 24" fill="none" aria-hidden>
           <circle cx="12" cy="12" r="3.2" stroke={color} strokeWidth="1.6" />
-          <path d="M12 3.4v3.4M12 17.2v3.4M3.4 12h3.4M17.2 12h3.4M6 6l2.4 2.4M15.6 15.6 18 18M18 6l-2.4 2.4M8.4 15.6 6 18" stroke={color} strokeWidth="1.6" strokeLinecap="round" />
+          <path
+            d="M12 3.4v3.4M12 17.2v3.4M3.4 12h3.4M17.2 12h3.4M6 6l2.4 2.4M15.6 15.6 18 18M18 6l-2.4 2.4M8.4 15.6 6 18"
+            stroke={color}
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          />
         </svg>
       );
     case "other":
@@ -112,28 +129,59 @@ function StageIcon({ name, className }: { name: RoadmapStage["icon"]; className?
     case "infinity":
       return (
         <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M8.4 8.4c2 0 2.6 1.6 3.6 3.6 1 2 1.6 3.6 3.6 3.6a3.6 3.6 0 1 0 0-7.2c-2 0-2.6 1.6-3.6 3.6-1 2-1.6 3.6-3.6 3.6a3.6 3.6 0 1 1 0-7.2Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+          <path
+            d="M8.4 8.4c2 0 2.6 1.6 3.6 3.6 1 2 1.6 3.6 3.6 3.6a3.6 3.6 0 1 0 0-7.2c-2 0-2.6 1.6-3.6 3.6-1 2-1.6 3.6-3.6 3.6a3.6 3.6 0 1 1 0-7.2Z"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          />
         </svg>
       );
     case "rocket":
       return (
         <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M13.6 3.6c3.4.6 6.2 3.4 6.8 6.8L12 18.8 5.2 12l8.4-8.4Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+          <path
+            d="M13.6 3.6c3.4.6 6.2 3.4 6.8 6.8L12 18.8 5.2 12l8.4-8.4Z"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          />
           <circle cx="14.6" cy="9.4" r="1.9" stroke="currentColor" strokeWidth="1.6" />
-          <path d="M7.6 16.4c-1.6 1.2-2 3.2-2 4.4 1.2 0 3.2-.4 4.4-2" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+          <path
+            d="M7.6 16.4c-1.6 1.2-2 3.2-2 4.4 1.2 0 3.2-.4 4.4-2"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          />
         </svg>
       );
     case "trophy":
       return (
         <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M7 4h10v5.2a5 5 0 0 1-10 0V4Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
-          <path d="M7 5.6H4.4v1.6A3.2 3.2 0 0 0 7 10.3M17 5.6h2.6v1.6A3.2 3.2 0 0 1 17 10.3M12 14.3V18M8.6 20h6.8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          <path
+            d="M7 4h10v5.2a5 5 0 0 1-10 0V4Z"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M7 5.6H4.4v1.6A3.2 3.2 0 0 0 7 10.3M17 5.6h2.6v1.6A3.2 3.2 0 0 1 17 10.3M12 14.3V18M8.6 20h6.8"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          />
         </svg>
       );
     default:
       return (
         <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M9 7.2 4.2 12 9 16.8M15 7.2 19.8 12 15 16.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          <path
+            d="M9 7.2 4.2 12 9 16.8M15 7.2 19.8 12 15 16.8"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       );
   }
@@ -142,7 +190,12 @@ function StageIcon({ name, className }: { name: RoadmapStage["icon"]; className?
 function BookIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M5 6.5A2.5 2.5 0 0 1 7.5 4H19v14.5H7.5A2.5 2.5 0 0 0 5 21V6.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+      <path
+        d="M5 6.5A2.5 2.5 0 0 1 7.5 4H19v14.5H7.5A2.5 2.5 0 0 0 5 21V6.5Z"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -159,7 +212,13 @@ function ClockIcon({ className }: { className?: string }) {
 function ArrowIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M14 6.5 8.5 12l5.5 5.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M14 6.5 8.5 12l5.5 5.5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -175,13 +234,19 @@ export function RoadmapPaths() {
   }, [stages]);
 
   return (
-    <section id="roadmap-paths" className="bg-[#030713] pb-10 pt-4" dir="rtl">
+    <section id="roadmap-paths" className="bg-[#030713] pb-3 pt-2" dir="rtl">
       <RoadmapContainer>
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-[18px] font-extrabold text-white sm:text-[20px]">مسیرهای یادگیری</h2>
+        <div className="mb-3.5 flex flex-col gap-2.5 min-[900px]:flex-row min-[900px]:items-center min-[900px]:justify-between min-[900px]:gap-3">
+          <h2 className="shrink-0 text-[18px] font-extrabold text-white sm:text-[20px]">
+            مسیرهای یادگیری
+          </h2>
 
-          <div className="max-w-full overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex w-max flex-nowrap items-center gap-[10px]" role="toolbar" aria-label="فیلتر مسیرها">
+          <div className="max-w-full overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] min-[900px]:overflow-visible [&::-webkit-scrollbar]:hidden">
+            <div
+              className="flex w-max flex-nowrap items-center gap-1.5 min-[900px]:w-auto min-[900px]:flex-wrap min-[900px]:justify-end"
+              role="toolbar"
+              aria-label="فیلتر مسیرها"
+            >
               {ROADMAP_PATH_FILTERS.map((item) => {
                 const isActive = track === item.id;
                 return (
@@ -191,7 +256,7 @@ export function RoadmapPaths() {
                     aria-pressed={isActive}
                     onClick={() => setTrack(item.id)}
                     className={[
-                      "inline-flex h-10 shrink-0 items-center gap-2 rounded-full border px-[18px] text-[13px] font-semibold transition duration-200",
+                      "inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border px-3 text-[12px] font-semibold transition duration-200",
                       isActive
                         ? "border-transparent bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] text-white shadow-[0_0_14px_rgba(124,58,237,0.32)]"
                         : "border-white/[0.1] bg-[#0F1626]/90 text-[#E5E7EB] hover:border-[rgba(168,85,247,0.4)] hover:text-white",
@@ -211,10 +276,10 @@ export function RoadmapPaths() {
 
         {stages.length > 0 ? (
           <>
-            <div className="relative hidden pb-5 lg:block" aria-hidden>
-              <span className="absolute inset-x-0 top-[9px] h-px bg-gradient-to-l from-transparent via-white/[0.12] to-transparent" />
+            <div className="relative mb-3 hidden min-[900px]:block" aria-hidden>
+              <span className="absolute inset-x-[calc(100%/12)] top-[8px] h-px border-t border-dashed border-white/[0.18]" />
               <div
-                className="relative grid gap-3"
+                className="relative grid gap-[12px]"
                 style={{ gridTemplateColumns: `repeat(${stages.length}, minmax(0, 1fr))` }}
               >
                 {stages.map((stage) => {
@@ -223,9 +288,9 @@ export function RoadmapPaths() {
                     <span key={stage.id} className="flex justify-center">
                       <span
                         className={[
-                          "block h-[18px] w-[18px] rounded-full border-2 transition",
+                          "block h-[16px] w-[16px] rounded-full border-2 transition",
                           isActive
-                            ? "border-[#A855F7] bg-[#7C3AED] shadow-[0_0_12px_rgba(168,85,247,0.6)]"
+                            ? "border-[#C084FC] bg-[#7C3AED] shadow-[0_0_14px_rgba(168,85,247,0.7)]"
                             : "border-[#1E3A5F] bg-[#0B1120]",
                         ].join(" ")}
                       />
@@ -235,18 +300,23 @@ export function RoadmapPaths() {
               </div>
             </div>
 
-            <div className={["grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-3", LG_COLUMNS[stages.length] ?? "lg:grid-cols-6"].join(" ")}>
+            <div
+              className={[
+                "grid grid-cols-1 gap-[12px] sm:grid-cols-2 md:grid-cols-3 min-[900px]:gap-[13px]",
+                DESKTOP_COLUMNS[stages.length] ?? "min-[900px]:grid-cols-6",
+              ].join(" ")}
+            >
               {stages.map((stage) => (
                 <StageCard key={stage.id} stage={stage} active={stage.id === activeStep} />
               ))}
             </div>
 
-            <div className="mt-6 flex justify-center">
+            <div className="mt-4 flex justify-center">
               <Link
                 href="/roadmap/react-developer"
-                className="focus-ring inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-[rgba(168,85,247,0.45)] bg-[rgba(124,58,237,0.08)] px-6 text-[13px] font-bold text-[#E9D5FF] no-underline shadow-[0_0_16px_rgba(124,58,237,0.18)] transition hover:bg-[rgba(124,58,237,0.16)] hover:text-white"
+                className="focus-ring inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-[rgba(168,85,247,0.5)] bg-[rgba(124,58,237,0.1)] px-6 text-[13px] font-bold text-[#E9D5FF] no-underline shadow-[0_0_16px_rgba(124,58,237,0.18)] transition hover:bg-[rgba(124,58,237,0.18)] hover:text-white"
               >
-                مشاهده جزئیات نقشه راه React
+                مشاهده جزئیات همه مسیرها
                 <ArrowIcon className="h-4 w-4 shrink-0" />
               </Link>
             </div>
@@ -267,20 +337,20 @@ function StageCard({ stage, active }: { stage: RoadmapStage; active: boolean }) 
   const card = (
     <article
       className={[
-        "flex h-full min-w-0 flex-col items-center rounded-[16px] border p-4 text-center transition duration-200 lg:min-h-[290px]",
+        "flex h-full min-w-0 flex-col items-center rounded-[14px] border px-2.5 py-3 text-center transition duration-200 min-[900px]:min-h-[236px]",
         active
-          ? "border-[rgba(168,85,247,0.45)] bg-[#0D1020] shadow-[0_0_22px_rgba(124,58,237,0.16)]"
-          : "border-white/[0.07] bg-[#080D1E] hover:border-[rgba(168,85,247,0.28)]",
+          ? "border-[rgba(168,85,247,0.55)] bg-[#0D1020] shadow-[0_0_24px_rgba(124,58,237,0.22)]"
+          : "border-white/[0.08] bg-[#080D1E] hover:border-[rgba(168,85,247,0.28)]",
         detailHref ? "cursor-pointer" : "",
       ].join(" ")}
     >
-      <span className="relative mt-1 inline-flex h-16 w-16 items-center justify-center" aria-hidden>
+      <span className="relative mt-0.5 inline-flex h-[58px] w-[58px] items-center justify-center" aria-hidden>
         <span
           className={[
-            "absolute inset-0 rounded-full blur-[10px]",
+            "absolute inset-0 rounded-full blur-[12px]",
             active
-              ? "bg-[radial-gradient(circle,rgba(168,85,247,0.38),transparent_70%)]"
-              : "bg-[radial-gradient(circle,rgba(124,58,237,0.18),transparent_70%)]",
+              ? "bg-[radial-gradient(circle,rgba(168,85,247,0.42),transparent_70%)]"
+              : "bg-[radial-gradient(circle,rgba(124,58,237,0.2),transparent_70%)]",
           ].join(" ")}
         />
         <StageIcon
@@ -289,25 +359,27 @@ function StageCard({ stage, active }: { stage: RoadmapStage; active: boolean }) 
         />
       </span>
 
-      <span className="mt-3 inline-flex items-center rounded-md border border-white/[0.08] bg-white/[0.04] px-2.5 py-[3px] text-[11px] font-bold text-[#CBD5E1]">
+      <span className="mt-2 inline-flex items-center rounded-md border border-[rgba(124,58,237,0.35)] bg-[rgba(124,58,237,0.14)] px-2 py-[2px] text-[10.5px] font-bold text-[#E9D5FF]">
         {stage.stepLabel}
       </span>
 
-      <h3 className="mt-3 text-[15px] font-extrabold leading-6 text-white">{stage.title}</h3>
-      <p className="mt-2 text-[12.5px] leading-[1.75] text-[#8B98AC]">{stage.description}</p>
+      <h3 className="mt-2 line-clamp-2 text-[13.5px] font-extrabold leading-5 text-white">
+        {stage.title}
+      </h3>
+      <p className="mt-1 line-clamp-3 text-[11.5px] leading-[1.65] text-[#8B98AC]">{stage.description}</p>
 
-      <div className="mt-auto w-full pt-4">
-        <div className="flex items-center justify-end text-[11px] font-bold text-[#94A3B8]">
+      <div className="mt-auto w-full pt-2.5">
+        <div className="flex items-center justify-end text-[10.5px] font-bold text-[#94A3B8]">
           <span>{stage.progress}%</span>
         </div>
-        <div className="mt-1.5 h-[5px] w-full overflow-hidden rounded-full bg-[#101A2E]">
+        <div className="mt-1 h-[4px] w-full overflow-hidden rounded-full bg-[#101A2E]">
           <span
             className="block h-full rounded-full bg-gradient-to-l from-[#7C3AED] to-[#A855F7]"
             style={{ width: `${stage.progress}%` }}
           />
         </div>
 
-        <div className="mt-3 flex items-center justify-between gap-2 border-t border-white/[0.06] pt-3 text-[11px] font-semibold text-[#64748B]">
+        <div className="mt-2.5 flex items-center justify-between gap-1.5 border-t border-white/[0.06] pt-2 text-[10.5px] font-semibold text-[#64748B]">
           <span className="inline-flex items-center gap-1 whitespace-nowrap">
             <ClockIcon className="h-3.5 w-3.5 shrink-0 text-[#7C3AED]" />
             <bdi>{stage.duration}</bdi>

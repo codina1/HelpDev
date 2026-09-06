@@ -13,7 +13,7 @@ export const ROADMAP_PATH_FILTERS: readonly {
   { id: "DevOps", label: "DevOps", icon: "devops" },
   { id: "Mobile", label: "Mobile", icon: "mobile" },
   { id: "AI", label: "AI", icon: "ai" },
-  { id: "Other", label: "سایر", icon: "other" },
+  { id: "Other", label: "... سایر", icon: "other" },
 ];
 
 export type RoadmapStage = {
@@ -111,10 +111,11 @@ export const ROADMAP_STATS: readonly {
   label: string;
   icon: "users" | "clock" | "doc" | "map";
 }[] = [
-  { id: "devs", value: "۲۴K+", label: "توسعه‌دهنده همراه", icon: "users" },
-  { id: "hours", value: "۴۰+", label: "ساعت آموزش", icon: "clock" },
-  { id: "guides", value: "۱۲۰+", label: "راهنما و مقاله", icon: "doc" },
+  // RTL: first item renders on the right (matches reference order).
   { id: "paths", value: "۱۲+", label: "مسیر یادگیری", icon: "map" },
+  { id: "guides", value: "۱۲۰+", label: "راهنما و مقاله", icon: "doc" },
+  { id: "hours", value: "۴۰+", label: "ساعت آموزش", icon: "clock" },
+  { id: "devs", value: "۲۴K+", label: "توسعه‌دهنده همراه", icon: "users" },
 ];
 
 export function filterRoadmapStages(

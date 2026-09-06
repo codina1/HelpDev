@@ -7,7 +7,8 @@ export const FOOTER_ICON_SLOTS = {
   brand: "/home/icon-brand.png",
   github: "/home/icon-social-github.png",
   telegram: "/home/icon-social-telegram.png",
-  x: "/home/icon-social-x.png",
+  x: "/home/icon-social-x.svg",
+  linkedin: "/home/icon-social-linkedin.svg",
 } as const;
 
 const PRODUCT_LINKS = [
@@ -22,6 +23,8 @@ const RESOURCE_LINKS = [
   { href: "/toolbox", label: "ابزارها" },
   { href: "/news", label: "اخبار" },
   { href: "/search", label: "جستجو" },
+  { href: "/articles?topic=cheatsheet", label: "Cheat Sheet" },
+  { href: "/articles?topic=glossary", label: "Glossary" },
 ] as const;
 
 const COMPANY_LINKS = [
@@ -33,9 +36,9 @@ const COMPANY_LINKS = [
 
 const COMMUNITY_LINKS = [
   { href: "https://github.com/codina1/HelpDev", label: "GitHub", external: true },
+  { href: "https://t.me/helpdev", label: "Telegram", external: true },
+  { href: "https://discord.gg/helpdev", label: "Discord", external: true },
   { href: "/contact", label: "پشتیبانی" },
-  { href: "/privacy", label: "حریم خصوصی" },
-  { href: "/terms", label: "شرایط استفاده" },
 ] as const;
 
 const SOCIAL_LINKS = [
@@ -46,10 +49,22 @@ const SOCIAL_LINKS = [
     slot: "github",
   },
   {
-    href: "/contact",
-    label: "تماس",
+    href: "https://t.me/helpdev",
+    label: "Telegram",
     iconSrc: FOOTER_ICON_SLOTS.telegram,
     slot: "telegram",
+  },
+  {
+    href: "https://x.com/helpdev",
+    label: "X",
+    iconSrc: FOOTER_ICON_SLOTS.x,
+    slot: "x",
+  },
+  {
+    href: "https://www.linkedin.com/company/helpdev",
+    label: "LinkedIn",
+    iconSrc: FOOTER_ICON_SLOTS.linkedin,
+    slot: "linkedin",
   },
 ] as const;
 
@@ -61,11 +76,11 @@ export function Footer() {
 
   return (
     <footer className="home-footer border-t border-white/[0.08] bg-[#050816]">
-      <PublicContainer size="wide" className="py-4 sm:py-5">
+      <PublicContainer size="wide" className="py-3.5 sm:py-4">
         {/* Visual: brand left · columns right */}
         <div
           dir="ltr"
-          className="grid gap-5 lg:grid-cols-[1.15fr_repeat(4,minmax(0,1fr))] lg:gap-4"
+          className="grid gap-4 lg:grid-cols-[1.15fr_repeat(4,minmax(0,1fr))] lg:gap-4"
         >
           <div className="max-w-sm text-start" dir="rtl">
             <Link href="/" className="focus-ring inline-flex items-center gap-2.5 no-underline">
