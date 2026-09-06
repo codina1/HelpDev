@@ -1,3 +1,6 @@
+import { COURSES, formatCoursePrice, getCourseBySlug } from "@/data/courses";
+import type { Course } from "@/types";
+
 export type CourseDetailTabId =
   | "about"
   | "curriculum"
@@ -5,6 +8,7 @@ export type CourseDetailTabId =
   | "reviews"
   | "projects"
   | "requirements";
+
 
 export type CourseCurriculumLesson = {
   id: string;
@@ -258,9 +262,123 @@ const COURSE_BY_SLUG: Record<string, CourseDetailModel> = {
   "react-19-complete": REACT_19_COURSE,
 };
 
+function buildDetailFromCatalog(course: Course): CourseDetailModel {
+  const related = COURSES.filter((item) => item.slug !== course.slug)
+    .slice(0, 3)
+    .map((item) => ({
+      id: item.id,
+      slug: item.slug,
+      title: item.title,
+      durationLabel: item.duration,
+      rating: item.rating,
+      image: item.image,
+      priceLabel: formatCoursePrice(item.price),
+    }));
+
+  return {
+    slug: course.slug,
+    category: course.category,
+    title: course.title,
+    description: course.description,
+    about: `${course.description} این دوره در مسیر یادگیری ${course.category} طراحی شده و شامل تمرین عملی، فایل‌های پروژه و پشتیبانی مدرس است.`,
+    instructor: {
+      name: "تیم HelpDev Academy",
+      role: course.platform,
+      bio: `مدرسین HelpDev با تمرکز روی ${course.category} و پروژه‌های واقعی.`,
+      initials: "HD",
+    },
+    durationHours: course.durationHours,
+    sessionsCount: Math.max(12, Math.round(course.durationHours * 2.5)),
+    levelLabel: course.levelLabel,
+    studentsCount: Math.max(400, Math.round(course.rating * 800)),
+    rating: course.rating,
+    price: course.price,
+    previewImage: course.image,
+    previewCaption: course.title,
+    features: ["دسترسی دائمی", "آپدیت رایگان دوره", "پروژه عملی", "پشتیبانی مدرس"],
+    highlights: [
+      {
+        title: "یادگیری کاربردی",
+        description: "تمرین‌ها نزدیک به سناریوهای واقعی تیم‌های محصول.",
+        icon: "spark",
+      },
+      {
+        title: "پروژه محور",
+        description: "خروجی قابل ارائه در پورتفولیو.",
+        icon: "project",
+      },
+      {
+        title: "آمادگی شغلی",
+        description: "مهارت‌های مورد نیاز بازار کار در این حوزه.",
+        icon: "briefcase",
+      },
+    ],
+    learningOutcomes: [
+      `درک مفاهیم کلیدی ${course.category}`,
+      "پیاده‌سازی پروژه‌های عملی مرتبط",
+      "آشنایی با ابزارها و استانداردهای روز",
+      "آمادگی برای ادامه مسیر تخصصی",
+    ],
+    requirements: ["علاقه به یادگیری", "دسترسی به اینترنت", "آشنایی مقدماتی با رایانه"],
+    curriculum: [
+      {
+        id: `${course.slug}-sec-1`,
+        title: "شروع مسیر",
+        lessons: [
+          { id: `${course.slug}-l1`, title: "معرفی دوره و اهداف", durationMinutes: 12, isPreview: true },
+          { id: `${course.slug}-l2`, title: "نصب ابزارها و آماده‌سازی محیط", durationMinutes: 18 },
+          { id: `${course.slug}-l3`, title: "اولین تمرین عملی", durationMinutes: 22 },
+        ],
+      },
+      {
+        id: `${course.slug}-sec-2`,
+        title: "مهارت‌های اصلی",
+        lessons: [
+          { id: `${course.slug}-l4`, title: "مفاهیم پایه", durationMinutes: 28 },
+          { id: `${course.slug}-l5`, title: "الگوهای کاربردی", durationMinutes: 32 },
+          { id: `${course.slug}-l6`, title: "پروژه میانی", durationMinutes: 40 },
+        ],
+      },
+      {
+        id: `${course.slug}-sec-3`,
+        title: "پروژه نهایی",
+        lessons: [
+          { id: `${course.slug}-l7`, title: "طراحی و پیاده‌سازی", durationMinutes: 45 },
+          { id: `${course.slug}-l8`, title: "بازبینی و انتشار", durationMinutes: 25 },
+        ],
+      },
+    ],
+    projects: ["پروژه تمرینی ابتدایی", "پروژه میانی", "پروژه نهایی قابل ارائه"],
+    reviews: [
+      {
+        id: `${course.slug}-r1`,
+        author: "کاربر HelpDev",
+        rating: Math.max(4, Math.round(course.rating)),
+        dateLabel: "۲ هفته پیش",
+        comment: "محتوا مرتب بود و دقیقاً همان دوره‌ای بود که از روی کارت انتخاب کردم.",
+      },
+    ],
+    related,
+    breadcrumb: [
+      { label: "خانه", href: "/" },
+      { label: "دوره‌ها", href: "/courses" },
+      { label: course.category, href: "/courses" },
+      { label: course.title },
+    ],
+  };
+}
+
 export function getCourseDetailBySlug(slug: string): CourseDetailModel | null {
   const key = decodeURIComponent(slug).trim().toLowerCase();
-  return COURSE_BY_SLUG[key] ?? (key.includes("react") ? REACT_19_COURSE : null);
+  if (!key) return null;
+
+  const rich = COURSE_BY_SLUG[key];
+  if (rich) return rich;
+
+  const catalog = getCourseBySlug(key);
+  if (catalog) return buildDetailFromCatalog(catalog);
+
+  return null;
 }
 
 export function formatToman(amount: number): string {

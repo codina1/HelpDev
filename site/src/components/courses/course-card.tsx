@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { formatCoursePrice } from "@/data/courses";
+import { useState, type MouseEvent } from "react";
+import Link from "next/link";
+import { formatCoursePrice, publicCoursePath } from "@/data/courses";
 import type { Course } from "@/types";
 
 type CourseCardProps = {
@@ -45,78 +46,86 @@ const BADGE_STYLE: Record<string, string> = {
 export function CourseCard({ course }: CourseCardProps) {
   const [saved, setSaved] = useState(false);
   const isFree = course.price === 0;
+  const href = publicCoursePath(course.slug);
+
+  function onBookmarkClick(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    event.stopPropagation();
+    setSaved((current) => !current);
+  }
 
   return (
-    <article
-      className="group flex h-full min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.07] bg-[#0B1120] shadow-[0_4px_16px_rgba(2,6,23,0.25)] transition duration-200 hover:border-[rgba(168,85,247,0.3)]"
+    <Link
+      href={href}
+      className="group flex h-full min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.07] bg-[#0B1120] no-underline shadow-[0_4px_16px_rgba(2,6,23,0.25)] transition duration-200 hover:border-[rgba(168,85,247,0.3)]"
       dir="rtl"
     >
-      <div className="relative h-[140px] shrink-0 overflow-hidden rounded-t-[16px] bg-gradient-to-br from-[#0f172a] to-[#070b18]">
-        {/* Ambient glow for dark images */}
-        <span
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_65%_35%,rgba(124,58,237,0.2),transparent_55%)]"
-          aria-hidden
-        />
-        <img
-          src={course.image}
-          alt=""
-          width={360}
-          height={140}
-          loading="lazy"
-          decoding="async"
-          className="absolute inset-0 h-full w-full object-cover mix-blend-screen transition duration-500 group-hover:scale-[1.04]"
-        />
-        {/* Bottom fade into card body */}
-        <span
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[#0B1120] to-transparent"
-          aria-hidden
-        />
-        <span
-          className={[
-            "absolute right-3 top-3 inline-flex items-center rounded-md px-2.5 py-[4px] text-[11px] font-bold",
-            BADGE_STYLE[course.levelLabel] ?? "bg-[#7C3AED] text-white",
-          ].join(" ")}
-        >
-          {course.levelLabel}
-        </span>
-        <button
-          type="button"
-          onClick={() => setSaved((current) => !current)}
-          aria-pressed={saved}
-          aria-label={saved ? "حذف از ذخیره‌ها" : "افزودن به ذخیره‌ها"}
-          className={[
-            "absolute left-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.1] bg-[#0B1120]/70 backdrop-blur-sm transition",
-            saved ? "text-[#A855F7]" : "text-[#94A3B8] hover:text-white",
-          ].join(" ")}
-        >
-          <BookmarkIcon className="h-4 w-4" filled={saved} />
-        </button>
-      </div>
-
-      <div className="flex min-w-0 flex-1 flex-col gap-2 p-4">
-        <h3 className="line-clamp-2 text-[14px] font-extrabold leading-6 text-white">
-          {course.title}
-        </h3>
-        <p className="line-clamp-2 text-[12.5px] leading-[21px] text-[#8B98AC]">
-          {course.description}
-        </p>
-
-        <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/[0.06] pt-3 text-[11.5px] font-semibold">
+      <article className="flex h-full min-w-0 flex-col">
+        <div className="relative h-[140px] shrink-0 overflow-hidden rounded-t-[16px] bg-gradient-to-br from-[#0f172a] to-[#070b18]">
+          <span
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_65%_35%,rgba(124,58,237,0.2),transparent_55%)]"
+            aria-hidden
+          />
+          <img
+            src={course.image}
+            alt=""
+            width={360}
+            height={140}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover mix-blend-screen transition duration-500 group-hover:scale-[1.04]"
+          />
+          <span
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[#0B1120] to-transparent"
+            aria-hidden
+          />
           <span
             className={[
-              "inline-flex items-center gap-1 whitespace-nowrap",
-              isFree ? "text-[#34D399]" : "text-[#22D3EE]",
+              "absolute right-3 top-3 inline-flex items-center rounded-md px-2.5 py-[4px] text-[11px] font-bold",
+              BADGE_STYLE[course.levelLabel] ?? "bg-[#7C3AED] text-white",
             ].join(" ")}
           >
-            <TagIcon className="h-3.5 w-3.5 shrink-0" />
-            <bdi>{formatCoursePrice(course.price)}</bdi>
+            {course.levelLabel}
           </span>
-          <span className="inline-flex items-center gap-1 whitespace-nowrap text-[#64748B]">
-            <ClockIcon className="h-3.5 w-3.5 shrink-0 text-[#7C3AED]" />
-            <bdi>{course.duration}</bdi>
-          </span>
+          <button
+            type="button"
+            onClick={onBookmarkClick}
+            aria-pressed={saved}
+            aria-label={saved ? "حذف از ذخیره‌ها" : "افزودن به ذخیره‌ها"}
+            className={[
+              "absolute left-3 top-3 z-10 inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.1] bg-[#0B1120]/70 backdrop-blur-sm transition",
+              saved ? "text-[#A855F7]" : "text-[#94A3B8] hover:text-white",
+            ].join(" ")}
+          >
+            <BookmarkIcon className="h-4 w-4" filled={saved} />
+          </button>
         </div>
-      </div>
-    </article>
+
+        <div className="flex min-w-0 flex-1 flex-col gap-2 p-4">
+          <h3 className="line-clamp-2 text-[14px] font-extrabold leading-6 text-white">
+            {course.title}
+          </h3>
+          <p className="line-clamp-2 text-[12.5px] leading-[21px] text-[#8B98AC]">
+            {course.description}
+          </p>
+
+          <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/[0.06] pt-3 text-[11.5px] font-semibold">
+            <span
+              className={[
+                "inline-flex items-center gap-1 whitespace-nowrap",
+                isFree ? "text-[#34D399]" : "text-[#22D3EE]",
+              ].join(" ")}
+            >
+              <TagIcon className="h-3.5 w-3.5 shrink-0" />
+              <bdi>{formatCoursePrice(course.price)}</bdi>
+            </span>
+            <span className="inline-flex items-center gap-1 whitespace-nowrap text-[#64748B]">
+              <ClockIcon className="h-3.5 w-3.5 shrink-0 text-[#7C3AED]" />
+              <bdi>{course.duration}</bdi>
+            </span>
+          </div>
+        </div>
+      </article>
+    </Link>
   );
 }

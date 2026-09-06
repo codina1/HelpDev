@@ -15,7 +15,7 @@ export function CourseCard({
   meta,
   progressPercentage,
 }: CourseCardProps) {
-  const link = href ?? (course.slug ? `/courses?slug=${encodeURIComponent(course.slug)}` : "/courses");
+  const link = href ?? (course.slug ? `/courses/${encodeURIComponent(course.slug)}` : "/courses");
 
   return (
     <article

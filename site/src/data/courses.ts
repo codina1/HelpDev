@@ -52,6 +52,7 @@ export const COURSE_PRICE_FILTERS: readonly { id: CoursePriceFilter; label: stri
 export const COURSES: Course[] = [
   {
     id: "1",
+    slug: "python-advanced",
     title: "Python برای همه (مقدماتی تا پیشرفته)",
     description: "یادگیری Python از مبانی تا ساخت پروژه‌های واقعی.",
     level: "Beginner",
@@ -67,6 +68,7 @@ export const COURSES: Course[] = [
   },
   {
     id: "2",
+    slug: "aspnet-core-web-api",
     title: "ASP.NET Core Web API به صورت عملی",
     description: "ساخت API های مقیاس‌پذیر و امن با ASP.NET Core.",
     level: "Advanced",
@@ -82,6 +84,7 @@ export const COURSES: Course[] = [
   },
   {
     id: "3",
+    slug: "react-19",
     title: "آموزش React از مقدماتی تا پیشرفته",
     description: "ساخت پروژه‌های حرفه‌ای با React و مدیریت state با Hooks.",
     level: "Intermediate",
@@ -97,6 +100,7 @@ export const COURSES: Course[] = [
   },
   {
     id: "4",
+    slug: "html-css-complete",
     title: "آموزش جامع HTML, CSS از صفر تا حرفه‌ای",
     description: "ساختار صفحات وب و استایل‌دهی حرفه‌ای را یاد بگیرید.",
     level: "Beginner",
@@ -112,6 +116,7 @@ export const COURSES: Course[] = [
   },
   {
     id: "5",
+    slug: "ai-for-developers",
     title: "هوش مصنوعی برای توسعه‌دهندگان (پروژه محور)",
     description: "استفاده از AI در کدنویسی و ساخت ابزارهای هوشمند.",
     level: "Intermediate",
@@ -128,6 +133,7 @@ export const COURSES: Course[] = [
   },
   {
     id: "6",
+    slug: "git-github",
     title: "Git و GitHub به زبان ساده",
     description: "مدیریت نسخه و همکاری تیمی با Git و GitHub.",
     level: "Beginner",
@@ -143,6 +149,7 @@ export const COURSES: Course[] = [
   },
   {
     id: "7",
+    slug: "docker-kubernetes",
     title: "Docker و Kubernetes از صفر تا استقرار",
     description: "کانتینرسازی و استقرار برنامه‌ها با Docker و Kubernetes.",
     level: "Intermediate",
@@ -158,6 +165,7 @@ export const COURSES: Course[] = [
   },
   {
     id: "8",
+    slug: "nodejs-express",
     title: "Node.js و Express.js برای توسعه‌دهندگان",
     description: "ساخت سرویس‌های سریع و مقیاس‌پذیر با Node و Express.",
     level: "Intermediate",
@@ -172,6 +180,15 @@ export const COURSES: Course[] = [
     price: 610000,
   },
 ];
+
+export function getCourseBySlug(slug: string): Course | undefined {
+  const key = decodeURIComponent(slug).trim().toLowerCase();
+  return COURSES.find((course) => course.slug.toLowerCase() === key);
+}
+
+export function publicCoursePath(slug: string): string {
+  return `/courses/${encodeURIComponent(slug)}`;
+}
 
 /** Reference shows a catalog of 48 courses across 6 pages. */
 export const COURSES_TOTAL_COUNT = 48;

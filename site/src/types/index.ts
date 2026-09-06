@@ -58,6 +58,8 @@ export type CourseLevel = "Beginner" | "Intermediate" | "Advanced";
 
 export type Course = {
   id: string;
+  /** SEO-friendly public path segment under /courses/[slug]. */
+  slug: string;
   title: string;
   description: string;
   level: CourseLevel;
