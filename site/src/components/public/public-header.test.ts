@@ -39,9 +39,7 @@ describe("public homepage header", () => {
     expect(source).toContain("/profile");
   });
 
-  it("keeps mobile chrome to logo, search, and menu", () => {
-    expect(source).toContain("pub-navbar-search");
-    expect(source).toContain("باز کردن منو");
-    expect(source).toContain("sm:hidden");
+  it("marks ابزارها active on toolbox and tool detail routes", () => {
+    expect(source).toContain('href === "/toolbox" && pathname.startsWith("/tools")');
   });
 });

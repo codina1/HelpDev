@@ -1,4 +1,6 @@
+import Link from "next/link";
 import type { MarketplaceTool } from "@/data/tools";
+import { publicToolPath } from "@/data/tool-detail";
 
 function ToolLogo({ name }: { name: string }) {
   const cls = "h-10 w-10";
@@ -125,48 +127,47 @@ type ToolCardProps = {
 
 /** Glass marketplace tool card — logo · title · rating · hover CTA. */
 export function ToolCard({ tool }: ToolCardProps) {
+  const href = publicToolPath(tool.slug);
+
   return (
-    <article
-      className="group relative flex h-[270px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827]/90 p-4 pt-5 shadow-[0_4px_16px_rgba(2,6,23,0.25)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-[rgba(168,85,247,0.45)] hover:shadow-[0_0_30px_rgba(124,58,237,0.25)]"
+    <Link
+      href={href}
+      className="group relative flex h-[270px] min-w-0 flex-col overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#111827]/90 p-4 pt-5 no-underline shadow-[0_4px_16px_rgba(2,6,23,0.25)] backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:border-[rgba(168,85,247,0.45)] hover:shadow-[0_0_30px_rgba(124,58,237,0.25)]"
       dir="rtl"
     >
-      {/* Logo area — larger with ambient glow */}
-      <div className="relative mx-auto flex h-[88px] w-[88px] items-center justify-center rounded-2xl border border-white/[0.08] bg-[radial-gradient(circle_at_center,rgba(124,58,237,0.22),rgba(15,23,42,0.9)_70%)] shadow-[0_0_28px_rgba(124,58,237,0.25)]">
-        <span
-          className="pointer-events-none absolute inset-[-20%] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.18),transparent_65%)] blur-xl"
-          aria-hidden
-        />
-        <span className="relative scale-[1.2]">
-          <ToolLogo name={tool.logo} />
-        </span>
-      </div>
+      <article className="flex h-full min-w-0 flex-col">
+        <div className="relative mx-auto flex h-[88px] w-[88px] items-center justify-center rounded-2xl border border-white/[0.08] bg-[radial-gradient(circle_at_center,rgba(124,58,237,0.22),rgba(15,23,42,0.9)_70%)] shadow-[0_0_28px_rgba(124,58,237,0.25)]">
+          <span
+            className="pointer-events-none absolute inset-[-20%] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.18),transparent_65%)] blur-xl"
+            aria-hidden
+          />
+          <span className="relative scale-[1.2]">
+            <ToolLogo name={tool.logo} />
+          </span>
+        </div>
 
-      <div className="mt-3 min-w-0 flex-1 text-center">
-        <h3 className="truncate text-[15px] font-bold text-white">{tool.name}</h3>
-        <p className="mt-1.5 line-clamp-2 text-[12px] leading-[1.8] text-[#94A3B8]">{tool.description}</p>
-      </div>
+        <div className="mt-3 min-w-0 flex-1 text-center">
+          <h3 className="truncate text-[15px] font-bold text-white">{tool.name}</h3>
+          <p className="mt-1.5 line-clamp-2 text-[12px] leading-[1.8] text-[#94A3B8]">{tool.description}</p>
+        </div>
 
-      <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/[0.06] pt-3 text-[11.5px] font-semibold">
-        <span className="inline-flex items-center rounded-md bg-white/[0.05] px-2 py-1 text-[#CBD5E1]">
-          {tool.categoryLabel}
-        </span>
-        <span className="inline-flex items-center gap-1 text-[#FBBF24]">
-          <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-            <path d="M12 3.4 14.4 9l6 .5-4.6 3.9 1.4 5.8L12 16.8 6.8 19.2l1.4-5.8L3.6 9.5l6-.5L12 3.4Z" />
-          </svg>
-          <bdi>{tool.rating.toFixed(1)}</bdi>
-          <span className="text-[#64748B]">({tool.reviewCount.toLocaleString("fa-IR")})</span>
-        </span>
-      </div>
+        <div className="mt-auto flex items-center justify-between gap-2 border-t border-white/[0.06] pt-3 text-[11.5px] font-semibold">
+          <span className="inline-flex items-center rounded-md bg-white/[0.05] px-2 py-1 text-[#CBD5E1]">
+            {tool.categoryLabel}
+          </span>
+          <span className="inline-flex items-center gap-1 text-[#FBBF24]">
+            <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+              <path d="M12 3.4 14.4 9l6 .5-4.6 3.9 1.4 5.8L12 16.8 6.8 19.2l1.4-5.8L3.6 9.5l6-.5L12 3.4Z" />
+            </svg>
+            <bdi>{tool.rating.toFixed(1)}</bdi>
+            <span className="text-[#64748B]">({tool.reviewCount.toLocaleString("fa-IR")})</span>
+          </span>
+        </div>
 
-      <a
-        href={tool.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="focus-ring pointer-events-none absolute inset-x-4 bottom-4 z-10 inline-flex h-9 translate-y-2 items-center justify-center rounded-xl bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] text-[12.5px] font-bold text-white no-underline opacity-0 shadow-[0_0_16px_rgba(124,58,237,0.35)] transition duration-300 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100"
-      >
-        مشاهده ابزار
-      </a>
-    </article>
+        <span className="pointer-events-none absolute inset-x-4 bottom-4 z-10 inline-flex h-9 translate-y-2 items-center justify-center rounded-xl bg-gradient-to-l from-[#7C3AED] to-[#6D28D9] text-[12.5px] font-bold text-white opacity-0 shadow-[0_0_16px_rgba(124,58,237,0.35)] transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          مشاهده ابزار
+        </span>
+      </article>
+    </Link>
   );
 }

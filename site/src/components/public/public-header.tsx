@@ -41,6 +41,7 @@ export function PublicHeader() {
   function isActive(href: string) {
     if (href === "/") return pathname === "/";
     if (href === "/courses" && pathname.startsWith("/learning")) return true;
+    if (href === "/toolbox" && pathname.startsWith("/tools")) return true;
     return pathname === href || pathname.startsWith(`${href}/`);
   }
 
